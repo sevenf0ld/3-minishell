@@ -6,7 +6,7 @@
 #    By: maiman-m <maiman-m@student.42kl.edu.my>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/29 19:23:00 by maiman-m          #+#    #+#              #
-#    Updated: 2023/08/30 14:32:42 by maiman-m         ###   ########.fr        #
+#    Updated: 2023/09/10 00:11:16 by maiman-m         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,29 +27,18 @@ SOURCE = ft_atoi.c ft_bzero.c ft_calloc.c ft_isalnum.c ft_isalpha.c \
 	   ft_strdup.c ft_striteri.c ft_strjoin.c ft_strlcat.c ft_strlcpy.c \
 	   ft_strlen.c ft_strmapi.c ft_strncmp.c ft_strnstr.c ft_strrchr.c \
 	   ft_strtrim.c ft_substr.c ft_tolower.c ft_toupper.c ft_strcmp.c \
-	   ft_atoll.c get_next_line.c get_next_line_utils.c
-
-# BONUS_SOURCE = ft_lstnew.c ft_lstadd_front.c ft_lstsize.c ft_lstlast.c ft_lstadd_back.c \
-			 ft_lstdelone.c ft_lstclear.c ft_lstiter.c ft_lstmap.c 
+	   ft_atoll.c get_next_line.c get_next_line_utils.c \
 
 SRCS = $(addprefix src/,$(SOURCE))
 
 OBJS = $(SRCS:.c=.o)
-
-# BONUS_SRCS = $(addprefix src/,$(SOURCE))
-
-# BONUS_OBJS = $(BONUS_SRCS:.c=.o)
 
 $(NAME): $(OBJS)
 	ar rcs $@ $^
 
 all: $(NAME)
 
-# bonus: $(BONUS_OBJS)
-	# ar rcs $(NAME) $^
-
 clean:
-	# rm -rf $(OBJS) $(BONUS_OBJS)
 	rm -rf $(OBJS)
 
 fclean: clean
