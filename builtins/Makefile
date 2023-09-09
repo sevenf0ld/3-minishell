@@ -6,7 +6,7 @@
 #    By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/09 18:31:26 by maiman-m          #+#    #+#              #
-#    Updated: 2023/09/09 18:37:47 by maiman-m         ###   ########.fr        #
+#    Updated: 2023/09/09 22:09:02 by maiman-m         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,7 +26,7 @@ LDFLAGS = -Llibft -lft -lreadline -L/usr/local/opt/readline/lib -I/usr/local/opt
 
 # SRCS = $(addprefix src/, $(SOURCE))
 
-SRCS = echo.c
+SRCS = pwd.c
 
 OBJS = $(SRCS:.c=.o)
 
