@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/10 00:10:12 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/09/10 21:25:17 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/09/10 21:55:06 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,27 @@ void	free_word(char **arr)
 	while (arr[i] != NULL)
 		free(arr[i++]);
 	free(arr);
+}
+
+void	set_token_type(t_token **tokens, int (f)(char *s, char *t))
+{
+	t_token	*tmp;
+
+	tmp = *tokens;
+	while (tmp != NULL)
+	{
+		if (!f(tmp->token, ">"))
+			tmp->symbol = OUTREDIR;
+		else if (!f(tmp->token, "<"))
+			tmp->symbol = INREDIR;
+		else if (!f(tmp->token, ">>"))
+			tmp->symbol = ADDEND;
+		else if (!f(tmp->token, "<<"))
+			tmp->symbol = HEREDOC;
+		else if (!f(tmp->token, "|"))
+			tmp->symbol = PIPE;
+		tmp = tmp->next;
+	}
 }
 
 /*
@@ -38,6 +59,7 @@ void	lexer(char *s, t_token **tokens, t_command **cmds)
 	printf("\n");
 
 	token_init(word, tokens);
+	set_token_type(tokens, ft_strcmp);
 	cmd_init(word, cmds);
 }
 
@@ -61,7 +83,7 @@ int	main(void)
 	//}
 	t_token	*cur;
 	for (cur = tokens_tok; cur != NULL; cur = cur->next)
-		printf("-> %s\n", cur->token);
+		printf("-> %s and %i\n", cur->token, cur->symbol);
 	t_command *tmp;
 	for (tmp = tokens_cmd; tmp != NULL; tmp = tmp->next)
 		printf("@ %s\n", tmp->cmd);

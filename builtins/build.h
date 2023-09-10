@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/10 00:14:19 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/09/10 21:27:58 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/09/10 21:55:01 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,29 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 
+/*
+ * 0 word
+ * 1 >
+ * 2 <
+ * 3 >>
+ * 4 <<
+ * 5 |
+ */
+typedef enum e_type
+{
+	WORD,
+	OUTREDIR,
+	INREDIR,
+	ADDEND,
+	HEREDOC,
+	PIPE
+}	t_type;
+
 //lexer
 typedef struct s_token
 {
 	char				*token;
+	t_type				symbol;
 	struct s_token		*next;
 }						t_token;			
 
