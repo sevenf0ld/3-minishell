@@ -1,58 +1,57 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   init.c                                             :+:      :+:    :+:   */
+/*   init_token.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/10 00:09:50 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/09/10 00:55:32 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/09/10 17:30:51 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "lex.h"
+#include "build.h"
 
-t_list	*sl_new(t_list *head, char *token)
+t_token	*token_new(t_token *head, char *token)
 {
-	t_list	*node;
+	t_token	*node;
 
-	node = malloc(sizeof(t_list));
+	node = malloc(sizeof(t_token));
 	if (!node)
 		return (NULL);
-	node->cmd = token;
+	node->token = token;
 	node->next = NULL;
 	head = node;
 	return (head);
 }
 
-void	sl_add_back(t_list **head, char *token)
+void	token_add_back(t_token **head, char *token)
 {
-	t_list	*node;
-	t_list	*old_end;
+	t_token	*node;
+	t_token	*old_end;
 
-	node = malloc(sizeof(t_list));
+	node = malloc(sizeof(t_token));
 	if (!node)
 		return ;
-	node->cmd = token;
+	node->token = token;
 	node->next = NULL;
-	old_end = sl_last(*head);
+	old_end = token_last(*head);
 	old_end->next = node;
 }
 
-t_list	*sl_initialize(char **args, t_list *head)
+void	token_init(char **args, t_token **head)
 {
 	int	i;
 
-	head = sl_new(head, args[0]);
+	*head = token_new(*head, args[0]);
 	i = 1;
 	while (args[i] != NULL)
-		sl_add_back(&head, args[i++]);
-	return (head);
+		token_add_back(head, args[i++]);
 }
 
-t_list	*sl_last(t_list *head)
+t_token	*token_last(t_token *head)
 {
-	t_list	*tmp;
+	t_token	*tmp;
 
 	tmp = head;
 	while (tmp->next != NULL)
@@ -60,17 +59,17 @@ t_list	*sl_last(t_list *head)
 	return (tmp);
 }
 
-int	sl_size(t_list *head)
+int	token_size(t_token *head)
 {
-	t_list	*tmp;
-	int		counter;
+	t_token	*tmp;
+	int		i;
 
 	tmp = head;
-	counter = 0;
+	i = 0;
 	while (tmp != NULL)
 	{
 		tmp = tmp->next;
-		counter++;
+		i++;
 	}
-	return (counter);
+	return (i);
 }

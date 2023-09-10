@@ -6,31 +6,14 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/10 00:10:12 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/09/10 01:12:09 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/09/10 17:34:22 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "lex.h"
+#include "build.h"
 
-void	parse(char **tokens, int (f)(char *s, char *t), t_list **head)
-{
-	int	i;
-
-	i = -1;
-	while (tokens[++i] != NULL)
-	{
-		if (!f(tokens[i], "|") || !f(tokens[i], ">") || !f(tokens[i], "<") \
-			|| !f(tokens[i], ">>") || !f(tokens[i], "<<"))
-		{
-			if (*head == NULL)
-				*head = sl_new((*head), tokens[i]);
-			else
-				sl_add_back(head, tokens[i]);
-		}
-	}
-}
-
-void	free_tokens(char **arr)
+//heap use after free which is weird
+void	free_word(char **arr)
 {
 	int	i;
 
@@ -44,35 +27,39 @@ void	free_tokens(char **arr)
  * ls -al | grep me > file1
  * [ls] [-al] [|] [grep] [me] [>] [file1]
  */
-void	lexer(char *s, t_list **head)
+void	lexer(char *s, t_token **tokens, t_command **cmds)
 {
-	char	**tokens;
+	char	**word;
 
-	tokens = ft_split(s, ' ');
-	for (int k = 0; tokens[k] != NULL; k++)
-		printf("[%s] ", tokens[k]);
+	word = ft_split(s, ' ');
+
+	for (int k = 0; word[k] != NULL; k++)
+		printf("[%s] ", word[k]);
 	printf("\n");
-	parse(tokens, ft_strcmp, head);
-	//free_tokens(tokens); //heap use after free lol
+
+	token_init(word, tokens);	
+	command_init(*tokens, cmds, ft_strcmp);
 }
 
 int	main(void)
 {
-	char	*cmd_line;
-	t_list	*head;
+	char		*cmd_line;
+	t_token		*tokens_tok;
+	t_command	*tokens_cmd;
 
 	cmd_line = NULL;
-	head = NULL;
+	tokens_tok = NULL;
+	tokens_cmd = NULL;
 	//while (1)
 	//{
 		cmd_line = readline("prompt> ");
 		if (cmd_line && *cmd_line)
 			add_history(cmd_line);
-		lexer(cmd_line, &head);
+		lexer(cmd_line, &tokens_tok, &tokens_cmd);
 		free(cmd_line);
 		cmd_line = NULL;
 	//}
-	t_list	*cur;
-	for (cur = head; cur != NULL; cur = cur->next)
-		printf("-> %s\n", cur->cmd);
+	t_token	*cur;
+	for (cur = tokens_tok; cur != NULL; cur = cur->next)
+		printf("-> %s\n", cur->token);
 }

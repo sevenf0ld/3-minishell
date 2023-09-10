@@ -1,0 +1,51 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   build.h                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/09/10 00:14:19 by maiman-m          #+#    #+#             */
+/*   Updated: 2023/09/10 17:38:08 by maiman-m         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#ifndef BUILD_H
+# define BUILD_H
+
+#include "libft.h"
+#include <readline/readline.h>
+#include <readline/history.h>
+
+//lexer
+typedef struct s_token
+{
+	char				*token;
+	struct s_token		*next;
+}						t_token;			
+
+//parser
+typedef struct	s_command
+{
+	char				*cmd;
+	char				*flags;
+	char				*input;
+	int					std_in;
+	int					std_out;
+	int					std_err;
+	int					order;
+	struct s_command	*next;
+}						t_command;
+
+//lexer
+t_token		*token_new(t_token *head, char *token);
+void		token_add_back(t_token **head, char *token);
+void		token_init(char **args, t_token **head);
+t_token		*token_last(t_token *head);
+int			token_size(t_token *head);
+
+//parser
+void	command_init(t_token *tokens, t_command **cmds, int (f)(char *s, char *t));
+void	parser(t_command **cmds, int size, int (f)(char *s, char *t), t_token *tokens);
+
+#endif
