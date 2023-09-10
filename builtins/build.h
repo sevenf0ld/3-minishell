@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/10 00:14:19 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/09/10 17:38:08 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/09/10 19:18:31 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,12 @@ t_token		*token_last(t_token *head);
 int			token_size(t_token *head);
 
 //parser
+t_command	*cmd_new(char *cmd);
+void		cmd_add_back(t_command **head, char *cmd);
+void		cmd_init(char **args, t_command **head);
+t_command	*cmd_last(t_command *head);
+int			cmd_size(t_command *head);
+
 void	command_init(t_token *tokens, t_command **cmds, int (f)(char *s, char *t));
 void	parser(t_command **cmds, int size, int (f)(char *s, char *t), t_token *tokens);
 

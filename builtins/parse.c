@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/10 17:01:08 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/09/10 18:32:59 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/09/10 19:24:26 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,10 +31,12 @@ void	parser(t_command **cmds, int size, int (f)(char *s, char *t), t_token *toke
 	i = 0;
 	cur_cmd = *cmds;
 	cur_tok = tokens;
+/*
 	while (cur_tok != NULL)
 	{
 		if (!f(cur_tok->token, "|"))
 
 		cur_tok = cur_tok->next;
 	}
+*/
 }
