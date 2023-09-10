@@ -6,14 +6,13 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/10 00:10:12 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/09/10 21:55:06 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/09/10 22:56:15 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "build.h"
 
-//heap use after free which is weird
-void	free_word(char **arr)
+void	free_split(char **arr)
 {
 	int	i;
 
@@ -45,22 +44,26 @@ void	set_token_type(t_token **tokens, int (f)(char *s, char *t))
 }
 
 /*
- * ls -al | grep me > file1
- * [ls] [-al] [|] [grep] [me] [>] [file1]
+ * ls -la | cat | grep -wn c > outfile
+ * # [ls] [-la] [|] [cat] [|] [grep] [-wn] [c] [>] [outfile]
+ * [ ls -la ] [ cat ] [ grep -wn c > outfile]
+ * 		should trim the whitespaces
  */
 void	lexer(char *s, t_token **tokens, t_command **cmds)
 {
 	char	**word;
 
-	word = ft_split(s, ' ');
+	word = ft_split(s, '|');
 
 	for (int k = 0; word[k] != NULL; k++)
 		printf("[%s] ", word[k]);
 	printf("\n");
 
 	token_init(word, tokens);
-	set_token_type(tokens, ft_strcmp);
+	//set_token_type(tokens, ft_strcmp);
 	cmd_init(word, cmds);
+	//free word
+	parser(tokens, cmds);
 }
 
 int	main(void)
@@ -83,8 +86,12 @@ int	main(void)
 	//}
 	t_token	*cur;
 	for (cur = tokens_tok; cur != NULL; cur = cur->next)
-		printf("-> %s and %i\n", cur->token, cur->symbol);
+		printf("-> %s\n", cur->token);
 	t_command *tmp;
 	for (tmp = tokens_cmd; tmp != NULL; tmp = tmp->next)
 		printf("@ %s\n", tmp->cmd);
+	for (tmp = tokens_cmd; tmp != NULL; tmp = tmp->next)
+		printf("- %s\n", tmp->flags);
+	for (tmp = tokens_cmd; tmp != NULL; tmp = tmp->next)
+		printf(": %s\n", tmp->input);
 }
