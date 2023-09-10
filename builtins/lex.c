@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/10 00:10:12 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/09/10 21:20:17 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/09/10 21:25:17 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,11 +38,7 @@ void	lexer(char *s, t_token **tokens, t_command **cmds)
 	printf("\n");
 
 	token_init(word, tokens);
-	
-	printf("before: %p %p\n", *cmds, cmds);
-	//pointless
 	cmd_init(word, cmds);
-	printf("after: %p %p\n", *cmds, cmds);
 }
 
 int	main(void)

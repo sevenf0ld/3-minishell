@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/10 17:31:36 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/09/10 21:20:30 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/09/10 21:27:43 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,12 +30,10 @@ t_command	*cmd_new(char *cmd)
 	return (node);
 }
 
-void	cmd_add_back(t_command **head, char *cmd)
+void	cmd_add_back(t_command **head, t_command *node)
 {
-	t_command	*node;
 	t_command	*old_end;
 
-	node = cmd_new(cmd);
 	if (!node)
 		return ;
 	old_end = cmd_last(*head);
@@ -49,7 +47,7 @@ void	cmd_init(char **args, t_command **head)
 	*head = cmd_new(args[0]);
 	i = 1;
 	while (args[i] != NULL)
-		cmd_add_back(head, args[i++]);
+		cmd_add_back(head, cmd_new(args[i++]));
 }
 
 t_command	*cmd_last(t_command *head)
