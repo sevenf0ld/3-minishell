@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/10 00:10:12 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/09/10 22:56:15 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/09/11 12:48:49 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,9 +54,22 @@ void	lexer(char *s, t_token **tokens, t_command **cmds)
 	char	**word;
 
 	word = ft_split(s, '|');
-
+	
 	for (int k = 0; word[k] != NULL; k++)
 		printf("[%s] ", word[k]);
+	for (int k = 0; word[k] != NULL; k++)
+	{
+		for (int l = 0; word[k][l] != '\0'; l++)
+		{
+			if (word[k][l] == 32)
+			{
+				printf("#");
+				continue ;
+			}
+			printf("%c", word[k][l]);
+		}
+	}
+	
 	printf("\n");
 
 	token_init(word, tokens);
@@ -89,9 +102,9 @@ int	main(void)
 		printf("-> %s\n", cur->token);
 	t_command *tmp;
 	for (tmp = tokens_cmd; tmp != NULL; tmp = tmp->next)
-		printf("@ %s\n", tmp->cmd);
+		printf("@ [%s]\n", tmp->cmd);
 	for (tmp = tokens_cmd; tmp != NULL; tmp = tmp->next)
-		printf("- %s\n", tmp->flags);
+		printf("- [%s]\n", tmp->flags);
 	for (tmp = tokens_cmd; tmp != NULL; tmp = tmp->next)
-		printf(": %s\n", tmp->input);
+		printf(": [%s]\n", tmp->input);
 }
