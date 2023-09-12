@@ -6,20 +6,20 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/10 17:31:36 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/09/11 17:38:15 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/09/12 18:30:02 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "build.h"
 
-t_command	*cmd_new(char *cmd)
+t_command	*cmd_new(void)
 {
 	t_command	*node;
 
 	node = malloc(sizeof(t_command));
 	if (!node)
 		return (NULL);
-	node->cmd = cmd;
+	node->cmd = NULL;
 	node->flags = NULL;
 	node->input = NULL;
 	node->num_f = -1;
@@ -46,10 +46,10 @@ void	cmd_init(char **args, t_command **head)
 {
 	int	i;
 
-	*head = cmd_new(args[0]);
-	i = 1;
-	while (args[i] != NULL)
-		cmd_add_back(head, cmd_new(args[i++]));
+	i = 0;
+	*head = cmd_new();
+	while (args[++i] != NULL)
+		cmd_add_back(head, cmd_new());
 }
 
 t_command	*cmd_last(t_command *head)
