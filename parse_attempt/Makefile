@@ -6,11 +6,11 @@
 #    By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/09 18:31:26 by maiman-m          #+#    #+#              #
-#    Updated: 2023/09/11 16:18:42 by maiman-m         ###   ########.fr        #
+#    Updated: 2023/09/12 13:49:53 by maiman-m         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-PROG_NAME = builtins
+PROG_NAME = parser
 
 CC = cc
 
