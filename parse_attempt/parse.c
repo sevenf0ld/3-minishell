@@ -58,16 +58,14 @@ void	set_cmd(char **full_cmd, t_command **c_node)
 	i = 0;
 	j = 0;
 	split_init(full_cmd, &split_cmd);
-	set_split_type(&split_cmd, ft_strcmp);
+	set_split_type_one(&split_cmd, ft_strcmp);
 	set_multi(split_cmd, c_node); 
 	tmp = split_cmd;
 	node = *c_node;
 	
-	/*
 	t_split	*sym;
 	for (sym = split_cmd; sym != NULL; sym = sym->next)
 		printf("~~~ %s ~~~ %i\n", sym->each, sym->symbol);
-	*/
 
 	while (tmp != NULL)
 	{
