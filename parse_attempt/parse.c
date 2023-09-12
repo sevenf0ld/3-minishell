@@ -33,14 +33,14 @@ void	set_multi(t_split *split_cmd, t_command **c_node)
 	if (i != 0)
 	{
 		(*c_node)->num_f = i;
-		(*c_node)->flags = malloc(sizeof(char *) * ((*c_node)->num_f));
+		(*c_node)->flags = malloc(sizeof(char *) * (*c_node)->num_f);
 		if ((*c_node)->flags == NULL)
 			printf("FAILURE F\n");
 	}
 	if (j != 0)
 	{
 		(*c_node)->num_i = j;
-		(*c_node)->input = malloc(sizeof(char *) * ((*c_node)->num_i));
+		(*c_node)->input = malloc(sizeof(char *) * (*c_node)->num_i);
 		if ((*c_node)->input == NULL)
 			printf("FAILURE I\n");
 	}
@@ -62,8 +62,6 @@ void	set_cmd(char **full_cmd, t_command **c_node)
 	set_multi(split_cmd, c_node); 
 	tmp = split_cmd;
 	node = *c_node;
-	//node->flags = malloc(sizeof(char *) * node->num_f);
-	//node->input = malloc(sizeof(char *) * node->num_i);
 	
 	/*
 	t_split	*sym;
@@ -76,21 +74,11 @@ void	set_cmd(char **full_cmd, t_command **c_node)
 		if (tmp->symbol == CMD)
 			node->cmd = tmp->each;
 		else if (tmp->symbol == OPT)
-			node->flags[i] = ft_strdup(tmp->each);
-			//node->flags = tmp->each;
+			node->flags[i++] = ft_strdup(tmp->each);
 		else if (tmp->symbol == MSG)
-			node->input[j] = ft_strdup(tmp->each);
-			//node->input = tmp->each;
-		printf("CHECK flags %p input %p\n", node->flags[i], node->input[j]);
-		break ;
+			node->input[j++] = ft_strdup(tmp->each);
 		tmp = tmp->next;
-		i++;
-		j++;
 	}
-	//node->flags[i] = NULL;
-	//node->input[j] = NULL;
-	
-	//printf("NUM CHECK (f)%i (i)%i\n", node->num_f, node->num_i);
 }
 
 /*

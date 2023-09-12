@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/10 00:10:12 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/09/11 19:03:27 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/09/12 16:15:22 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,24 +64,18 @@ int	main(void)
 		free(cmd_line);
 		cmd_line = NULL;
 	//}
-	t_token	*cur;
+	
+		t_token	*cur;
 	for (cur = tok; cur != NULL; cur = cur->next)
 		printf("-> %s\n", cur->token);
+	
 	t_command *tmp;
 	for (tmp = cmd; tmp != NULL; tmp = tmp->next)
 		printf("@ [%s]\n", tmp->cmd);
-	/*
 	for (tmp = cmd; tmp != NULL; tmp = tmp->next)
-		printf("- [%s]\n", tmp->flags);
+		for (int i = 0; i < tmp->num_f; i++)
+			printf("--- {%s}\n", tmp->flags[i]);
 	for (tmp = cmd; tmp != NULL; tmp = tmp->next)
-		printf(": [%s]\n", tmp->input);
-	*/
-
-	/*
-	for (tmp = cmd; tmp != NULL; tmp = tmp->next)
-	{
-		for (int i = 0; tmp->input[i] != NULL; i++)
-			printf("--- {%p}\n", tmp->input[i]);
-	}
-	*/
+		for (int i = 0; i < tmp->num_i; i++)
+			printf("::: {%s}\n", tmp->input[i]);
 }
