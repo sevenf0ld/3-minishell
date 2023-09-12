@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/10 00:14:19 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/09/11 16:20:32 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/09/12 16:58:47 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@
  * INREDIR 5
  * ADDEND 6
  * HEREDOC 7
+ * FILN 8
  */
 typedef enum e_type
 {
@@ -37,6 +38,7 @@ typedef enum e_type
 	INREDIR,
 	ADDEND,
 	HEREDOC,
+	FILN
 }	t_type;
 
 //lexer
@@ -94,7 +96,8 @@ int			cmd_size(t_command *head);
 
 /*	SETTER	*/
 //set.c
-void		set_split_type(t_split **splits, int (f)(char *s, char *t));
+void		set_split_type_one(t_split **splits, int (f)(char *s, char *t));
+void		set_split_type_two(t_split **splits);
 
 //init_split.c
 t_split		*split_new(char *split);
