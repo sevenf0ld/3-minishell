@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 16:14:52 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/09/12 17:05:43 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/09/12 17:10:32 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ void	set_split_type_two(t_split **splits)
 				tmp->next->symbol = FILN;
 		if (tmp->symbol == FILN && tmp->next != NULL)
 				tmp->next->symbol = CMD;
-		if (tmp->next != NULL && tmp->next->symbol == OPT)
+		if (tmp->next != NULL && tmp->symbol != OPT && tmp->next->symbol == OPT)
 			tmp->symbol = CMD;
 		tmp = tmp->next;
 	}
