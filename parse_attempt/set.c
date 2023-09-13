@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 16:14:52 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/09/12 17:10:32 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/09/13 19:25:41 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ void	set_split_type_one(t_split **splits, int (f)(char *s, char *t))
 	t_split	*tmp;
 
 	tmp = *splits;
+	tmp->symbol = CMD;
 	while (tmp != NULL)
 	{
 		if (tmp->each[0] == '-')
@@ -38,8 +39,6 @@ void	set_split_type_one(t_split **splits, int (f)(char *s, char *t))
 			tmp->symbol = ADDEND;
 		else if (!f(tmp->each, "<<"))
 			tmp->symbol = HEREDOC;
-		else
-			tmp->symbol = MSG;
 		tmp = tmp->next;
 	}
 	set_split_type_two(splits);
@@ -50,20 +49,16 @@ void	set_split_type_two(t_split **splits)
 	t_split	*tmp;
 
 	tmp = *splits;
-	if (tmp && tmp->next == NULL)
-	{
-		tmp->symbol = CMD;
-		return ;
-	}
 	while (tmp != NULL)
 	{
 		if (tmp->symbol == OUTREDIR || tmp->symbol == INREDIR || tmp->symbol == ADDEND)
 			if (tmp->next != NULL)
 				tmp->next->symbol = FILN;
+
 		if (tmp->symbol == FILN && tmp->next != NULL)
 				tmp->next->symbol = CMD;
-		if (tmp->next != NULL && tmp->symbol != OPT && tmp->next->symbol == OPT)
-			tmp->symbol = CMD;
+		if ((int)tmp->symbol == -1)
+			tmp->symbol = MSG;
 		tmp = tmp->next;
 	}
 }
