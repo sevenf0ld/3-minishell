@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/10 00:14:19 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/09/12 18:30:00 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/09/14 13:07:13 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,11 @@ typedef struct s_token
 	struct s_token		*next;
 }						t_token;			
 
+
 //parser
+/*
+ * input should be of type t_split and t_type of CMD and OPT should be deleted from t_split before assigning to t_command
+ */
 typedef struct	s_command
 {
 	char				*cmd;
@@ -64,6 +68,9 @@ typedef struct	s_command
 }						t_command;
 
 //setter
+/*
+ * duplicated nodes of same OPT symbol should be deleted before assigning to t_command nodes
+ */
 typedef struct	s_split
 {
 	char			*each;
