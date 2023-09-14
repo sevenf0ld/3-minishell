@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/10 00:10:12 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/09/12 16:15:22 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/09/14 12:02:53 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,38 +44,4 @@ void	lexer(char *s, t_token **tokens, t_command **cmds)
 	cmd_init(word, cmds);
 	//free word
 	parser(tokens, cmds);
-}
-
-int	main(void)
-{
-	char		*cmd_line;
-	t_token		*tok;
-	t_command	*cmd;
-
-	cmd_line = NULL;
-	tok = NULL;
-	cmd = NULL;
-	//while (1)
-	//{
-		cmd_line = readline("prompt> ");
-		if (cmd_line && *cmd_line)
-			add_history(cmd_line);
-		lexer(cmd_line, &tok, &cmd);
-		free(cmd_line);
-		cmd_line = NULL;
-	//}
-	
-		t_token	*cur;
-	for (cur = tok; cur != NULL; cur = cur->next)
-		printf("-> %s\n", cur->token);
-	
-	t_command *tmp;
-	for (tmp = cmd; tmp != NULL; tmp = tmp->next)
-		printf("@ [%s]\n", tmp->cmd);
-	for (tmp = cmd; tmp != NULL; tmp = tmp->next)
-		for (int i = 0; i < tmp->num_f; i++)
-			printf("--- {%s}\n", tmp->flags[i]);
-	for (tmp = cmd; tmp != NULL; tmp = tmp->next)
-		for (int i = 0; i < tmp->num_i; i++)
-			printf("::: {%s}\n", tmp->input[i]);
 }
