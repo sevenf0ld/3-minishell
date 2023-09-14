@@ -6,19 +6,12 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 16:14:52 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/09/13 19:25:41 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/09/14 11:55:04 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "build.h"
 
-/*
- * for msgs, check if before or after is 4 - 6
- * if before, the msg is a file
- * < infile ls -l | wc -l > outfile 
- * msgs can be either a command or a file
- * after a file must be command
- */
 void	set_split_type_one(t_split **splits, int (f)(char *s, char *t))
 {
 	t_split	*tmp;
@@ -44,6 +37,12 @@ void	set_split_type_one(t_split **splits, int (f)(char *s, char *t))
 	set_split_type_two(splits);
 }
 
+/*
+ * echo message
+ * 0 2
+ * ls test.txt
+ * 0 8
+ */
 void	set_split_type_two(t_split **splits)
 {
 	t_split	*tmp;
