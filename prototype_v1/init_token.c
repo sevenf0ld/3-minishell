@@ -6,12 +6,15 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/10 00:09:50 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/09/15 15:41:28 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/09/15 16:35:03 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mini.h"
 
+/*
+ * symbol and param will be set to -1 after testing
+ */
 t_token	*token_new(char *token)
 {
 	t_token	*node;
@@ -21,6 +24,7 @@ t_token	*token_new(char *token)
 		return (NULL);
 	node->token = token;
 	node->symbol = ANON;
+	node->param = NONE;
 	node->prev = NULL;
 	node->next = NULL;
 	return (node);

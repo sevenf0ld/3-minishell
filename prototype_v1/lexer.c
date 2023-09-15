@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:25:31 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/09/15 16:06:08 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/09/15 17:11:00 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	mini_delim(char a)
 	return (0);
 }
 
-void	categorize_tokens(t_token **tokens, int (f)(char *s, char *t))
+void	categorize_token_symbol(t_token **tokens, int (f)(char *s, char *t))
 {
 	t_token	*tmp;
 
@@ -48,6 +48,19 @@ void	categorize_tokens(t_token **tokens, int (f)(char *s, char *t))
 	}
 }
 
+void	categorize_token_param(t_token **tokens)
+{
+	t_token	*tmp;
+
+	tmp = *tokens;
+	while (tmp != NULL)
+	{
+		if (tmp->token[0] == '-')
+			tmp->param = OPT;
+		tmp = tmp->next;
+	}
+}
+
 /*
  * turns the words into tokens
  * categorizes the tokens
@@ -59,5 +72,6 @@ void	lexer(char *pipeline, t_token **tokens)
 	words = new_split(pipeline);
 	token_init(words, tokens);
 	double_ll_convert(tokens);
-	categorize_tokens(tokens, ft_strcmp);
+	categorize_token_symbol(tokens, ft_strcmp);
+	categorize_token_param(tokens);
 }

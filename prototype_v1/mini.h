@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:20:01 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/09/15 16:09:48 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/09/15 16:38:09 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,9 @@
  * 5 (
  * 6 )
  * 7 &
- * 8 ANONYMOUS
+ * 8 ANONYMOUS (will remove)
  */
-typedef enum e_type
+typedef enum e_sym
 {
 	PIPE,
 	OUT_RE,
@@ -40,12 +40,29 @@ typedef enum e_type
 	CL_BRAC,
 	AMP,
 	ANON
-}	t_type;
+}	t_sym;
+
+/*
+ * 0 COMMAND
+ * 1 FLAGS/OPTIONS
+ * 2 ARGUMENTS
+ * 3 FILENAME
+ * 4 NONE (will remove)
+ */
+typedef enum e_par
+{
+	CMD,
+	OPT,
+	ARGS,
+	FILN,
+	NONE
+}	t_par;
 
 typedef struct s_token
 {
 	char			*token;
-	t_type			symbol;
+	t_sym			symbol;
+	t_par			param;
 	struct s_token	*prev;
 	struct s_token	*next;
 }					t_token;
@@ -67,7 +84,8 @@ t_token		*double_ll_convert(t_token **lst);
 /*	LEXER	*/
 //lexer.c
 int			mini_delim(char a);
-void		categorize_tokens(t_token **tokens, int (f)(char *s, char *t));
+void		categorize_token_symbol(t_token **tokens, int (f)(char *s, char *t));
+void		categorize_token_param(t_token **tokens);
 void		lexer(char *pipeline, t_token **tokens);
 
 #endif

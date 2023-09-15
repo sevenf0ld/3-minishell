@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:19:04 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/09/15 16:10:46 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/09/15 16:59:04 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 
 int	main(void)
 {
-	char	*type[] = {"PIPE", "OUT_RE", "IN_RE", "W_Q", "S_Q", "OP_BRAC", "CL_BRAC", "AMP", "NONE"};
+	char	*type[] = {"PIPE", "OUT_RE", "IN_RE", "W_Q", "S_Q", "OP_BRAC", "CL_BRAC", "AMP", "ANON"};
+	char	*input[] = {"CMD", "OPT", "ARGS", "FILN", "NONE"};
 
 	char	*pipeline;
 	t_token	*tok;
@@ -33,4 +34,6 @@ int	main(void)
 	
 	for (t_token *dl = tok; dl != NULL; dl = dl->next)
 		printf("\x1b[41m[%s]\x1b[m is of type %i which is \x1b[45m[%s]\x1b[m\n", dl->token, dl->symbol, type[dl->symbol]);
+	for (t_token *dl = tok; dl != NULL; dl = dl->next)
+		printf("\x1b[45m[%s]\x1b[m is of type %i which is \x1b[41m[%s]\x1b[m\n", dl->token, dl->param, input[dl->param]);
 }
