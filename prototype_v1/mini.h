@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:20:01 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/09/15 14:44:26 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/09/15 15:41:14 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,27 +19,27 @@
 #include <stdlib.h>
 
 /*
- * CMD 0
- * OPT 1
- * MSG 2
- * PIPE 3
- * OUTREDIR 4
- * INREDIR 5
- * ADDEND 6
- * HEREDOC 7
- * FILN 8
+ * 0 PIPE
+ * 1 >
+ * 2 <
+ * 3 "
+ * 4 '
+ * 5 (
+ * 6 )
+ * 7 &
+ * 8 ANONYMOUS
  */
 typedef enum e_type
 {
-	CMD,
-	OPT,
-	MSG,
 	PIPE,
-	OUTREDIR,
-	INREDIR,
-	ADDEND,
-	HEREDOC,
-	FILN
+	OUT_RE,
+	IN_RE,
+	W_Q,
+	S_Q,
+	OP_BRAC,
+	CL_BRAC,
+	AMP,
+	ANON
 }	t_type;
 
 typedef struct	s_token
