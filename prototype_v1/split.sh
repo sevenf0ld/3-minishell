@@ -22,13 +22,11 @@ args=("ls -la | cat | grep -wn c > outfile"
 # create a variable with the name of the executable
 exe="./new_split"
 
-cc -Wall -Werror -Wextra -g3 split.c -o new_split
-# cc -Wall -Werror -Wextra -fsanitize=address -g3 split.c -o new_split
+cc -Wall -Werror -Wextra -fsanitize=address -g3 split.c -o new_split
 
 for arg in "${args[@]}"; do
     echo -e "$red $exe $arg: $none"
-    leaks -atExit -- ./"$exe" "$arg"
-    #./"$exe" "$arg"
+    ./"$exe" "$arg"
 done
 
 rm -rf new_split*
