@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:20:01 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/09/15 16:38:09 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/09/15 18:55:27 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,11 @@
  * 5 (
  * 6 )
  * 7 &
- * 8 ANONYMOUS (will remove)
+ * 8 COMMAND
+ * 9 OPTIONS/FLAGS
+ * 10 ARGUMENTS
+ * 11 FILENAME
+ * 12 ANONYMOUS (will remove)
  */
 typedef enum e_sym
 {
@@ -39,30 +43,17 @@ typedef enum e_sym
 	OP_BRAC,
 	CL_BRAC,
 	AMP,
-	ANON
-}	t_sym;
-
-/*
- * 0 COMMAND
- * 1 FLAGS/OPTIONS
- * 2 ARGUMENTS
- * 3 FILENAME
- * 4 NONE (will remove)
- */
-typedef enum e_par
-{
 	CMD,
 	OPT,
 	ARGS,
 	FILN,
-	NONE
-}	t_par;
+	ANON
+}	t_sym;
 
 typedef struct s_token
 {
 	char			*token;
 	t_sym			symbol;
-	t_par			param;
 	struct s_token	*prev;
 	struct s_token	*next;
 }					t_token;
@@ -85,7 +76,7 @@ t_token		*double_ll_convert(t_token **lst);
 //lexer.c
 int			mini_delim(char a);
 void		categorize_token_symbol(t_token **tokens, int (f)(char *s, char *t));
-void		categorize_token_param(t_token **tokens);
+void		categorize_helper(t_token **tokens);
 void		lexer(char *pipeline, t_token **tokens);
 
 #endif

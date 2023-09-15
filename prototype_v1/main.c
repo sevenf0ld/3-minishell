@@ -6,22 +6,22 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:19:04 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/09/15 16:59:04 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/09/15 19:00:01 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mini.h"
 
-int	main(void)
+int	main(int argc, char **argv)
 {
-	char	*type[] = {"PIPE", "OUT_RE", "IN_RE", "W_Q", "S_Q", "OP_BRAC", "CL_BRAC", "AMP", "ANON"};
-	char	*input[] = {"CMD", "OPT", "ARGS", "FILN", "NONE"};
-
+	char	*type[] = {"PIPE", "OUT_RE", "IN_RE", "W_Q", "S_Q", "OP_BRAC", "CL_BRAC", "AMP", "CMD", "OPT", "ARGS", "FILN", "ANON"};
+	
 	char	*pipeline;
 	t_token	*tok;
 
 	pipeline = NULL;
 	tok = NULL;
+	/*
 	//while (1)
 	//{
 		pipeline = readline("prompt> ");
@@ -31,9 +31,10 @@ int	main(void)
 		free(pipeline);
 		pipeline = NULL;
 	//}
-	
+	*/
+	if (argc != 2)
+		return (1);
+	lexer(argv[1], &tok);
 	for (t_token *dl = tok; dl != NULL; dl = dl->next)
 		printf("\x1b[41m[%s]\x1b[m is of type %i which is \x1b[45m[%s]\x1b[m\n", dl->token, dl->symbol, type[dl->symbol]);
-	for (t_token *dl = tok; dl != NULL; dl = dl->next)
-		printf("\x1b[45m[%s]\x1b[m is of type %i which is \x1b[41m[%s]\x1b[m\n", dl->token, dl->param, input[dl->param]);
 }

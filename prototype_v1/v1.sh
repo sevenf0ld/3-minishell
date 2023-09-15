@@ -7,7 +7,7 @@ none='\033[m'
 
 # create an array of cmd line arguments
 args=("ls -la | cat | grep -wn c > outfile"
-	"ls -l -a | cat | grep -w -n c > outfile"
+	"ls -l -a | cat | grep -w -n c >> outfile"
 	"< infile ls -l | wc -l > outfile"
 	"echo -n -n -n"
 	"echo -n"
@@ -20,15 +20,17 @@ args=("ls -la | cat | grep -wn c > outfile"
 	)
 
 # create a variable with the name of the executable
-exe="./new_split"
+exe="./v1"
 
-cc -Wall -Werror -Wextra -g3 new_split.c -o new_split
-# cc -Wall -Werror -Wextra -fsanitize=address -g3 new_split.c -o new_split
+set -e
+
+make -f Makefile
 
 for arg in "${args[@]}"; do
     echo -e "$red $exe $arg: $none"
-    leaks -atExit -- ./"$exe" "$arg"
-    #./"$exe" "$arg"
+    #leaks -atExit -- ./"$exe" "$arg"
+    ./"$exe" "$arg"
 done
 
-rm -rf new_split.dSYM new_split
+rm -rf v1.dSYM v1
+make fclean
