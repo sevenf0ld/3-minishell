@@ -1,4 +1,4 @@
-//cc -Wall -Werror -Wextra -fsanitize=address -g3 split.c -o new_split
+//cc -Wall -Werror -Wextra -fsanitize=address -g3 split.c -o minishell_split
 
 //run the shell script with ./split.sh
 
