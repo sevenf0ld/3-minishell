@@ -6,7 +6,7 @@
 #    By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/15 12:21:40 by maiman-m          #+#    #+#              #
-#    Updated: 2023/09/15 13:30:37 by maiman-m         ###   ########.fr        #
+#    Updated: 2023/09/15 14:41:53 by maiman-m         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,7 +28,7 @@ LDFLAGS = -Llibft -lft -lreadline -I/usr/local/opt/readline/include
 
 # SRCS = $(addprefix src/, $(SOURCE))
 
-SRCS = main.c lexer.c tokenizer.c init_token.c
+SRCS = main.c lexer.c tokenizer.c init_token.c d_ll_convert.c
 
 OBJS = $(SRCS:.c=.o)
 

@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:20:01 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/09/15 13:56:12 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/09/15 14:44:26 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,12 +42,20 @@ typedef enum e_type
 	FILN
 }	t_type;
 
-typedef struct s_token
+typedef struct	s_token
 {
 	char			*token;
 	t_type			symbol;
+	struct s_token	*prev;
 	struct s_token	*next;
 }					t_token;
+
+typedef struct	s_lexed
+{
+	char			*lexed;
+	struct s_lexed	*prev;
+	struct s_lexed	*next;
+}					t_lexed;
 
 /*	TOKENIZER	*/
 //tokenizer.c
@@ -59,6 +67,9 @@ void		token_add_back(t_token **head, t_token *node);
 void		token_init(char **args, t_token **head);
 t_token		*token_last(t_token *head);
 int			token_size(t_token *head);
+
+//d_ll_convert.c
+t_token		*double_ll_convert(t_token **lst);
 
 /*	LEXER	*/
 //lexer.c
