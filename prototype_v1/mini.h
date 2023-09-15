@@ -6,17 +6,17 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:20:01 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/09/15 15:59:48 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/09/15 16:09:48 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINI_H
 # define MINI_H
 
-#include "libft.h"
-#include <readline/readline.h>
-#include <readline/history.h>
-#include <stdlib.h>
+# include "libft.h"
+# include <readline/readline.h>
+# include <readline/history.h>
+# include <stdlib.h>
 
 /*
  * 0 PIPE
@@ -42,20 +42,13 @@ typedef enum e_type
 	ANON
 }	t_type;
 
-typedef struct	s_token
+typedef struct s_token
 {
 	char			*token;
 	t_type			symbol;
 	struct s_token	*prev;
 	struct s_token	*next;
 }					t_token;
-
-typedef struct	s_lexed
-{
-	char			*lexed;
-	struct s_lexed	*prev;
-	struct s_lexed	*next;
-}					t_lexed;
 
 /*	TOKENIZER	*/
 //tokenizer.c
@@ -76,6 +69,5 @@ t_token		*double_ll_convert(t_token **lst);
 int			mini_delim(char a);
 void		categorize_tokens(t_token **tokens, int (f)(char *s, char *t));
 void		lexer(char *pipeline, t_token **tokens);
-
 
 #endif

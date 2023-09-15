@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 13:28:06 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/09/15 13:31:37 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/09/15 16:05:20 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,12 @@
 
 char	*ft_strndup(const char *s, int n)
 {
-	char *str = malloc(n + 1);
-	int i;
-	for (i = 0; i < n && s[i] != '\0'; i++)
+	char	*str;
+	int		i;
+
+	str = malloc(n + 1);
+	i = -1;
+	while (i < n && s[++i] != '\0')
 		str[i] = s[i];
 	str[i] = '\0';
 	return (str);
