@@ -6,27 +6,20 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:26:59 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/09/15 13:55:18 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/09/15 15:56:55 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mini.h"
 
-static int	is_delim(char a, char *delim, size_t n)
+static int	is_delim(char a)
 {
-	size_t	i;
-
-	i = 0;
-	while (i < n)
-	{
-		if (a == delim[i])
-			return (1);
-		i++;
-	}
+	if (mini_delim(a))
+		return (1);
 	return (0);
 }
 
-static int	w_c(char *s, char *delim, size_t n)
+static int	w_c(char *s)
 {
 	int	i;
 	int	count;
@@ -37,9 +30,9 @@ static int	w_c(char *s, char *delim, size_t n)
 	reset = 0;
 	while (s[i] != '\0')
 	{
-		if (is_delim(s[i], delim, n))
+		if (is_delim(s[i]))
 			count += 1;
-		else if (!ft_iswhite(s[i]) && reset == 0 && !is_delim(s[i], delim, n))
+		else if (!ft_iswhite(s[i]) && reset == 0 && !is_delim(s[i]))
 		{
 			count += 1;
 			reset = 1;
@@ -59,22 +52,22 @@ static char	*assign_delim(char *s, char a)
 	return (s);
 }
 
-static int	w_l(char *s, char *delim, size_t n)
+static int	w_l(char *s)
 {
 	int	i;
 
 	i = 0;
-	while (s[i] != '\0' && !ft_iswhite(s[i]) && !is_delim(s[i], delim, n))
+	while (s[i] != '\0' && !ft_iswhite(s[i]) && !is_delim(s[i]))
 		i++;
 	return (i);
 }
 
 /*
  * breaks the command and arguments into words based on
- * | > < “ ‘ space
- * 124 62 60 34 39 32
+ * | > < “ ‘ space ( ) &
+ * 124 62 60 34 39 32 40 41 38
  */
-char	**new_split(char *str, char *delim, size_t n)
+char	**new_split(char *str)
 {
 	int		i;
 	int		j;
@@ -83,18 +76,18 @@ char	**new_split(char *str, char *delim, size_t n)
 
 	i = -1;
 	j = 0;
-	count = w_c(str, delim, n);
+	count = w_c(str);
 	end = malloc(sizeof(char *) * (count + 1));
 	while (str[++i] != '\0')
 	{
 		if (!ft_iswhite(str[i]))
 		{
-			if (is_delim(str[i], delim, n))
+			if (is_delim(str[i]))
 				end[j] = assign_delim(end[j], str[i]);
 			else
 			{
-				end[j] = ft_strndup(str + i, w_l(str + i, delim, n));
-				i = i - 1 + w_l(str + i, delim, n);
+				end[j] = ft_strndup(str + i, w_l(str + i));
+				i = i - 1 + w_l(str + i);
 			}
 			j += 1;
 		}

@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:20:01 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/09/15 15:41:14 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/09/15 15:59:48 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ typedef struct	s_lexed
 
 /*	TOKENIZER	*/
 //tokenizer.c
-char		**new_split(char *str, char *delim, size_t n);
+char		**new_split(char *str);
 
 //init_token.c
 t_token		*token_new(char *token);
@@ -73,6 +73,8 @@ t_token		*double_ll_convert(t_token **lst);
 
 /*	LEXER	*/
 //lexer.c
+int			mini_delim(char a);
+void		categorize_tokens(t_token **tokens, int (f)(char *s, char *t));
 void		lexer(char *pipeline, t_token **tokens);
 
 
