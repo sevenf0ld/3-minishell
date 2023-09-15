@@ -1,7 +1,3 @@
-//cc -Wall -Werror -Wextra -fsanitize=address -g3 split.c -o minishell_split
-
-//run the shell script with ./split.sh
-
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -65,7 +61,7 @@ int	w_l(char *s, char *delim, size_t n)
 	return (i);
 }
 
-char	**ft_split(char *str, char *delim, size_t n)
+char	**new_split(char *str, char *delim, size_t n)
 {
 	int	i = 0;
 	int j = 0;
@@ -106,7 +102,7 @@ int	main(int argc, char **argv)
 	char delim[] = {124, 62, 60, 34, 39};
 	size_t	size = sizeof(delim) / sizeof(delim[0]);
 
-	char **end = ft_split(argv[1], delim, size);
+	char **end = new_split(argv[1], delim, size);
 	for (int i = 0; end[i] != NULL; i++)
 		printf("%s\n", end[i]);
 	for (int i = 0; end[i] != NULL; i++)
