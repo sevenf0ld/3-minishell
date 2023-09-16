@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:20:01 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/09/16 18:44:21 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/09/16 21:09:44 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,12 @@ typedef struct s_token
 	struct s_token	*next;
 }					t_token;
 
+typedef struct s_command
+{
+	char				*cmd;
+	struct s_command	*next;
+}						t_command;
+
 /*	TOKENIZER	*/
 //tokenizer.c
 char		**new_split(char *str);
@@ -88,5 +94,11 @@ void		group_cmds(t_token **tokens);
 
 /*	PARSER	*/
 //parser.c
+void		parser(t_token **tokens, t_command **cmds);
+
+//init_cmd.c
+t_command	*cmd_new(char *cmd);
+void		cmd_add_back(t_command **head, t_command *node);
+t_command	*cmd_last(t_command *head);
 
 #endif
