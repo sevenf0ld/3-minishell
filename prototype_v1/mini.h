@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:20:01 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/09/16 17:38:15 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/09/16 18:44:21 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,19 +25,14 @@
  * 2 <
  * 3 "
  * 4 '
- * 5 (
- * 6 )
- * 7 &
- * 8 COMMAND
- * 9 OPTIONS/FLAGS
- * 10 ARGUMENTS
- * 11 FILENAME
- * 12 LIMITER
- * 13 HEREDOC <<
- * 14 ADDEND >>
- * 15 LOGICAL OR ||
- * 16 LOGICAL AND &&
- * 17 ANONYMOUS (will remove)
+ * 5 COMMAND
+ * 6 OPTIONS/FLAGS
+ * 7 ARGUMENTS
+ * 8 FILENAME
+ * 9 LIMITER
+ * 10 HEREDOC <<
+ * 11 ADDEND >>
+ * 12 ANONYMOUS (will remove)
  */
 typedef enum e_sym
 {
@@ -46,9 +41,6 @@ typedef enum e_sym
 	IN_RE,
 	W_Q,
 	S_Q,
-	OP_BRAC,
-	CL_BRAC,
-	AMP,
 	CMD,
 	OPT,
 	ARGS,
@@ -56,8 +48,6 @@ typedef enum e_sym
 	LIM,
 	HD,
 	ADD,
-	LOR,
-	LAND,
 	ANON
 }	t_sym;
 
@@ -95,9 +85,6 @@ void		lexer(char *pipeline, t_token **tokens);
 //lexer_utils.c
 void		identify_symbols(t_token **tokens);
 void		group_cmds(t_token **tokens);
-
-//lexer_bonus.c
-void		handle_bonus_symbols(t_token **tokens);
 
 /*	PARSER	*/
 //parser.c

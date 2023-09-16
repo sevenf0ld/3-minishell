@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:19:04 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/09/16 18:20:40 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/09/16 18:47:00 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	main(int argc, char **argv)
 {
-	char	*type[] = {"PIPE", "OUT_RE", "IN_RE", "W_Q", "S_Q", "OP_BRAC", "CL_BRAC", "AMP", "CMD", "OPT", "ARGS", "FILN", "LIM", "HD", "ADD", "LOR", "LAND", "ANON"};
+	char	*type[] = {"PIPE", "OUT_RE", "IN_RE", "W_Q", "S_Q", "CMD", "OPT", "ARGS", "FILN", "LIM", "HD", "ADD", "ANON"};
 	
 	char	*pipeline;
 	t_token	*tok;

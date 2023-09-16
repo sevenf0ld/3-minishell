@@ -6,14 +6,14 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:25:31 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/09/16 18:20:44 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/09/16 18:43:53 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mini.h"
 
 /*
- * categorizes enum 0 to 7
+ * categorizes enum 0 to 4
  */
 void	categorize_symbol(t_token **tokens, int (f)(char *s, char *t))
 {
@@ -33,18 +33,12 @@ void	categorize_symbol(t_token **tokens, int (f)(char *s, char *t))
 			tmp->symbol = W_Q;
 		else if (!f(tmp->token, "'"))
 			tmp->symbol = S_Q;
-		else if (!f(tmp->token, "("))
-			tmp->symbol = OP_BRAC;
-		else if (!f(tmp->token, ")"))
-			tmp->symbol = CL_BRAC;
-		else if (!f(tmp->token, "&"))
-			tmp->symbol = AMP;
 		tmp = tmp->next;
 	}
 }
 
 /*
- * categorizes filename (11) and heredoc's limiter (12)
+ * categorizes filename (8) and heredoc's limiter (9)
  */
 void	categorize_params(t_token **tokens)
 {
@@ -73,7 +67,7 @@ void	categorize_params(t_token **tokens)
 }
 
 /*
- * categorizes arguments (10) in command set
+ * categorizes arguments (7) in command set
  */
 void	categorize_params_norme(t_token **tokens)
 {
@@ -94,7 +88,7 @@ void	categorize_params_norme(t_token **tokens)
 }
 
 /*
- * categorizes command (8) and its flags/options (9)
+ * categorizes command (5) and its flags/options (6)
  */
 void	categorize_cmdwflags(t_token **tokens)
 {
@@ -137,6 +131,5 @@ void	lexer(char *pipeline, t_token **tokens)
 	categorize_params(tokens);
 	categorize_cmdwflags(tokens);
 	identify_symbols(tokens);
-	handle_bonus_symbols(tokens);
 	group_cmds(tokens);
 }
