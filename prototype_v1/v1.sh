@@ -7,8 +7,10 @@ none='\033[m'
 
 # create an array of cmd line arguments
 args=("ls -la | cat | grep -wn c > outfile"
+	"ls -l -a | cat | grep -w -n c > outfile"
 	"ls -l -a | cat | grep -w -n c >> outfile"
 	"< infile ls -l | wc -l > outfile"
+	"cmd1 << LIMITER | cmd2 >> file"
 	"echo -n -n -n"
 	"echo -n"
 	"ls txtfile"
