@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:20:01 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/09/16 13:21:53 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/09/16 13:51:33 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <stdlib.h>
+# include <stdbool.h>
 
 /*
  * 0 PIPE
@@ -57,6 +58,7 @@ typedef struct s_token
 {
 	char			*token;
 	t_sym			symbol;
+	bool			end;
 	struct s_token	*prev;
 	struct s_token	*next;
 }					t_token;
@@ -82,6 +84,9 @@ void		categorize_params(t_token **tokens);
 void		categorize_params_norme(t_token **tokens);
 void		categorize_cmdwflags(t_token **tokens);
 void		lexer(char *pipeline, t_token **tokens);
+
+//lexer_utils.c
+void		group_cmds(t_token **tokens);
 
 /*	PARSER	*/
 //parser.c
