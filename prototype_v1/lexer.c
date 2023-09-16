@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:25:31 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/09/16 13:51:45 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/09/16 16:03:38 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,8 @@ void	categorize_cmdwflags(t_token **tokens)
 	{
 		if (tmp->symbol == PIPE && tmp->next != NULL)
 			if (tmp->next->symbol != S_Q && tmp->next->symbol != W_Q)
-				tmp->next->symbol = CMD;
+				if (tmp->next->symbol != PIPE)
+					tmp->next->symbol = CMD;
 		if (tmp->symbol == FILN && tmp->next != NULL)
 			if (tmp->prev != NULL && tmp->prev->symbol == IN_RE)
 				if (tmp->prev->prev != NULL && tmp->prev->prev->symbol != IN_RE)
@@ -131,5 +132,6 @@ void	lexer(char *pipeline, t_token **tokens)
 	categorize_symbol(tokens, ft_strcmp);
 	categorize_params(tokens);
 	categorize_cmdwflags(tokens);
+	identify_symbols(tokens);
 	group_cmds(tokens);
 }
