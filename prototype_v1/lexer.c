@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:25:31 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/09/16 18:04:00 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/09/16 18:20:44 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,5 +138,5 @@ void	lexer(char *pipeline, t_token **tokens)
 	categorize_cmdwflags(tokens);
 	identify_symbols(tokens);
 	handle_bonus_symbols(tokens);
-	//group_cmds(tokens);
+	group_cmds(tokens);
 }
