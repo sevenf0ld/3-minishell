@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:25:31 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/09/16 16:03:38 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/09/16 18:04:00 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,9 @@ void	categorize_params(t_token **tokens)
 				if (tmp->prev->symbol != IN_RE)
 					tmp->next->symbol = FILN;
 		if (tmp->symbol == IN_RE && tmp->next != NULL)
+			if (tmp->next->symbol != IN_RE && tmp->prev == NULL)
+				tmp->next->symbol = FILN;
+		if (tmp->symbol == IN_RE && tmp->next != NULL)
 			if (tmp->next->symbol != IN_RE && tmp->prev != NULL)
 				if (tmp->prev->symbol == IN_RE)
 				tmp->next->symbol = LIM;
@@ -112,8 +115,9 @@ void	categorize_cmdwflags(t_token **tokens)
 			if (tmp->prev != NULL && tmp->prev->symbol == IN_RE)
 				if (tmp->prev->prev == NULL)
 					tmp->next->symbol = CMD;
-		if (tmp->token[0] == '-')
-			tmp->symbol = OPT;
+		if (tmp->token[0] == '-' && tmp->prev != NULL)
+			if (tmp->prev->symbol != PIPE)
+				tmp->symbol = OPT;
 		tmp = tmp->next;
 	}
 }
@@ -133,5 +137,6 @@ void	lexer(char *pipeline, t_token **tokens)
 	categorize_params(tokens);
 	categorize_cmdwflags(tokens);
 	identify_symbols(tokens);
-	group_cmds(tokens);
+	handle_bonus_symbols(tokens);
+	//group_cmds(tokens);
 }

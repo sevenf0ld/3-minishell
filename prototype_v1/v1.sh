@@ -29,6 +29,11 @@ args=("ls -la | cat | grep -wn c > outfile"
 	"true && echo howdy!"
 	"true || echo howdy!"
 	"false || echo howdy!"
+	"cat *.c ||| grep -wn token"
+	"cat *.c || | grep -wn token"
+	"cat *.c || || grep -wn token"
+	"cat *.c |||| grep -wn token"
+	"cat *.c | grep | -wn token"
 	)
 
 # create a variable with the name of the executable
