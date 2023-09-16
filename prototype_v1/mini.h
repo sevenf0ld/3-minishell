@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:20:01 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/09/16 13:51:33 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/09/16 16:03:30 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,11 @@
  * 10 ARGUMENTS
  * 11 FILENAME
  * 12 LIMITER
- * 13 ANONYMOUS (will remove)
+ * 13 HEREDOC <<
+ * 14 ADDEND >>
+ * 15 LOGICAL OR ||
+ * 16 LOGICAL AND &&
+ * 17 ANONYMOUS (will remove)
  */
 typedef enum e_sym
 {
@@ -51,6 +55,9 @@ typedef enum e_sym
 	FILN,
 	LIM,
 	HD,
+	ADD,
+	LOR,
+	LAND,
 	ANON
 }	t_sym;
 
@@ -86,6 +93,7 @@ void		categorize_cmdwflags(t_token **tokens);
 void		lexer(char *pipeline, t_token **tokens);
 
 //lexer_utils.c
+void		identify_symbols(t_token **tokens);
 void		group_cmds(t_token **tokens);
 
 /*	PARSER	*/

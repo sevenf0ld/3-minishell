@@ -19,6 +19,16 @@ args=("ls -la | cat | grep -wn c > outfile"
 	"echo '\$example'"
 	"echo build.h '|' grep b"
 	"echo build.h | grep b"
+	"echo -n-n-n-n-n"
+	"ls -llllllaaa"
+	"ls -l-l-l-la"
+	"ls -l -l -l -la"
+	"ls --------la"
+	"cat *.c && (cd - && ./v1.sh)"
+	"false && echo howdy!"
+	"true && echo howdy!"
+	"true || echo howdy!"
+	"false || echo howdy!"
 	)
 
 # create a variable with the name of the executable
