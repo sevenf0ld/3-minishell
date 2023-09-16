@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:25:31 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/09/15 19:18:23 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/09/16 11:57:49 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,8 @@ void	categorize_helper(t_token **tokens)
 			if (tmp->next->symbol != OUT_RE)
 				tmp->next->symbol = FILN;
 		if (tmp->symbol == IN_RE && tmp->next != NULL)
-			tmp->next->symbol = FILN;
+			if (tmp->next->symbol != IN_RE)
+				tmp->next->symbol = FILN;
 		if (tmp->symbol == FILN && tmp->next != NULL)
 			if (tmp->prev != NULL && tmp->prev->symbol == IN_RE)
 				tmp->next->symbol = CMD;
