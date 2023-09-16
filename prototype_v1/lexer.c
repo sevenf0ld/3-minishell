@@ -6,22 +6,16 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:25:31 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/09/16 11:57:49 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/09/16 13:21:51 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mini.h"
 
-int	mini_delim(char a)
-{
-	if (a == 124 || a == 62 || a == 60 || a == 34)
-		return (1);
-	if (a == 39 || a == 40 || a == 41 || a == 38)
-		return (1);
-	return (0);
-}
-
-void	categorize_token_symbol(t_token **tokens, int (f)(char *s, char *t))
+/*
+ * categorizes enum 0 to 7
+ */
+void	categorize_symbol(t_token **tokens, int (f)(char *s, char *t))
 {
 	t_token	*tmp;
 
@@ -45,32 +39,46 @@ void	categorize_token_symbol(t_token **tokens, int (f)(char *s, char *t))
 			tmp->symbol = CL_BRAC;
 		else if (!f(tmp->token, "&"))
 			tmp->symbol = AMP;
-		else if (tmp->token[0] == '-')
-			tmp->symbol = OPT;
 		tmp = tmp->next;
-	
 	}
-	categorize_helper(tokens);
 }
 
-void	categorize_helper(t_token **tokens)
+/*
+ * categorizes filename (11) and heredoc's limiter (12)
+ */
+void	categorize_params(t_token **tokens)
 {
 	t_token	*tmp;
+
 	tmp = *tokens;
 	while (tmp != NULL)
 	{
-		if (tmp->symbol == PIPE && tmp->next != NULL)
-			if (tmp->next->symbol != S_Q && tmp->next->symbol != W_Q)
-				tmp->next->symbol = CMD;
 		if (tmp->symbol == OUT_RE && tmp->next != NULL)
 			if (tmp->next->symbol != OUT_RE)
 				tmp->next->symbol = FILN;
 		if (tmp->symbol == IN_RE && tmp->next != NULL)
-			if (tmp->next->symbol != IN_RE)
-				tmp->next->symbol = FILN;
-		if (tmp->symbol == FILN && tmp->next != NULL)
-			if (tmp->prev != NULL && tmp->prev->symbol == IN_RE)
-				tmp->next->symbol = CMD;
+			if (tmp->next->symbol != IN_RE && tmp->prev != NULL)
+				if (tmp->prev->symbol != IN_RE)
+					tmp->next->symbol = FILN;
+		if (tmp->symbol == IN_RE && tmp->next != NULL)
+			if (tmp->next->symbol != IN_RE && tmp->prev != NULL)
+				if (tmp->prev->symbol == IN_RE)
+				tmp->next->symbol = LIM;
+		tmp = tmp->next;
+	}
+	categorize_params_norme(tokens);
+}
+
+/*
+ * categorizes arguments (10) in command set
+ */
+void	categorize_params_norme(t_token **tokens)
+{
+	t_token	*tmp;
+
+	tmp = *tokens;
+	while (tmp != NULL)
+	{
 		if (tmp->symbol == ANON)
 			tmp->symbol = ARGS;
 		if (tmp->symbol == PIPE && tmp->prev != NULL)
@@ -78,6 +86,33 @@ void	categorize_helper(t_token **tokens)
 				if (tmp->next != NULL)
 					if (tmp->next->symbol == S_Q || tmp->next->symbol == W_Q)
 						tmp->symbol = ARGS;
+		tmp = tmp->next;
+	}
+}
+
+/*
+ * categorizes command (8) and its flags/options (9)
+ */
+void	categorize_cmdwflags(t_token **tokens)
+{
+	t_token	*tmp;
+
+	tmp = *tokens;
+	while (tmp != NULL)
+	{
+		if (tmp->symbol == PIPE && tmp->next != NULL)
+			if (tmp->next->symbol != S_Q && tmp->next->symbol != W_Q)
+				tmp->next->symbol = CMD;
+		if (tmp->symbol == FILN && tmp->next != NULL)
+			if (tmp->prev != NULL && tmp->prev->symbol == IN_RE)
+				if (tmp->prev->prev != NULL && tmp->prev->prev->symbol != IN_RE)
+					tmp->next->symbol = CMD;
+		if (tmp->symbol == FILN && tmp->next != NULL)
+			if (tmp->prev != NULL && tmp->prev->symbol == IN_RE)
+				if (tmp->prev->prev == NULL)
+					tmp->next->symbol = CMD;
+		if (tmp->token[0] == '-')
+			tmp->symbol = OPT;
 		tmp = tmp->next;
 	}
 }
@@ -93,5 +128,7 @@ void	lexer(char *pipeline, t_token **tokens)
 	words = new_split(pipeline);
 	token_init(words, tokens);
 	double_ll_convert(tokens);
-	categorize_token_symbol(tokens, ft_strcmp);
+	categorize_symbol(tokens, ft_strcmp);
+	categorize_params(tokens);
+	categorize_cmdwflags(tokens);
 }

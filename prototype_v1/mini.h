@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:20:01 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/09/15 18:55:27 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/09/16 13:21:53 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,8 @@
  * 9 OPTIONS/FLAGS
  * 10 ARGUMENTS
  * 11 FILENAME
- * 12 ANONYMOUS (will remove)
+ * 12 LIMITER
+ * 13 ANONYMOUS (will remove)
  */
 typedef enum e_sym
 {
@@ -47,6 +48,8 @@ typedef enum e_sym
 	OPT,
 	ARGS,
 	FILN,
+	LIM,
+	HD,
 	ANON
 }	t_sym;
 
@@ -74,9 +77,13 @@ t_token		*double_ll_convert(t_token **lst);
 
 /*	LEXER	*/
 //lexer.c
-int			mini_delim(char a);
-void		categorize_token_symbol(t_token **tokens, int (f)(char *s, char *t));
-void		categorize_helper(t_token **tokens);
+void		categorize_symbol(t_token **tokens, int (f)(char *s, char *t));
+void		categorize_params(t_token **tokens);
+void		categorize_params_norme(t_token **tokens);
+void		categorize_cmdwflags(t_token **tokens);
 void		lexer(char *pipeline, t_token **tokens);
+
+/*	PARSER	*/
+//parser.c
 
 #endif
