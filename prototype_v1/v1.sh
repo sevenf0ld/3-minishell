@@ -25,7 +25,7 @@ args=("ls -la | cat | grep -wn c > outfile"
 	"ls -l -l -l -la"
 	"ls --------la"
 	"cat *.c | grep | -wn token"
-	"ls > test > outfile"
+	"ls > firstfile > lastfile"
 	"cat | cat | ls"
 	)
 
@@ -42,5 +42,5 @@ for arg in "${args[@]}"; do
     ./"$exe" "$arg"
 done
 
-rm -rf v1.dSYM v1
+rm -rf v1.dSYM v1 firstfile lastfile
 make fclean
