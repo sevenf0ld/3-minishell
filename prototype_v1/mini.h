@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:20:01 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/09/16 21:09:44 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/09/17 13:03:35 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,9 +60,24 @@ typedef struct s_token
 	struct s_token	*next;
 }					t_token;
 
+/*
+ * iterate over the t_token until end is set to true
+ * set the lim or stdx_re accordingly
+ * remove the nodes
+ *
+ * how to handle quotes?
+ * (for bonus, how to know handle LAND or LOR?)
+ */
 typedef struct s_command
 {
 	char				*cmd;
+	char				**flags;
+	int					num_f;
+	char				**args;
+	int					num_a;
+	char				*lim;
+	int					std_in;
+	int					std_out;
 	struct s_command	*next;
 }						t_command;
 

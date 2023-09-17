@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:19:04 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/09/16 21:34:01 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/09/17 12:19:41 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,13 @@ int	main(int argc, char **argv)
 	
 	lexer(argv[1], &tok);
 	for (t_token *dl = tok; dl != NULL; dl = dl->next)
+		printf("\x1b[44m[%s]\x1b[m is of type %i which is \x1b[36m[%s]\x1b[m\n", dl->token, dl->symbol, type[dl->symbol]);
+		//printf("[%s] is a [%s]. end? \x1b[32m%s\x1b[m\n", dl->token, type[dl->symbol], dl->end?"true":"false");
+	
+	//parser(&tok, &cmd);
+	//for (t_token *dl = tok; dl != NULL; dl = dl->next)
 		//printf("\x1b[44m[%s]\x1b[m is of type %i which is \x1b[36m[%s]\x1b[m\n", dl->token, dl->symbol, type[dl->symbol]);
-		printf("[%s] is a [%s]. end? \x1b[32m%s\x1b[m\n", dl->token, type[dl->symbol], dl->end?"true":"false");
+		//printf("[%s] is a [%s]. end? \x1b[32m%s\x1b[m\n", dl->token, type[dl->symbol], dl->end?"true":"false");
 	
 	parser(&tok, &cmd);
 	for (t_command *full = cmd; full != NULL; full = full->next)
