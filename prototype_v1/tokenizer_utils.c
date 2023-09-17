@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/17 16:19:30 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/09/17 18:24:37 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/09/17 21:27:54 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,9 @@ char	*handle_spaces_btwn_q(char a, char c)
 
 static int	num_sbq(char *s)
 {
-	int	i = 0;
+	int	i = -1;
 	int	num = 0;
-	while (s[i] != '\0')
+	while (s[++i] != '\0')
 	{
 		if (ft_iswhite(s[i]))
 		{
@@ -46,13 +46,26 @@ static int	num_sbq(char *s)
 				num += 1;
 			if (s[i - 1] == 39 && s[i + 1] == 39)
 				num += 1;
-			i += 2;
-			continue ;
 		}
-		i++;
 	}
 	return (num);
 }
+
+/*
+ * counting number of quotes does not handle correctly
+ * if the btwn the quotes is not space
+static int	num_sbq(char *s)
+{
+	int	i = -1;
+	int	num = 0;
+	while (s[++i] != '\0')
+	{
+		if (s[i] == 34 || s[i] == 39)
+			num += 1;
+		i++
+	}
+}
+*/
 
 char	**init_split_pipeline(char *s, int w_c)
 {
