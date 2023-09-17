@@ -6,11 +6,20 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:26:59 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/09/17 17:46:37 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/09/16 18:43:57 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mini.h"
+
+static int	is_delim(char a)
+{
+	if (a == 124 || a == 62 || a == 60)
+		return (1);
+	if (a == 34 || a == 39)
+		return (1);
+	return (0);
+}
 
 static int	w_c(char *s)
 {
@@ -66,14 +75,11 @@ char	**new_split(char *str)
 	int		j;
 	int		count;
 	char	**end;
-	char	*sp_w_q;
 
 	i = -1;
 	j = 0;
 	count = w_c(str);
-	//to handle echo " " or echo ' '
-	end = malloc(sizeof(char *) * (count + 2));
-	sp_w_q = NULL;
+	end = malloc(sizeof(char *) * (count + 1));
 	while (str[++i] != '\0')
 	{
 		if (!ft_iswhite(str[i]))
@@ -86,12 +92,6 @@ char	**new_split(char *str)
 				i = i - 1 + w_l(str + i);
 			}
 			j += 1;
-		}
-		else
-		{
-			sp_w_q = handle_spaces_btwn_q(str[i - 1], str[i + 1]);
-			if (sp_w_q != NULL)
-				end[j++] = sp_w_q;
 		}
 	}
 	end[j] = NULL;
