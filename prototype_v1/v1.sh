@@ -14,9 +14,15 @@ args=("ls -la | cat | grep -wn c > outfile"
 	"echo -n -n -n"
 	"echo -n"
 	"ls txtfile"
+	# 'echo " " " " " " | cat -e'
+	# "echo ' ' ' ' ' ' | cat -e"
 	'echo "$example"'
 	"echo '$example'"
 	"echo '\$example'"
+	"echo ''"
+	"echo ' '"
+	'echo " "'
+	"echo ' \""
 	"echo build.h '|' grep b"
 	"echo build.h | grep b"
 	"echo -n-n-n-n-n"
@@ -34,7 +40,7 @@ exe="./v1"
 
 set -e
 
-make -f Makefile
+make re -f Makefile
 
 for arg in "${args[@]}"; do
     echo -e "$red $exe $arg: $none"

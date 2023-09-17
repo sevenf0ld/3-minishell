@@ -6,7 +6,7 @@
 #    By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/15 12:21:40 by maiman-m          #+#    #+#              #
-#    Updated: 2023/09/17 14:28:20 by maiman-m         ###   ########.fr        #
+#    Updated: 2023/09/17 16:21:18 by maiman-m         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,6 +15,8 @@ PROG_NAME = v1
 CC = cc
 
 CFLAGS = -Wall -Wextra -Werror -fsanitize=address -g3
+
+# CFLAGS = -Wall -Wextra -Werror -g3
 
 # CPPFLAGS = -I include -I libft/include
 
@@ -28,7 +30,7 @@ LDFLAGS = -Llibft -lft -lreadline -I/usr/local/opt/readline/include
 
 # SRCS = $(addprefix src/, $(SOURCE))
 
-SRCS = main.c tokenizer.c init_token.c d_ll_convert.c \
+SRCS = main.c tokenizer.c tokenizer_utils.c init_token.c d_ll_convert.c \
 	   lexer.c lexer_utils.c \
 	   parser.c parser_utils.c init_cmd.c
 
