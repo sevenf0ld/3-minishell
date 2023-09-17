@@ -6,11 +6,42 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 13:39:09 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/09/16 18:44:15 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/09/17 15:40:06 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mini.h"
+
+static char	*join_symbols(t_token *t_node)
+{
+	t_token	*to_rm;
+
+	t_node->token = ft_strjoin(t_node->token, t_node->next->token);
+	to_rm = t_node->next;
+	t_node->next = to_rm->next;
+	free(to_rm);
+	to_rm = NULL;
+	return (t_node->token);
+}
+
+static void	group_symbols(t_token **tokens)
+{
+	t_token	*tmp;
+	t_token	*to_rm;
+
+	tmp = *tokens;
+	to_rm = NULL;
+	while (tmp != NULL)
+	{
+		if (tmp->symbol == HD && tmp->next != NULL)
+			if (tmp->next->symbol == HD)
+				tmp->token = join_symbols(tmp);
+		if (tmp->symbol == ADD && tmp->next != NULL)
+			if (tmp->next->symbol == ADD)
+				tmp->token = join_symbols(tmp);
+		tmp = tmp->next;
+	}
+}
 
 static void	set_symbols(t_token *t_node, t_sym to_set)
 {
@@ -33,6 +64,7 @@ void	identify_symbols(t_token **tokens)
 				set_symbols(tmp, ADD);
 		tmp = tmp->next;
 	}
+	group_symbols(tokens);
 }
 
 /*
