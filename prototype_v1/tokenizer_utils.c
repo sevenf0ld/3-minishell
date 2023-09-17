@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/17 16:19:30 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/09/17 17:46:35 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/09/17 18:24:37 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,11 +34,11 @@ char	*handle_spaces_btwn_q(char a, char c)
 	return (NULL);
 }
 
-int	num_sbq(char *s)
+static int	num_sbq(char *s)
 {
-	int	i = -1;
+	int	i = 0;
 	int	num = 0;
-	while (s[++i] != '\0')
+	while (s[i] != '\0')
 	{
 		if (ft_iswhite(s[i]))
 		{
@@ -46,7 +46,10 @@ int	num_sbq(char *s)
 				num += 1;
 			if (s[i - 1] == 39 && s[i + 1] == 39)
 				num += 1;
+			i += 2;
+			continue ;
 		}
+		i++;
 	}
 	return (num);
 }

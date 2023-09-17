@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:20:01 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/09/17 17:46:38 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/09/17 18:24:36 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,7 @@ char		**new_split(char *str);
 //tokenizer_utils.c
 int			is_delim(char a);
 char		*handle_spaces_btwn_q(char a, char c);
+char		**init_split_pipeline(char *s, int w_c);
 
 //init_token.c
 t_token		*token_new(char *token);

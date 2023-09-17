@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:26:59 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/09/17 17:46:37 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/09/17 18:24:34 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,8 @@ char	**new_split(char *str)
 	j = 0;
 	count = w_c(str);
 	//to handle echo " " or echo ' '
-	end = malloc(sizeof(char *) * (count + 2));
+	//end = malloc(sizeof(char *) * (count + 2));
+	end = init_split_pipeline(str, w_c(str));
 	sp_w_q = NULL;
 	while (str[++i] != '\0')
 	{
