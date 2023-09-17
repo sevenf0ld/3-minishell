@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:20:01 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/09/17 13:03:35 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/09/17 14:29:56 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,11 +109,15 @@ void		group_cmds(t_token **tokens);
 
 /*	PARSER	*/
 //parser.c
+void		complete_cmd(t_token **tokens, t_command **cmds);
 void		parser(t_token **tokens, t_command **cmds);
+
+//parser_utils.c
 
 //init_cmd.c
 t_command	*cmd_new(char *cmd);
 void		cmd_add_back(t_command **head, t_command *node);
+void		cmd_init(t_token **tokens, t_command **cmds);
 t_command	*cmd_last(t_command *head);
 
 #endif

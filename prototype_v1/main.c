@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:19:04 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/09/17 12:19:41 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/09/17 14:17:15 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,25 @@ int	main(int argc, char **argv)
 		//printf("[%s] is a [%s]. end? \x1b[32m%s\x1b[m\n", dl->token, type[dl->symbol], dl->end?"true":"false");
 	
 	parser(&tok, &cmd);
-	for (t_command *full = cmd; full != NULL; full = full->next)
-		printf("cmd set \x1b[33m%s\x1b[m\n", full->cmd);
+	
+	//for (t_command *full = cmd; full != NULL; full = full->next)
+		//printf("cmd set \x1b[33m%s\x1b[m\n", full->cmd);
+	
+	t_command *tmp;
+	for (tmp = cmd; tmp != NULL; tmp = tmp->next)
+	{
+		printf("@ [%s]\n", tmp->cmd);
+		if (tmp->flags != NULL)
+		{
+			printf("flags yes\n");
+			for (int i = 0; i < tmp->num_f; i++)
+				printf("--- {%s}\n", tmp->flags[i]);
+		}
+		if (tmp->args != NULL)
+		{
+			printf("args yes\n");
+			for (int i = 0; i < tmp->num_a; i++)
+				printf("::: {%s}\n", tmp->args[i]);
+		}
+	}
 }
