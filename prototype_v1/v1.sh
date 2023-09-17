@@ -25,6 +25,8 @@ args=("ls -la | cat | grep -wn c > outfile"
 	"ls -l -l -l -la"
 	"ls --------la"
 	"cat *.c | grep | -wn token"
+	"ls > test > outfile"
+	"cat | cat | ls"
 	)
 
 # create a variable with the name of the executable
