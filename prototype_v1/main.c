@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:19:04 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/10/16 18:46:01 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/10/16 19:28:52 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	main(void)
 	while (1)
 	{
 		pipeline = readline("prompt> ");
-		if (pipeline && *pipeline)
+		if (ft_strcmp(pipeline, ""))
 			add_history(pipeline);
 		lexer(pipeline, &tok);
 		for (t_token *dl = tok; dl != NULL; dl = dl->next)
