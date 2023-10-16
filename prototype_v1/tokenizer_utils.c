@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/17 16:19:30 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/10/16 15:47:23 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/09/17 21:27:54 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,6 @@ char	*handle_spaces_btwn_q(char a, char c)
 	return (NULL);
 }
 
-/*
 static int	num_sbq(char *s)
 {
 	int	i = -1;
@@ -49,10 +48,8 @@ static int	num_sbq(char *s)
 				num += 1;
 		}
 	}
-	printf("CHECK NUM SBQ %i\n", num);
 	return (num);
 }
-*/
 
 /*
  * counting number of quotes does not handle correctly
@@ -69,32 +66,6 @@ static int	num_sbq(char *s)
 	}
 }
 */
-
-/*
- * check if it is the second quote, only then increment no. of enclosed spaces
- */
-static int	num_sbq(char *s)
-{
-	int	i;
-	int	num;
-	int	total;
-
-	i = -1;
-	num = 0;
-	total = 0;
-	while (s[++i] != '\0')
-	{
-		if (s[i] == 34 || s[i] == 39)
-			num += 1;
-		if (num == 2)
-		{
-			total += 1;
-			num = 0;
-		}
-	}
-	printf("CHECK TOTAL SBQ %i\n", total);
-	return (total);
-}
 
 char	**init_split_pipeline(char *s, int w_c)
 {
