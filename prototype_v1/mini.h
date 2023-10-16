@@ -102,7 +102,7 @@ t_token		*double_ll_convert(t_token **lst);
 
 /*	LEXER	*/
 //lexer.c
-void		categorize_symbol(t_token **tokens, int (f)(char *s, char *t));
+void		categorize_symbol(t_token **tokens);
 void		categorize_params(t_token **tokens);
 void		categorize_params_norme(t_token **tokens);
 void		categorize_cmdwflags(t_token **tokens);

@@ -15,7 +15,7 @@
 /*
  * categorizes enum 0 to 4
  */
-void	categorize_symbol(t_token **tokens, int (f)(char *s, char *t))
+void	categorize_symbol(t_token **tokens)
 {
 	t_token	*tmp;
 
@@ -23,15 +23,15 @@ void	categorize_symbol(t_token **tokens, int (f)(char *s, char *t))
 	tmp->symbol = CMD;
 	while (tmp != NULL)
 	{
-		if (!f(tmp->token, "|"))
+		if (!ft_strcmp(tmp->token, "|"))
 			tmp->symbol = PIPE;
-		else if (!f(tmp->token, ">"))
+		else if (!ft_strcmp(tmp->token, ">"))
 			tmp->symbol = OUT_RE;
-		else if (!f(tmp->token, "<"))
+		else if (!ft_strcmp(tmp->token, "<"))
 			tmp->symbol = IN_RE;
-		else if (!f(tmp->token, "\""))
+		else if (!ft_strcmp(tmp->token, "\""))
 			tmp->symbol = W_Q;
-		else if (!f(tmp->token, "'"))
+		else if (!ft_strcmp(tmp->token, "'"))
 			tmp->symbol = S_Q;
 		tmp = tmp->next;
 	}
@@ -127,7 +127,7 @@ void	lexer(char *pipeline, t_token **tokens)
 	words = new_split(pipeline);
 	token_init(words, tokens);
 	double_ll_convert(tokens);
-	categorize_symbol(tokens, ft_strcmp);
+	categorize_symbol(tokens);
 	categorize_params(tokens);
 	categorize_cmdwflags(tokens);
 	identify_symbols(tokens);
