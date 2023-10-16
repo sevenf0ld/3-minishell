@@ -35,6 +35,9 @@ args=("ls -la | cat | grep -wn c > outfile"
 	"cat *.c | grep | -wn token"
 	"ls > firstfile > lastfile"
 	"cat | cat | ls"
+	"echo '\"'"
+	"echo '\""
+	"ls - l"
 	)
 
 # create a variable with the name of the executable
