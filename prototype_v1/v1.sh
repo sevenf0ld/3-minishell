@@ -9,6 +9,7 @@ none='\033[m'
 args=("ls -la | cat | grep -wn c > outfile"
 	"ls -l -a | cat | grep -w -n c > outfile"
 	"ls -l -a | cat | grep -w -n c >> outfile"
+	"ls-la"
 	"< infile ls -l | wc -l > outfile"
 	"cmd1 << LIMITER | cmd2 >> file"
 	"echo -n -n -n"

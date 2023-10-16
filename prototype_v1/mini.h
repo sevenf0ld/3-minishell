@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:20:01 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/09/17 18:24:36 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/10/16 16:49:50 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ typedef struct s_token
 	char			*token;
 	t_sym			symbol;
 	bool			end;
+	bool			rm;
 	struct s_token	*prev;
 	struct s_token	*next;
 }					t_token;
@@ -111,6 +112,9 @@ void		lexer(char *pipeline, t_token **tokens);
 //lexer_utils.c
 void		identify_symbols(t_token **tokens);
 void		group_cmds(t_token **tokens);
+
+//lexer_utils2.c
+void		manage_quotes(t_token **tokens);
 
 /*	PARSER	*/
 //parser.c

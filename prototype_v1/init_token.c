@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/10 00:09:50 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/09/16 13:26:21 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/10/16 16:51:11 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ t_token	*token_new(char *token)
 	node->token = token;
 	node->symbol = ANON;
 	node->end = false;
+	node->rm = false;
 	node->prev = NULL;
 	node->next = NULL;
 	return (node);
