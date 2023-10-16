@@ -16,6 +16,7 @@ args=("ls -la | cat | grep -wn c > outfile"
 	"echo -n"
 	"ls txtfile"
 	'echo " " " " " " | cat -e'
+	'echo " " " " " "'
 	"echo ' ' ' ' ' ' | cat -e"
 	'echo "$example"'
 	"echo '$example'"

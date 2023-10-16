@@ -12,6 +12,46 @@
 
 #include "mini.h"
 
+static void	delete_node_attach(t_token **lst, bool value)
+{
+	t_token	*curr;
+	t_token	*to_remove;
+
+	curr = *lst;
+	while (curr->next != NULL)
+	{
+		while (curr->next->rm == value)
+		{
+			to_remove = curr->next;
+			curr->next = curr->next->next;
+			if (curr->next == NULL)
+			{
+				free(to_remove);
+				return ;
+			}
+			free(to_remove);
+			to_remove = NULL;
+		}
+		curr = curr->next;
+	}
+}
+
+static void	delete_node(t_token **lst, bool value)
+{
+	t_token	*to_remove;
+
+	if (*lst == NULL)
+		return ;
+	while ((*lst)->rm == value)
+	{
+		to_remove = (*lst);
+		*lst = (*lst)->next;
+		free(to_remove);
+		to_remove = NULL;
+	}
+	delete_node_attach(lst, value);
+}
+
 void	manage_quotes(t_token **tokens)
 {
 	t_token	*tmp;
@@ -32,7 +72,7 @@ void	manage_quotes(t_token **tokens)
 				num = 0;
 			}
 		}
-		printf("%s and %i\n", tmp->token, tmp->rm);
 		tmp = tmp->next;
 	}
+	delete_node(tokens, true);
 }
