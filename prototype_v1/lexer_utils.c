@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 13:39:09 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/09/17 15:40:06 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/10/17 14:35:36 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,7 @@ void	identify_symbols(t_token **tokens)
 
 /*
  * group the tokens into a set of separate commands
+ * based on pipe since bonus is ditched
  * end=true marks the end of a command
  */
 void	group_cmds(t_token **tokens)
@@ -79,10 +80,6 @@ void	group_cmds(t_token **tokens)
 	while (tmp != NULL)
 	{
 		if (tmp->symbol == PIPE && tmp->next != NULL)
-			if (tmp->next->symbol != W_Q && tmp->next->symbol != S_Q)
-				if (tmp->prev != NULL)
-					tmp->prev->end = true;
-		if (tmp->next == NULL)
 			tmp->end = true;
 		tmp = tmp->next;
 	}
