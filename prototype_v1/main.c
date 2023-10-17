@@ -39,9 +39,11 @@ int	main(int argc, char **argv)
 	
 	lexer(argv[1], &tok);
 	for (t_token *dl = tok; dl != NULL; dl = dl->next)
-		printf("\x1b[44m[%s]\x1b[m is of type %i which is \x1b[36m[%s]\x1b[m\n", dl->token, dl->symbol, type[dl->symbol]);
-		//printf("[%s] is a [%s]. end? \x1b[32m%s\x1b[m\n", dl->token, type[dl->symbol], dl->end?"true":"false");
-	
+	{
+		printf("\x1b[44m[%s]\x1b[m is of type %i which is \x1b[36m[%s]\x1b[m [%d]\n", dl->token, dl->symbol, type[dl->symbol], dl->exp);
+	}
+		// printf("[%s] is a [%s]. end? \x1b[32m%s\x1b[m\n", dl->token, type[dl->symbol], dl->end?"true":"false");
+
 	//parser(&tok, &cmd);
 	//for (t_token *dl = tok; dl != NULL; dl = dl->next)
 		//printf("\x1b[44m[%s]\x1b[m is of type %i which is \x1b[36m[%s]\x1b[m\n", dl->token, dl->symbol, type[dl->symbol]);

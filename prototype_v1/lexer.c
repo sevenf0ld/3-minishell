@@ -127,6 +127,7 @@ void	lexer(char *pipeline, t_token **tokens)
 	words = new_split(pipeline);
 	token_init(words, tokens);
 	double_ll_convert(tokens);
+	expansion(tokens);
 	manage_quotes(tokens);
 	categorize_symbol(tokens);
 	categorize_params(tokens);

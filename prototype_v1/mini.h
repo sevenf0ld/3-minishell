@@ -57,6 +57,7 @@ typedef struct s_token
 	t_sym			symbol;
 	bool			end;
 	bool			rm;
+	bool			exp;
 	struct s_token	*prev;
 	struct s_token	*next;
 }					t_token;
@@ -115,6 +116,9 @@ void		group_cmds(t_token **tokens);
 
 //lexer_utils2.c
 void		manage_quotes(t_token **tokens);
+
+//lexer_utils3.c
+void		expansion(t_token **lst);
 
 /*	PARSER	*/
 //parser.c
