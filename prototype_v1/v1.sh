@@ -33,8 +33,6 @@ args=("ls -la | cat | grep -wn c > outfile"
 	'echo "$example"'
 	"echo '$example'"
 	"echo '\$example'"
-	"echo \$example"
-	"echo \$MADi\$HATTER"
 	"echo ''"
 	"echo ' '"
 	'echo " "'
@@ -49,7 +47,6 @@ args=("ls -la | cat | grep -wn c > outfile"
 	"echo -nnn something"
 	"rm -r-f bs"
 	"rm ------rf bs"
-	"rm bs -rf"
 	)
 
 # create a variable with the name of the executable
