@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:19:04 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/10/17 14:32:30 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/10/17 14:37:10 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,8 @@ int	main(int argc, char **argv)
 	
 	lexer(argv[1], &tok);
 	for (t_token *dl = tok; dl != NULL; dl = dl->next)
-		//printf("\x1b[44m[%s]\x1b[m is of type %i which is \x1b[36m[%s]\x1b[m\n", dl->token, dl->symbol, type[dl->symbol]);
-		printf("[%s] is a [%s]. end? \x1b[32m%s\x1b[m\n", dl->token, type[dl->symbol], dl->end?"true":"false");
+		printf("\x1b[44m[%s]\x1b[m is of type %i which is \x1b[36m[%s]\x1b[m\n", dl->token, dl->symbol, type[dl->symbol]);
+		//printf("[%s] is a [%s]. end? \x1b[32m%s\x1b[m\n", dl->token, type[dl->symbol], dl->end?"true":"false");
 	
 	//parser(&tok, &cmd);
 	//for (t_token *dl = tok; dl != NULL; dl = dl->next)
@@ -51,7 +51,7 @@ int	main(int argc, char **argv)
 	
 	//for (t_command *full = cmd; full != NULL; full = full->next)
 		//printf("cmd set \x1b[33m%s\x1b[m\n", full->cmd);
-	/*	
+	
 	t_command *tmp;
 	for (tmp = cmd; tmp != NULL; tmp = tmp->next)
 	{
@@ -70,5 +70,4 @@ int	main(int argc, char **argv)
 		}
 	}
 	printf("NO TOKENS LEFT %p\n", tok);
-	*/
 }
