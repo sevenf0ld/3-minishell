@@ -38,6 +38,12 @@ args=("ls -la | cat | grep -wn c > outfile"
 	"echo '\"'"
 	"echo '\""
 	"ls - l"
+	"echo -n -n -n bs"
+	"echo bs -n -n"
+	"ls -l bs.txt"
+	"ls help.txt die.txt"
+	"ls something.txt -l"
+	"< infile ls -l >> outfile | cat | ls"
 	)
 
 # create a variable with the name of the executable
