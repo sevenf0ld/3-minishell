@@ -30,11 +30,19 @@ args=("ls -la | cat | grep -wn c > outfile"
 	'echo " " " " " " | cat -e'
 	'echo " " " " " "'
 	"echo ' ' ' ' ' ' | cat -e"
-	'echo "$example"'
 	"echo '$example'"
 	"echo '\$example'"
+	'echo "$example"'
 	"echo \$example"
+	"echo \$HOME"
+	'echo $USER'
 	"echo \$MADi\$HATTER"
+	'echo $HOME$USER'
+	'echo $HOME$USERi'
+	'echo i$HOME$USERi'
+	'echo $HOMEi'
+	'echo i$HOMEi'
+	'echo i$HOME'
 	"echo ''"
 	"echo ' '"
 	'echo " "'
@@ -57,7 +65,9 @@ exe="./v1"
 
 set -e
 
-make re -f Makefile
+# specify name of Makefile
+# make re -f Makefile
+make --silent
 
 for arg in "${args[@]}"; do
     echo -e "$red $exe $arg: $none"
@@ -66,4 +76,4 @@ for arg in "${args[@]}"; do
 done
 
 rm -rf v1.dSYM v1 firstfile lastfile
-make fclean
+make fclean -s
