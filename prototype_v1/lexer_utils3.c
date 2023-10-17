@@ -6,12 +6,33 @@
 /*   By: folim <folim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 14:17:08 by folim             #+#    #+#             */
-/*   Updated: 2023/10/17 14:17:09 by folim            ###   ########.fr       */
+/*   Updated: 2023/10/17 18:48:37 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-
 #include "mini.h"
+
+static void	expand_env_var(t_token **tokens)
+{
+	t_token	*tmp;
+	char	*dollar;
+	char	*sub;
+
+	tmp = *tokens;
+	dollar = NULL;
+	sub = NULL;	
+	while (tmp != NULL)
+	{
+		if (tmp->exp)
+		{
+			dollar = ft_strchr(tmp->token, '$') + 1;
+			sub = getenv(dollar);
+			if (sub)
+				tmp->token = sub;
+		}
+		tmp = tmp->next;
+	}
+}
 
 void	expansion(t_token **lst)
 {
@@ -34,4 +55,5 @@ void	expansion(t_token **lst)
 			curr->exp = true;
 		curr = curr->next;
 	}
+	expand_env_var(lst);
 }
