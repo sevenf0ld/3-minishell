@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 14:17:08 by folim             #+#    #+#             */
-/*   Updated: 2023/10/17 18:48:37 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/10/18 14:44:10 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@ static void	expand_env_var(t_token **tokens)
 			sub = getenv(dollar);
 			if (sub)
 				tmp->token = sub;
+			else
+				tmp->token = " ";
 		}
 		tmp = tmp->next;
 	}
