@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 20:48:46 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/09/17 14:29:20 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/10/26 19:02:17 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,12 @@ t_command	*cmd_new(char *cmd)
 	node->args = NULL;
 	node->num_a = 0;
 	node->lim = NULL;
-	node->std_in = 0;
-	node->std_out = 0;
+	node->std_in = NULL;
+	node->num_si = 0;
+	node->std_out_o = NULL;
+	node->num_so_o = 0;
+	node->std_out_a = NULL;
+	node->num_so_a = 0;
 	node->next = NULL;
 	return (node);
 }
