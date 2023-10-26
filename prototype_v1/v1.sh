@@ -20,6 +20,9 @@ args=("ls -la | cat | grep -wn c > outfile"
 	"ls -l bs.txt"
 	"ls help.txt die.txt"
 	"ls something.txt -l"
+	"ls -la >> outone.txt >> outtwo.txt | wc -c"
+	">> outone.txt >> outtwo.txt ls -la | wc -l"
+	"> outone.txt > outtwo.txt > outthree.txt ls -llllllla | wc -l"
 	"< infile ls -l >> outfile | cat | ls"
 	"cat *.c | grep | -wn token"
 	"cat | cat | ls"
@@ -67,7 +70,7 @@ set -e
 
 # specify name of Makefile
 # make re -f Makefile
-make --silent
+make re --silent
 
 for arg in "${args[@]}"; do
     echo -e "$red $exe $arg: $none"
@@ -75,5 +78,5 @@ for arg in "${args[@]}"; do
     ./"$exe" "$arg"
 done
 
-rm -rf v1.dSYM v1 firstfile lastfile
+rm -rf v1.dSYM v1 outfile firstfile lastfile outone.txt outtwo.txt outthree.txt
 make fclean -s

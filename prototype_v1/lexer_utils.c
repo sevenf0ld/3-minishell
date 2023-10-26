@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 13:39:09 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/10/17 14:35:36 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/10/26 17:59:59 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@ static char	*join_symbols(t_token *t_node)
 	t_node->token = ft_strjoin(t_node->token, t_node->next->token);
 	to_rm = t_node->next;
 	t_node->next = to_rm->next;
-	free(to_rm);
-	to_rm = NULL;
+	//free(to_rm);
+	//to_rm = NULL;
 	return (t_node->token);
 }
 

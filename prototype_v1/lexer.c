@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:25:31 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/10/17 19:11:24 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/10/26 17:44:23 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,20 +47,11 @@ void	categorize_params(t_token **tokens)
 	tmp = *tokens;
 	while (tmp != NULL)
 	{
-		if (tmp->symbol == OUT_RE && tmp->next != NULL)
-			if (tmp->next->symbol != OUT_RE)
+		if (tmp->symbol == IN_RE || tmp->symbol == OUT_RE || tmp->symbol == ADD)
+			if (tmp->next != NULL)
 				tmp->next->symbol = FILN;
-		if (tmp->symbol == IN_RE && tmp->next != NULL)
-			if (tmp->next->symbol != IN_RE && tmp->prev != NULL)
-				if (tmp->prev->symbol != IN_RE)
-					tmp->next->symbol = FILN;
-		if (tmp->symbol == IN_RE && tmp->next != NULL)
-			if (tmp->next->symbol != IN_RE && tmp->prev == NULL)
-				tmp->next->symbol = FILN;
-		if (tmp->symbol == IN_RE && tmp->next != NULL)
-			if (tmp->next->symbol != IN_RE && tmp->prev != NULL)
-				if (tmp->prev->symbol == IN_RE)
-				tmp->next->symbol = LIM;
+		if (tmp->symbol == HD && tmp->next != NULL)
+			tmp->next->symbol = LIM;
 		tmp = tmp->next;
 	}
 	categorize_params_norme(tokens);
@@ -101,19 +92,15 @@ void	categorize_cmdwflags(t_token **tokens)
 			if (tmp->next->symbol != S_Q && tmp->next->symbol != W_Q)
 				if (tmp->next->symbol != PIPE)
 					tmp->next->symbol = CMD;
-		if (tmp->symbol == FILN && tmp->next != NULL)
-			if (tmp->prev != NULL && tmp->prev->symbol == IN_RE)
-				if (tmp->prev->prev != NULL && tmp->prev->prev->symbol != IN_RE)
-					tmp->next->symbol = CMD;
-		if (tmp->symbol == FILN && tmp->next != NULL)
-			if (tmp->prev != NULL && tmp->prev->symbol == IN_RE)
-				if (tmp->prev->prev == NULL)
-					tmp->next->symbol = CMD;
+		if (tmp->symbol == ARGS && tmp->next != NULL)
+			if (tmp->prev != NULL && tmp->prev->prev != NULL)
+				if (tmp->prev->symbol == FILN)
+					if (tmp->prev->prev->symbol == IN_RE || tmp->prev->prev->symbol == ADD || tmp->prev->prev->symbol == OUT_RE)
+						tmp->symbol = CMD;
 		if (tmp->token[0] == '-' && tmp->prev != NULL)
-			if (tmp->prev->symbol != PIPE)
+			if (ft_strlen(tmp->token) > 1)
 				if (tmp->prev->symbol == CMD || tmp->prev->symbol == OPT)
-					if (ft_strcmp(tmp->token, "-") != 0)
-						tmp->symbol = OPT;
+					tmp->symbol = OPT;
 		tmp = tmp->next;
 	}
 }
@@ -132,8 +119,8 @@ void	lexer(char *pipeline, t_token **tokens)
 	expansion(tokens);
 	manage_quotes(tokens);
 	categorize_symbol(tokens);
+	identify_symbols(tokens);
 	categorize_params(tokens);
 	categorize_cmdwflags(tokens);
-	identify_symbols(tokens);
 	group_cmds(tokens);
 }
