@@ -6,11 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:19:04 by maiman-m          #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2023/10/16 19:28:52 by maiman-m         ###   ########.fr       */
-=======
-/*   Updated: 2023/10/27 14:04:47 by maiman-m         ###   ########.fr       */
->>>>>>> testing
+/*   Updated: 2023/10/27 15:07:37 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +14,6 @@
 
 int	main(void)
 {
-	char	*type[] = {"PIPE", "OUT_RE", "IN_RE", "W_Q", "S_Q", "CMD", "OPT", "ARGS", "FILN", "LIM", "HD", "ADD", "ANON"};
-	
 	char		*pipeline;
 	t_token		*tok;
 	t_command	*cmd;
@@ -33,8 +27,6 @@ int	main(void)
 		if (ft_strcmp(pipeline, ""))
 			add_history(pipeline);
 		lexer(pipeline, &tok);
-		for (t_token *dl = tok; dl != NULL; dl = dl->next)
-			fprintf(stderr, "\x1b[44m[%s]\x1b[m is of type %i which is \x1b[36m[%s]\x1b[m\n", dl->token, dl->symbol, type[dl->symbol]);
 		parser(&tok, &cmd);
 		free(pipeline);
 		pipeline = NULL;
