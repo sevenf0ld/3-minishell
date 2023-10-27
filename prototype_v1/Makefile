@@ -31,7 +31,7 @@ LDFLAGS = -Llibft -lft -lreadline -I/usr/local/opt/readline/include
 # SRCS = $(addprefix src/, $(SOURCE))
 
 SRCS = main.c tokenizer.c tokenizer_utils.c init_token.c d_ll_convert.c \
-	   lexer.c lexer_utils.c lexer_utils2.c lexer_utils3.c \
+	   lexer.c lexer_utils.c lexer_utils2.c \
 	   parser.c parser_utils.c init_cmd.c
 
 OBJS = $(SRCS:.c=.o)

@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 13:39:09 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/10/26 17:59:59 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/09/17 15:40:06 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@ static char	*join_symbols(t_token *t_node)
 	t_node->token = ft_strjoin(t_node->token, t_node->next->token);
 	to_rm = t_node->next;
 	t_node->next = to_rm->next;
-	//free(to_rm);
-	//to_rm = NULL;
+	free(to_rm);
+	to_rm = NULL;
 	return (t_node->token);
 }
 
@@ -69,7 +69,6 @@ void	identify_symbols(t_token **tokens)
 
 /*
  * group the tokens into a set of separate commands
- * based on pipe since bonus is ditched
  * end=true marks the end of a command
  */
 void	group_cmds(t_token **tokens)
@@ -80,6 +79,10 @@ void	group_cmds(t_token **tokens)
 	while (tmp != NULL)
 	{
 		if (tmp->symbol == PIPE && tmp->next != NULL)
+			if (tmp->next->symbol != W_Q && tmp->next->symbol != S_Q)
+				if (tmp->prev != NULL)
+					tmp->prev->end = true;
+		if (tmp->next == NULL)
 			tmp->end = true;
 		tmp = tmp->next;
 	}

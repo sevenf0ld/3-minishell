@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:20:01 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/10/26 19:16:55 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/10/16 16:49:50 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@
 # include <readline/history.h>
 # include <stdlib.h>
 # include <stdbool.h>
-# include <fcntl.h>
 
 /*
  * 0 PIPE
@@ -58,7 +57,6 @@ typedef struct s_token
 	t_sym			symbol;
 	bool			end;
 	bool			rm;
-	bool			exp;
 	struct s_token	*prev;
 	struct s_token	*next;
 }					t_token;
@@ -79,12 +77,8 @@ typedef struct s_command
 	char				**args;
 	int					num_a;
 	char				*lim;
-	int					*std_in;
-	int					num_si;
-	int					*std_out_o;
-	int					num_so_o;
-	int					*std_out_a;
-	int					num_so_a;
+	int					std_in;
+	int					std_out;
 	struct s_command	*next;
 }						t_command;
 
@@ -122,16 +116,12 @@ void		group_cmds(t_token **tokens);
 //lexer_utils2.c
 void		manage_quotes(t_token **tokens);
 
-//lexer_utils3.c
-void		expansion(t_token **lst);
-
 /*	PARSER	*/
 //parser.c
 void		complete_cmd(t_token **tokens, t_command **cmds);
 void		parser(t_token **tokens, t_command **cmds);
 
 //parser_utils.c
-void		init_multi_redir(t_token **tokens, t_command *c_node);
 
 //init_cmd.c
 t_command	*cmd_new(char *cmd);

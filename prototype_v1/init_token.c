@@ -26,7 +26,6 @@ t_token	*token_new(char *token)
 	node->symbol = ANON;
 	node->end = false;
 	node->rm = false;
-	node->exp = false;
 	node->prev = NULL;
 	node->next = NULL;
 	return (node);
