@@ -78,5 +78,5 @@ for arg in "${args[@]}"; do
     ./"$exe" "$arg"
 done
 
-rm -rf v1.dSYM v1 outfile firstfile lastfile outone.txt outtwo.txt outthree.txt
+rm -rf v1.dSYM v1 outfile firstfile lastfile outone.txt outtwo.txt outthree.txt file
 make fclean -s

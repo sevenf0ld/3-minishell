@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/17 14:26:35 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/10/26 19:25:38 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/10/27 14:04:53 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,8 +67,8 @@ void	init_multi_redir(t_token **tokens, t_command *c_node)
 	if (c_node->num_si > 0)
 		c_node->std_in = malloc(sizeof(int) * c_node->num_si);
 	if (c_node->num_so_o > 0)
-		c_node->std_in = malloc(sizeof(int) * c_node->num_so_o);
+		c_node->std_out_o = malloc(sizeof(int) * c_node->num_so_o);
 	if (c_node->num_so_a > 0)
-		c_node->std_in = malloc(sizeof(int) * c_node->num_so_a);
-	//set_multi_fildes(tokens, c_node);
+		c_node->std_out_a = malloc(sizeof(int) * c_node->num_so_a);
+	set_multi_fildes(tokens, c_node);
 }

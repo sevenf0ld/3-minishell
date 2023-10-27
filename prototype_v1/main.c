@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:19:04 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/10/26 19:05:15 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/10/27 14:04:47 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,13 +39,16 @@ int	main(int argc, char **argv)
 
 	lexer(argv[1], &tok);
 	for (t_token *dl = tok; dl != NULL; dl = dl->next)
-		printf("\x1b[44m[%s]\x1b[m is of type %i which is \x1b[36m[%s]\x1b[m [%d]\n", dl->token, dl->symbol, type[dl->symbol], dl->exp);
+		;
+		//printf("\x1b[44m[%s]\x1b[m is of type %i which is \x1b[36m[%s]\x1b[m [%d] end? end? \x1b[32m%s\x1b[m\n", dl->token, dl->symbol, type[dl->symbol], dl->exp, dl->end?"true":"false");
 
 	parser(&tok, &cmd);
 	t_command *tmp;
 	for (tmp = cmd; tmp != NULL; tmp = tmp->next)
 	{
 		printf("stdin %i overwrite %i append %i\n", tmp->num_si, tmp->num_so_o, tmp->num_so_a);
+		for (int j = 0; j < sizeof(tmp->std_in)/sizeof(tmp->std_in[0]); j++)
+			printf("for stdin -> %i ", tmp->std_in[j]);
 		/*
 		printf("@ [%s]\n", tmp->cmd);
 		if (tmp->flags != NULL)
