@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:20:01 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/10/28 13:06:57 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/10/28 18:19:38 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,8 @@ typedef struct s_token
  */
 typedef struct s_command
 {
+	int					pos;
+	int					size;
 	char				*cmd;
 	char				**flags;
 	int					num_f;
@@ -86,6 +88,7 @@ typedef struct s_command
 	int					num_so_o;
 	int					*std_out_a;
 	int					num_so_a;
+	int					pipe_fd[2];
 	struct s_command	*next;
 }						t_command;
 
@@ -138,10 +141,14 @@ void		init_multi_redir(t_token **tokens, t_command *c_node);
 //parser_utils2.c
 void		handle_redirections(t_command *c_node);
 
+//parser_utils3.c
+void		handle_pipe_ends(t_command *c_node);
+
 //init_cmd.c
-t_command	*cmd_new(char *cmd);
+t_command	*cmd_new(char *cmd, int n);
 void		cmd_add_back(t_command **head, t_command *node);
 void		cmd_init(t_token **tokens, t_command **cmds);
 t_command	*cmd_last(t_command *head);
+int			cmd_size(t_command *head);
 
 #endif

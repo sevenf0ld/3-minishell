@@ -6,12 +6,13 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/28 12:34:44 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/10/28 16:15:43 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/10/28 17:32:41 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mini.h"
 
+/*
 #include <sys/stat.h>
 #include <errno.h>
 #include <string.h>
@@ -23,6 +24,7 @@ void print_inode(int fd, char *name) {
  else
    fprintf(stderr, "The inode of %s %d is %d\n", name, fd, (int) info.st_ino);
 }
+*/
 
 /*
  * loop ends on INT_MIN
@@ -35,18 +37,20 @@ void	redirect_io_file(int *fd_arr, char mode)
 	i = 0;
 	while (fd_arr[i] != INT_MIN)
 		i++;
-	print_inode(fd_arr[i - 1], "file");
+	//print_inode(fd_arr[i - 1], "file");
 	if (mode == 'i')
 	{
 		//printf("i should dup2 stdin\n");
-		dup2(fd_arr[i - 1], STDIN_FILENO);
-		print_inode(STDIN_FILENO, "stdin");
+		//dup2(fd_arr[i - 1], STDIN_FILENO);
+		dup2(open("fake_stdin.txt", O_RDONLY), fd_arr[i - 1]);
+		//print_inode(STDIN_FILENO, "stdin");
 	}
 	else if (mode == 'o')
 	{
 		//printf("i should dup2 stdout\n");
-		dup2(fd_arr[i - 1], STDOUT_FILENO);
-		print_inode(STDOUT_FILENO, "stdout");
+		//dup2(fd_arr[i - 1], STDOUT_FILENO);
+		dup2(open("fake_stdout.txt", O_WRONLY), fd_arr[i - 1]);
+		//print_inode(STDOUT_FILENO, "stdout");
 	}
 }
 
