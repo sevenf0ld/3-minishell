@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 12:07:39 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/10/26 18:58:08 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/10/28 13:17:22 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ static void	set_multi_fa(t_token **tokens, t_command *c_node)
 /*
  * malloc enough space for each (t_command) command set's flags and arguments
  */
-static void	init_multi_fa(t_token **tokens, t_command *c_node)
+void	init_multi_fa(t_token **tokens, t_command *c_node)
 {
 	t_token	*tmp;
 
@@ -105,4 +105,5 @@ void	parser(t_token **tokens, t_command **cmds)
 {
 	cmd_init(tokens, cmds);
 	complete_cmd(tokens, cmds);
+	handle_redirections(*cmds);
 }

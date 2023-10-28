@@ -6,19 +6,26 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/17 14:26:35 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/10/27 19:04:48 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/10/28 13:16:35 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mini.h"
 
-void	set_multi_fildes(t_token **tokens, t_command *c_node)
+/*
+ * need to add error handling for open
+ */
+static void	set_multi_fildes(t_token **tokens, t_command *c_node)
 {
 	t_token	*tmp;
-
-	int i = 0;
+	int		i;
+	int		j;
+	int		k;
 
 	tmp = *tokens;
+	i = 0;
+	j = 0;
+	k = 0;
 	while (tmp != NULL)
 	{
 		if (tmp->symbol == FILN && tmp->prev != NULL)
@@ -26,22 +33,25 @@ void	set_multi_fildes(t_token **tokens, t_command *c_node)
 			if (tmp->prev->symbol == IN_RE)
 				c_node->std_in[i++] = open(tmp->token, O_RDONLY);
 			if (tmp->prev->symbol == OUT_RE)
-				*(c_node->std_out_o++) = open(tmp->token, O_CREAT | O_WRONLY | O_TRUNC, 0777);
+				//*(c_node->std_out_o++) = open(tmp->token, O_CREAT | O_WRONLY | O_TRUNC, 0777);
+				c_node->std_out_o[j++] = open(tmp->token, O_CREAT | O_WRONLY | O_TRUNC, 0777);
 			if (tmp->prev->symbol == ADD)
-				*(c_node->std_out_a++) = open(tmp->token, O_CREAT | O_WRONLY | O_APPEND, 0666);
-			printf("check in %s %s\n", c_node->cmd, tmp->token);
+				//*(c_node->std_out_a++) = open(tmp->token, O_CREAT | O_WRONLY | O_APPEND, 0666);
+				c_node->std_out_a[k++] = open(tmp->token, O_CREAT | O_WRONLY | O_APPEND, 0666);
 		}
 		if (tmp->end == true)
 			break ;
 		tmp = tmp->next;
 	}
 	if (c_node->num_si > 0)
-		*(c_node->std_in) = INT_MIN;
-		//c_node->std_in[i] = INT_MIN;
+		//*(c_node->std_in) = INT_MIN;
+		c_node->std_in[i] = INT_MIN;
 	if (c_node->num_so_o > 0)
-		*(c_node->std_out_o) = INT_MIN;
+		//*(c_node->std_out_o) = INT_MIN;
+		c_node->std_out_o[j] = INT_MIN;
 	if (c_node->num_so_a > 0)
-		*(c_node->std_out_a) = INT_MIN;
+		//*(c_node->std_out_a) = INT_MIN;
+		c_node->std_out_a[k] = INT_MIN;
 }
 
 /*

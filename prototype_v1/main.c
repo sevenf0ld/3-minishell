@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:19:04 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/10/27 19:03:07 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/10/28 13:30:26 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ int	main(int argc, char **argv)
 	t_command *tmp;
 	for (tmp = cmd; tmp != NULL; tmp = tmp->next)
 	{
+		printf("%p %p %p\n", tmp->std_in, tmp->std_out_o, tmp->std_out_a);
 		for (int j = 0; tmp->std_in != NULL && tmp->std_in[j] != INT_MIN; j++)
 			printf("in_re fd %i\n", tmp->std_in[j]);
 		for (int j = 0; tmp->std_out_o != NULL && tmp->std_out_o[j] != INT_MIN; j++)

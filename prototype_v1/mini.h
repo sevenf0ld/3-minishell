@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:20:01 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/10/27 16:35:02 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/10/28 13:06:57 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,11 +128,15 @@ void		expansion(t_token **lst);
 
 /*	PARSER	*/
 //parser.c
-void		complete_cmd(t_token **tokens, t_command **cmds);
 void		parser(t_token **tokens, t_command **cmds);
+void		complete_cmd(t_token **tokens, t_command **cmds);
+void		init_multi_fa(t_token **tokens, t_command *c_node);
 
 //parser_utils.c
 void		init_multi_redir(t_token **tokens, t_command *c_node);
+
+//parser_utils2.c
+void		handle_redirections(t_command *c_node);
 
 //init_cmd.c
 t_command	*cmd_new(char *cmd);
