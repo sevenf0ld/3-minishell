@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/28 12:34:44 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/10/28 17:32:41 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/10/29 13:28:49 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,9 @@ void print_inode(int fd, char *name) {
 /*
  * loop ends on INT_MIN
  * need to add error handling for dup2
+ * need to add error handling for close
  */
-void	redirect_io_file(int *fd_arr, char mode)
+static void	redirect_io_file(int *fd_arr, char mode, t_command *c_node)
 {
 	int	i;
 	
@@ -40,16 +41,20 @@ void	redirect_io_file(int *fd_arr, char mode)
 	//print_inode(fd_arr[i - 1], "file");
 	if (mode == 'i')
 	{
-		//printf("i should dup2 stdin\n");
+		printf("i should dup2 stdin\n");
+		close(c_node->pipe_fd[0]);
+		close(c_node->pipe_fd[1]);
 		//dup2(fd_arr[i - 1], STDIN_FILENO);
-		dup2(open("fake_stdin.txt", O_RDONLY), fd_arr[i - 1]);
+		dup2(open("fake_stdin.txt", O_RDONLY), STDIN_FILENO);
 		//print_inode(STDIN_FILENO, "stdin");
 	}
 	else if (mode == 'o')
 	{
-		//printf("i should dup2 stdout\n");
+		printf("i should dup2 stdout\n");
+		close(c_node->pipe_fd[1]);
+		close(c_node->pipe_fd[0]);
 		//dup2(fd_arr[i - 1], STDOUT_FILENO);
-		dup2(open("fake_stdout.txt", O_WRONLY), fd_arr[i - 1]);
+		dup2(open("fake_stdout.txt", O_APPEND), STDOUT_FILENO);
 		//print_inode(STDOUT_FILENO, "stdout");
 	}
 }
@@ -69,11 +74,11 @@ void	handle_redirections(t_command *c_node)
 	while (cur != NULL)
 	{
 		if (cur->std_in != NULL)
-			redirect_io_file(cur->std_in, 'i');
+			redirect_io_file(cur->std_in, 'i', cur);
 		if (cur->std_out_o != NULL)
-			redirect_io_file(cur->std_out_o, 'o');
+			redirect_io_file(cur->std_out_o, 'o', cur);
 		if (cur->std_out_a != NULL)
-			redirect_io_file(cur->std_out_a, 'o');
+			redirect_io_file(cur->std_out_a, 'o', cur);
 		cur = cur->next;
 	}
 }
