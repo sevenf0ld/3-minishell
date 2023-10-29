@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/28 17:32:51 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/10/29 13:28:46 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/10/29 15:10:53 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,8 @@ static void	handle_in_between(t_command *c_node)
 	{
 		if (cur->pos != 0 && cur->pos != cur->size - 1)
 		{
-				dup2(cur->pipe_fd[0], STDIN_FILENO);
-				dup2(cur->pipe_fd[1], STDOUT_FILENO);
+				dup2_err(cur->pipe_fd[0], STDIN_FILENO);
+				dup2_err(cur->pipe_fd[1], STDOUT_FILENO);
 		}
 		cur = cur->next;
 	}
@@ -59,9 +59,9 @@ void	handle_pipe_ends(t_command *c_node)
 		{
 			if (cur->pos == 0)
 			{
-				close(cur->pipe_fd[0]);
-				//dup2(cur->pipe_fd[1], STDOUT_FILENO);
-				dup2(open("fake_stdout.txt", O_APPEND), STDOUT_FILENO);
+				close_err(cur->pipe_fd[0]);
+				//dup2_err(cur->pipe_fd[1], STDOUT_FILENO);
+				dup2_err(open("fake_stdout.txt", O_APPEND), STDOUT_FILENO);
 				//printf("hi im the first %s\n", cur->cmd);
 			}
 		}
@@ -69,9 +69,9 @@ void	handle_pipe_ends(t_command *c_node)
 		{
 			if (cur->pos == cur->size - 1)
 			{
-				close(cur->pipe_fd[1]);
-				//dup2(cur->pipe_fd[0], STDIN_FILENO);
-				dup2(open("fake_stdin.txt", O_RDONLY), STDIN_FILENO);
+				close_err(cur->pipe_fd[1]);
+				//dup2_err(cur->pipe_fd[0], STDIN_FILENO);
+				dup2_err(open("fake_stdin.txt", O_RDONLY), STDIN_FILENO);
 				//printf("hello im last %s\n", cur->cmd);
 			}
 		}

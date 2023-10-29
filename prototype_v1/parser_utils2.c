@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/28 12:34:44 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/10/29 13:28:49 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/10/29 15:55:53 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,23 +38,21 @@ static void	redirect_io_file(int *fd_arr, char mode, t_command *c_node)
 	i = 0;
 	while (fd_arr[i] != INT_MIN)
 		i++;
+	close_err(c_node->pipe_fd[0]);
+	close_err(c_node->pipe_fd[1]);
 	//print_inode(fd_arr[i - 1], "file");
 	if (mode == 'i')
 	{
 		printf("i should dup2 stdin\n");
-		close(c_node->pipe_fd[0]);
-		close(c_node->pipe_fd[1]);
-		//dup2(fd_arr[i - 1], STDIN_FILENO);
-		dup2(open("fake_stdin.txt", O_RDONLY), STDIN_FILENO);
+		//dup2_err(fd_arr[i - 1], STDIN_FILENO);
+		//dup2(open("fake_stdin.txt", O_RDONLY), STDIN_FILENO);
 		//print_inode(STDIN_FILENO, "stdin");
 	}
 	else if (mode == 'o')
 	{
 		printf("i should dup2 stdout\n");
-		close(c_node->pipe_fd[1]);
-		close(c_node->pipe_fd[0]);
-		//dup2(fd_arr[i - 1], STDOUT_FILENO);
-		dup2(open("fake_stdout.txt", O_APPEND), STDOUT_FILENO);
+		//dup2_err(fd_arr[i - 1], STDOUT_FILENO);
+		//dup2(open("fake_stdout.txt", O_APPEND), STDOUT_FILENO);
 		//print_inode(STDOUT_FILENO, "stdout");
 	}
 }

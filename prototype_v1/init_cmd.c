@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 20:48:46 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/10/28 18:19:09 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/10/29 15:14:28 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,7 @@ t_command	*cmd_new(char *cmd, int n)
 {
 	t_command	*node;
 
-	node = malloc(sizeof(t_command));
-	if (!node)
-		return (NULL);
+	node = malloc_err(sizeof(t_command));
 	node->pos = n;
 	node->size = 0;
 	node->cmd = cmd;

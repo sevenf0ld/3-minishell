@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 12:07:39 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/10/28 18:41:35 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/10/29 15:58:34 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,9 +52,9 @@ void	init_multi_fa(t_token **tokens, t_command *c_node)
 		tmp = tmp->next;
 	}
 	if (c_node->num_f > 0)
-		c_node->flags = malloc(sizeof(char *) * (c_node->num_f + 1));
+		c_node->flags = malloc_err(sizeof(char *) * (c_node->num_f + 1));
 	if (c_node->num_a > 0)
-		c_node->args = malloc(sizeof(char *) * (c_node->num_a + 1));
+		c_node->args = malloc_err(sizeof(char *) * (c_node->num_a + 1));
 	set_multi_fa(tokens, c_node);
 }
 

@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:20:01 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/10/28 18:19:38 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/10/29 15:00:54 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,5 +150,12 @@ void		cmd_add_back(t_command **head, t_command *node);
 void		cmd_init(t_token **tokens, t_command **cmds);
 t_command	*cmd_last(t_command *head);
 int			cmd_size(t_command *head);
+
+//err_handling.c
+void		report_err(char *fn);
+void		*malloc_err(size_t size);
+int			open_err(char *file, int flags, mode_t mode);
+void		dup2_err(int old_fd, int new_fd);
+void		close_err(int fd);
 
 #endif
