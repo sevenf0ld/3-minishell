@@ -6,19 +6,22 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 20:48:46 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/10/26 19:02:17 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/10/29 15:14:28 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mini.h"
 
-t_command	*cmd_new(char *cmd)
+/*
+ * need to error handling for pipe
+ */
+t_command	*cmd_new(char *cmd, int n)
 {
 	t_command	*node;
 
-	node = malloc(sizeof(t_command));
-	if (!node)
-		return (NULL);
+	node = malloc_err(sizeof(t_command));
+	node->pos = n;
+	node->size = 0;
 	node->cmd = cmd;
 	node->flags = NULL;
 	node->num_f = 0;
@@ -31,6 +34,7 @@ t_command	*cmd_new(char *cmd)
 	node->num_so_o = 0;
 	node->std_out_a = NULL;
 	node->num_so_a = 0;
+	pipe(node->pipe_fd);
 	node->next = NULL;
 	return (node);
 }
@@ -43,6 +47,20 @@ void	cmd_add_back(t_command **head, t_command *node)
 		return ;
 	old_end = cmd_last(*head);
 	old_end->next = node;
+}
+
+static void	set_cmd_size(t_command *head)
+{
+	int			n;
+	t_command	*tmp;
+
+	n = cmd_size(head);
+	tmp = head;
+	while (tmp != NULL)
+	{
+		tmp->size = n;
+		tmp = tmp->next;
+	}
 }
 
 /*
@@ -60,13 +78,14 @@ void	cmd_init(t_token **tokens, t_command **cmds)
 		if (tmp->symbol == CMD)
 		{
 			if (i == 0)
-				*cmds = cmd_new(tmp->token);
+				*cmds = cmd_new(tmp->token, i);
 			else
-				cmd_add_back(cmds, cmd_new(tmp->token));
+				cmd_add_back(cmds, cmd_new(tmp->token, i));
 			i++;
 		}
 		tmp = tmp->next;
 	}
+	set_cmd_size(*cmds);
 }
 
 t_command	*cmd_last(t_command *head)

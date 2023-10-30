@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:20:01 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/10/30 16:03:37 by folim            ###   ########.fr       */
+/*   Updated: 2023/10/30 16:15:12 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@
 # include <stdio.h>
 # include <sys/types.h>
 # include <sys/wait.h>
-
+# include <limits.h>
 
 /*
  * 0 PIPE
@@ -78,6 +78,8 @@ typedef struct s_token
  */
 typedef struct s_command
 {
+	int					pos;
+	int					size;
 	char				*cmd;
 	char				**flags;
 	int					num_f;
@@ -90,6 +92,7 @@ typedef struct s_command
 	int					num_so_o;
 	int					*std_out_a;
 	int					num_so_a;
+	int					pipe_fd[2];
 	struct s_command	*next;
 }						t_command;
 
@@ -132,16 +135,31 @@ void		expansion(t_token **lst);
 
 /*	PARSER	*/
 //parser.c
-void		complete_cmd(t_token **tokens, t_command **cmds);
 void		parser(t_token **tokens, t_command **cmds);
+void		complete_cmd(t_token **tokens, t_command **cmds);
+void		init_multi_fa(t_token **tokens, t_command *c_node);
 
 //parser_utils.c
 void		init_multi_redir(t_token **tokens, t_command *c_node);
 
+//parser_utils2.c
+void		handle_redirections(t_command *c_node);
+
+//parser_utils3.c
+void		handle_pipe_ends(t_command *c_node);
+
 //init_cmd.c
-t_command	*cmd_new(char *cmd);
+t_command	*cmd_new(char *cmd, int n);
 void		cmd_add_back(t_command **head, t_command *node);
 void		cmd_init(t_token **tokens, t_command **cmds);
 t_command	*cmd_last(t_command *head);
+int			cmd_size(t_command *head);
+
+//err_handling.c
+void		report_err(char *fn);
+void		*malloc_err(size_t size);
+int			open_err(char *file, int flags, mode_t mode);
+void		dup2_err(int old_fd, int new_fd);
+void		close_err(int fd);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/17 16:19:30 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/10/27 14:48:33 by folim            ###   ########.fr       */
+/*   Updated: 2023/10/30 16:15:31 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,6 @@ char	**init_split_pipeline(char *s, int w_c)
 	char	**end;
 
 	additional = num_sbq(s) + w_c;
-	end = malloc(sizeof(char *) * (additional + 1));
+	end = malloc_err(sizeof(char *) * (additional + 1));
 	return (end);
 }
