@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mini.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: folim <folim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:20:01 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/10/26 19:16:55 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/10/30 16:03:37 by folim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,11 @@
 # include <stdlib.h>
 # include <stdbool.h>
 # include <fcntl.h>
+# include <unistd.h>
+# include <stdio.h>
+# include <sys/types.h>
+# include <sys/wait.h>
+
 
 /*
  * 0 PIPE
