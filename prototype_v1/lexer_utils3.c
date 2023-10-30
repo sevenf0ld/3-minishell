@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 14:17:08 by folim             #+#    #+#             */
-/*   Updated: 2023/10/30 16:03:48 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/10/30 16:26:02 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ static void	expand_env_var(t_token **tokens)
 	t_token	*tmp;
 	char	**dollar;
 	char	*sub;
-	int		i;
+	//int		i;
 	char	*og;
 
 	tmp = *tokens;
