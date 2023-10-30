@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/28 12:34:44 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/10/29 15:55:53 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/10/30 13:24:05 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,9 @@ static void	redirect_io_file(int *fd_arr, char mode, t_command *c_node)
 	i = 0;
 	while (fd_arr[i] != INT_MIN)
 		i++;
-	close_err(c_node->pipe_fd[0]);
-	close_err(c_node->pipe_fd[1]);
+	printf("pipe check at %p with %i (r) %i (w)\n", c_node->pipe_fd, c_node->pipe_fd[0], c_node->pipe_fd[1]);
+	//close_err(c_node->pipe_fd[0]);
+	//close_err(c_node->pipe_fd[1]);
 	//print_inode(fd_arr[i - 1], "file");
 	if (mode == 'i')
 	{
@@ -72,11 +73,22 @@ void	handle_redirections(t_command *c_node)
 	while (cur != NULL)
 	{
 		if (cur->std_in != NULL)
+		{
+			printf("in\n");
 			redirect_io_file(cur->std_in, 'i', cur);
+		}
 		if (cur->std_out_o != NULL)
+		{
+			printf("overwrite\n");
 			redirect_io_file(cur->std_out_o, 'o', cur);
+		}
 		if (cur->std_out_a != NULL)
+		{
+			printf("append\n");
 			redirect_io_file(cur->std_out_a, 'o', cur);
+		}
+		//close_err(cur->pipe_fd[0]);
+		//close_err(cur->pipe_fd[1]);
 		cur = cur->next;
 	}
 }
