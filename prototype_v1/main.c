@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:19:04 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/10/29 15:57:34 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/10/31 13:08:00 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,20 +33,20 @@ int	main(int argc, char **argv)
 		pipeline = NULL;
 	}
 */
-	//char	*type[] = {"PIPE", "OUT_RE", "IN_RE", "W_Q", "S_Q", "CMD", "OPT", "ARGS", "FILN", "LIM", "HD", "ADD", "ANON"};
+	char	*type[] = {"PIPE", "OUT_RE", "IN_RE", "W_Q", "S_Q", "CMD", "OPT", "ARGS", "FILN", "LIM", "HD", "ADD", "ANON"};
 	if (argc != 2)
 		return (1);
 
 	lexer(argv[1], &tok);
 	for (t_token *dl = tok; dl != NULL; dl = dl->next)
-		;
-		//printf("\x1b[44m[%s]\x1b[m is of type %i which is \x1b[36m[%s]\x1b[m [%d] end? end? \x1b[32m%s\x1b[m\n", dl->token, dl->symbol, type[dl->symbol], dl->exp, dl->end?"true":"false");
+		printf("[%s] is a [%s]. expand? \x1b[32m%s\x1b[m\n", dl->token, type[dl->symbol], dl->exp?"true":"false");
 
 	parser(&tok, &cmd);
 	//printf("cmd set size is %i\n", cmd_size(cmd));
 	t_command *tmp;
 	for (tmp = cmd; tmp != NULL; tmp = tmp->next)
 	{
+		;
 		//printf("read end %i write end %i\n", tmp->pipe_fd[0], tmp->pipe_fd[1]);
 		//printf("number %i %i\n", tmp->pos, tmp->size);
 		/*

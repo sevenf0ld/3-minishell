@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 14:17:08 by folim             #+#    #+#             */
-/*   Updated: 2023/10/30 16:03:48 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/10/31 18:05:48 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,58 +22,7 @@ char	*join_and_free(char *to_free, char *to_concat)
 	return (end);
 }
 
-int	look_for_dollar(char *to_search)
-{
-	int	i;
-
-	if (!to_search)
-		return (0);
-	i = 0;
-	while (to_search[i] != '\0')
-	{
-		if (to_search[i] == '$')
-			return (1);
-		i++;
-	}
-	return (0);
-}
-
-char	*extract_dollar(char *store)
-{
-	unsigned int	i;
-	char			*aluminium;
-
-	i = 0;
-	if (!*store)
-		return (NULL);
-	while (store[i] != '\0' && store[i] != '$')
-		i++;
-	aluminium = ft_substr(store, 0, i + 1);
-	return (aluminium);
-}
-
-char	*update_store(char *store)
-{
-	unsigned int	i;
-	char			*new;
-	size_t			len;
-
-	if (!look_for_dollar(store))
-	{
-		free(store);
-		store = NULL;
-		return (NULL);
-	}
-	i = 0;
-	while (store[i] != '\0' && store[i] != '$')
-		i++;
-	len = ft_strlen(store);
-	new = ft_substr(store, i + 1, len);
-	free(store);
-	store = NULL;
-	return (new);
-}
-
+/*
 static void	expand_env_var(t_token **tokens)
 {
 	t_token	*tmp;
@@ -90,15 +39,6 @@ static void	expand_env_var(t_token **tokens)
 	{
 		if (tmp->exp)
 		{
-			/*
-			dollar = ft_strchr(tmp->token, '$') + 1;
-			sub = getenv(dollar);
-			if (sub)
-				tmp->token = sub;
-			else
-				tmp->token = " ";
-			*/
-			/*
 			i = 0;
 			og = tmp->token;
 			dollar = ft_split(tmp->token, '$');
@@ -114,7 +54,72 @@ static void	expand_env_var(t_token **tokens)
 			}
 			if (!ft_strcmp(og, tmp->token))
 				tmp->token = "";
-			*/
+		}
+		tmp = tmp->next;
+	}
+}
+*/
+
+void sub_var(char **s)
+{
+	char	*t;
+	int		i;
+	int		j;
+	int		len;
+	char	*extracted;
+	char	*sub;
+	char	*new;
+
+	t = *s;
+	i = 0;
+	len = ft_strlen(t);
+	extracted = NULL;
+	new = "";
+	while (i < len && t[i] != '\0')
+	{
+		while (i < len && t[i] != '\0' && t[i] != '$')
+			i++;
+		j = i + 1;
+		while (j < len && t[j] != '\0' && t[j] != '$')
+			j++;
+		extracted = ft_substr(t + i, 0, j - i);
+		if (*extracted)
+		{
+			printf("sub_var (extracted) -> %s\n", extracted);
+			sub = getenv(extracted + 1);
+			printf("SUB %s\n", sub);
+			if (sub)
+				new = join_and_free(new, sub);
+			printf("NEW %s\n", new);
+		}
+		i++;
+	}
+}
+
+static void	expand_env_var(t_token **tokens)
+{
+	t_token	*tmp;
+	char	**dollar;
+	char	*sub;
+	int		i;
+	char	*og;
+
+	tmp = *tokens;
+	dollar = NULL;
+	sub = NULL;	
+	i = 0;
+	og = NULL;
+	while (tmp != NULL)
+	{
+		if (tmp->exp)
+		{
+			dollar = ft_split(tmp->token, ' ');
+			while (dollar[i] != NULL)
+			{
+				sub_var(&dollar[i]);
+				//printf("expand_env_var -> %s\n", dollar[i]);
+				i++;
+			}
 		}
 		tmp = tmp->next;
 	}
