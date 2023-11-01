@@ -50,6 +50,7 @@ args=("ls -la | cat | grep -wn c > outfile"
     'echo $HOMEi'
     'echo i$HOMEi'
     'echo i$HOME'
+    'echo something something $HOME random $USER $PATHi$SHELL$LANG'
     "echo ''"
     "echo ' '"
     'echo " "'
@@ -70,7 +71,7 @@ args=("ls -la | cat | grep -wn c > outfile"
 # create a variable with the name of the executable
 exe="./v1"
 
-#set -e
+# set -e
 
 # specify name of Makefile
 # make re -f Makefile

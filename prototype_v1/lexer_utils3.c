@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 14:17:08 by folim             #+#    #+#             */
-/*   Updated: 2023/10/31 18:05:48 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/11/01 12:44:59 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,13 @@ char	*join_and_free(char *to_free, char *to_concat)
 }
 
 /*
+ * issues:
+ * when the token i$HOMEi is split on space
+ * 		_____
+ *     /	 \
+ *	   i	HOMEi
+ * i seems to be an environment variable when it actually is not
+ * joins to the token's original content
 static void	expand_env_var(t_token **tokens)
 {
 	t_token	*tmp;
@@ -60,65 +67,73 @@ static void	expand_env_var(t_token **tokens)
 }
 */
 
-void sub_var(char **s)
+char	*sub_var(char *to_expand, int len)
 {
-	char	*t;
 	int		i;
 	int		j;
-	int		len;
 	char	*extracted;
 	char	*sub;
 	char	*new;
 
-	t = *s;
 	i = 0;
-	len = ft_strlen(t);
 	extracted = NULL;
+	sub = NULL;
 	new = "";
-	while (i < len && t[i] != '\0')
+	while (i < len && to_expand[i] != '\0')
 	{
-		while (i < len && t[i] != '\0' && t[i] != '$')
+		while (i < len && to_expand[i] != '\0' && to_expand[i] != '$')
 			i++;
 		j = i + 1;
-		while (j < len && t[j] != '\0' && t[j] != '$')
+		while (j < len && to_expand[j] != '\0' && to_expand[j] != '$')
 			j++;
-		extracted = ft_substr(t + i, 0, j - i);
+		extracted = ft_substr(to_expand + i, 0, j - i);
 		if (*extracted)
 		{
-			printf("sub_var (extracted) -> %s\n", extracted);
 			sub = getenv(extracted + 1);
-			printf("SUB %s\n", sub);
 			if (sub)
 				new = join_and_free(new, sub);
-			printf("NEW %s\n", new);
 		}
 		i++;
 	}
+	if (!*new)
+		return (to_expand);
+	return (new);
 }
 
+/*
+ * issues:
+ * does not replace the token's original content ✔
+ * replaces the environment variable but does not join to the rest ✔
+ */
 static void	expand_env_var(t_token **tokens)
 {
 	t_token	*tmp;
-	char	**dollar;
 	char	*sub;
 	int		i;
+	int		len;
 	char	*og;
 
 	tmp = *tokens;
-	dollar = NULL;
-	sub = NULL;	
+	sub = NULL;
 	i = 0;
-	og = NULL;
+	len = 0;
 	while (tmp != NULL)
 	{
 		if (tmp->exp)
 		{
-			dollar = ft_split(tmp->token, ' ');
-			while (dollar[i] != NULL)
-			{
-				sub_var(&dollar[i]);
-				//printf("expand_env_var -> %s\n", dollar[i]);
+			og = tmp->token;
+			len = ft_strlen(tmp->token);
+			while (i < len && tmp->token[i] != '\0' && tmp->token[i] != '$')
 				i++;
+			sub = sub_var(tmp->token, len);
+			if (ft_strcmp(tmp->token, sub))
+				tmp->token = join_and_free(ft_substr(tmp->token, 0, i), sub);	
+			if (!ft_strcmp(og, tmp->token))
+			{
+				if (i > 0)
+					tmp->token = join_and_free(tmp->token + (len - i), "");
+				else
+					tmp->token = "";
 			}
 		}
 		tmp = tmp->next;
