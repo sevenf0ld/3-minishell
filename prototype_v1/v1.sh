@@ -36,6 +36,7 @@ args=("ls -la | cat | grep -wn c > outfile"
     "echo -n"
     'echo " " " " " " | cat -e'
     'echo " " " " " "'
+    'echo " " " " "'
     "echo ' ' ' ' ' ' | cat -e"
     "echo '$example'"
     "echo '\$example'"

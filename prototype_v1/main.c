@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:19:04 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/10/31 13:08:00 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/11/01 13:53:03 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int	main(int argc, char **argv)
 
 	lexer(argv[1], &tok);
 	for (t_token *dl = tok; dl != NULL; dl = dl->next)
-		printf("[%s] is a [%s]. expand? \x1b[32m%s\x1b[m\n", dl->token, type[dl->symbol], dl->exp?"true":"false");
+		printf("[%s] is a [%s]. remove? \x1b[32m%s\x1b[m\n", dl->token, type[dl->symbol], dl->rm?"true":"false");
 
 	parser(&tok, &cmd);
 	//printf("cmd set size is %i\n", cmd_size(cmd));

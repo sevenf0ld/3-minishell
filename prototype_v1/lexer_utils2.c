@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 16:36:05 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/10/16 17:32:12 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/11/01 19:29:09 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ static void	delete_node_attach(t_token **lst, bool value)
 	}
 }
 
-static void	delete_node(t_token **lst, bool value)
+void	delete_node(t_token **lst, bool value)
 {
 	t_token	*to_remove;
 
@@ -52,6 +52,10 @@ static void	delete_node(t_token **lst, bool value)
 	delete_node_attach(lst, value);
 }
 
+/*
+ * to handle echo " " " " " "
+ * so it doesnt confuse it as "1"2"3"4"5" but "1" "2" "3"
+ */
 void	manage_quotes(t_token **tokens)
 {
 	t_token	*tmp;
@@ -67,9 +71,51 @@ void	manage_quotes(t_token **tokens)
 			if (num == 2)
 			{
 				if (tmp->next != NULL)
-					if (!is_delim(tmp->next->token[0]))
+					if (!is_delim(tmp->next->token[0]) && ft_iswhite(tmp->next->token[0]))
 						tmp->next->rm = true;
 				num = 0;
+			}
+		}
+		tmp = tmp->next;
+	}
+	delete_node(tokens, true);
+}
+
+/*
+ * expansion takes the nodes into account
+ * quotes no longer matter after expanding
+ * only remove the nodes if is a complete S_Q or W_Q
+ */
+void	delete_quotes_after_expand(t_token **tokens, t_sym symbol)
+{
+	t_token	*tmp;
+	t_token	*cur;
+	int		num;
+
+	tmp = *tokens;
+	num = 0;
+	while (tmp != NULL)
+	{
+		if (tmp->symbol == symbol)
+		{
+			num += 1;
+			cur = tmp->next;
+			while (cur != NULL)
+			{
+				if (cur->symbol == symbol)
+				{
+					num += 1;
+					break ;
+				}
+				cur = cur->next;
+			}
+			if (num == 2)
+			{
+				tmp->rm = true;
+				cur->rm = true;
+				num = 0;
+				tmp = cur;
+				continue ;
 			}
 		}
 		tmp = tmp->next;
