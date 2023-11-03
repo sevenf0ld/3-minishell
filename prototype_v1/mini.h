@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:20:01 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/11/03 14:33:34 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/11/03 17:17:47 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,6 +133,8 @@ void		delete_quotes_after_expand(t_token **tokens, t_sym symbol);
 void		expansion(t_token **lst);
 
 //lexer_utils4.c
+t_token		*get_first_quote(t_token **tokens, t_sym symbol);
+t_token		*get_last_quote(t_token **tokens, t_sym symbol);
 void		double_check_quotes(t_token **tokens, t_sym symbol);
 
 /*	PARSER	*/

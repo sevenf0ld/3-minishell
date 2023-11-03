@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 14:17:08 by folim             #+#    #+#             */
-/*   Updated: 2023/11/01 12:44:59 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/11/03 17:20:56 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,6 +140,7 @@ static void	expand_env_var(t_token **tokens)
 	}
 }
 
+/*
 void	expansion(t_token **lst)
 {
 	t_token	*curr;
@@ -162,4 +163,32 @@ void	expansion(t_token **lst)
 		curr = curr->next;
 	}
 	expand_env_var(lst);
+}
+*/
+
+void	expansion(t_token **tokens)
+{
+	t_token	*tmp;
+	t_token	*first;
+	t_token	*last;
+
+	tmp = *tokens;
+	first = get_first_quote(tokens, W_Q);
+	last = get_last_quote(tokens, W_Q);
+	if (!first || !last)
+		return ;
+	while (tmp != NULL)
+	{
+		if (tmp == first)
+		{
+			while (tmp != NULL && tmp != last)
+			{
+				if (ft_strchr(tmp->token, '$'))
+					tmp->exp = true;
+				tmp = tmp->next;
+			}
+		}
+		tmp = tmp->next;
+	}
+	expand_env_var(tokens);
 }

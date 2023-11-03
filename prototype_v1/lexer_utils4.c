@@ -6,13 +6,13 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/03 13:18:39 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/11/03 14:34:06 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/11/03 17:18:12 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mini.h"
 
-static t_token	*get_first_quote(t_token **tokens, t_sym symbol)
+t_token	*get_first_quote(t_token **tokens, t_sym symbol)
 {
 	t_token	*tmp;
 
@@ -26,7 +26,7 @@ static t_token	*get_first_quote(t_token **tokens, t_sym symbol)
 	return (NULL);
 }
 
-static t_token	*get_last_quote(t_token **tokens, t_sym symbol)
+t_token	*get_last_quote(t_token **tokens, t_sym symbol)
 {
 	t_token	*tmp;
 

@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:25:31 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/11/03 14:17:05 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/11/03 16:15:15 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,14 +119,14 @@ void	lexer(char *pipeline, t_token **tokens)
 	categorize_symbol(tokens);
 	double_check_quotes(tokens, W_Q);
 	double_check_quotes(tokens, S_Q);
+	reject_unterminated_q(tokens, W_Q);
+	reject_unterminated_q(tokens, S_Q);
 	expansion(tokens);
 	manage_quotes(tokens);
 	identify_symbols(tokens);
 	categorize_params(tokens);
 	categorize_cmdwflags(tokens);
 	group_cmds(tokens);
-	reject_unterminated_q(tokens, W_Q);
-	reject_unterminated_q(tokens, S_Q);
 	delete_quotes_after_expand(tokens, W_Q);
 	delete_quotes_after_expand(tokens, S_Q);
 }
