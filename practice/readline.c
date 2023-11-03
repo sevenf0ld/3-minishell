@@ -5,7 +5,7 @@
 #include <unistd.h>
 #include <dirent.h>
 #include <sys/stat.h>
-//cc -Wall -Wextra -Werror readline.c -lreadline -L/usr/local/opt/readline/lib -I/usr/local/opt/readline/include
+// cc -Wall -Wextra -Werror readline.c -lreadline -L/usr/local/opt/readline/lib -I/usr/local/opt/readline/include
 
 int	main()
 {

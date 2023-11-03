@@ -6,7 +6,7 @@
 /*   By: maiman-m <maiman-m@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/30 13:46:54 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/06/05 15:43:43 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/09/13 16:34:59 by folim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int	main(int argc, char **argv, char **envp)
 {
 	int		pipe_fd[2];
-	pid_t	pid;
+	//pid_t	pid;
 
 	if (argc != 5)
 	{
@@ -24,6 +24,7 @@ int	main(int argc, char **argv, char **envp)
 	}
 	if (pipe(pipe_fd) == -1)
 		report_err("Pipe");
+	/*
 	pid = fork();
 	if (pid == -1)
 		report_err("Fork");
@@ -31,4 +32,10 @@ int	main(int argc, char **argv, char **envp)
 		child_process(argv, envp, pipe_fd);
 	wait(NULL);
 	calling_process(argv, envp, pipe_fd, argc);
+	*/
+	 
+	printf("USELESS %s\n", argv[1]);
+
+	for (int i = 0; envp[i] != NULL; i++)
+		printf("%s\n", envp[i]);
 }

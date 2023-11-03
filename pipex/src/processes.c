@@ -6,7 +6,7 @@
 /*   By: maiman-m <maiman-m@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 16:08:05 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/06/07 16:19:40 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/09/13 18:36:00 by folim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,4 +70,9 @@ void	calling_process(char **argv, char **envp, int *pipe_fd, int argc)
 	}
 	close_err(pipe_fd[0], "Parent pipe read end");
 	get_and_run_exe(argv[3], envp);
-}
+
+// ./pipex not.txt cat "grep -wn 14" test.txt
+// redirects the std. input of cat to not.txt (infile).
+// redirects the cat std.output to the write end of the pipe.
+// redirects the std input of the grep to the read end of the pipe.
+// redirects the std output of the grep the (text.txt) outfile.

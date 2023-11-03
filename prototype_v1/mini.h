@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:20:01 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/10/30 16:15:12 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/11/01 18:07:41 by folim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,11 +86,11 @@ typedef struct s_command
 	char				**args;
 	int					num_a;
 	char				*lim;
-	int					*std_in;
+	int					*std_in; // <
 	int					num_si;
-	int					*std_out_o;
+	int					*std_out_o; // >
 	int					num_so_o;
-	int					*std_out_a;
+	int					*std_out_a; // >>
 	int					num_so_a;
 	int					pipe_fd[2];
 	struct s_command	*next;
@@ -161,5 +161,9 @@ void		*malloc_err(size_t size);
 int			open_err(char *file, int flags, mode_t mode);
 void		dup2_err(int old_fd, int new_fd);
 void		close_err(int fd);
+
+//command=ls.c
+void		cmd_ls(t_command **a);
+// void		cmd_ls_attach(int c);
 
 #endif
