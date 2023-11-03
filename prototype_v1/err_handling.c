@@ -6,15 +6,18 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 17:00:50 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/10/29 17:04:45 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/11/03 14:35:26 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mini.h"
 
-void	report_err(char *fn)
+void	report_err(char *fn, int flag)
 {
-	perror(fn);
+	if (flag == 1)
+		perror(fn);
+	else
+		ft_putstr_fd(fn, 2);
 	exit(EXIT_FAILURE);
 }
 
@@ -24,7 +27,7 @@ void	*malloc_err(size_t size)
 
 	ret = malloc(size);
 	if (!ret)
-		report_err("malloc");
+		report_err("malloc", 1);
 	return (ret);
 }
 
@@ -34,19 +37,23 @@ int	open_err(char *file, int flags, mode_t mode)
 
 	fd = open(file, flags, mode);
 	if (fd == -1)
-		report_err("open");
+		report_err("open", 1);
 	return (fd);
 }
 
 void	dup2_err(int old_fd, int new_fd)
 {
 	if (dup2(old_fd, new_fd) == -1)
-		report_err("dup2");
+		report_err("dup2", 1);
 }
 
 void	close_err(int fd)
 {
 	if (close(fd) == -1)
-		report_err("close");
+		report_err("close", 1);
 }
 
+void	quote_err(void)
+{
+	report_err("error: unterminated quotes\n", 0);
+}

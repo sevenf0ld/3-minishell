@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 16:36:05 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/11/01 19:29:09 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/11/03 14:34:12 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ static void	delete_node_attach(t_token **lst, bool value)
 	}
 }
 
-void	delete_node(t_token **lst, bool value)
+static void	delete_node(t_token **lst, bool value)
 {
 	t_token	*to_remove;
 
@@ -79,6 +79,44 @@ void	manage_quotes(t_token **tokens)
 		tmp = tmp->next;
 	}
 	delete_node(tokens, true);
+}
+
+/*
+ * reject unterminated quotes
+ */
+void	reject_unterminated_q(t_token **tokens, t_sym symbol)
+{
+	t_token	*tmp;
+	t_token	*cur;
+	int		num;
+
+	tmp = *tokens;
+	num = 0;
+	while (tmp != NULL)
+	{
+		if (tmp->symbol == symbol)
+		{
+			num += 1;
+			cur = tmp->next;
+			while (cur != NULL)
+			{
+				if (cur->symbol == symbol)
+				{
+					num += 1;
+					if (num == 2)
+					{
+						num = 0;
+						tmp = cur;
+						break ;
+					}
+				}
+				cur = cur->next;
+			}
+		}
+		tmp = tmp->next;
+	}
+	if (num == 1)
+		quote_err();
 }
 
 /*

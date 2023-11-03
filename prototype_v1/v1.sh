@@ -52,6 +52,13 @@ args=("ls -la | cat | grep -wn c > outfile"
     'echo i$HOMEi'
     'echo i$HOME'
     'echo something something $HOME random $USER $PATHi$SHELL$LANG'
+	"echo '\"\$PATH\"'"
+	# heap buffer overflow in new_split if there is no space
+	"echo '\"\$PATH\" \"\$USER\"'"
+	"echo \"'\$PATH'\""
+	# heap buffer overflow in new_split if there is no space
+	"echo \"'\$PATH' '\$USER'\""
+	"echo \"'\$PATH' '\$USER'\" \"'\$PATH' '\$USER'\""
     "echo ''"
     "echo ' '"
     'echo " "'
@@ -60,6 +67,9 @@ args=("ls -la | cat | grep -wn c > outfile"
     "echo build.h | grep b"
     "echo -n-n-n-n-n"
     "echo '\"'"
+	"echo \"'''\""
+    "echo '\"\"'"
+    "echo '  \"                   '"
     "echo '\""
     "echo -n -n -n bs"
     "echo bs -n -n"
@@ -72,7 +82,7 @@ args=("ls -la | cat | grep -wn c > outfile"
 # create a variable with the name of the executable
 exe="./v1"
 
-# set -e
+#set -e
 
 # specify name of Makefile
 # make re -f Makefile

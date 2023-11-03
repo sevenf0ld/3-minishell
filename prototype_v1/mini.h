@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:20:01 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/11/01 19:29:07 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/11/03 14:33:34 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ typedef struct s_token
 	bool			end;
 	bool			rm;
 	bool			exp;
+	bool			enclosed;
 	struct s_token	*prev;
 	struct s_token	*next;
 }					t_token;
@@ -125,10 +126,14 @@ void		group_cmds(t_token **tokens);
 
 //lexer_utils2.c
 void		manage_quotes(t_token **tokens);
+void		reject_unterminated_q(t_token **tokens, t_sym symbol);
 void		delete_quotes_after_expand(t_token **tokens, t_sym symbol);
 
 //lexer_utils3.c
 void		expansion(t_token **lst);
+
+//lexer_utils4.c
+void		double_check_quotes(t_token **tokens, t_sym symbol);
 
 /*	PARSER	*/
 //parser.c
@@ -153,10 +158,11 @@ t_command	*cmd_last(t_command *head);
 int			cmd_size(t_command *head);
 
 //err_handling.c
-void		report_err(char *fn);
+void		report_err(char *fn, int flag);
 void		*malloc_err(size_t size);
 int			open_err(char *file, int flags, mode_t mode);
 void		dup2_err(int old_fd, int new_fd);
 void		close_err(int fd);
+void		quote_err(void);
 
 #endif

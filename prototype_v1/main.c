@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:19:04 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/11/01 13:53:03 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/11/03 14:34:16 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,13 +42,10 @@ int	main(int argc, char **argv)
 		printf("[%s] is a [%s]. remove? \x1b[32m%s\x1b[m\n", dl->token, type[dl->symbol], dl->rm?"true":"false");
 
 	parser(&tok, &cmd);
-	//printf("cmd set size is %i\n", cmd_size(cmd));
 	t_command *tmp;
 	for (tmp = cmd; tmp != NULL; tmp = tmp->next)
 	{
 		;
-		//printf("read end %i write end %i\n", tmp->pipe_fd[0], tmp->pipe_fd[1]);
-		//printf("number %i %i\n", tmp->pos, tmp->size);
 		/*
 		printf("%p %p %p\n", tmp->std_in, tmp->std_out_o, tmp->std_out_a);
 		for (int j = 0; tmp->std_in != NULL && tmp->std_in[j] != INT_MIN; j++)
@@ -58,7 +55,7 @@ int	main(int argc, char **argv)
 		for (int j = 0; tmp->std_out_a != NULL && tmp->std_out_a[j] != INT_MIN; j++)
 			printf("add fd %i\n", tmp->std_out_a[j]);
 		*/
-		/*
+		///*
 		printf("@ [%s]\n", tmp->cmd);
 		if (tmp->flags != NULL)
 		{
@@ -72,6 +69,6 @@ int	main(int argc, char **argv)
 			for (int i = 0; i < tmp->num_a; i++)
 				printf("::: {%s}\n", tmp->args[i]);
 		}
-		*/
+		//*/
 	}
 }
