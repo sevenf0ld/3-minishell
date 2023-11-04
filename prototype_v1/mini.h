@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:20:01 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/11/04 16:38:17 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/11/04 19:03:08 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -171,6 +171,7 @@ void		dup2_err(int old_fd, int new_fd);
 void		close_err(int fd);
 void		quote_err(void);
 void		pipe_err(int *pipe_arr);
+int			dup_err(int old_fd);
 
 //command=ls.c
 void		cmd_ls(t_command **a);

@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 17:00:50 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/11/04 16:44:18 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/11/04 19:04:02 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,4 +62,14 @@ void	pipe_err(int *pipe_arr)
 {
 	if (pipe(pipe_arr) == -1)
 		report_err("pipe", 1);
+}
+
+int	dup_err(int old_fd)
+{
+	int	new_fd;
+
+	new_fd = dup(old_fd);
+	if (new_fd == -1)
+		report_err("dup", 1);
+	return (new_fd);
 }
