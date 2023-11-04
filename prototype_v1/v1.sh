@@ -46,6 +46,7 @@ args=("ls -la | cat | grep -wn c > outfile"
     'echo $USER'
     "echo \$MADi\$HATTER"
     'echo $HOME$USER'
+    'echo $HOME$USER $HOME$USER'
     'echo $HOME$USERi'
     'echo i$HOME$USERi'
     'echo $HOMEi'
@@ -67,6 +68,8 @@ args=("ls -la | cat | grep -wn c > outfile"
     "echo build.h | grep b"
     "echo -n-n-n-n-n"
     "echo '\"'"
+    "echo '\$SHELL' '\$SHELL'"
+    'echo "$SHELL$SHELL" "$HOME"'
 	"echo \"'''\""
     "echo '\"\"'"
     "echo '  \"                   '"

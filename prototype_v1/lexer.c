@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:25:31 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/11/03 16:15:15 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/11/04 10:35:23 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,6 +122,8 @@ void	lexer(char *pipeline, t_token **tokens)
 	reject_unterminated_q(tokens, W_Q);
 	reject_unterminated_q(tokens, S_Q);
 	expansion(tokens);
+	//no_q_expansion(tokens);
+	//nested_q_expansion(tokens);
 	manage_quotes(tokens);
 	identify_symbols(tokens);
 	categorize_params(tokens);

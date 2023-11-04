@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 14:17:08 by folim             #+#    #+#             */
-/*   Updated: 2023/11/03 17:20:56 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/11/04 10:20:22 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,8 +140,44 @@ static void	expand_env_var(t_token **tokens)
 	}
 }
 
-/*
-void	expansion(t_token **lst)
+//void	expansion(t_token **tokens)
+void	nested_q_expansion(t_token **tokens)
+{
+	t_token	*tmp;
+	t_token	*first;
+	t_token	*last;
+
+	tmp = *tokens;
+	first = get_first_quote(tokens, W_Q);
+	last = get_last_quote(tokens, W_Q);
+	if (!first || !last)
+	{
+		printf("no weak quote detected\n");
+		return ;
+	}
+	while (tmp != NULL)
+	{
+		if (tmp == first)
+		{
+			while (tmp != NULL && tmp != last)
+			{
+				if (ft_strchr(tmp->token, '$'))
+					tmp->exp = true;
+				tmp = tmp->next;
+			}
+		}
+		else
+		{
+			if (ft_strchr(tmp->token, '$'))
+				tmp->exp = true;
+		}
+		tmp = tmp->next;
+	}
+	//expand_env_var(tokens);
+}
+
+//void	expansion(t_token **lst)
+void	no_q_expansion(t_token **lst)
 {
 	t_token	*curr;
 	int		check[2];
@@ -164,30 +200,16 @@ void	expansion(t_token **lst)
 	}
 	expand_env_var(lst);
 }
-*/
 
 void	expansion(t_token **tokens)
 {
 	t_token	*tmp;
-	t_token	*first;
-	t_token	*last;
-
+	
 	tmp = *tokens;
-	first = get_first_quote(tokens, W_Q);
-	last = get_last_quote(tokens, W_Q);
-	if (!first || !last)
-		return ;
-	while (tmp != NULL)
+	while (tmp != NULL && tmp->symbol != S_Q)
 	{
-		if (tmp == first)
-		{
-			while (tmp != NULL && tmp != last)
-			{
-				if (ft_strchr(tmp->token, '$'))
-					tmp->exp = true;
-				tmp = tmp->next;
-			}
-		}
+		if (ft_strchr(tmp->token, '$'))
+			tmp->exp = true;
 		tmp = tmp->next;
 	}
 	expand_env_var(tokens);
