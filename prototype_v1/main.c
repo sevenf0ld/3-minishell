@@ -6,7 +6,11 @@
 /*   By: folim <folim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:19:04 by maiman-m          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2023/11/04 17:11:53 by folim            ###   ########.fr       */
+=======
+/*   Updated: 2023/11/04 19:16:55 by maiman-m         ###   ########.fr       */
+>>>>>>> testing
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +21,7 @@ int	main(void)
 	char		*pipeline;
 	t_token		*tok;
 	t_command	*cmd;
-	//char	*type[] = {"PIPE", "OUT_RE", "IN_RE", "W_Q", "S_Q", "CMD", "OPT", "ARGS", "FILN", "LIM", "HD", "ADD", "ANON"};
-
+	int			restore_stdout;
 
 	pipeline = NULL;
 	tok = NULL;
@@ -26,34 +29,15 @@ int	main(void)
 	while (1)
 	{
 		pipeline = readline("prompt> ");
-		// printf("%s \n", pipeline);
 		if (ft_strcmp(pipeline, ""))
-			add_history(pipeline);
-		lexer(pipeline, &tok);
-		// for (t_token *dl = tok; dl != NULL; dl = dl->next)
-		// 	printf("\x1b[44m[%s]\x1b[m is of type %i which is \x1b[36m[%s]\x1b[m [%d]\n", dl->token, dl->symbol, type[dl->symbol], dl->exp);
-		parser(&tok, &cmd);
-		t_command *tmp;
-
-		tmp = cmd;
-		n_builtins(&tmp);
-		for (tmp = cmd; tmp != NULL; tmp = tmp->next)
 		{
-			// printf("stdin %i overwrite %i append %i\n", tmp->num_si, tmp->num_so_o, tmp->num_so_a);
-			// /*
-			// printf("@ [%s]\n", tmp->cmd);
-			if (tmp->flags != NULL)
-			{
-				//printf("flags yes\n");
-				// for (int i = 0; i < tmp->num_f; i++)
-					// printf("--- {%s}\n", tmp->flags[i]);
-			}
-			if (tmp->args != NULL)
-			{
-				//printf("args yes\n");
-				// for (int i = 0; i < tmp->num_a; i++)
-					// printf("::: {%s}\n", tmp->args[i]);
-			}
+			restore_stdout = dup_err(STDOUT_FILENO);
+			add_history(pipeline);
+			lexer(pipeline, &tok);
+			parser(&tok, &cmd);
+			n_builtins(&cmd);
+			dup2_err(restore_stdout, STDOUT_FILENO);
+			close_err(restore_stdout);
 		}
 	}
 }
