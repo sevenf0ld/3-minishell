@@ -6,11 +6,24 @@
 /*   By: folim <folim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/30 14:47:12 by folim             #+#    #+#             */
-/*   Updated: 2023/11/04 17:59:27 by folim            ###   ########.fr       */
+/*   Updated: 2023/11/04 23:50:10 by folim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mini.h"
+
+int	n_builtins_3(char *path_str)
+{
+	if (!access(path_str, F_OK))
+		return (1);
+	else if (path_str[0] == '/')
+	{
+		printf("minishell: %s: No such file of directory\n", path_str);
+		return (-1);
+	}
+	return (0);
+}
+
 
 void	n_builtins_2(t_command **a, char **input, char *cmd)
 {
@@ -27,12 +40,12 @@ void	n_builtins_2(t_command **a, char **input, char *cmd)
 	if (pid == 0)
 	{
 		if (execve(input[0], input, NULL) == -1)
-			printf("\n>>>%s failed<<<\n", cmd);
+			printf("\n>>> [%s] failed <<<\n", cmd);
 	}
 	else
 	{
 		wait(NULL);
-		printf("\n>>>%s success<<<\n", cmd);
+		printf("\n>>> [%s] success <<<\n", cmd);
 		free(input);
 	}
 	return ;
@@ -72,45 +85,56 @@ void	n_builtins_1(t_command **a, char *path_str)
 void	n_builtins(t_command **a)
 {
 	int			i;
+	int			j;
 	t_command	*tmp;
 	char		**path;
 	char		*path_str;
 
+
+
 	tmp = *a;
-	// if (ft_strcmp(tmp->cmd, "ls"))
-	// 	return ;
-	/*
-	Stage 1:
-		Making a generic function.
-	-	Get the PATH environment variables.
-	-	Split the paths by ':' symbol.
-	-	Join each strings with '/' and
-		'tmp->cmd' which has the cmd input.
-	*/
-	path = ft_split(getenv("PATH"), ':');
 	i = 0;
-	/*
-	Using access() to check if the file is valid using
-	the path_str.
-	If it is valid, the path_str will be assigned to input[0]
-	which will be the first 
-	*/
-	while (path[i])
+	j = n_builtins_3(tmp->cmd);
+	path = NULL;
+	path_str = NULL;
+	if (j == 1)
+		path_str = tmp->cmd;
+	else if (j == 0)
 	{
-		// printf("%s\n", path[i]);
-		path_str = ft_strjoin(path[i], "/");
-		path_str = ft_strjoin(path_str, tmp->cmd);
-		if (!access(path_str, F_OK))
+		/*
+		Stage 1:
+			Making a generic function.
+		-	Get the PATH environment variables.
+		-	Split the paths by ':' symbol.
+		-	Join each strings with '/' and
+			'tmp->cmd' which has the cmd input.
+		*/
+		path = ft_split(getenv("PATH"), ':');
+		/*
+		Using access() to check if the file is valid using
+		the path_str.
+		If it is valid, the path_str will be assigned to input[0]
+		which will be the first 
+		*/
+		while (path[i])
 		{
-			// printf(">> File '%s' is readable.\n", tmp->cmd); 
-			// printf(">> %s\n", path_str);
-			break ;
+			// printf("%s\n", path[i]);
+			path_str = ft_strjoin(path[i], "/");
+			path_str = ft_strjoin(path_str, tmp->cmd);
+			if (!access(path_str, F_OK))
+			{
+				// printf(">> File '%s' is readable.\n", tmp->cmd); 
+				// printf(">> %s\n", path_str);
+				break ;
+			}
+			i++;
 		}
-		i++;
+		if (!path[i])
+			printf("minishell: %s: command not found\n", tmp->cmd);
 	}
-	if (!path[i])
-		printf("Command not found!\n");
-		
+	else if (j == -1)
+		return ;
+
 	n_builtins_1(a, path_str);
 
 	//check **input
