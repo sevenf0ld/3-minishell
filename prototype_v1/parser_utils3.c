@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/28 17:32:51 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/11/04 16:36:59 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/11/04 16:50:48 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,8 @@ static void	handle_in_between(t_command *c_node)
  * only if there are pipes in the pipeline
  * redirects STDIN_FILENO to pipe read_end[0] for last command group and STDOUT_FILENO to pipe write_end[1] for first command group to pipe ends if there are no file redirection
  * calls handle_in_between() to redirect the command groups STDIN_FILENO and STDOUT_FILENO between the first and last to both pipe ends
+ */
+void	handle_pipe_ends(t_command *c_node)
 {
 	t_command	*cur;
 
