@@ -6,15 +6,12 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 20:48:46 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/10/29 15:14:28 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/11/04 16:07:01 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mini.h"
 
-/*
- * need to error handling for pipe
- */
 t_command	*cmd_new(char *cmd, int n)
 {
 	t_command	*node;
@@ -34,7 +31,7 @@ t_command	*cmd_new(char *cmd, int n)
 	node->num_so_o = 0;
 	node->std_out_a = NULL;
 	node->num_so_a = 0;
-	pipe(node->pipe_fd);
+	pipe_err(node->pipe_fd);
 	node->next = NULL;
 	return (node);
 }
@@ -64,7 +61,7 @@ static void	set_cmd_size(t_command *head)
 }
 
 /*
- * initialize a linked list where each node is a full command set
+ * converts the categorized and grouped tokens into individual command sets/groups
  */
 void	cmd_init(t_token **tokens, t_command **cmds)
 {

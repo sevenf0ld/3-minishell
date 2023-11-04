@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:20:01 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/11/01 18:07:41 by folim            ###   ########.fr       */
+/*   Updated: 2023/11/04 16:38:17 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ typedef struct s_token
 	bool			end;
 	bool			rm;
 	bool			exp;
+	bool			enclosed;
 	struct s_token	*prev;
 	struct s_token	*next;
 }					t_token;
@@ -129,15 +130,22 @@ void		group_cmds(t_token **tokens);
 
 //lexer_utils2.c
 void		manage_quotes(t_token **tokens);
+void		reject_unterminated_q(t_token **tokens, t_sym symbol);
+void		delete_quotes_after_expand(t_token **tokens, t_sym symbol);
 
 //lexer_utils3.c
 void		expansion(t_token **lst);
 
+//lexer_utils4.c
+t_token		*get_first_quote(t_token **tokens, t_sym symbol);
+t_token		*get_last_quote(t_token **tokens, t_sym symbol);
+void		double_check_quotes(t_token **tokens, t_sym symbol);
+
 /*	PARSER	*/
 //parser.c
-void		parser(t_token **tokens, t_command **cmds);
-void		complete_cmd(t_token **tokens, t_command **cmds);
 void		init_multi_fa(t_token **tokens, t_command *c_node);
+void		complete_cmd(t_token **tokens, t_command **cmds);
+void		parser(t_token **tokens, t_command **cmds);
 
 //parser_utils.c
 void		init_multi_redir(t_token **tokens, t_command *c_node);
@@ -156,11 +164,13 @@ t_command	*cmd_last(t_command *head);
 int			cmd_size(t_command *head);
 
 //err_handling.c
-void		report_err(char *fn);
+void		report_err(char *fn, int flag);
 void		*malloc_err(size_t size);
 int			open_err(char *file, int flags, mode_t mode);
 void		dup2_err(int old_fd, int new_fd);
 void		close_err(int fd);
+void		quote_err(void);
+void		pipe_err(int *pipe_arr);
 
 //command=ls.c
 void		cmd_ls(t_command **a);

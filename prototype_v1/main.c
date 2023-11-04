@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:19:04 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/11/01 18:10:45 by folim            ###   ########.fr       */
+/*   Updated: 2023/11/04 16:43:15 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,5 @@ int	main(void)
 					// printf("::: {%s}\n", tmp->args[i]);
 			}
 		}
-		free(pipeline);
-		pipeline = NULL;
 	}
 }

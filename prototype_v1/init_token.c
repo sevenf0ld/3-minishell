@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/10 00:09:50 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/10/29 15:12:36 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/11/04 15:25:23 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ t_token	*token_new(char *token)
 	node->end = false;
 	node->rm = false;
 	node->exp = false;
+	node->enclosed = false;
 	node->prev = NULL;
 	node->next = NULL;
 	return (node);
@@ -40,6 +41,9 @@ void	token_add_back(t_token **head, t_token *node)
 	old_end->next = node;
 }
 
+/*
+ * converts the splitted pipeline into individual tokens
+ */
 void	token_init(char **args, t_token **head)
 {
 	int	i;

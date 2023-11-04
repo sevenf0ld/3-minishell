@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 12:07:39 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/10/29 15:58:34 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/11/04 16:01:19 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,6 @@ static void	set_multi_fa(t_token **tokens, t_command *c_node)
 	}
 }
 
-/*
- * malloc enough space for each (t_command) command set's flags and arguments
- */
 void	init_multi_fa(t_token **tokens, t_command *c_node)
 {
 	t_token	*tmp;
@@ -58,9 +55,6 @@ void	init_multi_fa(t_token **tokens, t_command *c_node)
 	set_multi_fa(tokens, c_node);
 }
 
-/*
- * t_token nodes which have been initialized into t_command nodes will be removed
- */
 static void	rm_till_end(t_token **tokens)
 {
 	t_token	*tmp;
@@ -82,8 +76,8 @@ static void	rm_till_end(t_token **tokens)
 }
 
 /*
- * set the flags and arguments for each full command set (t_command)
- * remove the corresponding t_token nodes after each t_command node is completed
+ * calls init_multi_fa() which stores all the flags (OPT) and arguments (ARGS) in its respective 2D char array (end marker is NULL)
+ * calls init_multi_redir() which stores all the input and output (overwrite & append) redirections in its respect int array (end marker is INT_MIN)
  */
 void	complete_cmd(t_token **tokens, t_command **cmds)
 {

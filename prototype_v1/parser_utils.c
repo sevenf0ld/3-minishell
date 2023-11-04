@@ -6,15 +6,12 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/17 14:26:35 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/10/29 15:13:27 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/11/04 16:01:28 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mini.h"
 
-/*
- * need to add error handling for open
- */
 static void	set_multi_fildes(t_token **tokens, t_command *c_node)
 {
 	t_token	*tmp;
@@ -54,9 +51,6 @@ static void	set_multi_fildes(t_token **tokens, t_command *c_node)
 		c_node->std_out_a[k] = INT_MIN;
 }
 
-/*
- * init multi I/O redirections excluding pipes
- */
 void	init_multi_redir(t_token **tokens, t_command *c_node)
 {
 	t_token	*tmp;

@@ -6,19 +6,16 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/28 12:34:44 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/11/01 18:38:21 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/11/04 16:37:29 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mini.h"
 
-/*
- * loop ends on INT_MIN
- */
 static void	redirect_io_file(int *fd_arr, char mode)
 {
 	int	i;
-	
+
 	i = 0;
 	while (fd_arr[i] != INT_MIN)
 		i++;
@@ -29,11 +26,10 @@ static void	redirect_io_file(int *fd_arr, char mode)
 }
 
 /*
- * if size is one means there is no pipe
- * 		redir only involves files if any
- * if not NULL means there is a redirection
- * 		iterate until before INT_MIN and dup2 STDIN/STDOUT_FILENO
- * 		make a distinction between out_re and add?
+ * prioritized because
+ * ├ if there is any output redirection, pipe write_end[1] will be left empty
+ * └ if there is any input redirection, pipe read_end[0] will be left empty
+ * calls redirect_io_file() which redirects the STDIN_FILENO and STDOUT_FILENO to the last file accordingly
  */
 void	handle_redirections(t_command *c_node)
 {

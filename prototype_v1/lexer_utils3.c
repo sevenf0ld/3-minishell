@@ -6,13 +6,13 @@
 /*   By: folim <folim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 14:17:08 by folim             #+#    #+#             */
-/*   Updated: 2023/10/30 16:26:02 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/11/04 16:43:57 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mini.h"
 
-char	*join_and_free(char *to_free, char *to_concat)
+static char	*join_and_free(char *to_free, char *to_concat)
 {
 	char	*end;
 
@@ -22,124 +22,89 @@ char	*join_and_free(char *to_free, char *to_concat)
 	return (end);
 }
 
-int	look_for_dollar(char *to_search)
-{
-	int	i;
 
-	if (!to_search)
-		return (0);
+static char	*sub_var(char *to_expand, int len)
+{
+	int		i;
+	int		j;
+	char	*extracted;
+	char	*sub;
+	char	*new;
+
 	i = 0;
-	while (to_search[i] != '\0')
+	extracted = NULL;
+	sub = NULL;
+	new = "";
+	while (i < len && to_expand[i] != '\0')
 	{
-		if (to_search[i] == '$')
-			return (1);
+		while (i < len && to_expand[i] != '\0' && to_expand[i] != '$')
+			i++;
+		j = i + 1;
+		while (j < len && to_expand[j] != '\0' && to_expand[j] != '$')
+			j++;
+		extracted = ft_substr(to_expand + i, 0, j - i);
+		if (*extracted)
+		{
+			sub = getenv(extracted + 1);
+			if (sub)
+				new = join_and_free(new, sub);
+		}
 		i++;
 	}
-	return (0);
-}
-
-char	*extract_dollar(char *store)
-{
-	unsigned int	i;
-	char			*aluminium;
-
-	i = 0;
-	if (!*store)
-		return (NULL);
-	while (store[i] != '\0' && store[i] != '$')
-		i++;
-	aluminium = ft_substr(store, 0, i + 1);
-	return (aluminium);
-}
-
-char	*update_store(char *store)
-{
-	unsigned int	i;
-	char			*new;
-	size_t			len;
-
-	if (!look_for_dollar(store))
-	{
-		free(store);
-		store = NULL;
-		return (NULL);
-	}
-	i = 0;
-	while (store[i] != '\0' && store[i] != '$')
-		i++;
-	len = ft_strlen(store);
-	new = ft_substr(store, i + 1, len);
-	free(store);
-	store = NULL;
+	if (!*new)
+		return (to_expand);
 	return (new);
 }
 
 static void	expand_env_var(t_token **tokens)
 {
 	t_token	*tmp;
-	char	**dollar;
 	char	*sub;
-	//int		i;
+	int		i;
+	int		len;
 	char	*og;
 
 	tmp = *tokens;
-	dollar = NULL;
-	sub = NULL;	
-	og = NULL;
+	sub = NULL;
+	i = 0;
+	len = 0;
 	while (tmp != NULL)
 	{
 		if (tmp->exp)
 		{
-			/*
-			dollar = ft_strchr(tmp->token, '$') + 1;
-			sub = getenv(dollar);
-			if (sub)
-				tmp->token = sub;
-			else
-				tmp->token = " ";
-			*/
-			/*
-			i = 0;
 			og = tmp->token;
-			dollar = ft_split(tmp->token, '$');
-			while (dollar[i] != NULL)
-			{
-				printf("CHECK DOLLAR %s\n", dollar[i]);
-				sub = getenv(dollar[i]);
-				if (sub && i == 0)
-					tmp->token = sub;
-				else if (sub && i > 0)
-					tmp->token = join_and_free(tmp->token, sub);
-				i++;				
-			}
+			len = ft_strlen(tmp->token);
+			while (i < len && tmp->token[i] != '\0' && tmp->token[i] != '$')
+				i++;
+			sub = sub_var(tmp->token, len);
+			if (ft_strcmp(tmp->token, sub))
+				tmp->token = join_and_free(ft_substr(tmp->token, 0, i), sub);	
 			if (!ft_strcmp(og, tmp->token))
-				tmp->token = "";
-			*/
+			{
+				if (i > 0)
+					tmp->token = join_and_free(tmp->token + (len - i), "");
+				else
+					tmp->token = "";
+			}
 		}
 		tmp = tmp->next;
 	}
 }
 
-void	expansion(t_token **lst)
+/*
+ * set the token boolean exp to true if it is enclosed by double or no quotes
+ * calls expand_env_var() which replaces the environment variables and join accordingly
+ */
+void	expansion(t_token **tokens)
 {
-	t_token	*curr;
-	int		check[2];
-
-	if (*lst == NULL)
-		return ;
-	curr = *lst;
-	curr = curr->next;
-	while (curr != NULL)
+	t_token	*tmp;
+	
+	tmp = *tokens;
+	while (tmp != NULL && tmp->symbol != S_Q)
 	{
-		check[0] = 0;
-		check[1] = 0;
-		if (!ft_strcmp(curr->prev->token, "\'"))
-			check[0] = 1;
-		if (ft_strchr(curr->token, '$'))
-			check[1] = 1;
-		if (check[0] == 0 && check[1] == 1)
-			curr->exp = true;
-		curr = curr->next;
+		if (ft_strchr(tmp->token, '$'))
+			tmp->exp = true;
+		tmp = tmp->next;
 	}
-	expand_env_var(lst);
+	expand_env_var(tokens);
 }

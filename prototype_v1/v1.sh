@@ -36,6 +36,7 @@ args=("ls -la | cat | grep -wn c > outfile"
     "echo -n"
     'echo " " " " " " | cat -e'
     'echo " " " " " "'
+    'echo " " " " "'
     "echo ' ' ' ' ' ' | cat -e"
     "echo '$example'"
     "echo '\$example'"
@@ -45,11 +46,20 @@ args=("ls -la | cat | grep -wn c > outfile"
     'echo $USER'
     "echo \$MADi\$HATTER"
     'echo $HOME$USER'
+    'echo $HOME$USER $HOME$USER'
     'echo $HOME$USERi'
     'echo i$HOME$USERi'
     'echo $HOMEi'
     'echo i$HOMEi'
     'echo i$HOME'
+    'echo something something $HOME random $USER $PATHi$SHELL$LANG'
+	"echo '\"\$PATH\"'"
+	# heap buffer overflow in new_split if there is no space
+	"echo '\"\$PATH\" \"\$USER\"'"
+	"echo \"'\$PATH'\""
+	# heap buffer overflow in new_split if there is no space
+	"echo \"'\$PATH' '\$USER'\""
+	"echo \"'\$PATH' '\$USER'\" \"'\$PATH' '\$USER'\""
     "echo ''"
     "echo ' '"
     'echo " "'
@@ -58,6 +68,11 @@ args=("ls -la | cat | grep -wn c > outfile"
     "echo build.h | grep b"
     "echo -n-n-n-n-n"
     "echo '\"'"
+    "echo '\$SHELL' '\$SHELL'"
+    'echo "$SHELL$SHELL" "$HOME"'
+	"echo \"'''\""
+    "echo '\"\"'"
+    "echo '  \"                   '"
     "echo '\""
     "echo -n -n -n bs"
     "echo bs -n -n"

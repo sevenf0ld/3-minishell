@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:26:59 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/10/29 15:13:58 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/11/04 15:24:45 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,8 +57,8 @@ static int	w_l(char *s)
 
 /*
  * breaks the command and arguments into words based on
- * | > < “ ‘ space ( ) &
- * 124 62 60 34 39 32 40 41 38
+ * | > < “ ‘ space
+ * 124 62 60 34 39 32
  */
 char	**new_split(char *str)
 {
@@ -71,8 +71,6 @@ char	**new_split(char *str)
 	i = -1;
 	j = 0;
 	count = w_c(str);
-	//to handle echo " " or echo ' '
-	//end = malloc_err(sizeof(char *) * (count + 2));
 	end = init_split_pipeline(str, w_c(str));
 	sp_w_q = NULL;
 	while (str[++i] != '\0')
