@@ -6,13 +6,13 @@
 /*   By: folim <folim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 14:17:08 by folim             #+#    #+#             */
-/*   Updated: 2023/11/04 10:20:22 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/11/04 15:30:21 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mini.h"
 
-char	*join_and_free(char *to_free, char *to_concat)
+static char	*join_and_free(char *to_free, char *to_concat)
 {
 	char	*end;
 
@@ -22,52 +22,8 @@ char	*join_and_free(char *to_free, char *to_concat)
 	return (end);
 }
 
-/*
- * issues:
- * when the token i$HOMEi is split on space
- * 		_____
- *     /	 \
- *	   i	HOMEi
- * i seems to be an environment variable when it actually is not
- * joins to the token's original content
-static void	expand_env_var(t_token **tokens)
-{
-	t_token	*tmp;
-	char	**dollar;
-	char	*sub;
-	int		i;
-	char	*og;
 
-	tmp = *tokens;
-	dollar = NULL;
-	sub = NULL;	
-	og = NULL;
-	while (tmp != NULL)
-	{
-		if (tmp->exp)
-		{
-			i = 0;
-			og = tmp->token;
-			dollar = ft_split(tmp->token, '$');
-			while (dollar[i] != NULL)
-			{
-				printf("CHECK DOLLAR %s\n", dollar[i]);
-				sub = getenv(dollar[i]);
-				if (sub && i == 0)
-					tmp->token = sub;
-				else if (sub && i > 0)
-					tmp->token = join_and_free(tmp->token, sub);
-				i++;				
-			}
-			if (!ft_strcmp(og, tmp->token))
-				tmp->token = "";
-		}
-		tmp = tmp->next;
-	}
-}
-*/
-
-char	*sub_var(char *to_expand, int len)
+static char	*sub_var(char *to_expand, int len)
 {
 	int		i;
 	int		j;
@@ -100,11 +56,6 @@ char	*sub_var(char *to_expand, int len)
 	return (new);
 }
 
-/*
- * issues:
- * does not replace the token's original content ✔
- * replaces the environment variable but does not join to the rest ✔
- */
 static void	expand_env_var(t_token **tokens)
 {
 	t_token	*tmp;
@@ -140,67 +91,10 @@ static void	expand_env_var(t_token **tokens)
 	}
 }
 
-//void	expansion(t_token **tokens)
-void	nested_q_expansion(t_token **tokens)
-{
-	t_token	*tmp;
-	t_token	*first;
-	t_token	*last;
-
-	tmp = *tokens;
-	first = get_first_quote(tokens, W_Q);
-	last = get_last_quote(tokens, W_Q);
-	if (!first || !last)
-	{
-		printf("no weak quote detected\n");
-		return ;
-	}
-	while (tmp != NULL)
-	{
-		if (tmp == first)
-		{
-			while (tmp != NULL && tmp != last)
-			{
-				if (ft_strchr(tmp->token, '$'))
-					tmp->exp = true;
-				tmp = tmp->next;
-			}
-		}
-		else
-		{
-			if (ft_strchr(tmp->token, '$'))
-				tmp->exp = true;
-		}
-		tmp = tmp->next;
-	}
-	//expand_env_var(tokens);
-}
-
-//void	expansion(t_token **lst)
-void	no_q_expansion(t_token **lst)
-{
-	t_token	*curr;
-	int		check[2];
-
-	if (*lst == NULL)
-		return ;
-	curr = *lst;
-	curr = curr->next;
-	while (curr != NULL)
-	{
-		check[0] = 0;
-		check[1] = 0;
-		if (!ft_strcmp(curr->prev->token, "\'"))
-			check[0] = 1;
-		if (ft_strchr(curr->token, '$'))
-			check[1] = 1;
-		if (check[0] == 0 && check[1] == 1)
-			curr->exp = true;
-		curr = curr->next;
-	}
-	expand_env_var(lst);
-}
-
+/*
+ * set the token boolean exp to true if it is enclosed by double or no quotes
+ * calls expand_env_var() which replaces the environment variables and join accordingly
+ */
 void	expansion(t_token **tokens)
 {
 	t_token	*tmp;

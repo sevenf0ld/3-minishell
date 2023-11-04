@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/17 16:19:30 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/10/29 15:14:14 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/11/04 15:20:28 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,48 +50,6 @@ static int	num_sbq(char *s)
 	}
 	return (num);
 }
-
-/*
- * counting number of quotes does not handle correctly
- * if the btwn the quotes is not space
-static int	num_sbq(char *s)
-{
-	int	i = -1;
-	int	num = 0;
-	while (s[++i] != '\0')
-	{
-		if (s[i] == 34 || s[i] == 39)
-			num += 1;
-		i++
-	}
-}
-*/
-
-/*
- * alex's version which calculates the enclosed spaces correctly
-static int	num_sbq(char *s)
-{
-	int	i;
-	int	num;
-	int	total;
-
-	i = -1;
-	num = 0;
-	total = 0;
-	while (s[++i] != '\0')
-	{
-		if (s[i] == 34 || s[i] == 39)
-			num += 1;
-		if (num == 2)
-		{
-			total += 1;
-			num = 0;
-		}
-	}
-	printf("CHECK TOTAL SBQ %i\n", total);
-	return (total);
-}
-*/
 
 char	**init_split_pipeline(char *s, int w_c)
 {

@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:25:31 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/11/04 10:35:23 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/11/04 15:26:18 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 /*
  * categorizes enum 0 to 4
+ * categorizes | > < " '
  */
 void	categorize_symbol(t_token **tokens)
 {
@@ -39,6 +40,7 @@ void	categorize_symbol(t_token **tokens)
 
 /*
  * categorizes filename (8) and heredoc's limiter (9)
+ * categorize files if any output/input redirection, heredoc's limiter, arguments in pipeline
  */
 void	categorize_params(t_token **tokens)
 {
@@ -59,6 +61,7 @@ void	categorize_params(t_token **tokens)
 
 /*
  * categorizes arguments (7) in command set
+ * categorize files if any output/input redirection, heredoc's limiter, arguments in pipeline
  */
 void	categorize_params_norme(t_token **tokens)
 {
@@ -80,6 +83,7 @@ void	categorize_params_norme(t_token **tokens)
 
 /*
  * categorizes command (5) and its flags/options (6)
+ * categorizes command (executable & builtins) and flags/options
  */
 void	categorize_cmdwflags(t_token **tokens)
 {
@@ -108,6 +112,7 @@ void	categorize_cmdwflags(t_token **tokens)
 /*
  * turns the words into tokens
  * categorizes the tokens
+ * group the tokens and set an identifier/separator
  */
 void	lexer(char *pipeline, t_token **tokens)
 {
@@ -122,8 +127,6 @@ void	lexer(char *pipeline, t_token **tokens)
 	reject_unterminated_q(tokens, W_Q);
 	reject_unterminated_q(tokens, S_Q);
 	expansion(tokens);
-	//no_q_expansion(tokens);
-	//nested_q_expansion(tokens);
 	manage_quotes(tokens);
 	identify_symbols(tokens);
 	categorize_params(tokens);

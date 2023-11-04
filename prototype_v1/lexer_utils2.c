@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 16:36:05 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/11/03 14:34:12 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/11/04 15:27:42 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,8 @@ static void	delete_node(t_token **lst, bool value)
 }
 
 /*
- * to handle echo " " " " " "
+ * set the token boolean end to true so the space between two completed/terminated quotes are not mistaken as ARG
+ * calls delete_node() which deletes the spaces between two string literals
  * so it doesnt confuse it as "1"2"3"4"5" but "1" "2" "3"
  */
 void	manage_quotes(t_token **tokens)
@@ -82,7 +83,7 @@ void	manage_quotes(t_token **tokens)
 }
 
 /*
- * reject unterminated quotes
+ * detect and reject unterminated/incomplete quotes
  */
 void	reject_unterminated_q(t_token **tokens, t_sym symbol)
 {
@@ -120,9 +121,7 @@ void	reject_unterminated_q(t_token **tokens, t_sym symbol)
 }
 
 /*
- * expansion takes the nodes into account
- * quotes no longer matter after expanding
- * only remove the nodes if is a complete S_Q or W_Q
+ * remove the quotes since expansion has taken place and the (outermost) quotes no longer serve a purpose
  */
 void	delete_quotes_after_expand(t_token **tokens, t_sym symbol)
 {

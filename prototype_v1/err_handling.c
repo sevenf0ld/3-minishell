@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 17:00:50 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/11/03 14:35:26 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/11/04 16:09:29 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,4 +56,10 @@ void	close_err(int fd)
 void	quote_err(void)
 {
 	report_err("error: unterminated quotes\n", 0);
+}
+
+void	pipe_err(int *pipe_arr)
+{
+	if (pipe(pipe_arr) == -1)
+		report_err("pipe", 1);
 }

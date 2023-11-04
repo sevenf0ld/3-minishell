@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:20:01 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/11/04 10:15:00 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/11/04 16:09:08 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,8 +131,6 @@ void		delete_quotes_after_expand(t_token **tokens, t_sym symbol);
 
 //lexer_utils3.c
 void		expansion(t_token **lst);
-void		nested_q_expansion(t_token **lst);
-void		no_q_expansion(t_token **lst);
 
 //lexer_utils4.c
 t_token		*get_first_quote(t_token **tokens, t_sym symbol);
@@ -141,9 +139,9 @@ void		double_check_quotes(t_token **tokens, t_sym symbol);
 
 /*	PARSER	*/
 //parser.c
-void		parser(t_token **tokens, t_command **cmds);
-void		complete_cmd(t_token **tokens, t_command **cmds);
 void		init_multi_fa(t_token **tokens, t_command *c_node);
+void		complete_cmd(t_token **tokens, t_command **cmds);
+void		parser(t_token **tokens, t_command **cmds);
 
 //parser_utils.c
 void		init_multi_redir(t_token **tokens, t_command *c_node);
@@ -168,5 +166,6 @@ int			open_err(char *file, int flags, mode_t mode);
 void		dup2_err(int old_fd, int new_fd);
 void		close_err(int fd);
 void		quote_err(void);
+void		pipe_err(int *pipe_arr);
 
 #endif

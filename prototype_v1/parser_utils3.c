@@ -6,20 +6,12 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/28 17:32:51 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/10/29 15:10:53 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/11/04 16:13:47 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mini.h"
 
-/*
- * if no file redirect to pipe
- * 		if in between
- * 			stdin -> read_end[0]
- * 			stdout -> write_end[1]
- *
- * need to add error handling for dup2
- */
 static void	handle_in_between(t_command *c_node)
 {
 	t_command	*cur;
@@ -29,7 +21,9 @@ static void	handle_in_between(t_command *c_node)
 	{
 		if (cur->pos != 0 && cur->pos != cur->size - 1)
 		{
+			if (cur->std_in == NULL)
 				dup2_err(cur->pipe_fd[0], STDIN_FILENO);
+			if (cur->std_out_o == NULL && cur->std_out_a == NULL)
 				dup2_err(cur->pipe_fd[1], STDOUT_FILENO);
 		}
 		cur = cur->next;
@@ -37,16 +31,9 @@ static void	handle_in_between(t_command *c_node)
 }
 
 /*
- * if no file redirect to pipe
- * 		if first command
- * 			redirect to write_end[1] (write to) instead of stdout
- * 		if last command
- * 			redirect to read_end[0] (read from) instead of stdin
- * 		if in between
- *
- * need to add error handling for dup2
- * need to close unused ends
- * need to add error handling for close
+ * only if there are pipes in the pipeline
+ * redirects STDIN_FILENO to pipe read_end[0] for last command group and STDOUT_FILENO to pipe write_end[1] for first command group to pipe ends if there are no file redirection
+ * calls handle_in_between() to redirect the command groups STDIN_FILENO and STDOUT_FILENO between the first and last to both pipe ends
  */
 void	handle_pipe_ends(t_command *c_node)
 {
@@ -60,9 +47,7 @@ void	handle_pipe_ends(t_command *c_node)
 			if (cur->pos == 0)
 			{
 				close_err(cur->pipe_fd[0]);
-				//dup2_err(cur->pipe_fd[1], STDOUT_FILENO);
-				dup2_err(open("fake_stdout.txt", O_APPEND), STDOUT_FILENO);
-				//printf("hi im the first %s\n", cur->cmd);
+				dup2_err(cur->pipe_fd[1], STDOUT_FILENO);
 			}
 		}
 		if (cur->std_out_o == NULL && cur->std_out_a == NULL)
@@ -70,9 +55,7 @@ void	handle_pipe_ends(t_command *c_node)
 			if (cur->pos == cur->size - 1)
 			{
 				close_err(cur->pipe_fd[1]);
-				//dup2_err(cur->pipe_fd[0], STDIN_FILENO);
-				dup2_err(open("fake_stdin.txt", O_RDONLY), STDIN_FILENO);
-				//printf("hello im last %s\n", cur->cmd);
+				dup2_err(cur->pipe_fd[0], STDIN_FILENO);
 			}
 		}
 		cur = cur->next;
