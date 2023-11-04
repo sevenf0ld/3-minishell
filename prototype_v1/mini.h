@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:20:01 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/11/04 16:38:17 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/11/04 17:11:29 by folim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -173,7 +173,7 @@ void		quote_err(void);
 void		pipe_err(int *pipe_arr);
 
 //command=ls.c
-void		cmd_ls(t_command **a);
+void		n_builtins(t_command **a);
 // void		cmd_ls_attach(int c);
 
 #endif

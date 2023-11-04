@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:19:04 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/11/04 16:43:15 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/11/04 17:11:53 by folim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int	main(void)
 		t_command *tmp;
 
 		tmp = cmd;
-		cmd_ls(&tmp);
+		n_builtins(&tmp);
 		for (tmp = cmd; tmp != NULL; tmp = tmp->next)
 		{
 			// printf("stdin %i overwrite %i append %i\n", tmp->num_si, tmp->num_so_o, tmp->num_so_a);
