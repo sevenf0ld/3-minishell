@@ -6,23 +6,11 @@
 /*   By: folim <folim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/30 14:47:12 by folim             #+#    #+#             */
-/*   Updated: 2023/11/06 19:17:14 by folim            ###   ########.fr       */
+/*   Updated: 2023/11/06 19:37:15 by folim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mini.h"
-
-void	free_input(char **input)
-{
-	int	i;
-
-	i = -1;
-	while (input[++i])
-		free(input[i]);
-	free(input);
-	*input = NULL;
-	return ;
-}
 
 int	n_builtins_3(char *path_str)
 {
@@ -92,11 +80,11 @@ void	n_builtins_1(t_command **a, char *path_str)
 		}
 	}
 	// check **input
-	i = -1;
-	while (input[++i])
-		printf("%s, ", input[i]);
-		printf("\n");
-	return ;
+	// i = -1;
+	// while (input[++i])
+	// 	printf("%s, ", input[i]);
+	// 	printf("\n");
+	// return ;
 	n_builtins_2(a, input, tmp->cmd);
 	return ;
 }

@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:20:01 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/11/04 19:25:00 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/11/06 19:35:56 by folim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -176,5 +176,9 @@ int			dup_err(int old_fd);
 //command=ls.c
 void		n_builtins(t_command **a);
 // void		cmd_ls_attach(int c);
+
+//free.c
+void		free_input(char **input);
+
 
 #endif
