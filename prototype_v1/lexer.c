@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:25:31 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/11/04 15:26:18 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/11/05 19:05:16 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,9 @@ void	categorize_cmdwflags(t_token **tokens)
 			if (ft_strlen(tmp->token) > 1)
 				if (tmp->prev->symbol == CMD || tmp->prev->symbol == OPT)
 					tmp->symbol = OPT;
+		if (tmp->symbol == ARGS && tmp->prev != NULL)
+			if (tmp->prev->symbol == FILN)
+				tmp->symbol = CMD;
 		tmp = tmp->next;
 	}
 }
