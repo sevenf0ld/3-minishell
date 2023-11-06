@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:19:04 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/11/06 16:53:48 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/11/06 19:23:48 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,35 +18,26 @@ int	main(void)
 	t_token		*tok;
 	t_command	*cmd;
 	int			restore_stdout;
+	int			restore_stdin;
 
 	pipeline = NULL;
 	tok = NULL;
 	cmd = NULL;
-	/*
 	while (1)
 	{
 		pipeline = readline("prompt> ");
 		if (ft_strcmp(pipeline, ""))
 		{
 			restore_stdout = dup_err(STDOUT_FILENO);
+			restore_stdin = dup_err(STDIN_FILENO);
 			add_history(pipeline);
 			lexer(pipeline, &tok);
 			parser(&tok, &cmd);
 			n_builtins(&cmd);
 			dup2_err(restore_stdout, STDOUT_FILENO);
 			close_err(restore_stdout);
+			dup2_err(restore_stdin, STDIN_FILENO);
+			close_err(restore_stdin);
 		}
-	}
-	*/
-	pipeline = readline("prompt> ");
-	if (ft_strcmp(pipeline, ""))
-	{
-		restore_stdout = dup_err(STDOUT_FILENO);
-		add_history(pipeline);
-		lexer(pipeline, &tok);
-		parser(&tok, &cmd);
-		n_builtins(&cmd);
-		dup2_err(restore_stdout, STDOUT_FILENO);
-		close_err(restore_stdout);
 	}
 }
