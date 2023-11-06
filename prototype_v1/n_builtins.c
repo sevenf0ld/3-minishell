@@ -6,11 +6,23 @@
 /*   By: folim <folim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/30 14:47:12 by folim             #+#    #+#             */
-/*   Updated: 2023/11/04 23:50:10 by folim            ###   ########.fr       */
+/*   Updated: 2023/11/06 19:17:14 by folim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mini.h"
+
+void	free_input(char **input)
+{
+	int	i;
+
+	i = -1;
+	while (input[++i])
+		free(input[i]);
+	free(input);
+	*input = NULL;
+	return ;
+}
 
 int	n_builtins_3(char *path_str)
 {
@@ -46,7 +58,7 @@ void	n_builtins_2(t_command **a, char **input, char *cmd)
 	{
 		wait(NULL);
 		printf("\n>>> [%s] success <<<\n", cmd);
-		free(input);
+		free_input(input);
 	}
 	return ;
 }
@@ -79,7 +91,14 @@ void	n_builtins_1(t_command **a, char *path_str)
 			input[i + tmp->num_f + 1] = tmp->args[i];
 		}
 	}
+	// check **input
+	i = -1;
+	while (input[++i])
+		printf("%s, ", input[i]);
+		printf("\n");
+	return ;
 	n_builtins_2(a, input, tmp->cmd);
+	return ;
 }
 
 void	n_builtins(t_command **a)
@@ -136,11 +155,8 @@ void	n_builtins(t_command **a)
 		return ;
 
 	n_builtins_1(a, path_str);
+	return ;
 
-	//check **input
-	// i = -1;
-	// while (input[++i])
-	// 	printf("%s, ", input[i]);
 }
 
 
