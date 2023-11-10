@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/28 17:32:51 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/11/04 16:50:48 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/11/10 17:59:28 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static void	handle_in_between(t_command *c_node)
 	cur = c_node;
 	while (cur != NULL)
 	{
-		if (cur->pos != 0 && cur->pos != cur->size - 1)
+		if (cur->pos > 0 && cur->pos < cur->size - 1)
 		{
 			if (cur->std_in == NULL)
 				dup2_err(cur->pipe_fd[0], STDIN_FILENO);
@@ -42,17 +42,17 @@ void	handle_pipe_ends(t_command *c_node)
 	cur = c_node;
 	while (cur != NULL)
 	{
-		if (cur->std_in == NULL)
+		if (cur->pos == 0)
 		{
-			if (cur->pos == 0)
+			if (cur->std_out_o == NULL && cur->std_out_a == NULL)
 			{
 				close_err(cur->pipe_fd[0]);
 				dup2_err(cur->pipe_fd[1], STDOUT_FILENO);
 			}
 		}
-		if (cur->std_out_o == NULL && cur->std_out_a == NULL)
+		if (cur->pos == cur->size - 1)
 		{
-			if (cur->pos == cur->size - 1)
+			if (cur->std_in == NULL)
 			{
 				close_err(cur->pipe_fd[1]);
 				dup2_err(cur->pipe_fd[0], STDIN_FILENO);
