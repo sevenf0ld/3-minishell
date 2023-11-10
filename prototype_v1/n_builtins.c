@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/30 14:47:12 by folim             #+#    #+#             */
-/*   Updated: 2023/11/06 19:37:15 by folim            ###   ########.fr       */
+/*   Updated: 2023/11/06 22:06:34 by folim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void	n_builtins_2(t_command **a, char **input, char *cmd)
 	{
 		wait(NULL);
 		printf("\n>>> [%s] success <<<\n", cmd);
-		free_input(input);
+		free_2d_arr(input);
 	}
 	return ;
 }

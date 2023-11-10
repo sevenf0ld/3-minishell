@@ -6,13 +6,13 @@
 /*   By: folim <folim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/06 19:35:29 by folim             #+#    #+#             */
-/*   Updated: 2023/11/06 19:38:13 by folim            ###   ########.fr       */
+/*   Updated: 2023/11/06 22:05:35 by folim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mini.h"
 
-void	free_input(char **input)
+void	free_2d_arr(char **input)
 {
 	int	i;
 

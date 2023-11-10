@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:20:01 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/11/06 19:35:56 by folim            ###   ########.fr       */
+/*   Updated: 2023/11/06 22:06:42 by folim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -178,7 +178,7 @@ void		n_builtins(t_command **a);
 // void		cmd_ls_attach(int c);
 
 //free.c
-void		free_input(char **input);
+void		free_2d_arr(char **input);
 
 
 #endif
