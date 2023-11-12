@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 16:10:50 by folim             #+#    #+#             */
-/*   Updated: 2023/09/15 16:10:54 by folim            ###   ########.fr       */
+/*   Updated: 2023/11/11 16:26:48 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,26 @@ t_token	*double_ll_convert(t_token **lst)
 	t_token	*prev;
 	t_token	*curr;
 	t_token	*tail;
+
+	if (*lst == NULL)
+		return (NULL);
+	prev = NULL;
+	curr = *lst;
+	while (curr != NULL)
+	{
+		curr->prev = prev;
+		prev = curr;
+		curr = curr->next;
+	}
+	tail = prev;
+	return (tail);
+}
+
+t_command	*double_ll_convert2(t_command **lst)
+{
+	t_command	*prev;
+	t_command	*curr;
+	t_command	*tail;
 
 	if (*lst == NULL)
 		return (NULL);

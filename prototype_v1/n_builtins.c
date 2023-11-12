@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/30 14:47:12 by folim             #+#    #+#             */
-/*   Updated: 2023/11/06 22:06:34 by folim            ###   ########.fr       */
+/*   Updated: 2023/11/11 11:22:55 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,12 +40,14 @@ void	n_builtins_2(t_command **a, char **input, char *cmd)
 	if (pid == 0)
 	{
 		if (execve(input[0], input, NULL) == -1)
-			printf("\n>>> [%s] failed <<<\n", cmd);
+			fprintf(stderr, "\n>>> [%s] failed <<<\n", cmd);
+			//fprintf(stdout, "\n>>> [%s] failed <<<\n", cmd);
 	}
 	else
 	{
 		wait(NULL);
-		printf("\n>>> [%s] success <<<\n", cmd);
+		fprintf(stderr, "\n>>> [%s] success <<<\n", cmd);
+		//fprintf(stdout, "\n>>> [%s] success <<<\n", cmd);
 		free_2d_arr(input);
 	}
 	return ;

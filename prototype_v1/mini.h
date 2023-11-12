@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:20:01 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/11/06 22:06:42 by folim            ###   ########.fr       */
+/*   Updated: 2023/11/11 16:27:07 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,7 @@ typedef struct s_command
 	int					*std_out_a; // >>
 	int					num_so_a;
 	int					pipe_fd[2];
+	struct s_command	*prev;
 	struct s_command	*next;
 }						t_command;
 
@@ -115,6 +116,7 @@ int			token_size(t_token *head);
 
 //d_ll_convert.c
 t_token		*double_ll_convert(t_token **lst);
+t_command	*double_ll_convert2(t_command **lst);
 
 /*	LEXER	*/
 //lexer.c
