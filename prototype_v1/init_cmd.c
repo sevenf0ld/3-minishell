@@ -6,23 +6,11 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 20:48:46 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/11/11 13:32:03 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/11/13 20:02:45 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mini.h"
-
-#include <sys/stat.h>
-#include <errno.h>
-#include <string.h>
-
-static void print_inode(int fd, char *name) {
- struct stat info;
- if (fstat(fd, &info) != 0)
-   fprintf(stderr,"fstat() error for %s %d: %s\n",name,fd,strerror(errno));
- else
-   fprintf(stderr, "╳ The inode of %s is %d\n", name, (int) info.st_ino);
-}
 
 t_command	*cmd_new(char *cmd, int n)
 {
@@ -44,9 +32,6 @@ t_command	*cmd_new(char *cmd, int n)
 	node->std_out_a = NULL;
 	node->num_so_a = 0;
 	pipe_err(node->pipe_fd);
-	fprintf(stderr, "CHECKING PIPE ENDS FOR %s, %i (read) and %i (write)\n", node->cmd, node->pipe_fd[0], node->pipe_fd[1]);
-	print_inode(node->pipe_fd[0], "pipe read end");
-	print_inode(node->pipe_fd[1], "pipe write end");
 	node->next = NULL;
 	return (node);
 }

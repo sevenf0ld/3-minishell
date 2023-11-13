@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 12:07:39 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/11/11 16:37:47 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/11/13 19:58:13 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,6 @@ void	parser(t_token **tokens, t_command **cmds)
 	cmd_init(tokens, cmds);
 	double_ll_convert2(cmds);
 	complete_cmd(tokens, cmds);
-	//double_ll_convert2(cmds);
 	handle_redirections(*cmds);
 	if ((*cmds)->size > 1)
 		handle_pipe_ends(*cmds);
