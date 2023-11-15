@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:20:01 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/11/13 20:06:56 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/11/15 15:48:56 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,10 +93,23 @@ typedef struct s_command
 	int					num_so_o;
 	int					*std_out_a; // >>
 	int					num_so_a;
-	int					pipe_fd[2];
+	int					read_end;
+	int					write_end;
+	//int					pipe_fd[2];
 	struct s_command	*prev;
 	struct s_command	*next;
 }						t_command;
+
+/*
+ * pipes
+ */
+typedef struct s_pipe
+{
+	int				pos;
+	int				pipe_fd[2];
+	struct s_pipe	*prev;
+	struct s_pipe	*next;
+}					t_pipe;
 
 /*	TOKENIZER	*/
 //tokenizer.c
@@ -117,6 +130,7 @@ int			token_size(t_token *head);
 //d_ll_convert.c
 t_token		*double_ll_convert(t_token **lst);
 t_command	*double_ll_convert2(t_command **lst);
+t_pipe		*double_ll_convert3(t_pipe **lst);
 
 /*	LEXER	*/
 //lexer.c
@@ -158,6 +172,12 @@ void		handle_redirections(t_command *c_node);
 //parser_utils3.c
 void		handle_pipe_ends(t_command *c_node);
 
+//parser_utils4.c
+void		assign_pipe_ends(t_command *c_node, t_pipe *p_node);
+
+//parse_utils5.c
+void		redirect_command_io(t_command *c_node);
+
 //init_cmd.c
 t_command	*cmd_new(char *cmd, int n);
 void		cmd_add_back(t_command **head, t_command *node);
@@ -182,5 +202,10 @@ void		n_builtins(t_command **a);
 //free.c
 void		free_2d_arr(char **input);
 
+//init_pipe.c
+t_pipe		*pipe_new(int n);
+t_pipe		*pipe_last(t_pipe *head);
+void		pipe_add_back(t_pipe **head, t_pipe *node);
+void		pipe_init(t_pipe **pipes, int loop);
 
 #endif
