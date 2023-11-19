@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:20:01 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/11/20 03:47:15 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/11/19 21:12:36 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -177,7 +177,6 @@ void		assign_pipe_ends(t_command *c_node, t_pipe *p_node);
 
 //parse_utils5.c
 void		redirect_command_io(t_command *c_node);
-//void		redirect_command_io(t_command *c_node, int ro, int ri);
 
 //init_cmd.c
 t_command	*cmd_new(char *cmd, int n);
