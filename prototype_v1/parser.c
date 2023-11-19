@@ -6,12 +6,24 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 12:07:39 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/11/15 16:01:00 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/11/19 23:04:19 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mini.h"
 
+#include <sys/stat.h>
+#include <errno.h>
+#include <string.h>
+/*
+void print_inode(int fd, char *name) {
+ struct stat info;
+ if (fstat(fd, &info) != 0)
+   fprintf(stderr,"fstat() error for %s %d: %s\n",name,fd,strerror(errno));
+ else
+   fprintf(stderr, "╳ The inode of %s is %d\n", name, (int) info.st_ino);
+}
+*/
 static void	set_multi_fa(t_token **tokens, t_command *c_node)
 {
 	t_token	*tmp;
@@ -95,7 +107,7 @@ void	complete_cmd(t_token **tokens, t_command **cmds)
 	}	
 }
 
-void	parser(t_token **tokens, t_command **cmds)
+void	parser(t_token **tokens, t_command **cmds, int ro, int ri)
 {
 	t_pipe	*pipes;
 
@@ -103,7 +115,30 @@ void	parser(t_token **tokens, t_command **cmds)
 	cmd_init(tokens, cmds);
 	double_ll_convert2(cmds);
 	complete_cmd(tokens, cmds);
-	pipe_init(&pipes, (*cmds)->size);
+	pipe_init(&pipes, (*cmds)->size - 1);
 	double_ll_convert3(&pipes);
 	assign_pipe_ends(*cmds, pipes);
+	ro = -1;
+	ri = -1;
+	/*
+	int i = 0;
+	for (t_command *cur = *cmds; cur != NULL; cur = cur->next)
+	{
+		fprintf(stderr, "in parser (%i)-> %s\n", i, cur->cmd);
+		redirect_command_io(cur);
+		//print_inode(ro, "in parser, restore stdout");
+		//print_inode(ri, "in parser, restore stdin");
+		if (cur->size > 1)
+		{
+			print_inode(cur->write_end, "in parser, ONE write end");
+			print_inode(cur->read_end, "in parser, ONE read end");
+			if (cur->write_end != -1 && cur->write_end != ro)
+				dup2_err(cur->write_end, ro);
+			print_inode(cur->write_end, "in parser, TWO write end");
+			print_inode(cur->read_end, "in parser, TWO read end");
+			ri = -1;
+		}
+		i++;
+	}
+	*/
 }

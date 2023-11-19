@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/30 14:47:12 by folim             #+#    #+#             */
-/*   Updated: 2023/11/11 11:22:55 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/11/16 18:32:19 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ void	n_builtins_2(t_command **a, char **input, char *cmd)
 	}
 	if (pid == 0)
 	{
+		redirect_command_io(tmp);
 		if (execve(input[0], input, NULL) == -1)
 			fprintf(stderr, "\n>>> [%s] failed <<<\n", cmd);
 			//fprintf(stdout, "\n>>> [%s] failed <<<\n", cmd);

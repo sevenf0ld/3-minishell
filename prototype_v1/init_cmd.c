@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 20:48:46 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/11/15 15:57:52 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/11/16 13:41:03 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,6 @@ t_command	*cmd_new(char *cmd, int n)
 	//pipe_err(node->pipe_fd);
 	node->read_end = -1;
 	node->write_end = -1;
-	fprintf(stderr, "when initalized, r (%i) and w (%i)\n", node->read_end, node->write_end);
 	node->next = NULL;
 	return (node);
 }
