@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 11:26:35 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/11/20 05:34:50 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/11/20 05:51:36 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,8 +99,7 @@ void	redirect_io_pipe(t_command *c_node)
 			*/
 			print_inode(cur->read_end, "last read end");
 			print_inode(STDIN_FILENO, "last stdin");
-			//dup2_err(cur->read_end, STDIN_FILENO);
-			dup2_err(cur->read_end, STDOUT_FILENO);
+			dup2_err(cur->read_end, STDIN_FILENO);
 			print_inode(cur->read_end, "last read end");
 			print_inode(STDIN_FILENO, "last stdin");
 			close_err(STDIN_FILENO);
