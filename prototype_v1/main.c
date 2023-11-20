@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:19:04 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/11/06 19:33:47 by folim            ###   ########.fr       */
+/*   Updated: 2023/11/21 00:19:43 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,12 +28,13 @@ int	main(void)
 		pipeline = readline("prompt> ");
 		if (ft_strcmp(pipeline, ""))
 		{
-			restore_stdout = dup_err(STDOUT_FILENO);
-			restore_stdin = dup_err(STDIN_FILENO);
 			add_history(pipeline);
 			lexer(pipeline, &tok);
+			restore_stdout = dup_err(STDOUT_FILENO);
+			restore_stdin = dup_err(STDIN_FILENO);
 			parser(&tok, &cmd);
-			n_builtins(&cmd);
+			for (t_command *cur = cmd; cur != NULL; cur = cur->next)
+				n_builtins(&cur);
 			dup2_err(restore_stdout, STDOUT_FILENO);
 			close_err(restore_stdout);
 			dup2_err(restore_stdin, STDIN_FILENO);
