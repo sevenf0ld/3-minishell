@@ -3,17 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   mini.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: folim <folim@student.42.fr>                +#+  +:+       +#+        */
+/*   By: folim <folim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:20:01 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/11/21 00:17:15 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/11/10 18:20:04 by folim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINI_H
 # define MINI_H
 
-# include "libft.h"
+// # include "libft.h"
+# include "libft/include/libft.h"
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <stdlib.h>
@@ -24,6 +25,7 @@
 # include <sys/types.h>
 # include <sys/wait.h>
 # include <limits.h>
+# include <signal.h>
 
 /*
  * 0 PIPE
@@ -208,5 +210,9 @@ t_pipe		*pipe_new(int n);
 t_pipe		*pipe_last(t_pipe *head);
 void		pipe_add_back(t_pipe **head, t_pipe *node);
 void		pipe_init(t_pipe **pipes, int loop);
+
+//signal.c
+void sig_int(int signum);
+void sig_quit(int signum);
 
 #endif
