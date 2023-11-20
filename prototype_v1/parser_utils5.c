@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 11:26:35 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/11/20 05:51:36 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/11/21 00:10:14 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,42 +67,34 @@ void	redirect_io_pipe(t_command *c_node)
 	{
 		if (cur->std_out_o == NULL && cur->std_out_a == NULL)
 		{
-			/*
 			fprintf(stderr, "1. THE CMD is %s\n", cur->cmd);
 			print_inode(STDIN_FILENO, "first stdin before closing read end");
 			print_inode(cur->read_end, "first read end before closing");
-			close_err(cur->read_end);
+			//close_err(cur->read_end);
 			dup2_err(cur->write_end, STDOUT_FILENO);
 			print_inode(cur->write_end, "first write end");
 			print_inode(STDOUT_FILENO, "first stdout");
-			close_err(STDOUT_FILENO);
-			close_err(cur->write_end);
-			*/
-			//close_err(cur->read_end); //grep: (standard input): Bad file descriptor
-			dup2_err(cur->write_end, STDOUT_FILENO);
+			print_inode(cur->read_end, "first read end");
+			print_inode(STDIN_FILENO, "first stdin");
+			//close_err(cur->write_end);
+			//close_err(STDOUT_FILENO);
 		}
 	}
 	else if (cur->pos == cur->size - 1)
 	{
 		if (cur->std_in == NULL)
 		{
-			/*
 			fprintf(stderr, "N. THE CMD is %s\n", cur->cmd);
 			print_inode(STDOUT_FILENO, "last stdout before closing write end");
 			print_inode(cur->write_end, "last write end before closing");
-			close_err(cur->write_end);
+			//close_err(cur->write_end);
 			dup2_err(cur->read_end, STDIN_FILENO);
 			print_inode(cur->read_end, "last read end");
 			print_inode(STDIN_FILENO, "last stdin");
-			close_err(STDIN_FILENO);
-			close_err(cur->read_end);
-			*/
-			print_inode(cur->read_end, "last read end");
-			print_inode(STDIN_FILENO, "last stdin");
-			dup2_err(cur->read_end, STDIN_FILENO);
-			print_inode(cur->read_end, "last read end");
-			print_inode(STDIN_FILENO, "last stdin");
-			close_err(STDIN_FILENO);
+			print_inode(cur->write_end, "last write end");
+			print_inode(STDOUT_FILENO, "last stdout");
+			//close_err(cur->read_end);
+			//close_err(STDIN_FILENO);
 		}
 	}
 	else
@@ -123,49 +115,25 @@ void	redirect_io_pipe(t_command *c_node)
  * else read from or write to file
  */
 void	redirect_command_io(t_command *c_node)
-//void	redirect_command_io(t_command *c_node, int ro, int ri)
 {
 	t_command	*cur;
 
 	cur = c_node;
 	if (!cur)
 		return ;
-	fprintf(stderr, "───────────────────────────────FILE BEFORE───────────────────────────────\n");
+	fprintf(stderr, "\x1b[34m───────────────────────────────FILE BEFORE───────────────────────────────\n");
 	print_inode(STDIN_FILENO, "stdin before in_re");
 	print_inode(STDOUT_FILENO, "stdout before out_re");
-	fprintf(stderr, "───────────────────────────────FILE BEFORE───────────────────────────────\n");
+	fprintf(stderr, "───────────────────────────────FILE BEFORE───────────────────────────────\x1b[m\n");
 	if (cur->std_in != NULL)
 		redirect_io_file(cur->std_in, 'i');
-	//if (cur->std_out_o != NULL)
 	if (cur->std_out_o != NULL || cur->std_out_a != NULL)
 		redirect_io_file(cur->std_out_o, 'o');
-	//if (cur->std_out_a != NULL)
-		//redirect_io_file(cur->std_out_a, 'o');
-	fprintf(stderr, "─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─FILE AFTER─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─\n");
+	fprintf(stderr, "\x1b[36m─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─FILE AFTER─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─\n");
 	print_inode(STDIN_FILENO, "stdin after in_re");
 	print_inode(STDOUT_FILENO, "stdout after out_re");
-	fprintf(stderr, "─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─FILE AFTER─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─\n");
+	fprintf(stderr, "─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─FILE AFTER─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─\x1b[m\n");
 	if (cur->size == 1)
 		return ;
-	/*
-	dup2_err(ro, STDOUT_FILENO);
-	dup2_err(ri, STDIN_FILENO);
-	*/
 	redirect_io_pipe(cur);
-	/*
-	dup2_err(ro, STDOUT_FILENO);
-	dup2_err(ri, STDIN_FILENO);
-	*/
-	/*
-	print_inode(STDIN_FILENO, "stdin after in_re");
-	print_inode(STDOUT_FILENO, "stdout after out_re");
-	*/
-	/*
-	if (cur->std_in == NULL)
-		redirect_io_pipe(cur);
-	if (cur->std_out_o == NULL || cur->std_out_a == NULL)
-		redirect_io_pipe(cur);
-	//if (cur->std_out_a == NULL)
-		//redirect_io_pipe(cur);
-	*/
 }
