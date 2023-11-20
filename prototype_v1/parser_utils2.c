@@ -5,45 +5,79 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/28 12:34:44 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/11/13 19:58:46 by maiman-m         ###   ########.fr       */
+/*   Created: 2023/11/13 20:09:11 by maiman-m          #+#    #+#             */
+/*   Updated: 2023/11/21 03:24:30 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mini.h"
 
-static void	redirect_io_file(int *fd_arr, char mode)
+static t_pipe	*retrieve_pipe(t_pipe *p_node, int n)
 {
-	int	i;
+	t_pipe	*end;
 
-	i = 0;
-	while (fd_arr[i] != INT_MIN)
-		i++;
-	if (mode == 'i')
-		dup2_err(fd_arr[i - 1], STDIN_FILENO);
-	else if (mode == 'o')
-		dup2_err(fd_arr[i - 1], STDOUT_FILENO);
+	end = p_node;
+	while (end != NULL)
+	{
+		if (end->pos == n)
+			break ;
+		end = end->next;
+	}
+	return end;
 }
 
 /*
- * prioritized because
- * ├ if there is any output redirection, pipe write_end[1] will be left empty
- * └ if there is any input redirection, pipe read_end[0] will be left empty
- * calls redirect_io_file() which redirects the STDIN_FILENO and STDOUT_FILENO to the last file accordingly
+ * calls retrieve_pipe() which returns the corresponding t_pipe node for the t_command node
+ * [0] | [1] | [2] | [3] | [4] | [5]
+ *     0     1     2     3     4
+ * if even and odd (in between/in general):
+ * 		write to the same index
+ * 		read from index - 1
+ *
+ * if first:
+ * 		write to the same index
+ * 		read from file or SI
+ *
+ * if last:
+ * 		write to file or SO
+ * 		read from index - 1
  */
-void	handle_redirections(t_command *c_node)
+void	assign_pipe_ends(t_command *c_node, t_pipe *p_node)
 {
 	t_command	*cur;
+	t_pipe		*end;
 
 	cur = c_node;
+	end = NULL;
 	while (cur != NULL)
 	{
-		if (cur->std_in != NULL)
-			redirect_io_file(cur->std_in, 'i');
-		if (cur->std_out_o != NULL)
-			redirect_io_file(cur->std_out_o, 'o');
-		if (cur->std_out_a != NULL)
-			redirect_io_file(cur->std_out_a, 'o');
+		if (cur->pos == 0)
+		{
+			end = retrieve_pipe(p_node, cur->pos);
+			if (end)
+			{
+				cur->read_end = STDIN_FILENO;;
+				cur->write_end = end->pipe_fd[1];
+			}
+		}
+		if (cur->pos == cur->size - 1)
+		{
+			end = retrieve_pipe(p_node, cur->pos - 1);
+			if (end)
+			{
+				cur->read_end = end->pipe_fd[0];
+				cur->write_end = STDOUT_FILENO;
+			}
+		}
+		if (cur->pos > 0 && cur->pos < cur->size - 1)
+		{
+			end = retrieve_pipe(p_node, cur->pos);
+			if (end)
+			{
+				cur->read_end = end->prev->pipe_fd[0];
+				cur->write_end = end->pipe_fd[1];
+			}
+		}
 		cur = cur->next;
 	}
 }

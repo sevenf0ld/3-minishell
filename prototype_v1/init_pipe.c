@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 12:43:53 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/11/21 00:13:18 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/11/21 01:45:57 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,9 @@ void	pipe_add_back(t_pipe **head, t_pipe *node)
 	old_end->next = node;
 }
 
+/*
+ * initializes pipes based on the amount of t_command nodes - 1
+ */
 void	pipe_init(t_pipe **pipes, int loop)
 {
 	t_pipe	*tmp;
