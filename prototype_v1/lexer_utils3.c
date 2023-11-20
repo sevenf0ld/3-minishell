@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 14:17:08 by folim             #+#    #+#             */
-/*   Updated: 2023/11/04 16:43:57 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/11/07 12:16:44 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,7 @@ void	expansion(t_token **tokens)
 	tmp = *tokens;
 	while (tmp != NULL && tmp->symbol != S_Q)
 	{
-		if (ft_strchr(tmp->token, '$'))
+		if (ft_strchr(tmp->token, '$') && ft_strlen(tmp->token) > 1)
 			tmp->exp = true;
 		tmp = tmp->next;
 	}

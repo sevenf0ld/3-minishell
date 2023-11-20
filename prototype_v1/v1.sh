@@ -60,6 +60,9 @@ args=("ls -la | cat | grep -wn c > outfile"
 	# heap buffer overflow in new_split if there is no space
 	"echo \"'\$PATH' '\$USER'\""
 	"echo \"'\$PATH' '\$USER'\" \"'\$PATH' '\$USER'\""
+	"echo \$"
+	"echo '\$'"
+	'echo "\$"'
     "echo ''"
     "echo ' '"
     'echo " "'
