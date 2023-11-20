@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:20:01 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/11/20 03:47:15 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/11/21 00:17:15 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,7 +161,7 @@ void		double_check_quotes(t_token **tokens, t_sym symbol);
 //parser.c
 void		init_multi_fa(t_token **tokens, t_command *c_node);
 void		complete_cmd(t_token **tokens, t_command **cmds);
-void		parser(t_token **tokens, t_command **cmds, int ro, int ri);
+void		parser(t_token **tokens, t_command **cmds);
 
 //parser_utils.c
 void		init_multi_redir(t_token **tokens, t_command *c_node);

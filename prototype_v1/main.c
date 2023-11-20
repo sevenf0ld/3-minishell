@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:19:04 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/11/20 03:41:47 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/11/21 00:19:43 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,12 +32,7 @@ int	main(void)
 			lexer(pipeline, &tok);
 			restore_stdout = dup_err(STDOUT_FILENO);
 			restore_stdin = dup_err(STDIN_FILENO);
-			parser(&tok, &cmd, restore_stdout, restore_stdin);
-			/*
-			n_builtins(&cmd);
-			if (cmd_size(cmd) > 1)
-				n_builtins(&cmd->next);
-			*/
+			parser(&tok, &cmd);
 			for (t_command *cur = cmd; cur != NULL; cur = cur->next)
 				n_builtins(&cur);
 			dup2_err(restore_stdout, STDOUT_FILENO);

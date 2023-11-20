@@ -6,24 +6,12 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 12:07:39 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/11/20 03:40:57 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/11/21 00:17:01 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mini.h"
 
-#include <sys/stat.h>
-#include <errno.h>
-#include <string.h>
-/*
-void print_inode(int fd, char *name) {
- struct stat info;
- if (fstat(fd, &info) != 0)
-   fprintf(stderr,"fstat() error for %s %d: %s\n",name,fd,strerror(errno));
- else
-   fprintf(stderr, "╳ The inode of %s is %d\n", name, (int) info.st_ino);
-}
-*/
 static void	set_multi_fa(t_token **tokens, t_command *c_node)
 {
 	t_token	*tmp;
@@ -107,7 +95,7 @@ void	complete_cmd(t_token **tokens, t_command **cmds)
 	}	
 }
 
-void	parser(t_token **tokens, t_command **cmds, int ro, int ri)
+void	parser(t_token **tokens, t_command **cmds)
 {
 	t_pipe	*pipes;
 
@@ -118,18 +106,4 @@ void	parser(t_token **tokens, t_command **cmds, int ro, int ri)
 	pipe_init(&pipes, (*cmds)->size - 1);
 	double_ll_convert3(&pipes);
 	assign_pipe_ends(*cmds, pipes);
-	/*
-	for (t_command *cur = *cmds; cur != NULL; cur = cur->next)
-	{
-		fprintf(stderr, "COMMAND [ %s ]\n", cur->cmd);
-		redirect_command_io(cur, ro, ri);
-		if (cur->size > 1)
-		{
-			dup2_err(ro, STDOUT_FILENO);
-			dup2_err(ri, STDIN_FILENO);
-		}
-	}
-	*/
-	ro = -1;
-	ri = -1;
 }

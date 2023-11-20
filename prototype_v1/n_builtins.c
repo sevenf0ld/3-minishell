@@ -6,23 +6,11 @@
 /*   By: folim <folim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/30 14:47:12 by folim             #+#    #+#             */
-/*   Updated: 2023/11/21 00:10:12 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/11/21 00:34:05 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mini.h"
-
-#include <sys/stat.h>
-#include <errno.h>
-#include <string.h>
-
-static void print_inode(int fd, char *name) {
- struct stat info;
- if (fstat(fd, &info) != 0)
-   fprintf(stderr,"fstat() error for %s %d: %s\n",name,fd,strerror(errno));
- else
-   fprintf(stderr, "┈ The inode of %s is %d\n", name, (int) info.st_ino);
-}
 
 int	n_builtins_3(char *path_str)
 {
@@ -52,20 +40,17 @@ void	n_builtins_2(t_command **a, char **input, char *cmd)
 	if (pid == 0)
 	{
 		redirect_command_io(tmp);
-		fprintf(stderr, "AFTER REDIRECTION, BEFORE EXEC\x1b[31m [%s] \x1b[m\n", tmp->cmd);
-		print_inode(STDIN_FILENO, "IN");
-		print_inode(STDOUT_FILENO, "OUT");
 		if (execve(input[0], input, NULL) == -1)
-			fprintf(stderr, "\n>>> [%s] failed <<<\n", cmd);
-			//fprintf(stdout, "\n>>> [%s] failed <<<\n", cmd);
+			fprintf(stdout, "\n>>> [%s] failed <<<\n", cmd);
 	}
 	else
 	{
 		wait(NULL);
-		close_err(tmp->read_end);
-		close_err(tmp->write_end);
-		fprintf(stderr, "\n>>> [%s] success <<<\n", cmd);
-		//fprintf(stdout, "\n>>> [%s] success <<<\n", cmd);
+		if (tmp->read_end != -1)
+			close_err(tmp->read_end);
+		if (tmp->write_end != -1)
+			close_err(tmp->write_end);
+		fprintf(stdout, "\n>>> [%s] success <<<\n", cmd);
 		free_2d_arr(input);
 	}
 	return ;
