@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:20:01 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/11/21 03:12:33 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/11/22 00:26:24 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -167,6 +167,7 @@ void		parser(t_token **tokens, t_command **cmds);
 
 //parser_utils.c
 void		init_multi_redir(t_token **tokens, t_command *c_node);
+void		set_delimiter(t_token **tokens, t_command *c_node);
 
 //parser_utils2.c
 void		assign_pipe_ends(t_command *c_node, t_pipe *p_node);
