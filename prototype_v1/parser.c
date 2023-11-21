@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 12:07:39 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/11/22 00:26:32 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/11/22 03:20:52 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,13 +55,27 @@ void	init_multi_fa(t_token **tokens, t_command *c_node)
 	set_multi_fa(tokens, c_node);
 }
 
-static void	rm_till_end(t_token **tokens)
+static char	*join_and_free(char *to_free, char *to_concat)
+{
+	char	*end;
+
+	end = ft_strjoin(to_free, to_concat);
+	free(to_free);
+	to_free = NULL;
+	return (end);
+}
+
+static char	*rm_till_end(t_token **tokens)
 {
 	t_token	*tmp;
+	char	*ret;
 
 	tmp = *tokens;
+	ret = ft_strdup("");
 	while (tmp != NULL && tmp->end == false)
 	{
+		ret = join_and_free(ret, tmp->token);
+		ret = join_and_free(ret, " ");
 		*tokens = tmp->next;
 		free(tmp);
 		tmp = NULL;
@@ -73,6 +87,7 @@ static void	rm_till_end(t_token **tokens)
 		free(tmp);
 		tmp = NULL;
 	}
+	return (ft_strtrim(ret, " "));
 }
 
 /*
@@ -91,7 +106,7 @@ void	complete_cmd(t_token **tokens, t_command **cmds)
 		init_multi_fa(tokens, c_node);
 		init_multi_redir(tokens, c_node);
 		set_delimiter(tokens, c_node);
-		rm_till_end(tokens);
+		c_node->og = rm_till_end(tokens);
 		c_node = c_node->next;
 	}	
 }

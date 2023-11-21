@@ -6,11 +6,34 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 20:48:46 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/11/16 13:41:03 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/11/22 03:39:23 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mini.h"
+
+/*
+ * use an array of cmds to make it shorter
+ */
+static bool	is_builtin(char *cmd)
+{
+	if (!ft_strcmp(cmd, "echo"))
+		return (true);
+	else if (!ft_strcmp(cmd, "cd"))
+		return (true);
+	else if (!ft_strcmp(cmd, "pwd"))
+		return (true);
+	else if (!ft_strcmp(cmd, "export"))
+		return (true);
+	else if (!ft_strcmp(cmd, "unset"))
+		return (true);
+	else if (!ft_strcmp(cmd, "env"))
+		return (true);
+	else if (!ft_strcmp(cmd, "exit"))
+		return (true);
+	else
+		return (false);
+}
 
 t_command	*cmd_new(char *cmd, int n)
 {
@@ -34,7 +57,10 @@ t_command	*cmd_new(char *cmd, int n)
 	//pipe_err(node->pipe_fd);
 	node->read_end = -1;
 	node->write_end = -1;
+	node->og = NULL;
+	node->builtin = is_builtin(node->cmd);
 	node->next = NULL;
+	fprintf(stderr, "%s is a builtin? %s\n", node->cmd, node->builtin ? "true" : "false");
 	return (node);
 }
 

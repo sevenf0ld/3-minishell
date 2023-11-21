@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:20:01 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/11/22 00:26:24 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/11/22 04:18:52 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,14 +71,6 @@ typedef struct s_token
 	struct s_token	*next;
 }					t_token;
 
-/*
- * iterate over the t_token until end is set to true
- * set the lim or stdx_re accordingly
- * remove the nodes
- *
- * how to handle quotes?
- * (for bonus, how to know handle LAND or LOR?)
- */
 typedef struct s_command
 {
 	int					pos;
@@ -97,14 +89,12 @@ typedef struct s_command
 	int					num_so_a;
 	int					read_end;
 	int					write_end;
-	//int					pipe_fd[2];
+	char				*og;
+	bool				builtin;
 	struct s_command	*prev;
 	struct s_command	*next;
 }						t_command;
 
-/*
- * pipes
- */
 typedef struct s_pipe
 {
 	int				pos;
@@ -182,6 +172,13 @@ void		cmd_init(t_token **tokens, t_command **cmds);
 t_command	*cmd_last(t_command *head);
 int			cmd_size(t_command *head);
 
+//init_pipe.c
+t_pipe		*pipe_new(int n);
+t_pipe		*pipe_last(t_pipe *head);
+void		pipe_add_back(t_pipe **head, t_pipe *node);
+void		pipe_init(t_pipe **pipes, int loop);
+
+/*	ERROR AND MEMORY HANDLER	*/
 //err_handling.c
 void		report_err(char *fn, int flag);
 void		*malloc_err(size_t size);
@@ -192,21 +189,20 @@ void		quote_err(void);
 void		pipe_err(int *pipe_arr);
 int			dup_err(int old_fd);
 
+//free.c
+void		free_2d_arr(char **input);
+
+/*	NON-BUILTINS EXECUTOR	*/
 //command=ls.c
 void		n_builtins(t_command **a);
 // void		cmd_ls_attach(int c);
 
-//free.c
-void		free_2d_arr(char **input);
-
-//init_pipe.c
-t_pipe		*pipe_new(int n);
-t_pipe		*pipe_last(t_pipe *head);
-void		pipe_add_back(t_pipe **head, t_pipe *node);
-void		pipe_init(t_pipe **pipes, int loop);
-
+/*	SIGNAL HANDLER	*/
 //signal.c
 void sig_int(int signum);
 void sig_quit(int signum);
+
+/*	BUILTINS EXECUTOR	*/
+void		b_echo(t_command *c_node);
 
 #endif
