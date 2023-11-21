@@ -83,6 +83,12 @@ args=("ls -la | cat | grep -wn c > outfile"
     "rm -r-f bs"
     "rm ------rf bs"
     "rm bs -rf"
+	"< main.c grep -n main | wc -l"
+	"grep -n main main.c | wc -l"
+	"< lexer.c cat | wc"
+	"< lexer.c | wc"
+	"cat << EOF > outone.txt"
+	"cat << LIM"
     )
 
 # create a variable with the name of the executable
