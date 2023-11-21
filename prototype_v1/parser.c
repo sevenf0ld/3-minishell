@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 12:07:39 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/11/21 02:26:46 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/11/22 00:16:14 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,7 @@ void	complete_cmd(t_token **tokens, t_command **cmds)
 	{
 		init_multi_fa(tokens, c_node);
 		init_multi_redir(tokens, c_node);
+		set_delimiter(tokens, c_node);
 		rm_till_end(tokens);
 		c_node = c_node->next;
 	}	
