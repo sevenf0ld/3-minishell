@@ -89,6 +89,17 @@ args=("ls -la | cat | grep -wn c > outfile"
 	"< lexer.c | wc"
 	"cat << EOF > outone.txt"
 	"cat << LIM"
+	"echo \$SHELL"
+	"echo '\$SHELL'"
+	'echo "$SHELL"'
+	'echo "$SHELL" $SHELL'
+	"echo "\$SHELL" '\$SHELL'"
+	'echo "$SHELL" "$SHELL"'
+	"echo '\$SHELL' \"\$SHELL\""
+	"echo '\$SHELL' \"\$SHELL\" \"\$SHELL\""
+	"echo \"\$SHELL\" \"\$SHELL\" '\$SHELL'"
+	"echo \"\$SHELL\" \"\$SHELL\" '\$SHELL' \"\$SHELL\""
+	'echo "cat main.c | wc"'
     )
 
 # create a variable with the name of the executable
