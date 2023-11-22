@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:19:04 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/11/22 21:48:41 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/11/23 06:10:35 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,12 +35,12 @@ bool	is_builtin(char *cmd)
 		return (false);
 }
 
-/*
-int	main(void)
+int	main(char **envp)
 {
 	char		*pipeline;
 	t_token		*tok;
 	t_command	*cmd;
+	t_env		*env;
 	int			restore_stdout;
 	int			restore_stdin;
 
@@ -49,6 +49,7 @@ int	main(void)
 	// signal(SIGQUIT, sig_quit);
 	tok = NULL;
 	cmd = NULL;
+	env = NULL;
 	while (1)
 	{
 		// ft_putstr_fd("minishell > ", STDERR_FILENO);
@@ -78,6 +79,10 @@ int	main(void)
 					n_builtins(&cur);
 				else if (!ft_strcmp(cur->cmd, "echo"))
 					b_echo(cur);
+				else if (!ft_strcmp(cur->cmd, "pwd"))
+					b_pwd('w');
+				else if (!ft_strcmp(cur->cmd, "cd"))
+					b_cd(cur);
 			}
 			dup2_err(restore_stdout, STDOUT_FILENO);
 			close_err(restore_stdout);
@@ -86,8 +91,7 @@ int	main(void)
 		}
 	}
 }
-*/
-
+/*
 int	main(int argc, char **argv)
 {
 	char		*pipeline;
@@ -102,7 +106,6 @@ int	main(int argc, char **argv)
 	lexer(argv[1], &tok);
 	for (t_token *dl = tok; dl != NULL; dl = dl->next)
 		printf("[%s] is a [%s]. remove? \x1b[32m%s\x1b[m\n", dl->token, type[dl->symbol], dl->rm?"true":"false");
-	/*
 	parser(&tok, &cmd);
 	t_command *tmp;
 	for (tmp = cmd; tmp != NULL; tmp = tmp->next)
@@ -119,5 +122,5 @@ int	main(int argc, char **argv)
 				printf("::: {%s}\n", tmp->args[i]);
 		}
 	}
-	*/
 }
+*/

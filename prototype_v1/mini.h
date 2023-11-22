@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:20:01 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/11/22 04:18:52 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/11/23 06:10:34 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,13 @@ typedef struct s_pipe
 	struct s_pipe	*prev;
 	struct s_pipe	*next;
 }					t_pipe;
+
+typedef struct s_env
+{
+	char			*key;
+	char			*value;
+	struct s_env	*next;
+}					t_env;
 
 /*	TOKENIZER	*/
 //tokenizer.c
@@ -204,5 +211,7 @@ void sig_quit(int signum);
 
 /*	BUILTINS EXECUTOR	*/
 void		b_echo(t_command *c_node);
+char		*b_pwd(char mode);
+void		b_cd(t_command *c_node);
 
 #endif
