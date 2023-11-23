@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:19:04 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/11/23 06:10:35 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/11/24 00:05:05 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ bool	is_builtin(char *cmd)
 		return (false);
 }
 
-int	main(char **envp)
+int	main(int argc, char **argv, char **envp)
 {
 	char		*pipeline;
 	t_token		*tok;
@@ -50,6 +50,8 @@ int	main(char **envp)
 	tok = NULL;
 	cmd = NULL;
 	env = NULL;
+	(void) argc;
+	(void) argv;
 	while (1)
 	{
 		// ft_putstr_fd("minishell > ", STDERR_FILENO);
@@ -69,10 +71,12 @@ int	main(char **envp)
 		else if (ft_strcmp(pipeline, ""))
 		{
 			add_history(pipeline);
+			env_init(&env, envp);
 			lexer(pipeline, &tok);
 			restore_stdout = dup_err(STDOUT_FILENO);
 			restore_stdin = dup_err(STDIN_FILENO);
-			parser(&tok, &cmd);
+			parser(&tok, &cmd, env);
+			/*
 			for (t_command *cur = cmd; cur != NULL; cur = cur->next)
 			{
 				if (!cur->builtin)
@@ -84,6 +88,7 @@ int	main(char **envp)
 				else if (!ft_strcmp(cur->cmd, "cd"))
 					b_cd(cur);
 			}
+			*/
 			dup2_err(restore_stdout, STDOUT_FILENO);
 			close_err(restore_stdout);
 			dup2_err(restore_stdin, STDIN_FILENO);

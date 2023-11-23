@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:20:01 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/11/23 06:10:34 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/11/24 00:05:23 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,7 @@ typedef struct s_command
 	int					write_end;
 	char				*og;
 	bool				builtin;
+	struct s_env		*env_var;
 	struct s_command	*prev;
 	struct s_command	*next;
 }						t_command;
@@ -160,7 +161,7 @@ void		double_check_quotes(t_token **tokens, t_sym symbol);
 //parser.c
 void		init_multi_fa(t_token **tokens, t_command *c_node);
 void		complete_cmd(t_token **tokens, t_command **cmds);
-void		parser(t_token **tokens, t_command **cmds);
+void		parser(t_token **tokens, t_command **cmds, t_env *envs);
 
 //parser_utils.c
 void		init_multi_redir(t_token **tokens, t_command *c_node);
@@ -173,9 +174,9 @@ void		assign_pipe_ends(t_command *c_node, t_pipe *p_node);
 void		redirect_command_io(t_command *c_node);
 
 //init_cmd.c
-t_command	*cmd_new(char *cmd, int n);
+t_command	*cmd_new(char *cmd, int n, t_env *envs);
 void		cmd_add_back(t_command **head, t_command *node);
-void		cmd_init(t_token **tokens, t_command **cmds);
+void		cmd_init(t_token **tokens, t_command **cmds, t_env *envs);
 t_command	*cmd_last(t_command *head);
 int			cmd_size(t_command *head);
 
@@ -213,5 +214,11 @@ void sig_quit(int signum);
 void		b_echo(t_command *c_node);
 char		*b_pwd(char mode);
 void		b_cd(t_command *c_node);
+
+/*	ENVIRONMENT VARIABLES HANDLER	*/
+t_env		*env_new(char *var);
+t_env		*env_last(t_env *head);
+void		env_add_back(t_env **head, t_env *node);
+void		env_init(t_env **envs, char **envp);
 
 #endif
