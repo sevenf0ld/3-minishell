@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:19:04 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/11/24 03:55:42 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/11/24 05:42:36 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,8 @@ int	main(int argc, char **argv, char **envp)
 		// }
 		// printf("%s", pipeline);
 		pipeline = readline("prompt> ");
+		f_init(&fix, envp);
+		env_init(&env, envp, fix);
 		if (!pipeline)
 		{
 			printf("exit\n");
@@ -73,8 +75,8 @@ int	main(int argc, char **argv, char **envp)
 		else if (ft_strcmp(pipeline, ""))
 		{
 			add_history(pipeline);
-			f_init(&fix, envp);
-			env_init(&env, envp, fix);
+			//f_init(&fix, envp);
+			//env_init(&env, envp, fix);
 			lexer(pipeline, &tok);
 			restore_stdout = dup_err(STDOUT_FILENO);
 			restore_stdin = dup_err(STDIN_FILENO);
@@ -91,9 +93,10 @@ int	main(int argc, char **argv, char **envp)
 				else if (!ft_strcmp(cur->cmd, "cd"))
 					b_cd(cur);
 				else if (!ft_strcmp(cur->cmd, "env"))
-					b_env(cur);
+					//b_env(cur);
+					b_env(&fix);
 				else if (!ft_strcmp(cur->cmd, "unset"))
-					b_unset(cur);
+					b_unset(cur, &fix);
 			}
 			dup2_err(restore_stdout, STDOUT_FILENO);
 			close_err(restore_stdout);

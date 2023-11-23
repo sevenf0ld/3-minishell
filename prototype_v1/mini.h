@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:20:01 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/11/24 03:56:02 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/11/24 04:46:16 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -230,8 +230,9 @@ char		*b_pwd(char mode);
 void		b_cd(t_command *c_node);
 
 //b_environ.c
-void		b_env(t_command *c_node);
-void		b_unset(t_command *c_node);
+//void		b_env(t_command *c_node);
+void		b_env(t_fixed **f_node);
+void		b_unset(t_command *c_node, t_fixed **f_node);
 
 /*	ENVIRONMENT VARIABLES HANDLER	*/
 //init_env.c
