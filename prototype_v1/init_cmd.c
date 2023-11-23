@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 20:48:46 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/11/22 03:39:23 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/11/24 00:22:50 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ static bool	is_builtin(char *cmd)
 		return (false);
 }
 
-t_command	*cmd_new(char *cmd, int n)
+t_command	*cmd_new(char *cmd, int n, t_env *envs)
 {
 	t_command	*node;
 
@@ -54,13 +54,12 @@ t_command	*cmd_new(char *cmd, int n)
 	node->num_so_o = 0;
 	node->std_out_a = NULL;
 	node->num_so_a = 0;
-	//pipe_err(node->pipe_fd);
 	node->read_end = -1;
 	node->write_end = -1;
 	node->og = NULL;
 	node->builtin = is_builtin(node->cmd);
+	node->env_var = envs;
 	node->next = NULL;
-	fprintf(stderr, "%s is a builtin? %s\n", node->cmd, node->builtin ? "true" : "false");
 	return (node);
 }
 
@@ -91,7 +90,7 @@ static void	set_cmd_size(t_command *head)
 /*
  * converts the categorized and grouped tokens into individual command sets/groups
  */
-void	cmd_init(t_token **tokens, t_command **cmds)
+void	cmd_init(t_token **tokens, t_command **cmds, t_env *envs)
 {
 	t_token		*tmp;
 	int			i;
@@ -103,9 +102,9 @@ void	cmd_init(t_token **tokens, t_command **cmds)
 		if (tmp->symbol == CMD)
 		{
 			if (i == 0)
-				*cmds = cmd_new(tmp->token, i);
+				*cmds = cmd_new(tmp->token, i, envs);
 			else
-				cmd_add_back(cmds, cmd_new(tmp->token, i));
+				cmd_add_back(cmds, cmd_new(tmp->token, i, envs));
 			i++;
 		}
 		tmp = tmp->next;
