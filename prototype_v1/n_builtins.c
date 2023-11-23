@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/30 14:47:12 by folim             #+#    #+#             */
-/*   Updated: 2023/11/21 00:34:05 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/11/24 03:43:58 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,26 +70,14 @@ void	n_builtins_1(t_command **a, char *path_str)
 	if (tmp->flags != NULL)
 	{
 		while (++i < tmp->num_f)
-		{
-			// printf(">>> %s\n",tmp->flags[i]);
 			input[i + 1] = tmp->flags[i];
-		}
 	}
 	i = -1;
 	if (tmp->args != NULL)
 	{
 		while (++i < tmp->num_a)
-		{
-			// printf(">>> %s\n",tmp->args[i]);
 			input[i + tmp->num_f + 1] = tmp->args[i];
-		}
 	}
-	// check **input
-	// i = -1;
-	// while (input[++i])
-	// 	printf("%s, ", input[i]);
-	// 	printf("\n");
-	// return ;
 	n_builtins_2(a, input, tmp->cmd);
 	return ;
 }
@@ -113,32 +101,29 @@ void	n_builtins(t_command **a)
 		path_str = tmp->cmd;
 	else if (j == 0)
 	{
-		/*
-		Stage 1:
-			Making a generic function.
-		-	Get the PATH environment variables.
-		-	Split the paths by ':' symbol.
-		-	Join each strings with '/' and
-			'tmp->cmd' which has the cmd input.
-		*/
 		path = ft_split(getenv("PATH"), ':');
 		/*
-		Using access() to check if the file is valid using
-		the path_str.
-		If it is valid, the path_str will be assigned to input[0]
-		which will be the first 
+		if (tmp->builtin == false)
+			path = ft_split(getenv("PATH"), ':');
+		else
+		{
+			t_fixed	*ftmp;
+			for (ftmp = tmp->env_var->fixed; ftmp != NULL; ftmp = ftmp->fnext)
+			{
+				if (!ft_strcmp("PATH", ftmp->fkey))
+					break ;
+			}
+			fprintf(stderr, "FVALUE %s\n", ftmp->fvalue);
+			path = ft_split(ftmp->fvalue, ':');
+		}
 		*/
 		while (path[i])
 		{
-			// printf("%s\n", path[i]);
+			//fprintf(stderr, "%i. %s\n", i, path[i]);
 			path_str = ft_strjoin(path[i], "/");
 			path_str = ft_strjoin(path_str, tmp->cmd);
 			if (!access(path_str, F_OK))
-			{
-				// printf(">> File '%s' is readable.\n", tmp->cmd); 
-				// printf(">> %s\n", path_str);
 				break ;
-			}
 			i++;
 		}
 		if (!path[i])
@@ -146,42 +131,6 @@ void	n_builtins(t_command **a)
 	}
 	else if (j == -1)
 		return ;
-
 	n_builtins_1(a, path_str);
 	return ;
-
 }
-
-
-// stage 1
-// run w/o main
-// stage 2
-// run with optarg
-// stage 3
-// run with file redirection w/o pipe
-// stage 4
-// run pipe
-// stage 5
-// stage 3 and stage 4 mix
-
-// void	cmd_ls_attach(int i)
-// {
-// 	char	*input[i];
-
-// 		pid = fork();
-// 		if (pid == -1)
-// 			return ;
-// 		if (pid == 0)
-// 		{
-// 			if (execve(input[0], input, NULL) == -1)
-// 			{
-// 				perror("execve failed");
-// 			}
-// 		}
-// 		else
-// 		{
-// 			wait(NULL);
-// 			printf("Done execve\n");
-// 		}
-// 		return ;
-// }

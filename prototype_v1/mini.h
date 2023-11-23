@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:20:01 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/11/24 00:05:23 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/11/24 03:56:02 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,12 +104,23 @@ typedef struct s_pipe
 	struct s_pipe	*next;
 }					t_pipe;
 
-typedef struct s_env
+//add a field s_env *fixed which is a copy of the initialized list to make it cleaner
+typedef struct	s_env
 {
 	char			*key;
 	char			*value;
+	struct s_fixed	*fixed;
 	struct s_env	*next;
 }					t_env;
+
+//maybe only PATH is neccessary
+//maybe only keep builtins paths
+typedef struct	s_fixed
+{
+	char			*fkey;
+	char			*fvalue;
+	struct s_fixed	*fnext;
+}					t_fixed;
 
 /*	TOKENIZER	*/
 //tokenizer.c
@@ -211,14 +222,28 @@ void sig_int(int signum);
 void sig_quit(int signum);
 
 /*	BUILTINS EXECUTOR	*/
+//b_echo.c
 void		b_echo(t_command *c_node);
+
+//b_dir.c
 char		*b_pwd(char mode);
 void		b_cd(t_command *c_node);
 
+//b_environ.c
+void		b_env(t_command *c_node);
+void		b_unset(t_command *c_node);
+
 /*	ENVIRONMENT VARIABLES HANDLER	*/
-t_env		*env_new(char *var);
+//init_env.c
+t_env		*env_new(char *var, t_fixed *f);
 t_env		*env_last(t_env *head);
 void		env_add_back(t_env **head, t_env *node);
-void		env_init(t_env **envs, char **envp);
+void		env_init(t_env **envs, char **envp, t_fixed *f);
+
+//init_fixed.c
+t_fixed		*f_new(char *var);
+t_fixed		*f_last(t_fixed *head);
+void		f_add_back(t_fixed **head, t_fixed *node);
+void		f_init(t_fixed **envs, char **envp);
 
 #endif
