@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:19:04 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/11/24 05:42:36 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/11/24 14:06:02 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,8 @@ int	main(int argc, char **argv, char **envp)
 	fix = NULL;
 	(void) argc;
 	(void) argv;
+	f_init(&fix, envp);
+	env_init(&env, envp, fix);
 	while (1)
 	{
 		// ft_putstr_fd("minishell > ", STDERR_FILENO);
@@ -65,8 +67,6 @@ int	main(int argc, char **argv, char **envp)
 		// }
 		// printf("%s", pipeline);
 		pipeline = readline("prompt> ");
-		f_init(&fix, envp);
-		env_init(&env, envp, fix);
 		if (!pipeline)
 		{
 			printf("exit\n");
@@ -75,15 +75,12 @@ int	main(int argc, char **argv, char **envp)
 		else if (ft_strcmp(pipeline, ""))
 		{
 			add_history(pipeline);
-			//f_init(&fix, envp);
-			//env_init(&env, envp, fix);
 			lexer(pipeline, &tok);
 			restore_stdout = dup_err(STDOUT_FILENO);
 			restore_stdin = dup_err(STDIN_FILENO);
 			parser(&tok, &cmd, env);
 			for (t_command *cur = cmd; cur != NULL; cur = cur->next)
 			{
-				//n_builtins(&cur);
 				if (!cur->builtin)
 					n_builtins(&cur);
 				else if (!ft_strcmp(cur->cmd, "echo"))
@@ -93,7 +90,6 @@ int	main(int argc, char **argv, char **envp)
 				else if (!ft_strcmp(cur->cmd, "cd"))
 					b_cd(cur);
 				else if (!ft_strcmp(cur->cmd, "env"))
-					//b_env(cur);
 					b_env(&fix);
 				else if (!ft_strcmp(cur->cmd, "unset"))
 					b_unset(cur, &fix);
