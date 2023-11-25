@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/30 14:47:12 by folim             #+#    #+#             */
-/*   Updated: 2023/11/24 03:43:58 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/11/25 18:46:43 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ void	n_builtins_2(t_command **a, char **input, char *cmd)
 {
 	pid_t		pid;
 	t_command	*tmp;
+	//int			status;
 
 	tmp = *a;
 	pid = fork();
@@ -40,18 +41,38 @@ void	n_builtins_2(t_command **a, char **input, char *cmd)
 	if (pid == 0)
 	{
 		redirect_command_io(tmp);
+		/*
 		if (execve(input[0], input, NULL) == -1)
 			fprintf(stdout, "\n>>> [%s] failed <<<\n", cmd);
+		*/
+		//should be exit status 127
+		if (execve(input[0], input, NULL) == -1)
+			fprintf(stdout, "cant find %s\n", input[0]);
 	}
 	else
 	{
-		wait(NULL);
 		if (tmp->read_end != -1)
 			close_err(tmp->read_end);
 		if (tmp->write_end != -1)
 			close_err(tmp->write_end);
-		fprintf(stdout, "\n>>> [%s] success <<<\n", cmd);
+		//fprintf(stdout, "\n>>> [%s] success <<<\n", cmd);
 		free_2d_arr(input);
+/*
+		waitpid(pid, &status, WNOHANG);
+		if (WIFEXITED(status))
+        	printf("child exited with status of %d\n", WEXITSTATUS(status));
+*/
+		int	wstat;
+		//wait(&wstat);
+		waitpid(pid, &wstat, WNOHANG);
+		if (WIFEXITED(wstat))
+		{
+			int stat_code = WEXITSTATUS(wstat);
+			if (stat_code == 0)
+				fprintf(stdout, "\n>>> [%s] success <<<\n", cmd);
+			else
+				fprintf(stdout, "\n>>> [%s] failed : %i <<<\n", cmd, stat_code);
+		}
 	}
 	return ;
 }
