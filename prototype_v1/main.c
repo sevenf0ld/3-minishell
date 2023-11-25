@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:19:04 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/11/24 00:05:05 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/11/25 19:11:03 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ int	main(int argc, char **argv, char **envp)
 	t_token		*tok;
 	t_command	*cmd;
 	t_env		*env;
+	t_fixed		*fix;
 	int			restore_stdout;
 	int			restore_stdin;
 
@@ -50,8 +51,11 @@ int	main(int argc, char **argv, char **envp)
 	tok = NULL;
 	cmd = NULL;
 	env = NULL;
+	fix = NULL;
 	(void) argc;
 	(void) argv;
+	f_init(&fix, envp);
+	env_init(&env, envp, fix);
 	while (1)
 	{
 		// ft_putstr_fd("minishell > ", STDERR_FILENO);
@@ -71,12 +75,10 @@ int	main(int argc, char **argv, char **envp)
 		else if (ft_strcmp(pipeline, ""))
 		{
 			add_history(pipeline);
-			env_init(&env, envp);
 			lexer(pipeline, &tok);
 			restore_stdout = dup_err(STDOUT_FILENO);
 			restore_stdin = dup_err(STDIN_FILENO);
 			parser(&tok, &cmd, env);
-			/*
 			for (t_command *cur = cmd; cur != NULL; cur = cur->next)
 			{
 				if (!cur->builtin)
@@ -87,8 +89,15 @@ int	main(int argc, char **argv, char **envp)
 					b_pwd('w');
 				else if (!ft_strcmp(cur->cmd, "cd"))
 					b_cd(cur);
+				else if (!ft_strcmp(cur->cmd, "env"))
+					b_env(cur, &fix);
+				else if (!ft_strcmp(cur->cmd, "unset"))
+					b_unset(cur, &fix);
+				else if (!ft_strcmp(cur->cmd, "export"))
+					b_export(cur, &fix);
+				else if (!ft_strcmp(cur->cmd, "exit"))
+					b_exit(cur);
 			}
-			*/
 			dup2_err(restore_stdout, STDOUT_FILENO);
 			close_err(restore_stdout);
 			dup2_err(restore_stdin, STDIN_FILENO);
