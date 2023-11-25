@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:19:04 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/11/25 12:45:23 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/11/25 19:11:03 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ int	main(int argc, char **argv, char **envp)
 				else if (!ft_strcmp(cur->cmd, "cd"))
 					b_cd(cur);
 				else if (!ft_strcmp(cur->cmd, "env"))
-					b_env(&fix);
+					b_env(cur, &fix);
 				else if (!ft_strcmp(cur->cmd, "unset"))
 					b_unset(cur, &fix);
 				else if (!ft_strcmp(cur->cmd, "export"))

@@ -6,17 +6,24 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/24 03:45:36 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/11/25 11:19:53 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/11/25 19:13:37 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mini.h"
 
-void	b_env(t_fixed **f_node)
+void	b_env(t_command *c_node, t_fixed **f_node)
 {
 	t_fixed	*ftmp;
 
 	ftmp = *f_node;
+	if (c_node->num_a > 0)
+	{
+		ft_putstr_fd("env: ", STDERR_FILENO);
+		ft_putstr_fd(c_node->args[0], STDERR_FILENO);
+		ft_putendl_fd(": No such file or directory", STDERR_FILENO);
+		return ;
+	}
 	while (ftmp != NULL)
 	{
 		if (ftmp->fvalue)
