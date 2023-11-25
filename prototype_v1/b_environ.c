@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/24 03:45:36 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/11/24 14:06:38 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/11/25 08:28:05 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,23 +28,28 @@ void	b_unset(t_command *c_node, t_fixed **f_node)
 {
 	t_fixed	*ftmp;
 	t_fixed	*to_free;
+	int		i;
 
-	ftmp = *f_node;
-	while (ftmp->fnext != NULL)
+	i = -1;
+	while (++i < c_node->num_a)
 	{
-		if (!ft_strcmp(ftmp->fnext->fkey, c_node->args[0]))
+		ftmp = *f_node;
+		while (ftmp->fnext != NULL)
 		{
-			to_free = ftmp->fnext;
-			ftmp->fnext = ftmp->fnext->fnext;
-			free(to_free->fkey);
-			to_free->fkey = NULL;
-			free(to_free->fvalue);
-			to_free->fvalue = NULL;
-			free(to_free);
-			to_free = NULL;
-			if (!ftmp->fnext)
-				return;
+			if (!ft_strcmp(ftmp->fnext->fkey, c_node->args[i]))
+			{
+				to_free = ftmp->fnext;
+				ftmp->fnext = ftmp->fnext->fnext;
+				free(to_free->fkey);
+				to_free->fkey = NULL;
+				free(to_free->fvalue);
+				to_free->fvalue = NULL;
+				free(to_free);
+				to_free = NULL;
+				if (!ftmp->fnext)
+					return;
+			}
+			ftmp = ftmp->fnext;
 		}
-		ftmp = ftmp->fnext;
 	}
 }
