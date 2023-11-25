@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:19:04 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/11/24 14:06:02 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/11/25 09:40:25 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,8 @@ int	main(int argc, char **argv, char **envp)
 					b_env(&fix);
 				else if (!ft_strcmp(cur->cmd, "unset"))
 					b_unset(cur, &fix);
+				else if (!ft_strcmp(cur->cmd, "export"))
+					b_export(cur, &fix);
 			}
 			dup2_err(restore_stdout, STDOUT_FILENO);
 			close_err(restore_stdout);

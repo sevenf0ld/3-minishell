@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/24 01:59:27 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/11/24 02:08:33 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/11/25 11:19:48 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static void	set_fixed_kv(t_fixed *node, char *var)
 	while (var[i] != '\0' && var[i] != '=')
 		i++;
 	node->fkey = ft_substr(var, 0, i);
-	node->fvalue = ft_substr(var, i + 1, len);
+	node->fvalue = ft_strchr(var, '=');
 }
 
 t_fixed	*f_new(char *var)
