@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/24 03:45:36 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/11/26 08:25:17 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/11/26 10:10:21 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,13 +113,17 @@ void	b_export(t_command *c_node, t_fixed **f_node)
 		while (ftmp != NULL)
 		{
 			if (!ft_strcmp(ftmp->fkey, key))
+			{
 				to_repl = ftmp;
+				break ;
+			}
 			ftmp = ftmp->fnext;
 		}
 		if (to_repl != NULL)
 		{
 			to_repl->fkey = key;
-			to_repl->fvalue = val + 1;
+			if (val != NULL)
+				to_repl->fvalue = val + 1;
 		}
 		else
 			f_add_back(f_node, f_new(c_node->args[i]));
