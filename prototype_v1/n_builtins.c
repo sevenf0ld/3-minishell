@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/30 14:47:12 by folim             #+#    #+#             */
-/*   Updated: 2023/11/25 18:46:43 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/11/26 08:28:33 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,17 +51,19 @@ void	n_builtins_2(t_command **a, char **input, char *cmd)
 	}
 	else
 	{
+		wait(NULL);
 		if (tmp->read_end != -1)
 			close_err(tmp->read_end);
 		if (tmp->write_end != -1)
 			close_err(tmp->write_end);
-		//fprintf(stdout, "\n>>> [%s] success <<<\n", cmd);
+		fprintf(stdout, "\n>>> [%s] success <<<\n", cmd);
 		free_2d_arr(input);
 /*
 		waitpid(pid, &status, WNOHANG);
 		if (WIFEXITED(status))
         	printf("child exited with status of %d\n", WEXITSTATUS(status));
 */
+		/*
 		int	wstat;
 		//wait(&wstat);
 		waitpid(pid, &wstat, WNOHANG);
@@ -73,6 +75,7 @@ void	n_builtins_2(t_command **a, char **input, char *cmd)
 			else
 				fprintf(stdout, "\n>>> [%s] failed : %i <<<\n", cmd, stat_code);
 		}
+		*/
 	}
 	return ;
 }

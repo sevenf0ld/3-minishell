@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/24 03:45:36 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/11/25 19:13:37 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/11/26 08:25:17 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,11 +52,13 @@ void	b_unset(t_command *c_node, t_fixed **f_node)
 				ftmp->fnext = ftmp->fnext->fnext;
 				free(to_free->fkey);
 				to_free->fkey = NULL;
+				/*
 				if (to_free->fvalue != NULL)
 				{
 					free(to_free->fvalue);
 					to_free->fvalue = NULL;
 				}
+				*/
 				free(to_free);
 				to_free = NULL;
 				if (!ftmp->fnext)
