@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/24 03:45:36 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/11/26 13:56:36 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/11/26 15:04:39 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ void	b_unset(t_command *c_node, t_fixed **f_node)
 	t_fixed	*ftmp;
 	t_fixed	*to_free;
 	int		i;
+	int		len;
 
 	i = -1;
 	if (c_node->num_a == 0)
@@ -58,6 +59,14 @@ void	b_unset(t_command *c_node, t_fixed **f_node)
 					break ;
 			}
 			ftmp = ftmp->fnext;
+		}
+		len = ft_strlen(c_node->args[i]);
+		if (!ft_isalnum(c_node->args[i][len - 1]) && c_node->args[i][len] == '\0')
+		{
+			ft_putstr_fd("minishell: unset: `", STDERR_FILENO);
+			ft_putstr_fd(c_node->args[0], STDERR_FILENO);
+			ft_putendl_fd("': not a valid identifier", STDERR_FILENO);
+			return ;
 		}
 	}
 }
