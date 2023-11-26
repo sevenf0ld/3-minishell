@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/24 03:45:36 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/11/25 19:13:37 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/11/26 15:04:39 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ void	b_unset(t_command *c_node, t_fixed **f_node)
 	t_fixed	*ftmp;
 	t_fixed	*to_free;
 	int		i;
+	int		len;
 
 	i = -1;
 	if (c_node->num_a == 0)
@@ -52,17 +53,20 @@ void	b_unset(t_command *c_node, t_fixed **f_node)
 				ftmp->fnext = ftmp->fnext->fnext;
 				free(to_free->fkey);
 				to_free->fkey = NULL;
-				if (to_free->fvalue != NULL)
-				{
-					free(to_free->fvalue);
-					to_free->fvalue = NULL;
-				}
 				free(to_free);
 				to_free = NULL;
 				if (!ftmp->fnext)
-					return;
+					break ;
 			}
 			ftmp = ftmp->fnext;
+		}
+		len = ft_strlen(c_node->args[i]);
+		if (!ft_isalnum(c_node->args[i][len - 1]) && c_node->args[i][len] == '\0')
+		{
+			ft_putstr_fd("minishell: unset: `", STDERR_FILENO);
+			ft_putstr_fd(c_node->args[0], STDERR_FILENO);
+			ft_putendl_fd("': not a valid identifier", STDERR_FILENO);
+			return ;
 		}
 	}
 }
@@ -111,13 +115,17 @@ void	b_export(t_command *c_node, t_fixed **f_node)
 		while (ftmp != NULL)
 		{
 			if (!ft_strcmp(ftmp->fkey, key))
+			{
 				to_repl = ftmp;
+				break ;
+			}
 			ftmp = ftmp->fnext;
 		}
 		if (to_repl != NULL)
 		{
 			to_repl->fkey = key;
-			to_repl->fvalue = val + 1;
+			if (val != NULL)
+				to_repl->fvalue = val + 1;
 		}
 		else
 			f_add_back(f_node, f_new(c_node->args[i]));
