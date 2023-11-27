@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:19:04 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/11/27 16:44:30 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/11/27 18:08:10 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,11 +85,7 @@ int	main(int argc, char **argv, char **envp)
 			for (t_command *cur = cmd; cur != NULL; cur = cur->next)
 			{
 				if (!ft_strcmp(cur->cmd, "echo") && !ft_strcmp(cur->args[0], "$?"))
-<<<<<<< HEAD
-					fprintf(stderr, "EXIT CODE IS %i\n", stat->s_code);
-=======
 					printf("%i\n", stat->s_code);
->>>>>>> testing
 				else if (!cur->builtin)
 					n_builtins(&cur, stat);
 				else if (!ft_strcmp(cur->cmd, "echo"))

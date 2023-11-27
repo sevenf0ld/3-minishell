@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/30 14:47:12 by folim             #+#    #+#             */
-/*   Updated: 2023/11/27 16:44:12 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/11/27 18:48:05 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,8 +120,8 @@ void	n_builtins(t_command **a, t_status *stat)
 		path_str = tmp->cmd;
 	else if (j == 0)
 	{
-		path = ft_split(getenv("PATH"), ':');
-		/*
+		//path = ft_split(getenv("PATH"), ':');
+	/*	
 		if (tmp->builtin == false)
 			path = ft_split(getenv("PATH"), ':');
 		else
@@ -135,7 +135,21 @@ void	n_builtins(t_command **a, t_status *stat)
 			fprintf(stderr, "FVALUE %s\n", ftmp->fvalue);
 			path = ft_split(ftmp->fvalue, ':');
 		}
-		*/
+	*/
+		t_fixed	*ftmp;
+		for (ftmp = tmp->env_var->fixed; ftmp != NULL; ftmp = ftmp->fnext)
+		{
+			if (!ft_strcmp("PATH", ftmp->fkey))
+				break ;
+		}
+		if (ftmp != NULL)
+		{
+			fprintf(stderr, "FVALUE %s\n", ftmp->fvalue);
+			path = ft_split(ftmp->fvalue, ':');
+		}
+		else
+			fprintf(stderr, "COMMAND NOT FOUND\n");
+		
 		while (path[i])
 		{
 			//fprintf(stderr, "%i. %s\n", i, path[i]);
