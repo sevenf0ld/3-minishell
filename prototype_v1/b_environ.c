@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/24 03:45:36 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/11/26 15:04:39 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/11/27 13:32:56 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ void	b_env(t_command *c_node, t_fixed **f_node)
 	ftmp = *f_node;
 	if (c_node->num_a > 0)
 	{
+		c_node->stat->s_code = 127;
 		ft_putstr_fd("env: ", STDERR_FILENO);
 		ft_putstr_fd(c_node->args[0], STDERR_FILENO);
 		ft_putendl_fd(": No such file or directory", STDERR_FILENO);
@@ -30,6 +31,7 @@ void	b_env(t_command *c_node, t_fixed **f_node)
 			printf("%s=%s\n", ftmp->fkey, ftmp->fvalue);
 		ftmp = ftmp->fnext;
 	}
+	c_node->stat->s_code = 0;
 }
 
 void	b_unset(t_command *c_node, t_fixed **f_node)
@@ -63,6 +65,7 @@ void	b_unset(t_command *c_node, t_fixed **f_node)
 		len = ft_strlen(c_node->args[i]);
 		if (!ft_isalnum(c_node->args[i][len - 1]) && c_node->args[i][len] == '\0')
 		{
+			c_node->stat->s_code = 1;
 			ft_putstr_fd("minishell: unset: `", STDERR_FILENO);
 			ft_putstr_fd(c_node->args[0], STDERR_FILENO);
 			ft_putendl_fd("': not a valid identifier", STDERR_FILENO);
@@ -104,6 +107,7 @@ void	b_export(t_command *c_node, t_fixed **f_node)
 				printf("%s=%s\n", ftmp->fkey, ftmp->fvalue);
 			ftmp = ftmp->fnext;
 		}
+		c_node->stat->s_code = 0;
 		return ;
 	}
 	while (++i < c_node->num_a)
@@ -130,4 +134,5 @@ void	b_export(t_command *c_node, t_fixed **f_node)
 		else
 			f_add_back(f_node, f_new(c_node->args[i]));
 	}
+	c_node->stat->s_code = 0;
 }

@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 14:17:08 by folim             #+#    #+#             */
-/*   Updated: 2023/11/07 12:16:44 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/11/27 13:00:28 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ static void	expand_env_var(t_token **tokens)
 	len = 0;
 	while (tmp != NULL)
 	{
-		if (tmp->exp)
+		if (tmp->exp && ft_strcmp(tmp->token, "$?") != 0)
 		{
 			og = tmp->token;
 			len = ft_strlen(tmp->token);
@@ -87,6 +87,12 @@ static void	expand_env_var(t_token **tokens)
 					tmp->token = "";
 			}
 		}
+		/*
+		else if (tmp->exp && !ft_strcmp(tmp->token, "$?"))
+		{
+			tmp->token = "EXIT";
+		}
+		*/
 		tmp = tmp->next;
 	}
 }

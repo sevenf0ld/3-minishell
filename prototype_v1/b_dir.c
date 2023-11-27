@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 22:06:08 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/11/23 05:04:14 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/11/27 13:34:20 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
  * mode 'w' for writing
  * mode 's' for storing
  */
-char	*b_pwd(char mode)
+char	*b_pwd(t_command *c_node, char mode)
 {
 	char	buf[PATH_MAX];
 	char	*cur_dir;
@@ -25,7 +25,10 @@ char	*b_pwd(char mode)
 	cur_dir = getcwd(buf, PATH_MAX);
 	if (cur_dir != NULL)
 		if (mode == 'w')
+		{
 			ft_putendl_fd(cur_dir, STDOUT_FILENO);
+			c_node->stat->s_code = 0;
+		}
 	return (cur_dir);
 }
 
@@ -39,10 +42,15 @@ void	mini_err(char *b, char *issue)
 	perror(NULL);
 }
 
-void	chdir_err(char	*path)
+void	chdir_err(char	*path, t_command *c_node)
 {
 	if (chdir(path) == -1)
+	{
+		c_node->stat->s_code = 1;
 		mini_err("cd", path);
+		return ;
+	}
+	c_node->stat->s_code = 0;
 }
 
 //cd - in bash when first opened shows oldpwd not set
@@ -55,7 +63,7 @@ void	b_cd(t_command *c_node)
 	cur = c_node;
 	old = NULL;
 	if (!cur->args)
-		chdir_err(getenv("HOME"));
+		chdir_err(getenv("HOME"), cur);
 	else
 	{
 		if (!ft_strcmp(cur->args[0], "-"))
@@ -66,12 +74,12 @@ void	b_cd(t_command *c_node)
 				ft_putendl_fd("minishell: cd: OLDPWD not set", STDERR_FILENO);
 				return ;
 			}
-			chdir_err(old);
-			b_pwd('w');
+			chdir_err(old, cur);
+			b_pwd(cur, 'w');
 		}
 		else if (!ft_strcmp(cur->args[0], "~"))
-			chdir_err(getenv("HOME"));
+			chdir_err(getenv("HOME"), cur);
 		else
-			chdir_err(cur->args[0]);
+			chdir_err(cur->args[0], cur);
 	}
 }

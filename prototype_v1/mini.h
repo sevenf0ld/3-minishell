@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:20:01 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/11/25 19:10:24 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/11/27 13:33:01 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,7 @@ typedef struct s_command
 	char				*og;
 	bool				builtin;
 	struct s_env		*env_var;
+	struct s_status		*stat;
 	struct s_command	*prev;
 	struct s_command	*next;
 }						t_command;
@@ -121,6 +122,11 @@ typedef struct	s_fixed
 	char			*fvalue;
 	struct s_fixed	*fnext;
 }					t_fixed;
+
+typedef struct	s_status
+{
+	int	s_code;
+}		t_status;
 
 /*	TOKENIZER	*/
 //tokenizer.c
@@ -172,7 +178,7 @@ void		double_check_quotes(t_token **tokens, t_sym symbol);
 //parser.c
 void		init_multi_fa(t_token **tokens, t_command *c_node);
 void		complete_cmd(t_token **tokens, t_command **cmds);
-void		parser(t_token **tokens, t_command **cmds, t_env *envs);
+void		parser(t_token **tokens, t_command **cmds, t_env *envs, t_status *stat);
 
 //parser_utils.c
 void		init_multi_redir(t_token **tokens, t_command *c_node);
@@ -185,9 +191,9 @@ void		assign_pipe_ends(t_command *c_node, t_pipe *p_node);
 void		redirect_command_io(t_command *c_node);
 
 //init_cmd.c
-t_command	*cmd_new(char *cmd, int n, t_env *envs);
+t_command	*cmd_new(char *cmd, int n, t_env *envs, t_status *stat);
 void		cmd_add_back(t_command **head, t_command *node);
-void		cmd_init(t_token **tokens, t_command **cmds, t_env *envs);
+void		cmd_init(t_token **tokens, t_command **cmds, t_env *envs, t_status *stat);
 t_command	*cmd_last(t_command *head);
 int			cmd_size(t_command *head);
 
@@ -213,7 +219,7 @@ void		free_2d_arr(char **input);
 
 /*	NON-BUILTINS EXECUTOR	*/
 //command=ls.c
-void		n_builtins(t_command **a);
+void		n_builtins(t_command **a, t_status *stat);
 // void		cmd_ls_attach(int c);
 
 /*	SIGNAL HANDLER	*/
@@ -226,7 +232,7 @@ void sig_quit(int signum);
 void		b_echo(t_command *c_node);
 
 //b_dir.c
-char		*b_pwd(char mode);
+char		*b_pwd(t_command *c_node, char mode);
 void		b_cd(t_command *c_node);
 
 //b_environ.c

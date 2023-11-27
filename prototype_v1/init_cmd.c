@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 20:48:46 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/11/24 00:22:50 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/11/27 12:44:34 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ static bool	is_builtin(char *cmd)
 		return (false);
 }
 
-t_command	*cmd_new(char *cmd, int n, t_env *envs)
+t_command	*cmd_new(char *cmd, int n, t_env *envs, t_status *stat)
 {
 	t_command	*node;
 
@@ -59,6 +59,7 @@ t_command	*cmd_new(char *cmd, int n, t_env *envs)
 	node->og = NULL;
 	node->builtin = is_builtin(node->cmd);
 	node->env_var = envs;
+	node->stat = stat;
 	node->next = NULL;
 	return (node);
 }
@@ -90,7 +91,7 @@ static void	set_cmd_size(t_command *head)
 /*
  * converts the categorized and grouped tokens into individual command sets/groups
  */
-void	cmd_init(t_token **tokens, t_command **cmds, t_env *envs)
+void	cmd_init(t_token **tokens, t_command **cmds, t_env *envs, t_status *stat)
 {
 	t_token		*tmp;
 	int			i;
@@ -102,9 +103,9 @@ void	cmd_init(t_token **tokens, t_command **cmds, t_env *envs)
 		if (tmp->symbol == CMD)
 		{
 			if (i == 0)
-				*cmds = cmd_new(tmp->token, i, envs);
+				*cmds = cmd_new(tmp->token, i, envs, stat);
 			else
-				cmd_add_back(cmds, cmd_new(tmp->token, i, envs));
+				cmd_add_back(cmds, cmd_new(tmp->token, i, envs, stat));
 			i++;
 		}
 		tmp = tmp->next;

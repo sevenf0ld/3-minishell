@@ -100,6 +100,9 @@ args=("ls -la | cat | grep -wn c > outfile"
 	"echo \"\$SHELL\" \"\$SHELL\" '\$SHELL'"
 	"echo \"\$SHELL\" \"\$SHELL\" '\$SHELL' \"\$SHELL\""
 	'echo "cat main.c | wc"'
+	"echo '\$?'"
+	'echo "\$?"'
+	"echo \$?"
     )
 
 # create a variable with the name of the executable

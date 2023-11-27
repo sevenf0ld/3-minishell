@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/30 14:47:12 by folim             #+#    #+#             */
-/*   Updated: 2023/11/26 08:28:33 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/11/27 11:15:08 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	n_builtins_3(char *path_str)
 }
 
 
-void	n_builtins_2(t_command **a, char **input, char *cmd)
+void	n_builtins_2(t_command **a, char **input, char *cmd, t_status *stat)
 {
 	pid_t		pid;
 	t_command	*tmp;
@@ -46,41 +46,52 @@ void	n_builtins_2(t_command **a, char **input, char *cmd)
 			fprintf(stdout, "\n>>> [%s] failed <<<\n", cmd);
 		*/
 		//should be exit status 127
-		if (execve(input[0], input, NULL) == -1)
-			fprintf(stdout, "cant find %s\n", input[0]);
+		execve(input[0], input, NULL);
+		fprintf(stderr, "cant find %s\n", cmd);
+		perror("execve");
+		exit(127);
 	}
 	else
 	{
-		wait(NULL);
 		if (tmp->read_end != -1)
 			close_err(tmp->read_end);
 		if (tmp->write_end != -1)
 			close_err(tmp->write_end);
-		fprintf(stdout, "\n>>> [%s] success <<<\n", cmd);
 		free_2d_arr(input);
-/*
-		waitpid(pid, &status, WNOHANG);
-		if (WIFEXITED(status))
-        	printf("child exited with status of %d\n", WEXITSTATUS(status));
-*/
-		/*
+
 		int	wstat;
-		//wait(&wstat);
-		waitpid(pid, &wstat, WNOHANG);
+		int	got_pid;
+		do
+		{
+			got_pid = wait(&wstat);
+			if (got_pid == pid)
+				break ;
+			if (got_pid == -1)
+			{
+				perror("waitpid");
+				return ;
+			}
+		}
+		while (got_pid == wait(&wstat));
 		if (WIFEXITED(wstat))
 		{
-			int stat_code = WEXITSTATUS(wstat);
-			if (stat_code == 0)
-				fprintf(stdout, "\n>>> [%s] success <<<\n", cmd);
-			else
-				fprintf(stdout, "\n>>> [%s] failed : %i <<<\n", cmd, stat_code);
+			fprintf(stderr, "exited normally with value %i\n", WEXITSTATUS(wstat));
+			stat->s_code = WEXITSTATUS(wstat);
 		}
-		*/
+		else if (WIFSIGNALED(wstat))
+		{
+			fprintf(stderr, "exited due to signal %i\n", WTERMSIG(wstat));
+			stat->s_code = WTERMSIG(wstat);
+		}
+		else if (WIFSTOPPED(wstat))
+		{
+			fprintf(stderr, "stopped by signal %i\n", WIFSTOPPED(wstat));
+			stat->s_code = WIFSTOPPED(wstat);
+		}
 	}
-	return ;
 }
 
-void	n_builtins_1(t_command **a, char *path_str)
+void	n_builtins_1(t_command **a, char *path_str, t_status *stat)
 {
 	t_command	*tmp;
 	int			i;
@@ -102,11 +113,11 @@ void	n_builtins_1(t_command **a, char *path_str)
 		while (++i < tmp->num_a)
 			input[i + tmp->num_f + 1] = tmp->args[i];
 	}
-	n_builtins_2(a, input, tmp->cmd);
+	n_builtins_2(a, input, tmp->cmd, stat);
 	return ;
 }
 
-void	n_builtins(t_command **a)
+void	n_builtins(t_command **a, t_status *stat)
 {
 	int			i;
 	int			j;
@@ -155,6 +166,6 @@ void	n_builtins(t_command **a)
 	}
 	else if (j == -1)
 		return ;
-	n_builtins_1(a, path_str);
+	n_builtins_1(a, path_str, stat);
 	return ;
 }
