@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/30 14:47:12 by folim             #+#    #+#             */
-/*   Updated: 2023/11/27 11:15:08 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/11/27 16:44:12 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,14 +41,7 @@ void	n_builtins_2(t_command **a, char **input, char *cmd, t_status *stat)
 	if (pid == 0)
 	{
 		redirect_command_io(tmp);
-		/*
-		if (execve(input[0], input, NULL) == -1)
-			fprintf(stdout, "\n>>> [%s] failed <<<\n", cmd);
-		*/
-		//should be exit status 127
 		execve(input[0], input, NULL);
-		fprintf(stderr, "cant find %s\n", cmd);
-		perror("execve");
 		exit(127);
 	}
 	else
@@ -58,7 +51,7 @@ void	n_builtins_2(t_command **a, char **input, char *cmd, t_status *stat)
 		if (tmp->write_end != -1)
 			close_err(tmp->write_end);
 		free_2d_arr(input);
-
+		cmd = NULL;
 		int	wstat;
 		int	got_pid;
 		do
@@ -74,20 +67,11 @@ void	n_builtins_2(t_command **a, char **input, char *cmd, t_status *stat)
 		}
 		while (got_pid == wait(&wstat));
 		if (WIFEXITED(wstat))
-		{
-			fprintf(stderr, "exited normally with value %i\n", WEXITSTATUS(wstat));
 			stat->s_code = WEXITSTATUS(wstat);
-		}
 		else if (WIFSIGNALED(wstat))
-		{
-			fprintf(stderr, "exited due to signal %i\n", WTERMSIG(wstat));
 			stat->s_code = WTERMSIG(wstat);
-		}
 		else if (WIFSTOPPED(wstat))
-		{
-			fprintf(stderr, "stopped by signal %i\n", WIFSTOPPED(wstat));
 			stat->s_code = WIFSTOPPED(wstat);
-		}
 	}
 }
 

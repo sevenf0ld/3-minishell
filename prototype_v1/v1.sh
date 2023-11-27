@@ -103,6 +103,9 @@ args=("ls -la | cat | grep -wn c > outfile"
 	"echo '\$?'"
 	'echo "\$?"'
 	"echo \$?"
+	"ls -l > > > outfile firstfile"
+	"ls -l >> > file lastfile"
+	"ls -l > > file lastfile"
     )
 
 # create a variable with the name of the executable
