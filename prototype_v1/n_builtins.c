@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/30 14:47:12 by folim             #+#    #+#             */
-/*   Updated: 2023/11/27 18:48:05 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/11/29 17:28:40 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ void	n_builtins_2(t_command **a, char **input, char *cmd, t_status *stat)
 {
 	pid_t		pid;
 	t_command	*tmp;
-	//int			status;
 
 	tmp = *a;
 	pid = fork();
@@ -109,8 +108,6 @@ void	n_builtins(t_command **a, t_status *stat)
 	char		**path;
 	char		*path_str;
 
-
-
 	tmp = *a;
 	i = 0;
 	j = n_builtins_3(tmp->cmd);
@@ -120,39 +117,27 @@ void	n_builtins(t_command **a, t_status *stat)
 		path_str = tmp->cmd;
 	else if (j == 0)
 	{
-		//path = ft_split(getenv("PATH"), ':');
-	/*	
-		if (tmp->builtin == false)
-			path = ft_split(getenv("PATH"), ':');
-		else
-		{
-			t_fixed	*ftmp;
-			for (ftmp = tmp->env_var->fixed; ftmp != NULL; ftmp = ftmp->fnext)
-			{
-				if (!ft_strcmp("PATH", ftmp->fkey))
-					break ;
-			}
-			fprintf(stderr, "FVALUE %s\n", ftmp->fvalue);
-			path = ft_split(ftmp->fvalue, ':');
-		}
-	*/
+		if (tmp->builtin)
+			return ;
 		t_fixed	*ftmp;
 		for (ftmp = tmp->env_var->fixed; ftmp != NULL; ftmp = ftmp->fnext)
 		{
 			if (!ft_strcmp("PATH", ftmp->fkey))
+			{
+				path = ft_split(ftmp->fvalue, ':');
 				break ;
+			}
 		}
-		if (ftmp != NULL)
+		if (ftmp == NULL)
 		{
-			fprintf(stderr, "FVALUE %s\n", ftmp->fvalue);
-			path = ft_split(ftmp->fvalue, ':');
+			ft_putstr_fd("minishell: ", STDERR_FILENO);
+			ft_putstr_fd(tmp->cmd, STDERR_FILENO);
+			ft_putendl_fd(": No such file or directory", STDERR_FILENO);
+			tmp->stat->s_code = 127;
+			return ;
 		}
-		else
-			fprintf(stderr, "COMMAND NOT FOUND\n");
-		
 		while (path[i])
 		{
-			//fprintf(stderr, "%i. %s\n", i, path[i]);
 			path_str = ft_strjoin(path[i], "/");
 			path_str = ft_strjoin(path_str, tmp->cmd);
 			if (!access(path_str, F_OK))
