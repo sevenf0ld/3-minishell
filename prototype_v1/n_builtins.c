@@ -41,7 +41,8 @@ void	n_builtins_2(t_command **a, char **input, char *cmd, t_status *stat)
 	{
 		redirect_command_io(tmp);
 		execve(input[0], input, NULL);
-		exit(127);
+		//exit(127);
+		stat->s_code = 127;
 	}
 	else
 	{
@@ -107,12 +108,14 @@ void	n_builtins(t_command **a, t_status *stat)
 	t_command	*tmp;
 	char		**path;
 	char		*path_str;
+	//bool		path_exists;
 
 	tmp = *a;
 	i = 0;
 	j = n_builtins_3(tmp->cmd);
 	path = NULL;
 	path_str = NULL;
+	//path_exists = true;
 	if (j == 1)
 		path_str = tmp->cmd;
 	else if (j == 0)
@@ -128,6 +131,8 @@ void	n_builtins(t_command **a, t_status *stat)
 				break ;
 			}
 		}
+		//if (!path)
+			//path_exists = false;
 		if (ftmp == NULL)
 		{
 			ft_putstr_fd("minishell: ", STDERR_FILENO);
@@ -145,7 +150,10 @@ void	n_builtins(t_command **a, t_status *stat)
 			i++;
 		}
 		if (!path[i])
+		//if (!path[i] && path_exists)
 			printf("minishell: %s: command not found\n", tmp->cmd);
+		//else if (!path[i] && !path_exists)
+			//printf("minishell: %s: No such file of directory\n", tmp->cmd);
 	}
 	else if (j == -1)
 		return ;
