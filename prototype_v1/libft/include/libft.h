@@ -6,7 +6,7 @@
 /*   By: maiman-m <maiman-m@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 15:54:11 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/09/15 13:29:59 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/12/20 10:35:08 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ int			ft_strcmp(char *s, char *t);
 long long	ft_atoll(const char *s);
 int			ft_iswhite(char a);
 char		*ft_strndup(const char *s, int n);
+char		*ft_lltoa(long long n);
 
 char		*get_next_line(int fd);
 char		*read_and_store(char *store, int fd, char *buffer);
