@@ -96,10 +96,8 @@ static char	*rm_till_end(t_token **tokens)
  */
 void	complete_cmd(t_token **tokens, t_command **cmds)
 {
-	t_token		*tmp;
 	t_command	*c_node;
 
-	tmp = *tokens;
 	c_node = *cmds;
 	while (c_node != NULL)
 	{

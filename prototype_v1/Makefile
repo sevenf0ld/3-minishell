@@ -12,7 +12,7 @@
 
 PROG_NAME = v1
 
-CC = cc
+CC = clang
 
 CFLAGS = -Wall -Wextra -Werror -fsanitize=address -g3
 
@@ -20,7 +20,7 @@ CFLAGS = -Wall -Wextra -Werror -fsanitize=address -g3
 
 # CPPFLAGS = -I include -I libft/include
 
-CPPFLAGS = -I libft/include -I mini.h
+CPPFLAGS = -I/libft/include -I/mini.h
 
 # LDFLAGS = -Llibft -lft -lreadline -L/usr/local/opt/readline/lib -I/usr/local/opt/readline/include
 

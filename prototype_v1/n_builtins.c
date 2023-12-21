@@ -27,6 +27,7 @@ int	n_builtins_3(char *path_str)
 
 void	n_builtins_2(t_command **a, char **input, char *cmd, t_status *stat)
 {
+	(void) cmd;
 	pid_t		pid;
 	t_command	*tmp;
 
