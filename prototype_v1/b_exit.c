@@ -12,31 +12,72 @@
 
 #include "mini.h"
 
+/*
+
+*/
 void	b_exit(t_command *c_node)
 {
 	long long	conv;
 
-	if (c_node->num_a == 1)
+	if (c_node->num_a == 0 && c_node->num_f == 0)
+		return ;
+	if (c_node->num_a > 0)
 	{
 		conv = ft_atoll(c_node->args[0]);
+		printf("CONV -> %lli\n", conv);
 		if (!ft_strcmp(ft_lltoa(conv), c_node->args[0]))
 		{
 			if (conv > 255)
 				c_node->stat->s_code = conv % 256;
+			else if (conv < 0)
+				c_node->stat->s_code = 256 + conv;
 			else
 				c_node->stat->s_code = conv;
+			if (c_node->num_a > 1 || c_node->num_f > 0)
+			{
+				printf("minishell: exit: too many arguments\n");
+				c_node->stat->s_code = 1;
+				fprintf(stderr, "S_CODE [%d] but will not close this shell\n", c_node->stat->s_code);
+				return ;
+			}
 		}
 		else
 		{
 			printf("minishell: exit: %s: numeric argument required\n", c_node->args[0]);
-			c_node->stat->s_code = 255;
+			c_node->stat->s_code = 2;
 		}
-	}
-	else if (c_node->num_a > 1)
-	{
-		printf("minishell: exit: too many arguments\n");
-		c_node->stat->s_code = 1;
+		fprintf(stderr, "S_CODE [%d] will close this shell if it weren't for testing purposes\n", c_node->stat->s_code);
 		return ;
 	}
-	exit(c_node->stat->s_code);
+	if (c_node->num_f > 0)
+	{
+		conv = ft_atoll(c_node->flags[0]);
+		printf("CONV -> %lli\n", conv);
+		if (!ft_strcmp(ft_lltoa(conv), c_node->flags[0]))
+		{
+			if (conv > -255)
+				c_node->stat->s_code = 256 + conv;
+			else
+			{
+				c_node->stat->s_code = (256 + conv) % 256;
+				printf("for things smaller than -255: %lli\n", (256 + conv) % 256);
+			}
+			if (c_node->num_f > 1 || c_node->num_a > 0)
+			{
+				printf("minishell: exit: too many arguments\n");
+				c_node->stat->s_code = 1;
+				fprintf(stderr, "S_CODE [%d] but will not close this shell\n", c_node->stat->s_code);
+				return ;
+			}
+		}
+		else
+		{
+			printf("minishell: exit: %s: numeric argument required\n", c_node->flags[0]);
+			c_node->stat->s_code = 2;
+		}
+		fprintf(stderr, "S_CODE [%d] will close this shell if it weren't for testing purposes\n", c_node->stat->s_code);
+
+	}
+	//exit(c_node->stat->s_code);
+	//fprintf(stderr, "S_CODE [%d] will close this shell if it weren't for testing purposes\n", c_node->stat->s_code);
 }
