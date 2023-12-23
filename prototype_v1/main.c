@@ -12,6 +12,8 @@
 
 #include "mini.h"
 
+//tryna commit before pulling
+
 /*
  * use an array of cmds to make it shorter
  */
