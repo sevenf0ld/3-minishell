@@ -60,7 +60,7 @@ void	b_exit(t_command *c_node)
 			else
 			{
 				c_node->stat->s_code = (256 + conv) % 256;
-				printf("for things smaller than -255: %lli\n", (256 + conv) % 256);
+				printf("for things smaller than -255: %lli\n", (256 + conv) % (256 + 0U));
 			}
 			if (c_node->num_f > 1 || c_node->num_a > 0)
 			{
