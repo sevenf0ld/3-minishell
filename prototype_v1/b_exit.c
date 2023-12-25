@@ -51,16 +51,20 @@ void	b_exit(t_command *c_node)
 	}
 	if (c_node->num_f > 0)
 	{
-		conv = ft_atoll(c_node->flags[0]);
+		//conv = ft_atoll(c_node->flags[0]);
+		conv = ft_atoi(c_node->flags[0]);
 		printf("CONV -> %lli\n", conv);
-		if (!ft_strcmp(ft_lltoa(conv), c_node->flags[0]))
+		//if (!ft_strcmp(ft_lltoa(conv), c_node->flags[0]))
+		if (!ft_strcmp(ft_itoa(conv), c_node->flags[0]))
 		{
 			if (conv > -255)
 				c_node->stat->s_code = 256 + conv;
 			else
 			{
-				c_node->stat->s_code = (256 + conv) % 256;
-				printf("for things smaller than -255: %lli\n", (256 + conv) % 256);
+				c_node->stat->s_code = (256 + conv) % (unsigned)256;
+				//printf("for things smaller than -255: %lli\n", (256 + conv) % (unsigned)256);
+				printf("U: for things smaller than -255: %u (u) or %i (i)\n", -44 % (unsigned)256, -44 % (unsigned)256);
+				printf("I: for things smaller than -255: %u (u) or %i (i)\n", -44 % 256, -44 % 256);
 			}
 			if (c_node->num_f > 1 || c_node->num_a > 0)
 			{
