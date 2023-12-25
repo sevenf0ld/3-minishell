@@ -12,19 +12,17 @@
 
 #include "mini.h"
 
-/*
-
-*/
 void	b_exit(t_command *c_node)
 {
-	long long	conv;
+	//long long	conv;
+	int	conv;
 
 	if (c_node->num_a == 0 && c_node->num_f == 0)
 		return ;
 	if (c_node->num_a > 0)
 	{
 		conv = ft_atoll(c_node->args[0]);
-		printf("CONV -> %lli\n", conv);
+		printf("CONV -> %i\n", conv);
 		if (!ft_strcmp(ft_lltoa(conv), c_node->args[0]))
 		{
 			if (conv > 255)
@@ -51,17 +49,13 @@ void	b_exit(t_command *c_node)
 	}
 	if (c_node->num_f > 0)
 	{
-		conv = ft_atoll(c_node->flags[0]);
-		printf("CONV -> %lli\n", conv);
-		if (!ft_strcmp(ft_lltoa(conv), c_node->flags[0]))
+		conv = ft_atoi(c_node->flags[0]);
+		if (!ft_strcmp(ft_itoa(conv), c_node->flags[0]))
 		{
 			if (conv > -255)
 				c_node->stat->s_code = 256 + conv;
 			else
-			{
-				c_node->stat->s_code = (256 + conv) % 256;
-				printf("for things smaller than -255: %lli\n", (256 + conv) % 256);
-			}
+				c_node->stat->s_code = (256 + conv) % (unsigned)256;
 			if (c_node->num_f > 1 || c_node->num_a > 0)
 			{
 				printf("minishell: exit: too many arguments\n");
