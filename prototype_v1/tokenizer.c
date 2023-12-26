@@ -64,13 +64,11 @@ char	**new_split(char *str)
 {
 	int		i;
 	int		j;
-	int		count;
 	char	**end;
 	char	*sp_w_q;
 
 	i = -1;
 	j = 0;
-	count = w_c(str);
 	end = init_split_pipeline(str, w_c(str));
 	sp_w_q = NULL;
 	while (str[++i] != '\0')

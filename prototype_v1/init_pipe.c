@@ -47,10 +47,8 @@ void	pipe_add_back(t_pipe **head, t_pipe *node)
  */
 void	pipe_init(t_pipe **pipes, int loop)
 {
-	t_pipe	*tmp;
 	int		i;
 
-	tmp = *pipes;
 	i = 0;
 	while (i < loop)
 	{

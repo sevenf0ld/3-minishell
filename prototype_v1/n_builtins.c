@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/30 14:47:12 by folim             #+#    #+#             */
-/*   Updated: 2023/11/27 16:40:00 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/11/29 17:28:40 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 int	n_builtins_3(char *path_str)
 {
+	printf("PATH STR %s\n", path_str);
 	if (!access(path_str, F_OK))
 		return (1);
 	else if (path_str[0] == '/')
@@ -21,15 +22,32 @@ int	n_builtins_3(char *path_str)
 		printf("minishell: %s: No such file of directory\n", path_str);
 		return (-1);
 	}
+	else if (path_str[0] == '.' && path_str[1] == '/')
+	{
+		if (!access(path_str, X_OK))
+		{
+			char **test = NULL;
+			sprintf(test[0], "%s", path_str);
+			test[1] = path_str;
+			test[2] = NULL;
+			printf("CAN EXECUTE\n");
+			execve(path_str, test, NULL);
+		}
+		else
+		{
+			printf("CANNOT EXECUTE\n");
+			printf("minishell: %s: Permission denied\n", path_str);
+			return (126);
+		}
+	}
 	return (0);
 }
 
-
 void	n_builtins_2(t_command **a, char **input, char *cmd, t_status *stat)
 {
+	(void) cmd;
 	pid_t		pid;
 	t_command	*tmp;
-	//int			status;
 
 	tmp = *a;
 	pid = fork();
@@ -42,7 +60,8 @@ void	n_builtins_2(t_command **a, char **input, char *cmd, t_status *stat)
 	{
 		redirect_command_io(tmp);
 		execve(input[0], input, NULL);
-		exit(127);
+		//exit(127);
+		stat->s_code = 127;
 	}
 	else
 	{
@@ -108,37 +127,41 @@ void	n_builtins(t_command **a, t_status *stat)
 	t_command	*tmp;
 	char		**path;
 	char		*path_str;
-
-
+	//bool		path_exists;
 
 	tmp = *a;
 	i = 0;
 	j = n_builtins_3(tmp->cmd);
 	path = NULL;
 	path_str = NULL;
+	//path_exists = true;
 	if (j == 1)
 		path_str = tmp->cmd;
 	else if (j == 0)
 	{
-		path = ft_split(getenv("PATH"), ':');
-		/*
-		if (tmp->builtin == false)
-			path = ft_split(getenv("PATH"), ':');
-		else
+		if (tmp->builtin)
+			return ;
+		t_fixed	*ftmp;
+		for (ftmp = tmp->env_var->fixed; ftmp != NULL; ftmp = ftmp->fnext)
 		{
-			t_fixed	*ftmp;
-			for (ftmp = tmp->env_var->fixed; ftmp != NULL; ftmp = ftmp->fnext)
+			if (!ft_strcmp("PATH", ftmp->fkey))
 			{
-				if (!ft_strcmp("PATH", ftmp->fkey))
-					break ;
+				path = ft_split(ftmp->fvalue, ':');
+				break ;
 			}
-			fprintf(stderr, "FVALUE %s\n", ftmp->fvalue);
-			path = ft_split(ftmp->fvalue, ':');
 		}
-		*/
+		//if (!path)
+			//path_exists = false;
+		if (ftmp == NULL)
+		{
+			ft_putstr_fd("minishell: ", STDERR_FILENO);
+			ft_putstr_fd(tmp->cmd, STDERR_FILENO);
+			ft_putendl_fd(": No such file or directory", STDERR_FILENO);
+			tmp->stat->s_code = 127;
+			return ;
+		}
 		while (path[i])
 		{
-			//fprintf(stderr, "%i. %s\n", i, path[i]);
 			path_str = ft_strjoin(path[i], "/");
 			path_str = ft_strjoin(path_str, tmp->cmd);
 			if (!access(path_str, F_OK))
@@ -146,10 +169,21 @@ void	n_builtins(t_command **a, t_status *stat)
 			i++;
 		}
 		if (!path[i])
+		//if (!path[i] && path_exists)
+		{
 			printf("minishell: %s: command not found\n", tmp->cmd);
+			tmp->stat->s_code = 127;
+		}
+		//else if (!path[i] && !path_exists)
+			//printf("minishell: %s: No such file of directory\n", tmp->cmd);
 	}
 	else if (j == -1)
 		return ;
+	else if (j == 126)
+	{
+		tmp->stat->s_code = j;
+		return ;
+	}
 	n_builtins_1(a, path_str, stat);
 	return ;
 }

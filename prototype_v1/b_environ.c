@@ -77,10 +77,8 @@ void	b_unset(t_command *c_node, t_fixed **f_node)
 char	*get_key(char *exported)
 {
 	int	i;
-	int	len;
 
 	i = 0;
-	len = ft_strlen(exported);
 	while (exported[i] != '\0' && exported[i] != '=')
 		i++;
 	return (ft_substr(exported, 0, i));

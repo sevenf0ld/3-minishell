@@ -15,10 +15,8 @@
 static void	set_fixed_kv(t_fixed *node, char *var)
 {
 	int	i;
-	int	len;
 
 	i = 0;
-	len = ft_strlen(var);
 	while (var[i] != '\0' && var[i] != '=')
 		i++;
 	node->fkey = ft_substr(var, 0, i);
@@ -59,10 +57,8 @@ void	f_add_back(t_fixed **head, t_fixed *node)
 
 void	f_init(t_fixed **envs, char **envp)
 {
-	t_fixed	*var;
 	int		i;
 
-	var = *envs;
 	i = 0;
 	while (envp[i] != NULL)
 	{
