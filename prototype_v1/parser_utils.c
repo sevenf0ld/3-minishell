@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/17 14:26:35 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/11/22 00:26:27 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/12/27 20:51:35 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,11 +30,17 @@ static void	set_multi_fildes(t_token **tokens, t_command *c_node)
 			if (tmp->prev->symbol == IN_RE)
 				c_node->std_in[i++] = open_err(tmp->token, O_RDONLY, 0444);
 			if (tmp->prev->symbol == OUT_RE)
+			{
 				//*(c_node->std_out_o++) = open(tmp->token, O_CREAT | O_WRONLY | O_TRUNC, 0777);
 				c_node->std_out_o[j++] = open_err(tmp->token, O_CREAT | O_WRONLY | O_TRUNC, 0777);
+				c_node->last_out = c_node->std_out_o[j - 1];
+			}
 			if (tmp->prev->symbol == ADD)
+			{
 				//*(c_node->std_out_a++) = open(tmp->token, O_CREAT | O_WRONLY | O_APPEND, 0666);
 				c_node->std_out_a[k++] = open_err(tmp->token, O_CREAT | O_WRONLY | O_APPEND, 0666);
+				c_node->last_out = c_node->std_out_a[k - 1];
+			}
 		}
 		if (tmp->end == true)
 			break ;

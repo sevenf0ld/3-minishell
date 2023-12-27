@@ -6,13 +6,13 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 11:26:35 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/11/21 03:24:39 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/12/27 21:01:37 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mini.h"
 
-void	redirect_io_file(int *fd_arr, char mode)
+void	redirect_io_file(int *fd_arr, char mode, int last_out)
 {
 	int	i;
 
@@ -21,8 +21,8 @@ void	redirect_io_file(int *fd_arr, char mode)
 		i++;
 	if (mode == 'i')
 		dup2_err(fd_arr[i - 1], STDIN_FILENO);
-	else if (mode == 'o')
-		dup2_err(fd_arr[i - 1], STDOUT_FILENO);
+	else if (mode == 'o' || mode == 'a')
+		dup2_err(last_out, STDOUT_FILENO);
 }
 
 /*
@@ -78,9 +78,11 @@ void	redirect_command_io(t_command *c_node)
 	if (!cur)
 		return ;
 	if (cur->std_in != NULL)
-		redirect_io_file(cur->std_in, 'i');
-	if (cur->std_out_o != NULL || cur->std_out_a != NULL)
-		redirect_io_file(cur->std_out_o, 'o');
+		redirect_io_file(cur->std_in, 'i', c_node->last_out);
+	if (cur->std_out_o != NULL)
+		redirect_io_file(cur->std_out_o, 'o', c_node->last_out);
+	if (cur->std_out_a != NULL)
+		redirect_io_file(cur->std_out_a, 'a', c_node->last_out);
 	if (cur->size == 1)
 		return ;
 	redirect_io_pipe(cur);
