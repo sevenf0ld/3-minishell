@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:20:01 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/11/27 13:33:01 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/12/27 20:49:23 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,7 @@ typedef struct s_command
 	int					write_end;
 	char				*og;
 	bool				builtin;
+	int				last_out;
 	struct s_env		*env_var;
 	struct s_status		*stat;
 	struct s_command	*prev;
