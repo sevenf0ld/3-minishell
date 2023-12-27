@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/30 14:47:12 by folim             #+#    #+#             */
-/*   Updated: 2023/11/29 17:28:40 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/12/27 13:34:00 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,14 +18,17 @@ int	n_builtins_3(char *path_str)
 	{
 		if (!access(path_str, X_OK))
 		{
+			/*
 			char **test = malloc(sizeof(char *) * 2);
 			test[0] = malloc(sizeof(char) * ft_strlen(path_str + 1));
 			test[0] = path_str + 2;
 			printf("check test[0]: %s\n", test[0]);
 			test[1] = NULL;
+			return (1);
 			execve(path_str, test, NULL);
 			printf("CAN EXECUTE\n");
-			return (1);
+			*/
+			system(path_str);
 		}
 		else
 		{
