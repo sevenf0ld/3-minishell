@@ -20,6 +20,9 @@ args=("ls -la | cat | grep -wn c > outfile"
     "ls -l bs.txt"
     "ls help.txt die.txt"
     "ls something.txt -l"
+    "ls -l > > > outfile firstfile"
+    "ls -l >> > file lastfile"
+    "ls -l > > file lastfile"
     "ls -la >> outone.txt >> outtwo.txt | wc -c"
     ">> outone.txt >> outtwo.txt ls -la | wc -l"
     "> outone.txt > outtwo.txt > outthree.txt ls -llllllla | wc -l"
@@ -53,16 +56,16 @@ args=("ls -la | cat | grep -wn c > outfile"
     'echo i$HOMEi'
     'echo i$HOME'
     'echo something something $HOME random $USER $PATHi$SHELL$LANG'
-	"echo '\"\$PATH\"'"
-	# heap buffer overflow in new_split if there is no space
-	"echo '\"\$PATH\" \"\$USER\"'"
-	"echo \"'\$PATH'\""
-	# heap buffer overflow in new_split if there is no space
-	"echo \"'\$PATH' '\$USER'\""
-	"echo \"'\$PATH' '\$USER'\" \"'\$PATH' '\$USER'\""
-	"echo \$"
-	"echo '\$'"
-	'echo "\$"'
+    "echo '\"\$PATH\"'"
+    # heap buffer overflow in new_split if there is no space
+    "echo '\"\$PATH\" \"\$USER\"'"
+    "echo \"'\$PATH'\""
+    # heap buffer overflow in new_split if there is no space
+    "echo \"'\$PATH' '\$USER'\""
+    "echo \"'\$PATH' '\$USER'\" \"'\$PATH' '\$USER'\""
+    "echo \$"
+    "echo '\$'"
+    'echo "\$"'
     "echo ''"
     "echo ' '"
     'echo " "'
@@ -73,39 +76,45 @@ args=("ls -la | cat | grep -wn c > outfile"
     "echo '\"'"
     "echo '\$SHELL' '\$SHELL'"
     'echo "$SHELL$SHELL" "$HOME"'
-	"echo \"'''\""
+    "echo \"'''\""
     "echo '\"\"'"
     "echo '  \"                   '"
     "echo '\""
     "echo -n -n -n bs"
     "echo bs -n -n"
     "echo -nnn something"
+    "echo \$SHELL"
+    "echo '\$SHELL'"
+    'echo "$SHELL"'
+    'echo "$SHELL" $SHELL'
+    "echo "\$SHELL" '\$SHELL'"
+    'echo "$SHELL" "$SHELL"'
+    "echo '\$SHELL' \"\$SHELL\""
+    "echo '\$SHELL' \"\$SHELL\" \"\$SHELL\""
+    "echo \"\$SHELL\" \"\$SHELL\" '\$SHELL'"
+    "echo \"\$SHELL\" \"\$SHELL\" '\$SHELL' \"\$SHELL\""
+    'echo "cat main.c | wc"'
+    "echo '\$?'"
+    'echo "\$?"'
+    "echo \$?"
+    "echo \"cat lol.c | cat > lol.c\""
+    "echo 'cat lol.c | cat > lol.c'"
+    "echo \"cat lol.c | cat >\""
+    #"echo 'sdf\n'"
+    #"echo \"'sdf\n\""
+    "echo \"'sdf\""
+    "echo 'asd'"
+    "echo '\"asd'"
+    "echo '\"asd'"
     "rm -r-f bs"
     "rm ------rf bs"
     "rm bs -rf"
-	"< main.c grep -n main | wc -l"
-	"grep -n main main.c | wc -l"
-	"< lexer.c cat | wc"
-	"< lexer.c | wc"
-	"cat << EOF > outone.txt"
-	"cat << LIM"
-	"echo \$SHELL"
-	"echo '\$SHELL'"
-	'echo "$SHELL"'
-	'echo "$SHELL" $SHELL'
-	"echo "\$SHELL" '\$SHELL'"
-	'echo "$SHELL" "$SHELL"'
-	"echo '\$SHELL' \"\$SHELL\""
-	"echo '\$SHELL' \"\$SHELL\" \"\$SHELL\""
-	"echo \"\$SHELL\" \"\$SHELL\" '\$SHELL'"
-	"echo \"\$SHELL\" \"\$SHELL\" '\$SHELL' \"\$SHELL\""
-	'echo "cat main.c | wc"'
-	"echo '\$?'"
-	'echo "\$?"'
-	"echo \$?"
-	"ls -l > > > outfile firstfile"
-	"ls -l >> > file lastfile"
-	"ls -l > > file lastfile"
+    "< main.c grep -n main | wc -l"
+    "grep -n main main.c | wc -l"
+    "< lexer.c cat | wc"
+    "< lexer.c | wc"
+    "cat << EOF > outone.txt"
+    "cat << LIM"
     )
 
 # create a variable with the name of the executable

@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 14:17:08 by folim             #+#    #+#             */
-/*   Updated: 2023/11/27 13:00:28 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/12/28 11:04:13 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ static char	*sub_var(char *to_expand, int len)
 	return (new);
 }
 
-static void	expand_env_var(t_token **tokens)
+static void	expand_env_var(t_token **tokens, t_status *stat)
 {
 	t_token	*tmp;
 	char	*sub;
@@ -87,12 +87,8 @@ static void	expand_env_var(t_token **tokens)
 					tmp->token = "";
 			}
 		}
-		/*
 		else if (tmp->exp && !ft_strcmp(tmp->token, "$?"))
-		{
-			tmp->token = "EXIT";
-		}
-		*/
+                    tmp->token = ft_lltoa(stat->s_code);
 		tmp = tmp->next;
 	}
 }
@@ -101,7 +97,7 @@ static void	expand_env_var(t_token **tokens)
  * set the token boolean exp to true if it is enclosed by double or no quotes
  * calls expand_env_var() which replaces the environment variables and join accordingly
  */
-void	expansion(t_token **tokens)
+void	expansion(t_token **tokens, t_status *stat)
 {
 	t_token	*tmp;
 	
@@ -112,5 +108,5 @@ void	expansion(t_token **tokens)
 			tmp->exp = true;
 		tmp = tmp->next;
 	}
-	expand_env_var(tokens);
+	expand_env_var(tokens, stat);
 }

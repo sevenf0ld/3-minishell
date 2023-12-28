@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/30 14:47:12 by folim             #+#    #+#             */
-/*   Updated: 2023/12/27 13:34:00 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/12/28 20:55:37 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,18 @@
 
 int	n_builtins_3(char *path_str)
 {
+	if (!access(path_str, F_OK))
+		return (1);
+	else if (path_str[0] == '/')
+	{
+		printf("minishell: %s: No such file of directory\n", path_str);
+		return (-1);
+	}
+	/*
 	if (path_str[0] == '.' && path_str[1] == '/')
 	{
 		if (!access(path_str, X_OK))
 		{
-			/*
 			char **test = malloc(sizeof(char *) * 2);
 			test[0] = malloc(sizeof(char) * ft_strlen(path_str + 1));
 			test[0] = path_str + 2;
@@ -27,7 +34,6 @@ int	n_builtins_3(char *path_str)
 			return (1);
 			execve(path_str, test, NULL);
 			printf("CAN EXECUTE\n");
-			*/
 			system(path_str);
 		}
 		else
@@ -49,7 +55,6 @@ int	n_builtins_3(char *path_str)
 		printf("PATH STR EXISTS\n");
 		return (1);
 	}
-	/*
 	else if (path_str[0] == '/')
 	{
 		printf("minishell: %s: No such file of directory\n", path_str);
@@ -68,6 +73,7 @@ void	n_builtins_2(t_command **a, char **input, char *cmd, t_status *stat)
 	t_command	*tmp;
 
 	tmp = *a;
+        (void)tmp;
 	pid = fork();
 	if (pid == -1)
 	{
@@ -134,8 +140,8 @@ void	n_builtins_1(t_command **a, char *path_str, t_status *stat)
 		while (++i < tmp->num_a)
 			input[i + tmp->num_f + 1] = tmp->args[i];
 	}
-	//n_builtins_2(a, input, tmp->cmd, stat);
-	n_builtins_2(a, input, path_str, stat);
+	n_builtins_2(a, input, tmp->cmd, stat);
+	//n_builtins_2(a, input, path_str, stat);
 	return ;
 }
 
@@ -157,11 +163,9 @@ void	n_builtins(t_command **a, t_status *stat)
 	if (j == 1)
 	{
 		path_str = tmp->cmd;
-		printf("check path_str after return (1): %s\n", path_str);
 		if (tmp->cmd[0] == '.' && tmp->cmd[1] == '/')
 		{
 			path_str += 2;
-			printf("dot slash followed by %s\n", path_str);
 		}
 	}
 	else if (j == 0)
