@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/30 14:47:12 by folim             #+#    #+#             */
-/*   Updated: 2023/12/28 20:55:37 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/12/29 16:43:04 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,6 @@ void	n_builtins_2(t_command **a, char **input, char *cmd, t_status *stat)
 	t_command	*tmp;
 
 	tmp = *a;
-        (void)tmp;
 	pid = fork();
 	if (pid == -1)
 	{
@@ -82,8 +81,11 @@ void	n_builtins_2(t_command **a, char **input, char *cmd, t_status *stat)
 	}
 	if (pid == 0)
 	{
-		redirect_command_io(tmp);
-		execve(input[0], input, NULL);
+		//redirect_command_io(tmp);
+		if (!tmp->builtin)
+			execve(input[0], input, NULL);
+		else
+			system("echo hello world");
 		//exit(127);
 		stat->s_code = 127;
 	}

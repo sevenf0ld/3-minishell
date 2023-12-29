@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 17:00:50 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/12/28 21:59:56 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/12/29 16:04:51 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,14 @@ int	open_err(char *file, int flags, mode_t mode)
 
 void	dup2_err(int old_fd, int new_fd)
 {
+	static int i = 0;
 	if (dup2(old_fd, new_fd) == -1)
+	{
 		report_err("dup2", 1);
+		fprintf(stderr, "dup error on nth attempt %i\n", i);
+	}
+	else
+		i++;
 }
 
 void	close_err(int fd)
