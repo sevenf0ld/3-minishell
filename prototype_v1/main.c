@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:19:04 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/12/29 16:11:57 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/12/29 18:44:09 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,6 +126,7 @@ int	main(int argc, char **argv, char **envp)
 				if (cur->write_end != -1)
 					print_inode(cur->write_end, count);
 				*/
+				/*
 				if (!cur->builtin)
 					n_builtins(&cur, stat);
                 else if (!ft_strcmp(cur->cmd, "echo"))
@@ -142,18 +143,21 @@ int	main(int argc, char **argv, char **envp)
 					b_export(cur, &fix);
 				else if (!ft_strcmp(cur->cmd, "exit"))
 					b_exit(cur);
-				/*
+				*/
+				///*
 				print_inode(STDIN_FILENO, "\e[1;31mexec SI\e[m");
 				print_inode(STDOUT_FILENO, "\e[1;31mexec SO\e[m");
-				*/
+				//*/
+				
 				dup2_err(res->std_out, STDOUT_FILENO);
 				//close_err(res->std_out);
 				dup2_err(res->std_in, STDIN_FILENO);
 				//close_err(res->std_in);
-				/*
+				
+				///*
 				print_inode(STDIN_FILENO, "\e[1;32mrestore SI\e[m");
 				print_inode(STDOUT_FILENO, "\e[1;32mrestore SO\e[m");
-				*/
+				//*/
 				}
 				/*
 				dup2_err(res->std_out, STDOUT_FILENO);
