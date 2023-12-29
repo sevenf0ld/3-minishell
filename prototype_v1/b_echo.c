@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 02:57:44 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/11/22 06:06:58 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/12/28 20:02:24 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,11 @@ void	b_echo(t_command	*c_node)
 		{
 			ft_putstr_fd(cur.args[i], STDOUT_FILENO);
 			if (i < cur.num_a - 1)
-				ft_putchar_fd(' ', STDOUT_FILENO);
+                        {
+                            if (ft_strcmp(cur.args[i], "'") != 0)
+                                if (ft_strcmp(cur.args[i], "\"") != '\0')
+				    ft_putchar_fd(' ', STDOUT_FILENO);
+                        }
 		}
 	}
 	if (nl)

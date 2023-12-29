@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/30 14:47:12 by folim             #+#    #+#             */
-/*   Updated: 2023/11/29 17:28:40 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/12/28 20:55:37 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 int	n_builtins_3(char *path_str)
 {
-	printf("PATH STR %s\n", path_str);
 	if (!access(path_str, F_OK))
 		return (1);
 	else if (path_str[0] == '/')
@@ -22,24 +21,48 @@ int	n_builtins_3(char *path_str)
 		printf("minishell: %s: No such file of directory\n", path_str);
 		return (-1);
 	}
-	else if (path_str[0] == '.' && path_str[1] == '/')
+	/*
+	if (path_str[0] == '.' && path_str[1] == '/')
 	{
 		if (!access(path_str, X_OK))
 		{
-			char **test = NULL;
-			sprintf(test[0], "%s", path_str);
-			test[1] = path_str;
-			test[2] = NULL;
-			printf("CAN EXECUTE\n");
+			char **test = malloc(sizeof(char *) * 2);
+			test[0] = malloc(sizeof(char) * ft_strlen(path_str + 1));
+			test[0] = path_str + 2;
+			printf("check test[0]: %s\n", test[0]);
+			test[1] = NULL;
+			return (1);
 			execve(path_str, test, NULL);
+			printf("CAN EXECUTE\n");
+			system(path_str);
 		}
 		else
 		{
-			printf("CANNOT EXECUTE\n");
-			printf("minishell: %s: Permission denied\n", path_str);
-			return (126);
+			if (access(path_str, F_OK) != 0)
+			{
+				printf("minishell: %s: No such file or directory\n", path_str);
+				return (127);
+			}
+			else
+			{
+				printf("minishell: %s: Permission denied\n", path_str);
+				return (126);
+			}
 		}
 	}
+	else if (!access(path_str, X_OK))
+	{
+		printf("PATH STR EXISTS\n");
+		return (1);
+	}
+	else if (path_str[0] == '/')
+	{
+		printf("minishell: %s: No such file of directory\n", path_str);
+		return (-1);
+	}
+	else
+		printf("IT IS RELATIVE\n");
+	*/
 	return (0);
 }
 
@@ -50,6 +73,7 @@ void	n_builtins_2(t_command **a, char **input, char *cmd, t_status *stat)
 	t_command	*tmp;
 
 	tmp = *a;
+        (void)tmp;
 	pid = fork();
 	if (pid == -1)
 	{
@@ -69,7 +93,7 @@ void	n_builtins_2(t_command **a, char **input, char *cmd, t_status *stat)
 			close_err(tmp->read_end);
 		if (tmp->write_end != -1)
 			close_err(tmp->write_end);
-		free_2d_arr(input);
+		//free_2d_arr(input);
 		cmd = NULL;
 		int	wstat;
 		int	got_pid;
@@ -117,6 +141,7 @@ void	n_builtins_1(t_command **a, char *path_str, t_status *stat)
 			input[i + tmp->num_f + 1] = tmp->args[i];
 	}
 	n_builtins_2(a, input, tmp->cmd, stat);
+	//n_builtins_2(a, input, path_str, stat);
 	return ;
 }
 
@@ -136,7 +161,13 @@ void	n_builtins(t_command **a, t_status *stat)
 	path_str = NULL;
 	//path_exists = true;
 	if (j == 1)
+	{
 		path_str = tmp->cmd;
+		if (tmp->cmd[0] == '.' && tmp->cmd[1] == '/')
+		{
+			path_str += 2;
+		}
+	}
 	else if (j == 0)
 	{
 		if (tmp->builtin)
@@ -179,7 +210,7 @@ void	n_builtins(t_command **a, t_status *stat)
 	}
 	else if (j == -1)
 		return ;
-	else if (j == 126)
+	else if (j >= 100)
 	{
 		tmp->stat->s_code = j;
 		return ;

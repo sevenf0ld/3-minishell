@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:20:01 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/12/27 20:49:23 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/12/28 20:32:36 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ typedef struct s_token
 	bool			rm;
 	bool			exp;
 	bool			enclosed;
+        struct s_status *stat;
 	struct s_token	*prev;
 	struct s_token	*next;
 }					t_token;
@@ -129,6 +130,12 @@ typedef struct	s_status
 	int	s_code;
 }		t_status;
 
+typedef struct  s_restore
+{
+        int     std_out;
+        int     std_in;
+}               t_restore;
+
 /*	TOKENIZER	*/
 //tokenizer.c
 char		**new_split(char *str);
@@ -139,9 +146,9 @@ char		*handle_spaces_btwn_q(char a, char c);
 char		**init_split_pipeline(char *s, int w_c);
 
 //init_token.c
-t_token		*token_new(char *token);
+t_token		*token_new(char *token, t_status *stat);
 void		token_add_back(t_token **head, t_token *node);
-void		token_init(char **args, t_token **head);
+void		token_init(char **args, t_token **head, t_status *stat);
 t_token		*token_last(t_token *head);
 int			token_size(t_token *head);
 
@@ -156,7 +163,7 @@ void		categorize_symbol(t_token **tokens);
 void		categorize_params(t_token **tokens);
 void		categorize_params_norme(t_token **tokens);
 void		categorize_cmdwflags(t_token **tokens);
-void		lexer(char *pipeline, t_token **tokens);
+void		lexer(char *pipeline, t_token **tokens, t_status *stat);
 
 //lexer_utils.c
 void		identify_symbols(t_token **tokens);
@@ -168,7 +175,7 @@ void		reject_unterminated_q(t_token **tokens, t_sym symbol);
 void		delete_quotes_after_expand(t_token **tokens, t_sym symbol);
 
 //lexer_utils3.c
-void		expansion(t_token **lst);
+void		expansion(t_token **lst, t_status *stat);
 
 //lexer_utils4.c
 t_token		*get_first_quote(t_token **tokens, t_sym symbol);

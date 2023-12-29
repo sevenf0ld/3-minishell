@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:19:04 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/11/27 16:39:56 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/12/28 22:40:46 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,21 @@ bool	is_builtin(char *cmd)
 		return (false);
 }
 
+int	all_whitespace(char *cmd)
+{
+    int	i;
+
+    i = 0;
+    while (cmd[i] != '\0')
+    {
+        if (!ft_iswhite(cmd[i]))
+            return (0);
+        i++;
+    }
+    return (1);
+}
+
+///*
 int	main(int argc, char **argv, char **envp)
 {
 	char		*pipeline;
@@ -43,8 +58,7 @@ int	main(int argc, char **argv, char **envp)
 	t_env		*env;
 	t_fixed		*fix;
 	t_status	*stat;
-	int			restore_stdout;
-	int			restore_stdin;
+        t_restore       *res;
 
 	pipeline = NULL;
 	// signal(SIGINT, sig_int);
@@ -55,6 +69,9 @@ int	main(int argc, char **argv, char **envp)
 	fix = NULL;
 	stat = malloc_err(sizeof(t_status));
 	stat->s_code = 0;
+        res = malloc_err(sizeof(t_restore));
+        res->std_out = -1;
+        res->std_in = -1;
 	(void) argc;
 	(void) argv;
 	f_init(&fix, envp);
@@ -75,20 +92,22 @@ int	main(int argc, char **argv, char **envp)
 			printf("exit\n");
 			exit(1);
 		}
-		else if (ft_strcmp(pipeline, ""))
+		else if (ft_strcmp(pipeline, "") && !all_whitespace(pipeline))
 		{
 			add_history(pipeline);
-			lexer(pipeline, &tok);
-			restore_stdout = dup_err(STDOUT_FILENO);
-			restore_stdin = dup_err(STDIN_FILENO);
+			lexer(pipeline, &tok, stat);
+			res->std_out = dup_err(STDOUT_FILENO);
+			res->std_in = dup_err(STDIN_FILENO);
 			parser(&tok, &cmd, env, stat);
 			for (t_command *cur = cmd; cur != NULL; cur = cur->next)
 			{
-				if (!ft_strcmp(cur->cmd, "echo") && !ft_strcmp(cur->args[0], "$?"))
-					printf("%i\n", stat->s_code);
-				else if (!cur->builtin)
+				if (!cur->builtin)
+                                //{
 					n_builtins(&cur, stat);
-				else if (!ft_strcmp(cur->cmd, "echo"))
+                                        //continue ;
+                                //}
+                                //redirect_command_io(cur);
+                                else if (!ft_strcmp(cur->cmd, "echo"))
 					b_echo(cur);
 				else if (!ft_strcmp(cur->cmd, "pwd"))
 					b_pwd(cur, 'w');
@@ -102,34 +121,36 @@ int	main(int argc, char **argv, char **envp)
 					b_export(cur, &fix);
 				else if (!ft_strcmp(cur->cmd, "exit"))
 					b_exit(cur);
+                                //dup2_err(res->std_out, STDOUT_FILENO);
+                                //close_err(res->std_out);
+                                //dup2_err(res->std_in, STDIN_FILENO);
+                                //close_err(res->std_in);
 			}
-			dup2_err(restore_stdout, STDOUT_FILENO);
-			close_err(restore_stdout);
-			dup2_err(restore_stdin, STDIN_FILENO);
-			close_err(restore_stdin);
+                        dup2_err(res->std_out, STDOUT_FILENO);
+                        close_err(res->std_out);
+                        dup2_err(res->std_in, STDIN_FILENO);
+                        close_err(res->std_in);
 		}
 	}
 }
+//*/
 
 /*
 int	main(int argc, char **argv)
 {
-	char		*pipeline;
 	t_token		*tok;
 	t_command	*cmd;
 	t_env		*env;
-	t_fixed		*fix;
 	t_status	*stat;
-	pipeline = NULL;
 	tok = NULL;
 	cmd = NULL;
 	env = NULL;
-	fix = NULL;
 	stat = malloc_err(sizeof(t_status));
+	stat->s_code = 0;
 	char	*type[] = {"PIPE", "OUT_RE", "IN_RE", "W_Q", "S_Q", "CMD", "OPT", "ARGS", "FILN", "LIM", "HD", "ADD", "ANON"};
 	if (argc != 2)
 		return (1);
-	lexer(argv[1], &tok);
+	lexer(argv[1], &tok, stat);
 	for (t_token *dl = tok; dl != NULL; dl = dl->next)
 		printf("[%s] is a [%s]. expand? \x1b[32m%s\x1b[m\n", dl->token, type[dl->symbol], dl->exp?"true":"false");
 	parser(&tok, &cmd, env, stat);
