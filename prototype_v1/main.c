@@ -6,11 +6,22 @@
 /*   By: folim <folim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:19:04 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/12/28 22:40:46 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/12/29 15:56:55 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mini.h"
+
+#include <sys/stat.h>
+#include <errno.h>
+#include <string.h>
+void print_inode(int fd, char *name) {
+ struct stat info;
+ if (fstat(fd, &info) != 0)
+   fprintf(stderr,"fstat() error for %s %d: %s\n",name,fd,strerror(errno));
+ else
+   fprintf(stderr, "╳ The inode of %s is %d\n", name, (int) info.st_ino);
+}
 
 /*
  * use an array of cmds to make it shorter
@@ -101,13 +112,21 @@ int	main(int argc, char **argv, char **envp)
 			parser(&tok, &cmd, env, stat);
 			for (t_command *cur = cmd; cur != NULL; cur = cur->next)
 			{
+				/*
+				char *count = malloc(sizeof(10));
+				sprintf(count, "%s\n", ft_itoa(cur->pos));
+				fprintf(stderr, "%i/%i: %s (%s)\n\twith %i flag(s) and %i arg(s)\n\twith %i in_re, %i out_re, %i add\n\tread_end %i	write_end %i\n", cur->pos, cur->size, cur->cmd, cur->builtin?"builtin":"non", cur->num_f, cur->num_a, cur->num_si, cur->num_so_o, cur->num_so_a, cur->read_end, cur->write_end);
+				*/
+				redirect_command_io(cur);
+				/*
+				if (cur->read_end != -1)
+					print_inode(cur->read_end, count);
+				if (cur->write_end != -1)
+					print_inode(cur->write_end, count);
+				*/
 				if (!cur->builtin)
-                                //{
 					n_builtins(&cur, stat);
-                                        //continue ;
-                                //}
-                                //redirect_command_io(cur);
-                                else if (!ft_strcmp(cur->cmd, "echo"))
+                else if (!ft_strcmp(cur->cmd, "echo"))
 					b_echo(cur);
 				else if (!ft_strcmp(cur->cmd, "pwd"))
 					b_pwd(cur, 'w');
@@ -121,15 +140,11 @@ int	main(int argc, char **argv, char **envp)
 					b_export(cur, &fix);
 				else if (!ft_strcmp(cur->cmd, "exit"))
 					b_exit(cur);
-                                //dup2_err(res->std_out, STDOUT_FILENO);
-                                //close_err(res->std_out);
-                                //dup2_err(res->std_in, STDIN_FILENO);
-                                //close_err(res->std_in);
 			}
-                        dup2_err(res->std_out, STDOUT_FILENO);
-                        close_err(res->std_out);
-                        dup2_err(res->std_in, STDIN_FILENO);
-                        close_err(res->std_in);
+			dup2_err(res->std_out, STDOUT_FILENO);
+			close_err(res->std_out);
+			dup2_err(res->std_in, STDIN_FILENO);
+			close_err(res->std_in);
 		}
 	}
 }
