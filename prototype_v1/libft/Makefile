@@ -6,13 +6,13 @@
 #    By: maiman-m <maiman-m@student.42kl.edu.my>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/29 19:23:00 by maiman-m          #+#    #+#              #
-#    Updated: 2023/12/20 10:35:52 by maiman-m         ###   ########.fr        #
+#    Updated: 2023/12/30 18:12:51 by maiman-m         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = libft.a
 
-CC = cc
+CC = @cc
 
 vpath %.c src
 
@@ -35,15 +35,15 @@ SRCS = $(addprefix src/,$(SOURCE))
 OBJS = $(SRCS:.c=.o)
 
 $(NAME): $(OBJS)
-	ar rcs $@ $^
+	@ar rcs $@ $^
 
 all: $(NAME)
 
 clean:
-	rm -rf $(OBJS)
+	@rm -rf $(OBJS)
 
 fclean: clean
-	rm -rf $(NAME)
+	@rm -rf $(NAME)
 
 re: fclean all
 
