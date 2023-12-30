@@ -6,22 +6,11 @@
 /*   By: folim <folim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:19:04 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/12/29 18:44:09 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/12/30 10:17:56 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mini.h"
-
-#include <sys/stat.h>
-#include <errno.h>
-#include <string.h>
-void print_inode(int fd, char *name) {
- struct stat info;
- if (fstat(fd, &info) != 0)
-   fprintf(stderr,"fstat() error for %s %d: %s\n",name,fd,strerror(errno));
- else
-   fprintf(stderr, "╳ The inode of %s is %d\n", name, (int) info.st_ino);
-}
 
 /*
  * use an array of cmds to make it shorter
@@ -109,66 +98,17 @@ int	main(int argc, char **argv, char **envp)
 			lexer(pipeline, &tok, stat);
 			res->std_out = dup_err(STDOUT_FILENO);
 			res->std_in = dup_err(STDIN_FILENO);
-			print_inode(STDIN_FILENO, "\e[1;34minitial SI\e[m");
-			print_inode(STDOUT_FILENO, "\e[1;34minitial SO\e[m");
 			parser(&tok, &cmd, env, stat);
 			for (t_command *cur = cmd; cur != NULL; cur = cur->next)
 			{
-				/*
-				char *count = malloc(sizeof(10));
-				sprintf(count, "%s\n", ft_itoa(cur->pos));
-				fprintf(stderr, "%i/%i: %s (%s)\n\twith %i flag(s) and %i arg(s)\n\twith %i in_re, %i out_re, %i add\n\tread_end %i	write_end %i\n", cur->pos, cur->size, cur->cmd, cur->builtin?"builtin":"non", cur->num_f, cur->num_a, cur->num_si, cur->num_so_o, cur->num_so_a, cur->read_end, cur->write_end);
-				*/
 				redirect_command_io(cur);
-				/*
-				if (cur->read_end != -1)
-					print_inode(cur->read_end, count);
-				if (cur->write_end != -1)
-					print_inode(cur->write_end, count);
-				*/
-				/*
-				if (!cur->builtin)
-					n_builtins(&cur, stat);
-                else if (!ft_strcmp(cur->cmd, "echo"))
-					b_echo(cur);
-				else if (!ft_strcmp(cur->cmd, "pwd"))
-					b_pwd(cur, 'w');
-				else if (!ft_strcmp(cur->cmd, "cd"))
-					b_cd(cur);
-				else if (!ft_strcmp(cur->cmd, "env"))
-					b_env(cur, &fix);
-				else if (!ft_strcmp(cur->cmd, "unset"))
-					b_unset(cur, &fix);
-				else if (!ft_strcmp(cur->cmd, "export"))
-					b_export(cur, &fix);
-				else if (!ft_strcmp(cur->cmd, "exit"))
-					b_exit(cur);
-				*/
-				///*
-				print_inode(STDIN_FILENO, "\e[1;31mexec SI\e[m");
-				print_inode(STDOUT_FILENO, "\e[1;31mexec SO\e[m");
-				//*/
-				
+                                n_builtins(&cur, stat);
 				dup2_err(res->std_out, STDOUT_FILENO);
-				//close_err(res->std_out);
 				dup2_err(res->std_in, STDIN_FILENO);
-				//close_err(res->std_in);
-				
-				///*
-				print_inode(STDIN_FILENO, "\e[1;32mrestore SI\e[m");
-				print_inode(STDOUT_FILENO, "\e[1;32mrestore SO\e[m");
-				//*/
-				}
-				/*
-				dup2_err(res->std_out, STDOUT_FILENO);
-				close_err(res->std_out);
-				dup2_err(res->std_in, STDIN_FILENO);
-				close_err(res->std_in);
-				*/
 			}
 		}
 	}
-	//*/
+}
 
 /*
 int	main(int argc, char **argv)
