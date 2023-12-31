@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:25:31 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/12/30 13:19:48 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/12/31 14:13:17 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,8 @@ void	categorize_cmdwflags(t_token **tokens)
 		if (tmp->symbol == PIPE && tmp->next != NULL)
 			if (tmp->next->symbol != S_Q && tmp->next->symbol != W_Q)
 				if (tmp->next->symbol != PIPE)
-					tmp->next->symbol = CMD;
+                                    if (tmp->next->symbol != IN_RE && tmp->next->symbol != ADD && tmp->next->symbol != OUT_RE)
+                                        tmp->next->symbol = CMD;
 		if (tmp->symbol == ARGS && tmp->next != NULL)
 			if (tmp->prev != NULL && tmp->prev->prev != NULL)
 				if (tmp->prev->symbol == FILN)

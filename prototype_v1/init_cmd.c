@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 20:48:46 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/12/31 10:51:14 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/12/31 16:06:07 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ void	cmd_add_back(t_command **head, t_command *node)
 	old_end->next = node;
 }
 
-static void	set_cmd_size(t_command *head)
+void	set_cmd_size(t_command *head)
 {
 	int			n;
 	t_command	*tmp;
@@ -92,6 +92,7 @@ static void	set_cmd_size(t_command *head)
 /*
  * converts the categorized and grouped tokens into individual command sets/groups
  */
+/*
 void	cmd_init(t_token **tokens, t_command **cmds, t_env *envs, t_status *stat)
 {
 	t_token		*tmp;
@@ -113,8 +114,9 @@ void	cmd_init(t_token **tokens, t_command **cmds, t_env *envs, t_status *stat)
 	}
 	set_cmd_size(*cmds);
 }
+*/
 
-/*
+///*
 void    cmd_init(t_token **tokens, t_command **cmds, t_env *envs, t_status *stat)
 {
 
@@ -122,33 +124,38 @@ void    cmd_init(t_token **tokens, t_command **cmds, t_env *envs, t_status *stat
     t_token *tmp;
     int     i;
     char    *cmd;
-    bool    found_pipe;
     t_token *cur;
 
     tmp = *tokens;
     i = 0;
-    found_pipe = false;
     cur = *tokens;
+    (void) cmds;
+    (void) envs;
+    (void) stat;
     while (tmp != NULL)
     {
         if (cur != NULL)
             fprintf(stderr, "cur is now %s of type %s\n", cur->token, type[cur->symbol]);
         cmd = NULL;
-        if (tmp->symbol == PIPE)
-            found_pipe = true;
-            //fprintf(stderr, "found a pipe\n");
-        while (cur != NULL && cur->symbol != PIPE)
+        while (cur != NULL)
         {
+            if (cur->symbol == PIPE)
+            {
+                fprintf(stderr, "\x1b[35mfound a pipe\x1b[m\n");
+                break ;
+            }
             if (cur->symbol == CMD)
+            {
                 cmd = cur->token;
-                //fprintf(stderr, "found the command %s\n", tmp->token);
-            if (i == 0)
-                *cmds = cmd_new(cmd, i, envs, stat);
-                //fprintf(stderr, "%s for index 0\n", tmp->token);
-            else
-                cmd_add_back(cmds, cmd_new(cmd, i, envs, stat));
-                //fprintf(stderr, "%s for index %i\n", tmp->token, i);
-            i++;
+                fprintf(stderr, "\x1b[35mfound the command %s\x1b[m\n", cur->token);
+                if (i == 0)
+                    //*cmds = cmd_new(cmd, i, envs, stat);
+                    fprintf(stderr, "\x1b[33m%s for index 0 with %s\x1b[m\n", cur->token, cmd);
+                else
+                    //cmd_add_back(cmds, cmd_new(cmd, i, envs, stat));
+                    fprintf(stderr, "\x1b[43m%s for index %i with %s\x1b[m\n", cur->token, i, cmd);
+                i++;
+            }
             cmd = NULL;
             cur = cur->next;
         }
@@ -157,7 +164,7 @@ void    cmd_init(t_token **tokens, t_command **cmds, t_env *envs, t_status *stat
             cur = cur->next;
     }
 }
-*/
+//*/
 
 t_command	*cmd_last(t_command *head)
 {

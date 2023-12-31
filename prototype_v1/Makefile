@@ -6,7 +6,7 @@
 #    By: folim <folim@student.42kl.edu.my>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/15 12:21:40 by maiman-m          #+#    #+#              #
-#    Updated: 2023/12/31 10:28:14 by maiman-m         ###   ########.fr        #
+#    Updated: 2023/12/31 14:07:16 by maiman-m         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@ CC = clang
 
 # CFLAGS = -Wall -Wextra -Werror -fsanitize=address -g3
 
-# CFLAGS = -Wall -Wextra -Werror -g3
+CFLAGS = -Wall -Wextra -Werror -g3
 
 # CPPFLAGS = -I include -I libft/include
 
