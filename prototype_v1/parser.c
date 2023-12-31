@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 12:07:39 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/11/27 12:19:32 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/12/30 12:49:32 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,9 +49,9 @@ void	init_multi_fa(t_token **tokens, t_command *c_node)
 		tmp = tmp->next;
 	}
 	if (c_node->num_f > 0)
-		c_node->flags = malloc_err(sizeof(char *) * (c_node->num_f + 1));
+		c_node->flags = malloc_err(sizeof(char *) * (c_node->num_f + 1), c_node->stat);
 	if (c_node->num_a > 0)
-		c_node->args = malloc_err(sizeof(char *) * (c_node->num_a + 1));
+		c_node->args = malloc_err(sizeof(char *) * (c_node->num_a + 1), c_node->stat);
 	set_multi_fa(tokens, c_node);
 }
 
@@ -117,9 +117,9 @@ void	parser(t_token **tokens, t_command **cmds, t_env *envs, t_status *stat)
 	cmd_init(tokens, cmds, envs, stat);
 	double_ll_convert2(cmds);
 	complete_cmd(tokens, cmds);
-	if ((*cmds)->size > 1)
+	if (*cmds != NULL && (*cmds)->size > 1)
 	{
-		pipe_init(&pipes, (*cmds)->size - 1);
+		pipe_init(&pipes, (*cmds)->size - 1, stat);
 		double_ll_convert3(&pipes);
 		assign_pipe_ends(*cmds, pipes);
 	}

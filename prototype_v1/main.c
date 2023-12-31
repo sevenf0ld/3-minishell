@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:19:04 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/12/30 10:17:56 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/12/31 10:49:59 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,15 +67,15 @@ int	main(int argc, char **argv, char **envp)
 	cmd = NULL;
 	env = NULL;
 	fix = NULL;
-	stat = malloc_err(sizeof(t_status));
+	stat = malloc_err(sizeof(t_status), stat);
 	stat->s_code = 0;
-        res = malloc_err(sizeof(t_restore));
+        res = malloc_err(sizeof(t_restore), stat);
         res->std_out = -1;
         res->std_in = -1;
 	(void) argc;
 	(void) argv;
-	f_init(&fix, envp);
-	env_init(&env, envp, fix);
+	f_init(&fix, envp, stat);
+	env_init(&env, envp, fix, stat);
 	while (1)
 	{
 		// ft_putstr_fd("minishell > ", STDERR_FILENO);
@@ -96,15 +96,15 @@ int	main(int argc, char **argv, char **envp)
 		{
 			add_history(pipeline);
 			lexer(pipeline, &tok, stat);
-			res->std_out = dup_err(STDOUT_FILENO);
-			res->std_in = dup_err(STDIN_FILENO);
+			res->std_out = dup_err(STDOUT_FILENO, stat);
+			res->std_in = dup_err(STDIN_FILENO, stat);
 			parser(&tok, &cmd, env, stat);
 			for (t_command *cur = cmd; cur != NULL; cur = cur->next)
 			{
 				redirect_command_io(cur);
                                 n_builtins(&cur, stat);
-				dup2_err(res->std_out, STDOUT_FILENO);
-				dup2_err(res->std_in, STDIN_FILENO);
+				dup2_err(res->std_out, STDOUT_FILENO, stat);
+				dup2_err(res->std_in, STDIN_FILENO, stat);
 			}
 		}
 	}

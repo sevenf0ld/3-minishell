@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/24 03:45:36 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/11/27 13:32:56 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/12/30 13:23:09 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,7 +130,7 @@ void	b_export(t_command *c_node, t_fixed **f_node)
 				to_repl->fvalue = val + 1;
 		}
 		else
-			f_add_back(f_node, f_new(c_node->args[i]));
+			f_add_back(f_node, f_new(c_node->args[i], c_node->stat));
 	}
 	c_node->stat->s_code = 0;
 }

@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 20:48:46 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/12/27 20:49:35 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/12/31 10:51:14 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ t_command	*cmd_new(char *cmd, int n, t_env *envs, t_status *stat)
 {
 	t_command	*node;
 
-	node = malloc_err(sizeof(t_command));
+	node = malloc_err(sizeof(t_command), stat);
 	node->pos = n;
 	node->size = 0;
 	node->cmd = cmd;
@@ -113,6 +113,51 @@ void	cmd_init(t_token **tokens, t_command **cmds, t_env *envs, t_status *stat)
 	}
 	set_cmd_size(*cmds);
 }
+
+/*
+void    cmd_init(t_token **tokens, t_command **cmds, t_env *envs, t_status *stat)
+{
+
+    char	*type[] = {"PIPE", "OUT_RE", "IN_RE", "W_Q", "S_Q", "CMD", "OPT", "ARGS", "FILN", "LIM", "HD", "ADD", "ANON"};
+    t_token *tmp;
+    int     i;
+    char    *cmd;
+    bool    found_pipe;
+    t_token *cur;
+
+    tmp = *tokens;
+    i = 0;
+    found_pipe = false;
+    cur = *tokens;
+    while (tmp != NULL)
+    {
+        if (cur != NULL)
+            fprintf(stderr, "cur is now %s of type %s\n", cur->token, type[cur->symbol]);
+        cmd = NULL;
+        if (tmp->symbol == PIPE)
+            found_pipe = true;
+            //fprintf(stderr, "found a pipe\n");
+        while (cur != NULL && cur->symbol != PIPE)
+        {
+            if (cur->symbol == CMD)
+                cmd = cur->token;
+                //fprintf(stderr, "found the command %s\n", tmp->token);
+            if (i == 0)
+                *cmds = cmd_new(cmd, i, envs, stat);
+                //fprintf(stderr, "%s for index 0\n", tmp->token);
+            else
+                cmd_add_back(cmds, cmd_new(cmd, i, envs, stat));
+                //fprintf(stderr, "%s for index %i\n", tmp->token, i);
+            i++;
+            cmd = NULL;
+            cur = cur->next;
+        }
+        tmp = tmp->next;
+        if (cur != NULL)
+            cur = cur->next;
+    }
+}
+*/
 
 t_command	*cmd_last(t_command *head)
 {

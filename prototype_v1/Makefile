@@ -6,17 +6,17 @@
 #    By: folim <folim@student.42kl.edu.my>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/15 12:21:40 by maiman-m          #+#    #+#              #
-#    Updated: 2023/12/30 18:40:14 by maiman-m         ###   ########.fr        #
+#    Updated: 2023/12/31 10:28:14 by maiman-m         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 PROG_NAME = v1
 
-CC = @clang
+CC = clang
 
 # CFLAGS = -Wall -Wextra -Werror -fsanitize=address -g3
 
-CFLAGS = -Wall -Wextra -Werror -g3
+# CFLAGS = -Wall -Wextra -Werror -g3
 
 # CPPFLAGS = -I include -I libft/include
 
@@ -24,13 +24,11 @@ CPPFLAGS = -I/libft/include -I/mini.h
 
 # LDFLAGS = -Llibft -lft -lreadline -L/usr/local/opt/readline/lib -I/usr/local/opt/readline/include
 
-# LDFLAGS = -Llibft -lft -lreadline -L/goinfre/folim/.brew/opt/readline/lib -I/goinfre/folim/.brew/opt/readline/include #for rl_replace_line
+LDFLAGS = -Llibft -lft -lreadline -L/goinfre/folim/.brew/opt/readline/lib -I/goinfre/folim/.brew/opt/readline/include #for rl_replace_line
 
 # LDFLAGS = -Llibft -lft -lreadline -I/usr/local/opt/readline/include
 
-LDFLAGS = -Llibft
-
-LDLIBS = -lft -lreadline
+# LDFLAGS = -Llibft -lft -lreadline
 
 # SOURCE =
 
@@ -47,22 +45,21 @@ SRCS = main.c tokenizer.c tokenizer_utils.c init_token.c d_ll_convert.c \
 
 OBJS = $(SRCS:.c=.o)
 
-all: $(PROG_NAME)
+#all: $(PROG_NAME)
 
 $(PROG_NAME): $(OBJS)
-	@echo "COMPILIN"
-	@$(MAKE) -C libft && clear 
-	@$(CC) $^ $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) -o $(PROG_NAME)
+	cd libft && $(MAKE)
+	$(CC) $^ $(CPPFLAGS) $(LDFLAGS) -o $(PROG_NAME)
 
 clean:
-	@$(MAKE) clean -C libft && clear
-	@rm -rf $(OBJS)
-	@rm -rf a.out*
+	cd libft && $(MAKE) clean
+	rm -rf $(OBJS)
+	rm -rf a.out*
 
 fclean: clean
-	@$(MAKE) fclean -C libft && clear
-	@rm -rf $(PROG_NAME)
+	cd libft && $(MAKE) fclean
+	rm -rf $(PROG_NAME)
 
-re: fclean all
+re: fclean all $(PROG_NAME)
 
 .PHONY: all clean fclean re

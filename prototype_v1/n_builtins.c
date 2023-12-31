@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/30 14:47:12 by folim             #+#    #+#             */
-/*   Updated: 2023/12/30 10:19:18 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/12/31 10:50:33 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,7 @@ void	n_builtins_2(t_command **a, char **input, char *cmd, t_status *stat)
 	else
 	{
 		if (tmp->write_end != -1)
-			close_err(tmp->write_end);
+			close_err(tmp->write_end, stat);
                 if (input != NULL)
 		    free_2d_arr(input);
 		cmd = NULL;
@@ -139,7 +139,7 @@ void	n_builtins_1(t_command **a, char *path_str, t_status *stat)
 	char		**input;
 
 	tmp = *a;
-	input = (char **)malloc_err((tmp->num_f + tmp->num_a + 2) * sizeof(char *));
+	input = (char **)malloc_err((tmp->num_f + tmp->num_a + 2) * sizeof(char *), stat);
 	input[0] = path_str;
 	input[tmp->num_f + tmp->num_a + 1] = NULL;
 	i = -1;
