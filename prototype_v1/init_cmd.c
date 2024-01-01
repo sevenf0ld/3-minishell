@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 20:48:46 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/12/31 16:06:07 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/01 12:00:57 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,22 +17,24 @@
  */
 static bool	is_builtin(char *cmd)
 {
-	if (!ft_strcmp(cmd, "echo"))
-		return (true);
-	else if (!ft_strcmp(cmd, "cd"))
-		return (true);
-	else if (!ft_strcmp(cmd, "pwd"))
-		return (true);
-	else if (!ft_strcmp(cmd, "export"))
-		return (true);
-	else if (!ft_strcmp(cmd, "unset"))
-		return (true);
-	else if (!ft_strcmp(cmd, "env"))
-		return (true);
-	else if (!ft_strcmp(cmd, "exit"))
-		return (true);
-	else
-		return (false);
+    if (!cmd)
+        return (false);
+    if (!ft_strcmp(cmd, "echo"))
+            return (true);
+    else if (!ft_strcmp(cmd, "cd"))
+            return (true);
+    else if (!ft_strcmp(cmd, "pwd"))
+            return (true);
+    else if (!ft_strcmp(cmd, "export"))
+            return (true);
+    else if (!ft_strcmp(cmd, "unset"))
+            return (true);
+    else if (!ft_strcmp(cmd, "env"))
+            return (true);
+    else if (!ft_strcmp(cmd, "exit"))
+            return (true);
+    else
+            return (false);
 }
 
 t_command	*cmd_new(char *cmd, int n, t_env *envs, t_status *stat)
@@ -116,55 +118,78 @@ void	cmd_init(t_token **tokens, t_command **cmds, t_env *envs, t_status *stat)
 }
 */
 
-///*
-void    cmd_init(t_token **tokens, t_command **cmds, t_env *envs, t_status *stat)
+char    *init_helper(t_token *first)
 {
+    t_token *tmp;
+    char    *cmd;
 
-    char	*type[] = {"PIPE", "OUT_RE", "IN_RE", "W_Q", "S_Q", "CMD", "OPT", "ARGS", "FILN", "LIM", "HD", "ADD", "ANON"};
+    tmp = first;
+    cmd = NULL;
+    while (tmp != NULL && tmp->symbol != PIPE)
+    {
+        if (tmp->symbol == CMD)
+            cmd = tmp->token;
+        tmp = tmp->next;
+    }
+    fprintf(stderr, "COMMAND IS %s\n", cmd);
+    return (cmd);
+}
+
+int num_pipes(t_token **tokens)
+{
     t_token *tmp;
     int     i;
-    char    *cmd;
-    t_token *cur;
 
     tmp = *tokens;
     i = 0;
-    cur = *tokens;
-    (void) cmds;
-    (void) envs;
-    (void) stat;
     while (tmp != NULL)
     {
-        if (cur != NULL)
-            fprintf(stderr, "cur is now %s of type %s\n", cur->token, type[cur->symbol]);
-        cmd = NULL;
-        while (cur != NULL)
+        if (tmp->symbol == PIPE)
+            i++;
+        tmp = tmp->next;
+    }
+    return (i);
+}
+
+/*
+   iterate until pipe
+   pass the first node and pipe->prev to another function which does the initialization
+   each iteration until pipe incremennts i by 1
+   if the other function fails to find node->symbol CMD, pass cmd = NULL to cmd_new
+*/
+void    cmd_init(t_token **tokens, t_command **cmds, t_env *envs, t_status *stat)
+{
+    t_token *tmp;
+    t_token *first;
+    int     i;
+    char    *cmd;
+
+    tmp = *tokens;
+    first = *tokens;
+    i = 0;
+    cmd = NULL;
+    while (tmp != NULL)
+    {
+        if (tmp->symbol == PIPE)
         {
-            if (cur->symbol == PIPE)
-            {
-                fprintf(stderr, "\x1b[35mfound a pipe\x1b[m\n");
-                break ;
-            }
-            if (cur->symbol == CMD)
-            {
-                cmd = cur->token;
-                fprintf(stderr, "\x1b[35mfound the command %s\x1b[m\n", cur->token);
-                if (i == 0)
-                    //*cmds = cmd_new(cmd, i, envs, stat);
-                    fprintf(stderr, "\x1b[33m%s for index 0 with %s\x1b[m\n", cur->token, cmd);
-                else
-                    //cmd_add_back(cmds, cmd_new(cmd, i, envs, stat));
-                    fprintf(stderr, "\x1b[43m%s for index %i with %s\x1b[m\n", cur->token, i, cmd);
-                i++;
-            }
-            cmd = NULL;
-            cur = cur->next;
+            cmd = init_helper(first);
+            if (i == 0)
+                    *cmds = cmd_new(cmd, i, envs, stat);
+            else
+                    cmd_add_back(cmds, cmd_new(cmd, i, envs, stat));
+            i++;
+            first = tmp->next;
+            if (i == num_pipes(tokens))
+                cmd_add_back(cmds, cmd_new((init_helper(first)), i, envs, stat));
         }
         tmp = tmp->next;
-        if (cur != NULL)
-            cur = cur->next;
     }
+    set_cmd_size(*cmds);
+    (void)cmds;
+    (void)envs;
+    (void)stat;
+    (void)cmd;
 }
-//*/
 
 t_command	*cmd_last(t_command *head)
 {

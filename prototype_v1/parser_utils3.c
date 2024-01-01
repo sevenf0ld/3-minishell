@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 11:26:35 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/12/30 12:41:10 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/01 11:45:41 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,9 @@ void	redirect_io_file(int *fd_arr, char mode, int last_out, t_status *stat)
 	i = 0;
 	while (fd_arr[i] != INT_MIN)
 		i++;
-	if (mode == 'i')
+	if (mode == 'i' && fd_arr[i - 1] != -1)
 		dup2_err(fd_arr[i - 1], STDIN_FILENO, stat);
-	else if (mode == 'o' || mode == 'a')
+	else if (last_out != -1 && (mode == 'o' || mode == 'a'))
 		dup2_err(last_out, STDOUT_FILENO, stat);
 }
 
