@@ -6,13 +6,13 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 11:26:35 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/01/01 11:45:41 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/01 13:17:03 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mini.h"
 
-void	redirect_io_file(int *fd_arr, char mode, int last_out, t_status *stat)
+void	redirect_io_file(int *fd_arr, char mode, t_command *c_node)
 {
 	int	i;
 
@@ -20,9 +20,9 @@ void	redirect_io_file(int *fd_arr, char mode, int last_out, t_status *stat)
 	while (fd_arr[i] != INT_MIN)
 		i++;
 	if (mode == 'i' && fd_arr[i - 1] != -1)
-		dup2_err(fd_arr[i - 1], STDIN_FILENO, stat);
-	else if (last_out != -1 && (mode == 'o' || mode == 'a'))
-		dup2_err(last_out, STDOUT_FILENO, stat);
+		dup2_err(fd_arr[i - 1], STDIN_FILENO, c_node->stat);
+	else if (c_node->last_out != -1 && (mode == 'o' || mode == 'a'))
+		dup2_err(c_node->last_out, STDOUT_FILENO, c_node->stat);
 }
 
 /*
@@ -72,18 +72,15 @@ void	redirect_io_pipe(t_command *c_node)
  */
 void	redirect_command_io(t_command *c_node)
 {
-	t_command	*cur;
-
-	cur = c_node;
-	if (!cur)
+	if (!c_node)
 		return ;
-	if (cur->std_in != NULL)
-		redirect_io_file(cur->std_in, 'i', c_node->last_out, c_node->stat);
-	if (cur->std_out_o != NULL)
-		redirect_io_file(cur->std_out_o, 'o', c_node->last_out, c_node->stat);
-	if (cur->std_out_a != NULL)
-		redirect_io_file(cur->std_out_a, 'a', c_node->last_out, c_node->stat);
-	if (cur->size == 1)
+	if (c_node->std_in != NULL)
+		redirect_io_file(c_node->std_in, 'i', c_node);
+	if (c_node->std_out_o != NULL)
+		redirect_io_file(c_node->std_out_o, 'o', c_node);
+	if (c_node->std_out_a != NULL)
+		redirect_io_file(c_node->std_out_a, 'a', c_node);
+	if (c_node->size == 1)
 		return ;
-	redirect_io_pipe(cur);
+	redirect_io_pipe(c_node);
 }

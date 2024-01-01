@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/23 05:49:06 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/12/30 12:46:06 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/01 12:18:47 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,13 +33,6 @@ t_env	*env_new(char *var, t_fixed *f, t_status *stat)
 	set_env_kv(node, var);
 	node->fixed = f;
 	node->next = NULL;
-	/*
-	for (t_fixed *tmp = f; tmp != NULL; tmp = tmp->fnext)
-		fprintf(stderr, "\x1b[32mFKEY %s FVALUE %s\x1b[m\n", tmp->fkey, tmp->fvalue);
-	fprintf(stderr, "--------------------------------------------------------\n");
-	for(t_env *tmp = node; tmp != NULL; tmp = tmp->next)
-		fprintf(stderr, "\x1b[34m[KEY] %s [VALUE] %s\x1b[m\n", tmp->key, tmp->value);
-	*/
 	return (node);
 }
 

@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/30 14:47:12 by folim             #+#    #+#             */
-/*   Updated: 2024/01/01 12:09:53 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/01 16:16:08 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,9 +168,9 @@ void	n_builtins(t_command **a, t_status *stat)
 	char		*path_str;
 	//bool		path_exists;
 
-        if (stat->s_code)
-            return ;
 	tmp = *a;
+        if (!tmp->exec)
+            return ;
 	i = 0;
 	j = n_builtins_3(tmp->cmd);
 	path = NULL;

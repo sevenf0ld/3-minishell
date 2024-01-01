@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:20:01 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/12/30 17:10:25 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/01 13:23:21 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,7 @@ typedef struct s_command
 	char				*og;
 	bool				builtin;
 	int				last_out;
+        bool                            exec;
 	struct s_env		*env_var;
 	struct s_status		*stat;
 	struct s_command	*prev;
@@ -215,7 +216,7 @@ void		pipe_init(t_pipe **pipes, int loop, t_status *stat);
 //err_handling.c
 void		report_err(char *fn, int flag, t_status *stat);
 void		*malloc_err(size_t size, t_status *stat);
-int			open_err(char *file, int flags, mode_t mode, t_status *stat);
+int			open_err(char *file, int flags, mode_t mode, t_command *c_node);
 void		dup2_err(int old_fd, int new_fd, t_status *stat);
 void		close_err(int fd, t_status *stat);
 void		quote_err(t_status *stat);

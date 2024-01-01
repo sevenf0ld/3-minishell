@@ -6,22 +6,11 @@
 /*   By: folim <folim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:19:04 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/01/01 12:04:34 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/01 16:28:48 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mini.h"
-
-#include <sys/stat.h>
-#include <errno.h>
-#include <string.h>
-void print_inode(int fd, char *name) {
- struct stat info;
- if (fstat(fd, &info) != 0)
-   fprintf(stderr,"fstat() error for %s %d: %s\n",name,fd,strerror(errno));
- else
-   fprintf(stderr, "╳ The inode of %s is %d\n", name, (int) info.st_ino);
-}
 
 /*
  * use an array of cmds to make it shorter
@@ -58,13 +47,6 @@ int	all_whitespace(char *cmd)
         i++;
     }
     return (1);
-}
-
-void    print_tcommand(t_command *c_node)
-{
-    fprintf(stderr, "pos %i, size %i, cmd %s, num_f %i, num_a %i lim %s\n", c_node->pos, c_node->size, c_node->cmd, c_node->num_f, c_node->num_a, c_node->lim);
-    fprintf(stderr, "num_si %i, num_so_o %i, num_so_a %i\n", c_node->num_si, c_node->num_so_o, c_node->num_so_a);
-    fprintf(stderr, "pipe[0] %i, pipe[1] %i, og %s, builtin %s\n", c_node->read_end, c_node->write_end, c_node->og, c_node->builtin? "true": "false");
 }
 
 int	main(int argc, char **argv, char **envp)
@@ -116,21 +98,14 @@ int	main(int argc, char **argv, char **envp)
 			lexer(pipeline, &tok, stat);
 			res->std_out = dup_err(STDOUT_FILENO, stat);
 			res->std_in = dup_err(STDIN_FILENO, stat);
-                        //print_inode(STDIN_FILENO, "\e[1;34minitial SI\e[m");
-			//print_inode(STDOUT_FILENO, "\e[1;34minitial SO\e[m");
 			parser(&tok, &cmd, env, stat);
 			for (t_command *cur = cmd; cur != NULL; cur = cur->next)
 			{
-                            //print_tcommand(cur);
 				redirect_command_io(cur);
                                 if (cur->cmd != NULL)
                                     n_builtins(&cur, stat);
-                                //print_inode(STDIN_FILENO, "\e[1;31mexec SI\e[m");
-				//print_inode(STDOUT_FILENO, "\e[1;31mexec SO\e[m");
 				dup2_err(res->std_out, STDOUT_FILENO, stat);
 			        dup2_err(res->std_in, STDIN_FILENO, stat);
-                                //print_inode(STDIN_FILENO, "\e[1;32mrestore SI\e[m");
-				//print_inode(STDOUT_FILENO, "\e[1;32mrestore SO\e[m");
 			}
 		}
 	}
