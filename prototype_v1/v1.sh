@@ -118,6 +118,17 @@ args=("ls -la | cat | grep -wn c > outfile"
     "cat << EOF > outone.txt"
     "cat << LIM"
     )
+# 1/1 & 4/1
+in_re=("< nothing cat | wc | wc"
+        "wc main.c | < nothing cat | wc"
+        "wc main.c | cat -e main.c | < nothing cat"
+        "< main.c | wc | wc"
+        "< main.c cat | < main.c | wc"
+        "< main.c cat | wc | < main.c"
+        "< nothing | wc | wc"
+        "< nothing cat | < nothing | wc"
+        "< nothing cat | wc | < nothing"
+        )
 
 # create a variable with the name of the executable
 exe="./v1"
@@ -128,10 +139,15 @@ exe="./v1"
 # make re -f Makefile
 make re --silent
 
-for arg in "${args[@]}"; do
-    echo -e "$red $exe $arg: $none"
-    #leaks -atExit -- ./"$exe" "$arg"
-    ./"$exe" "$arg"
+#for arg in "${args[@]}"; do
+#    echo -e "$red $exe $arg: $none"
+#    #leaks -atExit -- ./"$exe" "$arg"
+#    ./"$exe" "$arg"
+#done
+
+for inre in "${in_re[@]}"; do
+    echo -e "$red $exe $inre: $none"
+    ./"$exe" "$inre"
 done
 
 rm -rf v1.dSYM v1 outfile firstfile lastfile outone.txt outtwo.txt outthree.txt file
