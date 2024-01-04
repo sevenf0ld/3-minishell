@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/30 14:47:12 by folim             #+#    #+#             */
-/*   Updated: 2024/01/01 16:16:08 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/04 15:13:54 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -170,7 +170,13 @@ void	n_builtins(t_command **a, t_status *stat)
 
 	tmp = *a;
         if (!tmp->exec)
+        {
+            if (tmp->write_end != -1)
+                close_err(tmp->write_end, stat);
+            if (tmp->read_end != -1)
+                close_err(tmp->read_end, stat);
             return ;
+        }
 	i = 0;
 	j = n_builtins_3(tmp->cmd);
 	path = NULL;

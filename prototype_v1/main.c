@@ -6,11 +6,22 @@
 /*   By: folim <folim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:19:04 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/01/01 16:28:48 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/04 15:13:24 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mini.h"
+
+#include <sys/stat.h>
+#include <errno.h>
+#include <string.h>
+void print_inode(int fd, char *name) {
+ struct stat info;
+ if (fstat(fd, &info) != 0)
+   fprintf(stderr,"fstat() error for %s %d: %s\n",name,fd,strerror(errno));
+ else
+   fprintf(stderr, "╳ The inode of %s is %d\n", name, (int) info.st_ino);
+}
 
 /*
  * use an array of cmds to make it shorter
@@ -98,14 +109,20 @@ int	main(int argc, char **argv, char **envp)
 			lexer(pipeline, &tok, stat);
 			res->std_out = dup_err(STDOUT_FILENO, stat);
 			res->std_in = dup_err(STDIN_FILENO, stat);
+                        //print_inode(STDIN_FILENO, "\e[1;34minitial SI\e[m");
+			//print_inode(STDOUT_FILENO, "\e[1;34minitial SO\e[m");
 			parser(&tok, &cmd, env, stat);
 			for (t_command *cur = cmd; cur != NULL; cur = cur->next)
 			{
 				redirect_command_io(cur);
                                 if (cur->cmd != NULL)
                                     n_builtins(&cur, stat);
+                                //print_inode(STDIN_FILENO, "\e[1;31mexec SI\e[m");
+				//print_inode(STDOUT_FILENO, "\e[1;31mexec SO\e[m");
 				dup2_err(res->std_out, STDOUT_FILENO, stat);
 			        dup2_err(res->std_in, STDIN_FILENO, stat);
+                                //print_inode(STDIN_FILENO, "\e[1;32mrestore SI\e[m");
+				//print_inode(STDOUT_FILENO, "\e[1;32mrestore SO\e[m");
 			}
 		}
 	}
@@ -128,23 +145,29 @@ int	main(int argc, char **argv)
 	if (argc != 2)
 		return (1);
 	lexer(argv[1], &tok, stat);
+        int std_out = dup_err(STDOUT_FILENO, stat);
+        int std_in = dup_err(STDIN_FILENO, stat);
 	for (t_token *dl = tok; dl != NULL; dl = dl->next)
-		printf("[%s] is a [%s]. expand? \x1b[32m%s\x1b[m\n", dl->token, type[dl->symbol], dl->exp?"true":"false");
+		fprintf(stderr, "[%s] is a [%s]. expand? \x1b[32m%s\x1b[m\n", dl->token, type[dl->symbol], dl->exp?"true":"false");
 	parser(&tok, &cmd, env, stat);
 	t_command *tmp;
 	for (tmp = cmd; tmp != NULL; tmp = tmp->next)
 	{
-		printf("@ [%s]\n", tmp->cmd);
+		redirect_command_io(tmp);
+		fprintf(stderr, "@ [%s]\n", tmp->cmd);
 		if (tmp->flags != NULL)
 		{
 			for (int i = 0; i < tmp->num_f; i++)
-				printf("--- {%s}\n", tmp->flags[i]);
+				fprintf(stderr, "--- {%s}\n", tmp->flags[i]);
 		}
 		if (tmp->args != NULL)
 		{
 			for (int i = 0; i < tmp->num_a; i++)
-				printf("::: {%s}\n", tmp->args[i]);
+				fprintf(stderr, "::: {%s}\n", tmp->args[i]);
 		}
+                fprintf(stderr, "should be executed. %s\n", tmp->exec?"true":"false");
+                dup2_err(std_out, STDOUT_FILENO, stat);
+                dup2_err(std_in, STDIN_FILENO, stat);
 	}
 }
 */

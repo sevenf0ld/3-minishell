@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 12:07:39 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/12/30 12:49:32 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/04 10:03:41 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,12 +109,26 @@ void	complete_cmd(t_token **tokens, t_command **cmds)
 	}	
 }
 
+static void update_cmd_exec(t_command **cmds)
+{
+    t_command   *c_node;
+
+    c_node = *cmds;
+    while (c_node != NULL)
+    {
+        if (!c_node->cmd)
+            c_node->exec = false;
+        c_node = c_node->next;
+    }
+}
+
 void	parser(t_token **tokens, t_command **cmds, t_env *envs, t_status *stat)
 {
 	t_pipe	*pipes;
 
 	pipes = NULL;
 	cmd_init(tokens, cmds, envs, stat);
+        update_cmd_exec(cmds);
 	double_ll_convert2(cmds);
 	complete_cmd(tokens, cmds);
 	if (*cmds != NULL && (*cmds)->size > 1)
