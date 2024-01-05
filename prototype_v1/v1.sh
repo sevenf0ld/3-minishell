@@ -117,9 +117,7 @@ args=("ls -la | cat | grep -wn c > outfile"
     "< lexer.c | wc"
     "cat << EOF > outone.txt"
     "cat << LIM"
-    )
-# 1/1 & 4/1
-in_re=("< nothing cat | wc | wc"
+        "< nothing cat | wc | wc"
         "wc main.c | < nothing cat | wc"
         "wc main.c | cat -e main.c | < nothing cat"
         "< main.c | wc | wc"
@@ -127,7 +125,51 @@ in_re=("< nothing cat | wc | wc"
         "< main.c cat | wc | < main.c"
         "< nothing | wc | wc"
         "< nothing cat | < nothing | wc"
-        "< nothing cat | wc | < nothing"
+        "< nothing ca"
+    )
+# 1/1 & 4/1
+in_re=(
+    "echo \$SHELL"
+    "echo '\$SHELL'"
+    'echo "$SHELL"'
+    'echo "$SHELL" $SHELL'
+    "echo "\$SHELL" '\$SHELL'"
+    'echo "$SHELL" "$SHELL"'
+    "echo '\$SHELL' \"\$SHELL\""
+    "echo '\$SHELL' \"\$SHELL\" \"\$SHELL\""
+    "echo \"\$SHELL\" \"\$SHELL\" '\$SHELL'"
+    "echo \"\$SHELL\" \"\$SHELL\" '\$SHELL' \"\$SHELL\""
+    "echo '\$?'"
+    'echo "\$?"'
+    "echo \$?"
+    "echo '$example'"
+    "echo '\$example'"
+    'echo "$example"'
+    "echo \$example"
+    "echo \$HOME"
+    'echo $USER'
+    "echo \$MADi\$HATTER"
+    'echo $HOME$USER'
+    'echo $HOME$USER $HOME$USER'
+    'echo $HOME$USERi'
+    'echo i$HOME$USERi'
+    'echo $HOMEi'
+    'echo i$HOMEi'
+    'echo i$HOME'
+    'echo something something $HOME random $USER $PATHi$SHELL$LANG'
+    "echo '\"\$PATH\"'"
+    # heap buffer overflow in new_split if there is no space
+    "echo '\"\$PATH\" \"\$USER\"'"
+    "echo \"'\$PATH'\""
+    # heap buffer overflow in new_split if there is no space
+    "echo \"'\$PATH' '\$USER'\""
+    "echo \"'\$PATH' '\$USER'\" \"'\$PATH' '\$USER'\""
+    "echo \$"
+    "echo '\$'"
+    'echo "\$"'
+    "echo '\$SHELL' '\$SHELL'"
+    'echo "$SHELL$SHELL" "$HOME"'
+    'echo abc"$HOME"'
         )
 
 # create a variable with the name of the executable
