@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:19:04 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/01/05 16:02:25 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/05 18:37:33 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,8 @@ int	main(int argc, char **argv, char **envp)
                                 n_builtins(&cur, stat);
                                 if (!ft_strcmp(cur->cmd, "unset") && cur->size == 1)
                                     b_unset(cur, &fix);
+                                if (!ft_strcmp(cur->cmd, "exit") && cur->size == 1)
+                                    b_exit(cur);
 				dup2_err(res->std_out, STDOUT_FILENO, stat);
 			        dup2_err(res->std_in, STDIN_FILENO, stat);
 			}
