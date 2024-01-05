@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 16:36:05 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/11/04 15:27:42 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/12/30 12:36:58 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ void	manage_quotes(t_token **tokens)
 /*
  * detect and reject unterminated/incomplete quotes
  */
-void	reject_unterminated_q(t_token **tokens, t_sym symbol)
+void	reject_unterminated_q(t_token **tokens, t_sym symbol, t_status *stat)
 {
 	t_token	*tmp;
 	t_token	*cur;
@@ -117,7 +117,7 @@ void	reject_unterminated_q(t_token **tokens, t_sym symbol)
 		tmp = tmp->next;
 	}
 	if (num == 1)
-		quote_err();
+		quote_err(stat);
 }
 
 /*

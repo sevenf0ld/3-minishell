@@ -6,7 +6,7 @@
 #    By: folim <folim@student.42kl.edu.my>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/15 12:21:40 by maiman-m          #+#    #+#              #
-#    Updated: 2023/11/25 12:44:43 by maiman-m         ###   ########.fr        #
+#    Updated: 2023/12/31 14:07:16 by maiman-m         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -45,11 +45,11 @@ SRCS = main.c tokenizer.c tokenizer_utils.c init_token.c d_ll_convert.c \
 
 OBJS = $(SRCS:.c=.o)
 
-all: $(PROG_NAME)
+#all: $(PROG_NAME)
 
 $(PROG_NAME): $(OBJS)
 	cd libft && $(MAKE)
-	$(CC) $^ $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) -o $(PROG_NAME)
+	$(CC) $^ $(CPPFLAGS) $(LDFLAGS) -o $(PROG_NAME)
 
 clean:
 	cd libft && $(MAKE) clean
@@ -60,6 +60,6 @@ fclean: clean
 	cd libft && $(MAKE) fclean
 	rm -rf $(PROG_NAME)
 
-re: fclean all
+re: fclean all $(PROG_NAME)
 
 .PHONY: all clean fclean re

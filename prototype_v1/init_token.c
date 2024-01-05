@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/10 00:09:50 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/12/28 11:03:20 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/12/30 12:36:10 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ t_token	*token_new(char *token, t_status *stat)
 {
 	t_token	*node;
 
-	node = malloc_err(sizeof(t_token));
+	node = malloc_err(sizeof(t_token), stat);
 	node->token = token;
 	node->symbol = ANON;
 	node->end = false;

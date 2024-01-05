@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/17 16:19:30 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/11/04 16:33:24 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/12/30 12:34:05 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,12 +51,12 @@ static int	num_sbq(char *s)
 	return (num);
 }
 
-char	**init_split_pipeline(char *s, int w_c)
+char	**init_split_pipeline(char *s, int w_c, t_status *stat)
 {
 	int		additional = 0;
 	char	**end;
 
 	additional = num_sbq(s) + w_c;
-	end = malloc_err(sizeof(char *) * (additional + 1));
+	end = malloc_err(sizeof(char *) * (additional + 1), stat);
 	return (end);
 }

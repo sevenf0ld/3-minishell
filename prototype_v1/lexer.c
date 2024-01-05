@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:25:31 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/12/28 20:22:44 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/12/31 14:13:17 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,8 @@ void	categorize_cmdwflags(t_token **tokens)
 		if (tmp->symbol == PIPE && tmp->next != NULL)
 			if (tmp->next->symbol != S_Q && tmp->next->symbol != W_Q)
 				if (tmp->next->symbol != PIPE)
-					tmp->next->symbol = CMD;
+                                    if (tmp->next->symbol != IN_RE && tmp->next->symbol != ADD && tmp->next->symbol != OUT_RE)
+                                        tmp->next->symbol = CMD;
 		if (tmp->symbol == ARGS && tmp->next != NULL)
 			if (tmp->prev != NULL && tmp->prev->prev != NULL)
 				if (tmp->prev->symbol == FILN)
@@ -145,14 +146,14 @@ void	lexer(char *pipeline, t_token **tokens, t_status *stat)
 {
 	char	**words;
 
-	words = new_split(ft_strtrim(pipeline, " 	"));
+	words = new_split(ft_strtrim(pipeline, " 	"), stat);
 	token_init(words, tokens, stat);
 	double_ll_convert(tokens);
 	categorize_symbol(tokens);
 	double_check_quotes(tokens, W_Q);
 	double_check_quotes(tokens, S_Q);
-	reject_unterminated_q(tokens, W_Q);
-	reject_unterminated_q(tokens, S_Q);
+	reject_unterminated_q(tokens, W_Q, stat);
+	reject_unterminated_q(tokens, S_Q, stat);
 	expansion(tokens, stat);
 	manage_quotes(tokens);
 	identify_symbols(tokens);
