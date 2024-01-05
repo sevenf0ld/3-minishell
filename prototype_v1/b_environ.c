@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/24 03:45:36 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/11/27 13:32:56 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/05 14:05:39 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,16 @@ void	b_env(t_command *c_node, t_fixed **f_node)
 	ftmp = *f_node;
 	if (c_node->num_a > 0)
 	{
-		c_node->stat->s_code = 127;
-		ft_putstr_fd("env: ", STDERR_FILENO);
-		ft_putstr_fd(c_node->args[0], STDERR_FILENO);
-		ft_putendl_fd(": No such file or directory", STDERR_FILENO);
-		return ;
+            c_node->stat->s_code = 64;
+            ft_putendl_fd("minishell does not require env to handle arguments", STDERR_FILENO);
+	    return ;
 	}
+        if (c_node->num_f > 0)
+        {
+            c_node->stat->s_code = 64;
+            ft_putendl_fd("minishell does not require env to handle flags", STDERR_FILENO);
+	    return ;
+        }
 	while (ftmp != NULL)
 	{
 		if (ftmp->fvalue)
@@ -130,7 +134,7 @@ void	b_export(t_command *c_node, t_fixed **f_node)
 				to_repl->fvalue = val + 1;
 		}
 		else
-			f_add_back(f_node, f_new(c_node->args[i]));
+			f_add_back(f_node, f_new(c_node->args[i], c_node->stat));
 	}
 	c_node->stat->s_code = 0;
 }

@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:19:04 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/12/28 22:40:46 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/05 16:02:25 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,6 @@ int	all_whitespace(char *cmd)
     return (1);
 }
 
-///*
 int	main(int argc, char **argv, char **envp)
 {
 	char		*pipeline;
@@ -67,15 +66,16 @@ int	main(int argc, char **argv, char **envp)
 	cmd = NULL;
 	env = NULL;
 	fix = NULL;
-	stat = malloc_err(sizeof(t_status));
+        stat = NULL;
+	stat = malloc_err(sizeof(t_status), stat);
 	stat->s_code = 0;
-        res = malloc_err(sizeof(t_restore));
+        res = malloc_err(sizeof(t_restore), stat);
         res->std_out = -1;
         res->std_in = -1;
 	(void) argc;
 	(void) argv;
-	f_init(&fix, envp);
-	env_init(&env, envp, fix);
+	f_init(&fix, envp, stat);
+	env_init(&env, envp, fix, stat);
 	while (1)
 	{
 		// ft_putstr_fd("minishell > ", STDERR_FILENO);
@@ -96,44 +96,21 @@ int	main(int argc, char **argv, char **envp)
 		{
 			add_history(pipeline);
 			lexer(pipeline, &tok, stat);
-			res->std_out = dup_err(STDOUT_FILENO);
-			res->std_in = dup_err(STDIN_FILENO);
+			res->std_out = dup_err(STDOUT_FILENO, stat);
+			res->std_in = dup_err(STDIN_FILENO, stat);
 			parser(&tok, &cmd, env, stat);
 			for (t_command *cur = cmd; cur != NULL; cur = cur->next)
 			{
-				if (!cur->builtin)
-                                //{
-					n_builtins(&cur, stat);
-                                        //continue ;
-                                //}
-                                //redirect_command_io(cur);
-                                else if (!ft_strcmp(cur->cmd, "echo"))
-					b_echo(cur);
-				else if (!ft_strcmp(cur->cmd, "pwd"))
-					b_pwd(cur, 'w');
-				else if (!ft_strcmp(cur->cmd, "cd"))
-					b_cd(cur);
-				else if (!ft_strcmp(cur->cmd, "env"))
-					b_env(cur, &fix);
-				else if (!ft_strcmp(cur->cmd, "unset"))
-					b_unset(cur, &fix);
-				else if (!ft_strcmp(cur->cmd, "export"))
-					b_export(cur, &fix);
-				else if (!ft_strcmp(cur->cmd, "exit"))
-					b_exit(cur);
-                                //dup2_err(res->std_out, STDOUT_FILENO);
-                                //close_err(res->std_out);
-                                //dup2_err(res->std_in, STDIN_FILENO);
-                                //close_err(res->std_in);
+				redirect_command_io(cur);
+                                n_builtins(&cur, stat);
+                                if (!ft_strcmp(cur->cmd, "unset") && cur->size == 1)
+                                    b_unset(cur, &fix);
+				dup2_err(res->std_out, STDOUT_FILENO, stat);
+			        dup2_err(res->std_in, STDIN_FILENO, stat);
 			}
-                        dup2_err(res->std_out, STDOUT_FILENO);
-                        close_err(res->std_out);
-                        dup2_err(res->std_in, STDIN_FILENO);
-                        close_err(res->std_in);
 		}
 	}
 }
-//*/
 
 /*
 int	main(int argc, char **argv)
@@ -145,29 +122,36 @@ int	main(int argc, char **argv)
 	tok = NULL;
 	cmd = NULL;
 	env = NULL;
-	stat = malloc_err(sizeof(t_status));
+        stat = NULL;
+	stat = malloc_err(sizeof(t_status), stat);
 	stat->s_code = 0;
-	char	*type[] = {"PIPE", "OUT_RE", "IN_RE", "W_Q", "S_Q", "CMD", "OPT", "ARGS", "FILN", "LIM", "HD", "ADD", "ANON"};
+	//char	*type[] = {"PIPE", "OUT_RE", "IN_RE", "W_Q", "S_Q", "CMD", "OPT", "ARGS", "FILN", "LIM", "HD", "ADD", "ANON"};
 	if (argc != 2)
 		return (1);
 	lexer(argv[1], &tok, stat);
-	for (t_token *dl = tok; dl != NULL; dl = dl->next)
-		printf("[%s] is a [%s]. expand? \x1b[32m%s\x1b[m\n", dl->token, type[dl->symbol], dl->exp?"true":"false");
+        int std_out = dup_err(STDOUT_FILENO, stat);
+        int std_in = dup_err(STDIN_FILENO, stat);
+	//for (t_token *dl = tok; dl != NULL; dl = dl->next)
+	//	fprintf(stderr, "[%s] is a [%s]. expand? \x1b[32m%s\x1b[m\n", dl->token, type[dl->symbol], dl->exp?"true":"false");
 	parser(&tok, &cmd, env, stat);
 	t_command *tmp;
 	for (tmp = cmd; tmp != NULL; tmp = tmp->next)
 	{
-		printf("@ [%s]\n", tmp->cmd);
+		redirect_command_io(tmp);
+		fprintf(stderr, "@ [%s]\n", tmp->cmd);
 		if (tmp->flags != NULL)
 		{
 			for (int i = 0; i < tmp->num_f; i++)
-				printf("--- {%s}\n", tmp->flags[i]);
+				fprintf(stderr, "--- {%s}\n", tmp->flags[i]);
 		}
 		if (tmp->args != NULL)
 		{
 			for (int i = 0; i < tmp->num_a; i++)
-				printf("::: {%s}\n", tmp->args[i]);
+				fprintf(stderr, "::: {%s}\n", tmp->args[i]);
 		}
+                fprintf(stderr, "should be executed. \x1b[35m%s\x1b[m\n", tmp->exec?"true":"false");
+                dup2_err(std_out, STDOUT_FILENO, stat);
+                dup2_err(std_in, STDIN_FILENO, stat);
 	}
 }
 */

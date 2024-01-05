@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/30 14:47:12 by folim             #+#    #+#             */
-/*   Updated: 2023/12/28 20:55:37 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/04 15:13:54 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,6 @@ void	n_builtins_2(t_command **a, char **input, char *cmd, t_status *stat)
 	t_command	*tmp;
 
 	tmp = *a;
-        (void)tmp;
 	pid = fork();
 	if (pid == -1)
 	{
@@ -82,18 +81,33 @@ void	n_builtins_2(t_command **a, char **input, char *cmd, t_status *stat)
 	}
 	if (pid == 0)
 	{
-		redirect_command_io(tmp);
-		execve(input[0], input, NULL);
-		//exit(127);
-		stat->s_code = 127;
+		if (!tmp->builtin)
+                {
+			execve(input[0], input, NULL);
+		        stat->s_code = 127;
+                }
+                else if (!ft_strcmp(tmp->cmd, "echo"))
+                    b_echo(tmp);
+                else if (!ft_strcmp(tmp->cmd, "pwd"))
+                    b_pwd(tmp, 'w');
+                else if (!ft_strcmp(tmp->cmd, "cd"))
+                    b_cd(tmp);
+                else if (!ft_strcmp(tmp->cmd, "env"))
+                    b_env(tmp, &(tmp->env_var->fixed));
+                else if (!ft_strcmp(tmp->cmd, "unset"))
+                    b_unset(tmp, &(tmp->env_var->fixed));
+                else if (!ft_strcmp(tmp->cmd, "export"))
+                    b_export(tmp, &(tmp->env_var->fixed));
+                else if (!ft_strcmp(tmp->cmd, "exit"))
+                    b_exit(tmp);
+                exit(EXIT_SUCCESS);
 	}
 	else
 	{
-		if (tmp->read_end != -1)
-			close_err(tmp->read_end);
 		if (tmp->write_end != -1)
-			close_err(tmp->write_end);
-		//free_2d_arr(input);
+			close_err(tmp->write_end, stat);
+                if (input != NULL)
+		    free_2d_arr(input);
 		cmd = NULL;
 		int	wstat;
 		int	got_pid;
@@ -125,7 +139,7 @@ void	n_builtins_1(t_command **a, char *path_str, t_status *stat)
 	char		**input;
 
 	tmp = *a;
-	input = (char **)malloc_err((tmp->num_f + tmp->num_a + 2) * sizeof(char *));
+	input = (char **)malloc_err((tmp->num_f + tmp->num_a + 2) * sizeof(char *), stat);
 	input[0] = path_str;
 	input[tmp->num_f + tmp->num_a + 1] = NULL;
 	i = -1;
@@ -155,6 +169,14 @@ void	n_builtins(t_command **a, t_status *stat)
 	//bool		path_exists;
 
 	tmp = *a;
+        if (!tmp->exec)
+        {
+            if (tmp->write_end != -1)
+                close_err(tmp->write_end, stat);
+            if (tmp->read_end != -1)
+                close_err(tmp->read_end, stat);
+            return ;
+        }
 	i = 0;
 	j = n_builtins_3(tmp->cmd);
 	path = NULL;
@@ -163,15 +185,20 @@ void	n_builtins(t_command **a, t_status *stat)
 	if (j == 1)
 	{
 		path_str = tmp->cmd;
+                /*
 		if (tmp->cmd[0] == '.' && tmp->cmd[1] == '/')
 		{
 			path_str += 2;
 		}
+                */
 	}
 	else if (j == 0)
 	{
 		if (tmp->builtin)
+                {
+                        n_builtins_2(a, NULL, NULL, stat);
 			return ;
+                }
 		t_fixed	*ftmp;
 		for (ftmp = tmp->env_var->fixed; ftmp != NULL; ftmp = ftmp->fnext)
 		{
@@ -210,11 +237,13 @@ void	n_builtins(t_command **a, t_status *stat)
 	}
 	else if (j == -1)
 		return ;
+        /*
 	else if (j >= 100)
 	{
 		tmp->stat->s_code = j;
 		return ;
 	}
+        */
 	n_builtins_1(a, path_str, stat);
 	return ;
 }

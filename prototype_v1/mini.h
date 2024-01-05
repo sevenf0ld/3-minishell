@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:20:01 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/12/28 20:32:36 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/01 13:23:21 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,7 @@ typedef struct s_command
 	char				*og;
 	bool				builtin;
 	int				last_out;
+        bool                            exec;
 	struct s_env		*env_var;
 	struct s_status		*stat;
 	struct s_command	*prev;
@@ -138,12 +139,12 @@ typedef struct  s_restore
 
 /*	TOKENIZER	*/
 //tokenizer.c
-char		**new_split(char *str);
+char		**new_split(char *str, t_status *stat);
 
 //tokenizer_utils.c
 int			is_delim(char a);
 char		*handle_spaces_btwn_q(char a, char c);
-char		**init_split_pipeline(char *s, int w_c);
+char		**init_split_pipeline(char *s, int w_c, t_status *stat);
 
 //init_token.c
 t_token		*token_new(char *token, t_status *stat);
@@ -171,7 +172,7 @@ void		group_cmds(t_token **tokens);
 
 //lexer_utils2.c
 void		manage_quotes(t_token **tokens);
-void		reject_unterminated_q(t_token **tokens, t_sym symbol);
+void		reject_unterminated_q(t_token **tokens, t_sym symbol, t_status *stat);
 void		delete_quotes_after_expand(t_token **tokens, t_sym symbol);
 
 //lexer_utils3.c
@@ -206,21 +207,21 @@ t_command	*cmd_last(t_command *head);
 int			cmd_size(t_command *head);
 
 //init_pipe.c
-t_pipe		*pipe_new(int n);
+t_pipe		*pipe_new(int n, t_status *stat);
 t_pipe		*pipe_last(t_pipe *head);
 void		pipe_add_back(t_pipe **head, t_pipe *node);
-void		pipe_init(t_pipe **pipes, int loop);
+void		pipe_init(t_pipe **pipes, int loop, t_status *stat);
 
 /*	ERROR AND MEMORY HANDLER	*/
 //err_handling.c
-void		report_err(char *fn, int flag);
-void		*malloc_err(size_t size);
-int			open_err(char *file, int flags, mode_t mode);
-void		dup2_err(int old_fd, int new_fd);
-void		close_err(int fd);
-void		quote_err(void);
-void		pipe_err(int *pipe_arr);
-int			dup_err(int old_fd);
+void		report_err(char *fn, int flag, t_status *stat);
+void		*malloc_err(size_t size, t_status *stat);
+int			open_err(char *file, int flags, mode_t mode, t_command *c_node);
+void		dup2_err(int old_fd, int new_fd, t_status *stat);
+void		close_err(int fd, t_status *stat);
+void		quote_err(t_status *stat);
+void		pipe_err(int *pipe_arr, t_status *stat);
+int			dup_err(int old_fd, t_status *stat);
 
 //free.c
 void		free_2d_arr(char **input);
@@ -254,15 +255,15 @@ void		b_exit(t_command *c_node);
 
 /*	ENVIRONMENT VARIABLES HANDLER	*/
 //init_env.c
-t_env		*env_new(char *var, t_fixed *f);
+t_env		*env_new(char *var, t_fixed *f, t_status *stat);
 t_env		*env_last(t_env *head);
 void		env_add_back(t_env **head, t_env *node);
-void		env_init(t_env **envs, char **envp, t_fixed *f);
+void		env_init(t_env **envs, char **envp, t_fixed *f, t_status *stat);
 
 //init_fixed.c
-t_fixed		*f_new(char *var);
+t_fixed		*f_new(char *var, t_status *stat);
 t_fixed		*f_last(t_fixed *head);
 void		f_add_back(t_fixed **head, t_fixed *node);
-void		f_init(t_fixed **envs, char **envp);
+void		f_init(t_fixed **envs, char **envp, t_status *stat);
 
 #endif

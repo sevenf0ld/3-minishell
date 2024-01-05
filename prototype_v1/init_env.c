@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/23 05:49:06 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/11/24 02:26:57 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/01 12:18:47 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,21 +25,14 @@ static void	set_env_kv(t_env *node, char *var)
 	node->value = ft_substr(var, i + 1, len);
 }
 
-t_env	*env_new(char *var, t_fixed *f)
+t_env	*env_new(char *var, t_fixed *f, t_status *stat)
 {
 	t_env	*node;
 
-	node = malloc_err(sizeof(t_env));
+	node = malloc_err(sizeof(t_env), stat);
 	set_env_kv(node, var);
 	node->fixed = f;
 	node->next = NULL;
-	/*
-	for (t_fixed *tmp = f; tmp != NULL; tmp = tmp->fnext)
-		fprintf(stderr, "\x1b[32mFKEY %s FVALUE %s\x1b[m\n", tmp->fkey, tmp->fvalue);
-	fprintf(stderr, "--------------------------------------------------------\n");
-	for(t_env *tmp = node; tmp != NULL; tmp = tmp->next)
-		fprintf(stderr, "\x1b[34m[KEY] %s [VALUE] %s\x1b[m\n", tmp->key, tmp->value);
-	*/
 	return (node);
 }
 
@@ -63,7 +56,7 @@ void	env_add_back(t_env **head, t_env *node)
 	old_end->next = node;
 }
 
-void	env_init(t_env **envs, char **envp, t_fixed *f)
+void	env_init(t_env **envs, char **envp, t_fixed *f, t_status *stat)
 {
 	int		i;
 
@@ -71,9 +64,9 @@ void	env_init(t_env **envs, char **envp, t_fixed *f)
 	while (envp[i] != NULL)
 	{
 		if (i == 0)
-			*envs = env_new(envp[i], f);
+			*envs = env_new(envp[i], f, stat);
 		else
-			env_add_back(envs, env_new(envp[i], f));
+			env_add_back(envs, env_new(envp[i], f, stat));
 		i++;
 	}
 }
