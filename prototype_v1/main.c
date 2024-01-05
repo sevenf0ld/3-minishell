@@ -6,22 +6,11 @@
 /*   By: folim <folim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:19:04 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/01/04 17:52:04 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/05 16:02:25 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mini.h"
-
-#include <sys/stat.h>
-#include <errno.h>
-#include <string.h>
-void print_inode(int fd, char *name) {
- struct stat info;
- if (fstat(fd, &info) != 0)
-   fprintf(stderr,"fstat() error for %s %d: %s\n",name,fd,strerror(errno));
- else
-   fprintf(stderr, "╳ The inode of %s is %d\n", name, (int) info.st_ino);
-}
 
 /*
  * use an array of cmds to make it shorter
@@ -109,21 +98,15 @@ int	main(int argc, char **argv, char **envp)
 			lexer(pipeline, &tok, stat);
 			res->std_out = dup_err(STDOUT_FILENO, stat);
 			res->std_in = dup_err(STDIN_FILENO, stat);
-                        //print_inode(STDIN_FILENO, "\e[1;34minitial SI\e[m");
-			//print_inode(STDOUT_FILENO, "\e[1;34minitial SO\e[m");
 			parser(&tok, &cmd, env, stat);
 			for (t_command *cur = cmd; cur != NULL; cur = cur->next)
 			{
 				redirect_command_io(cur);
-                                //if (cur->cmd != NULL)
-                                    //n_builtins(&cur, stat);
                                 n_builtins(&cur, stat);
-                                //print_inode(STDIN_FILENO, "\e[1;31mexec SI\e[m");
-				//print_inode(STDOUT_FILENO, "\e[1;31mexec SO\e[m");
+                                if (!ft_strcmp(cur->cmd, "unset") && cur->size == 1)
+                                    b_unset(cur, &fix);
 				dup2_err(res->std_out, STDOUT_FILENO, stat);
 			        dup2_err(res->std_in, STDIN_FILENO, stat);
-                                //print_inode(STDIN_FILENO, "\e[1;32mrestore SI\e[m");
-				//print_inode(STDOUT_FILENO, "\e[1;32mrestore SO\e[m");
 			}
 		}
 	}
