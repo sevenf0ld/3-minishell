@@ -1,14 +1,10 @@
 #include <stdio.h>
-#include <readline/readline.h>
-#include <readline/history.h>
+#include </usr/local/opt/readline/include/readline/readline.h>
+#include </usr/local/opt/readline/include/readline/history.h>
 #include <stdlib.h>
 #include <signal.h>
 #include <unistd.h>
 #include <stddef.h>
-// #include "../prototype_v1/mini.h"
-
-// gcc -lreadline -L/goinfre/folim/.brew/opt/readline/lib -I/goinfre/folim/.brew/opt/readline/include signal_8_complete.c -o signal_8_complete.out
-// gcc -lreadline -L/goinfre/folim/.brew/opt/readline/lib -I/goinfre/folim/.brew/opt/readline/include signal_8_complete.c ../prototype_v1/libft/libft.a -o signal_8_complete.out
 
 char *input;
 
@@ -28,23 +24,20 @@ void	ft_putstr_fd(char *s, int fd)
 
 void sig_int(int signum)
 {
-    // printf("%s\n", input);
-    ft_putstr_fd("\f\b\b\b..", STDERR_FILENO);
-    printf("\n");
-    rl_replace_line("", 1); // clears written line
-    rl_on_new_line(); // set readline cursor to a newline/nextline
-    rl_redisplay(); // refresh the display with update changes
+    ft_putstr_fd("\n", STDOUT_FILENO);
+    rl_replace_line("", STDIN_FILENO);
+    rl_on_new_line();
+    rl_redisplay();
 }
 
 void sig_quit(int signum)
 {
     // ft_putstr_fd("\b\b  ", STDERR_FILENO);
     printf("\n");
-    rl_replace_line("", 1); // clears written line
+    rl_replace_line("", STDIN_FILENO); // clears written line
     rl_on_new_line(); // set readline cursor to a newline/nextline
     rl_redisplay(); // refresh the display with update changes
 }
-
 
 int main() {
     // char* input;
@@ -62,3 +55,10 @@ int main() {
     free(input);
     return 0;
 }
+
+// #include "../prototype_v1/mini.h"
+
+// gcc -lreadline -L/goinfre/folim/.brew/opt/readline/lib -I/goinfre/folim/.brew/opt/readline/include signal_8_complete.c -o signal_8_complete.out
+// gcc -lreadline -L/goinfre/folim/.brew/opt/readline/lib -I/goinfre/folim/.brew/opt/readline/include signal_8_complete.c ../prototype_v1/libft/libft.a -o signal_8_complete.out
+
+//gcc -lreadline -I/usr/local/opt/readline/include -L/usr/local/opt/readline/lib signal_8_complete.c -o signal_8_complete.out

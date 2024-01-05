@@ -13,19 +13,36 @@
 #ifndef MINI_H
 # define MINI_H
 
-// # include "libft.h"
-# include "libft/include/libft.h"
+// # include <stddef.h>
+// # include <stdlib.h>
+// # include <stdio.h>
+// # include <readline/readline.h>
+// # include <readline/history.h>
+// # include <stdbool.h>
+// # include <fcntl.h>
+// # include <sys/wait.h>
+// # include <signal.h>
+// // # include <dirent.h>
+// // # include <termios.h>
+// # include <limits.h>
+// # include "libft/include/libft.h"
+
+
+# include <stdio.h>
 # include <readline/readline.h>
-# include <readline/history.h>
+# include <stddef.h>
 # include <stdlib.h>
+# include <readline/history.h>
 # include <stdbool.h>
 # include <fcntl.h>
-# include <unistd.h>
-# include <stdio.h>
-# include <sys/types.h>
 # include <sys/wait.h>
-# include <limits.h>
 # include <signal.h>
+# include <limits.h>
+# include "libft/include/libft.h"
+# include <sys/types.h>
+# include <unistd.h>
+
+
 
 /*
  * 0 PIPE
@@ -207,6 +224,5 @@ void		pipe_init(t_pipe **pipes, int loop);
 
 //signal.c
 void sig_int(int signum);
-void sig_quit(int signum);
 
 #endif

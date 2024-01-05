@@ -14,12 +14,9 @@
 
 void sig_int(int signum)
 {
-	(void)signum;
-	ft_putstr_fd("\b\b  \nminishell > ", STDERR_FILENO);
-}
-
-void sig_quit(int signum)
-{
-	(void)signum;
-	ft_putstr_fd("\b\b  \b\b", STDERR_FILENO);
+    (void)signum;
+    ft_putstr_fd("\n", STDOUT_FILENO);
+    rl_replace_line("", STDIN_FILENO);
+    rl_on_new_line();
+    rl_redisplay();
 }
