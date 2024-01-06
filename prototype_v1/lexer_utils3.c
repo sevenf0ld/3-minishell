@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 14:17:08 by folim             #+#    #+#             */
-/*   Updated: 2024/01/05 19:59:53 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/06 11:11:03 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,8 +105,9 @@ void	expansion(t_token **tokens, t_status *stat)
 	tmp = *tokens;
 	while (tmp != NULL && tmp->symbol != S_Q)
 	{
-		if (ft_strchr(tmp->token, '$') && ft_strlen(tmp->token) > 1)
-			tmp->exp = true;
+            //fprintf(stderr, "iterate till %s\n", tmp->token);
+		//if (ft_strchr(tmp->token, '$') && ft_strlen(tmp->token) > 1)
+		//	tmp->exp = true;
 		tmp = tmp->next;
 	}
         (void)stat;

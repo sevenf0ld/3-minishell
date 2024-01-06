@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/17 16:19:30 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/12/30 12:34:05 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/06 16:30:45 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,14 @@
  */
 int	is_delim(char a)
 {
-	if (a == 124 || a == 62 || a == 60)
-		return (1);
-	if (a == 34 || a == 39)
-		return (1);
+	//if (a == 124) 
+		//return (1);
+	//if (a == 124 || a == 62 || a == 60)
+		//return (1);
+        // BONUS
+	//if (a == 34 || a == 39)
+		//return (1);
+        (void)a;
 	return (0);
 }
 
@@ -34,7 +38,8 @@ char	*handle_spaces_btwn_q(char a, char c)
 	return (NULL);
 }
 
-static int	num_sbq(char *s)
+//static int	num_sbq(char *s)
+int	num_sbq(char *s)
 {
 	int	i = -1;
 	int	num = 0;
@@ -56,7 +61,10 @@ char	**init_split_pipeline(char *s, int w_c, t_status *stat)
 	int		additional = 0;
 	char	**end;
 
-	additional = num_sbq(s) + w_c;
-	end = malloc_err(sizeof(char *) * (additional + 1), stat);
+	//additional = num_sbq(s) + w_c;
+	//end = malloc_err(sizeof(char *) * (additional + 1), stat);
+        (void) additional;
+        (void) s;
+	end = malloc_err(sizeof(char *) * (w_c), stat);
 	return (end);
 }
