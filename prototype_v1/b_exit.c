@@ -11,7 +11,7 @@ void	b_exit(t_command *c_node)
 	if (c_node->num_f == 0 && c_node->num_a == 0)
 	{
 		c_node->stat->s_code = 0;
-		return ;
+                exit(c_node->stat->s_code);
 	}
 	end = ft_split(c_node->og, ' ');
 	while (end[n] != NULL)
@@ -21,9 +21,7 @@ void	b_exit(t_command *c_node)
 	{
 		printf("minishell: exit: %s: numeric argument required\n", end[1]);
 		c_node->stat->s_code = 2;
-		//exit(c_node->stat->s_code);
-		fprintf(stderr, "S_CODE \x1b[45m[%i]\x1b[m will close this shell if it weren't for testing purposes\n", c_node->stat->s_code);
-		return ;
+		exit(c_node->stat->s_code);
 	}
 	else
 	{
@@ -31,8 +29,6 @@ void	b_exit(t_command *c_node)
 		{
 			printf("minishell: exit: too many arguments\n");
 			c_node->stat->s_code = 1;
-			fprintf(stderr, "S_CODE \x1b[42m[%i]\x1b[m but will not close this shell\n", c_node->stat->s_code);
-			return ;
 		}
 	}
 	if (code >= 0)
@@ -48,6 +44,5 @@ void	b_exit(t_command *c_node)
 		if (code <= -255)
 			c_node->stat->s_code %= (256 + 0U);
 	}
-	//exit(c_node->stat->s_code);
-	fprintf(stderr, "S_CODE \x1b[45m[%i]\x1b[m will close this shell if it weren't for testing purposes\n", c_node->stat->s_code);
+        exit(c_node->stat->s_code);
 }
