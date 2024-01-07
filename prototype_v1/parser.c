@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 12:07:39 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/11/22 00:26:32 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/04 10:03:41 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,19 +49,33 @@ void	init_multi_fa(t_token **tokens, t_command *c_node)
 		tmp = tmp->next;
 	}
 	if (c_node->num_f > 0)
-		c_node->flags = malloc_err(sizeof(char *) * (c_node->num_f + 1));
+		c_node->flags = malloc_err(sizeof(char *) * (c_node->num_f + 1), c_node->stat);
 	if (c_node->num_a > 0)
-		c_node->args = malloc_err(sizeof(char *) * (c_node->num_a + 1));
+		c_node->args = malloc_err(sizeof(char *) * (c_node->num_a + 1), c_node->stat);
 	set_multi_fa(tokens, c_node);
 }
 
-static void	rm_till_end(t_token **tokens)
+static char	*join_and_free(char *to_free, char *to_concat)
+{
+	char	*end;
+
+	end = ft_strjoin(to_free, to_concat);
+	free(to_free);
+	to_free = NULL;
+	return (end);
+}
+
+static char	*rm_till_end(t_token **tokens)
 {
 	t_token	*tmp;
+	char	*ret;
 
 	tmp = *tokens;
+	ret = ft_strdup("");
 	while (tmp != NULL && tmp->end == false)
 	{
+		ret = join_and_free(ret, tmp->token);
+		ret = join_and_free(ret, " ");
 		*tokens = tmp->next;
 		free(tmp);
 		tmp = NULL;
@@ -73,6 +87,7 @@ static void	rm_till_end(t_token **tokens)
 		free(tmp);
 		tmp = NULL;
 	}
+	return (ft_strtrim(ret, " "));
 }
 
 /*
@@ -81,32 +96,44 @@ static void	rm_till_end(t_token **tokens)
  */
 void	complete_cmd(t_token **tokens, t_command **cmds)
 {
-	t_token		*tmp;
 	t_command	*c_node;
 
-	tmp = *tokens;
 	c_node = *cmds;
 	while (c_node != NULL)
 	{
 		init_multi_fa(tokens, c_node);
 		init_multi_redir(tokens, c_node);
 		set_delimiter(tokens, c_node);
-		rm_till_end(tokens);
+		c_node->og = rm_till_end(tokens);
 		c_node = c_node->next;
 	}	
 }
 
-void	parser(t_token **tokens, t_command **cmds)
+static void update_cmd_exec(t_command **cmds)
+{
+    t_command   *c_node;
+
+    c_node = *cmds;
+    while (c_node != NULL)
+    {
+        if (!c_node->cmd)
+            c_node->exec = false;
+        c_node = c_node->next;
+    }
+}
+
+void	parser(t_token **tokens, t_command **cmds, t_env *envs, t_status *stat)
 {
 	t_pipe	*pipes;
 
 	pipes = NULL;
-	cmd_init(tokens, cmds);
+	cmd_init(tokens, cmds, envs, stat);
+        update_cmd_exec(cmds);
 	double_ll_convert2(cmds);
 	complete_cmd(tokens, cmds);
-	if ((*cmds)->size > 1)
+	if (*cmds != NULL && (*cmds)->size > 1)
 	{
-		pipe_init(&pipes, (*cmds)->size - 1);
+		pipe_init(&pipes, (*cmds)->size - 1, stat);
 		double_ll_convert3(&pipes);
 		assign_pipe_ends(*cmds, pipes);
 	}

@@ -6,7 +6,7 @@
 #    By: folim <folim@student.42kl.edu.my>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/15 12:21:40 by maiman-m          #+#    #+#              #
-#    Updated: 2023/11/21 03:12:51 by maiman-m         ###   ########.fr        #
+#    Updated: 2023/12/31 14:07:16 by maiman-m         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -73,7 +73,10 @@ SRCS := main.c tokenizer.c tokenizer_utils.c init_token.c d_ll_convert.c \
 	   lexer.c lexer_utils.c lexer_utils2.c lexer_utils3.c lexer_utils4.c \
 	   parser.c init_cmd.c \
 	   parser_utils.c parser_utils2.c parser_utils3.c init_pipe.c \
-	   err_handling.c n_builtins.c free.c signal.c
+	   err_handling.c n_builtins.c free.c signal.c \
+	   b_echo.c b_dir.c b_environ.c b_exit.c \
+	   init_env.c init_fixed.c
+	   
 
 OBJS :=	$(SRCS:.c=.o)
 
@@ -99,6 +102,6 @@ fclean: clean
 	@make fclean -C $(LIBFT_PATH)
 	@rm -f $(NAME)
 
-re: fclean all
+re: fclean all $(PROG_NAME)
 
 .PHONY: all clean fclean re

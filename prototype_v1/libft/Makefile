@@ -6,13 +6,13 @@
 #    By: maiman-m <maiman-m@student.42kl.edu.my>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/29 19:23:00 by maiman-m          #+#    #+#              #
-#    Updated: 2023/09/15 13:29:00 by maiman-m         ###   ########.fr        #
+#    Updated: 2023/12/30 18:12:51 by maiman-m         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = libft.a
 
-CC = cc
+CC = @cc
 
 vpath %.c src
 
@@ -27,22 +27,23 @@ SOURCE = ft_atoi.c ft_bzero.c ft_calloc.c ft_isalnum.c ft_isalpha.c \
 	   ft_strdup.c ft_striteri.c ft_strjoin.c ft_strlcat.c ft_strlcpy.c \
 	   ft_strlen.c ft_strmapi.c ft_strncmp.c ft_strnstr.c ft_strrchr.c \
 	   ft_strtrim.c ft_substr.c ft_tolower.c ft_toupper.c ft_strcmp.c \
-	   ft_atoll.c get_next_line.c get_next_line_utils.c ft_iswhite.c ft_strndup.c
+	   ft_atoll.c get_next_line.c get_next_line_utils.c ft_iswhite.c ft_strndup.c \
+	   ft_lltoa.c
 
 SRCS = $(addprefix src/,$(SOURCE))
 
 OBJS = $(SRCS:.c=.o)
 
 $(NAME): $(OBJS)
-	ar rcs $@ $^
+	@ar rcs $@ $^
 
 all: $(NAME)
 
 clean:
-	rm -rf $(OBJS)
+	@rm -rf $(OBJS)
 
 fclean: clean
-	rm -rf $(NAME)
+	@rm -rf $(NAME)
 
 re: fclean all
 

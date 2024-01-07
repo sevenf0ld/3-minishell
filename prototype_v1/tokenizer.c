@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:26:59 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/11/04 15:24:45 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/12/30 12:33:51 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,9 @@ static int	w_c(char *s)
 	return (count);
 }
 
-static char	*assign_delim(char *s, char a)
+static char	*assign_delim(char *s, char a, t_status *stat)
 {
-	s = malloc_err(sizeof(char) + 1);
+	s = malloc_err(sizeof(char) + 1, stat);
 	s[0] = a;
 	s[1] = '\0';
 	return (s);
@@ -60,25 +60,23 @@ static int	w_l(char *s)
  * | > < “ ‘ space
  * 124 62 60 34 39 32
  */
-char	**new_split(char *str)
+char	**new_split(char *str, t_status *stat)
 {
 	int		i;
 	int		j;
-	int		count;
 	char	**end;
 	char	*sp_w_q;
 
 	i = -1;
 	j = 0;
-	count = w_c(str);
-	end = init_split_pipeline(str, w_c(str));
+	end = init_split_pipeline(str, w_c(str), stat);
 	sp_w_q = NULL;
 	while (str[++i] != '\0')
 	{
 		if (!ft_iswhite(str[i]))
 		{
 			if (is_delim(str[i]))
-				end[j] = assign_delim(end[j], str[i]);
+				end[j] = assign_delim(end[j], str[i], stat);
 			else
 			{
 				end[j] = ft_strndup(str + i, w_l(str + i));

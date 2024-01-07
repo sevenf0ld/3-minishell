@@ -27,10 +27,8 @@ static char	*join_symbols(t_token *t_node)
 static void	group_symbols(t_token **tokens)
 {
 	t_token	*tmp;
-	t_token	*to_rm;
 
 	tmp = *tokens;
-	to_rm = NULL;
 	while (tmp != NULL)
 	{
 		if (tmp->symbol == HD && tmp->next != NULL)

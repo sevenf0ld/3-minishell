@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/10 00:09:50 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/11/04 15:25:23 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/12/30 12:36:10 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,17 +15,18 @@
 /*
  * symbol will be set to -1 after testing
  */
-t_token	*token_new(char *token)
+t_token	*token_new(char *token, t_status *stat)
 {
 	t_token	*node;
 
-	node = malloc_err(sizeof(t_token));
+	node = malloc_err(sizeof(t_token), stat);
 	node->token = token;
 	node->symbol = ANON;
 	node->end = false;
 	node->rm = false;
 	node->exp = false;
 	node->enclosed = false;
+        node->stat = stat;
 	node->prev = NULL;
 	node->next = NULL;
 	return (node);
@@ -44,14 +45,14 @@ void	token_add_back(t_token **head, t_token *node)
 /*
  * converts the splitted pipeline into individual tokens
  */
-void	token_init(char **args, t_token **head)
+void	token_init(char **args, t_token **head, t_status *stat)
 {
 	int	i;
 
-	*head = token_new(args[0]);
+	*head = token_new(args[0], stat);
 	i = 1;
 	while (args[i] != NULL)
-		token_add_back(head, token_new(args[i++]));
+		token_add_back(head, token_new(args[i++], stat));
 }
 
 t_token	*token_last(t_token *head)

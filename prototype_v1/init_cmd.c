@@ -6,17 +6,42 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 20:48:46 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/11/16 13:41:03 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/01 16:26:25 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mini.h"
 
-t_command	*cmd_new(char *cmd, int n)
+/*
+ * use an array of cmds to make it shorter
+ */
+static bool	is_builtin(char *cmd)
+{
+    if (!cmd)
+        return (false);
+    if (!ft_strcmp(cmd, "echo"))
+            return (true);
+    else if (!ft_strcmp(cmd, "cd"))
+            return (true);
+    else if (!ft_strcmp(cmd, "pwd"))
+            return (true);
+    else if (!ft_strcmp(cmd, "export"))
+            return (true);
+    else if (!ft_strcmp(cmd, "unset"))
+            return (true);
+    else if (!ft_strcmp(cmd, "env"))
+            return (true);
+    else if (!ft_strcmp(cmd, "exit"))
+            return (true);
+    else
+            return (false);
+}
+
+t_command	*cmd_new(char *cmd, int n, t_env *envs, t_status *stat)
 {
 	t_command	*node;
 
-	node = malloc_err(sizeof(t_command));
+	node = malloc_err(sizeof(t_command), stat);
 	node->pos = n;
 	node->size = 0;
 	node->cmd = cmd;
@@ -31,9 +56,14 @@ t_command	*cmd_new(char *cmd, int n)
 	node->num_so_o = 0;
 	node->std_out_a = NULL;
 	node->num_so_a = 0;
-	//pipe_err(node->pipe_fd);
 	node->read_end = -1;
 	node->write_end = -1;
+	node->og = NULL;
+	node->builtin = is_builtin(node->cmd);
+	node->last_out = INT_MIN;
+        node->exec = true;
+	node->env_var = envs;
+	node->stat = stat;
 	node->next = NULL;
 	return (node);
 }
@@ -48,7 +78,7 @@ void	cmd_add_back(t_command **head, t_command *node)
 	old_end->next = node;
 }
 
-static void	set_cmd_size(t_command *head)
+static void set_cmd_size(t_command *head)
 {
 	int			n;
 	t_command	*tmp;
@@ -62,29 +92,68 @@ static void	set_cmd_size(t_command *head)
 	}
 }
 
+static char *cmd_init_norme(t_token *first)
+{
+    t_token *tmp;
+    char    *cmd;
+
+    tmp = first;
+    cmd = NULL;
+    while (tmp != NULL && tmp->symbol != PIPE)
+    {
+        if (tmp->symbol == CMD)
+            cmd = tmp->token;
+        tmp = tmp->next;
+    }
+    return (cmd);
+}
+
+static int  num_pipes(t_token **tokens)
+{
+    t_token *tmp;
+    int     i;
+
+    tmp = *tokens;
+    i = 0;
+    while (tmp != NULL)
+    {
+        if (tmp->symbol == PIPE)
+            i++;
+        tmp = tmp->next;
+    }
+    return (i);
+}
+
 /*
  * converts the categorized and grouped tokens into individual command sets/groups
  */
-void	cmd_init(t_token **tokens, t_command **cmds)
+void    cmd_init(t_token **tokens, t_command **cmds, t_env *envs, t_status *stat)
 {
-	t_token		*tmp;
-	int			i;
+    t_token *tmp;
+    t_token *first;
+    int     i;
 
-	tmp = *tokens;
-	i = 0;
-	while (tmp != NULL)
-	{
-		if (tmp->symbol == CMD)
-		{
-			if (i == 0)
-				*cmds = cmd_new(tmp->token, i);
-			else
-				cmd_add_back(cmds, cmd_new(tmp->token, i));
-			i++;
-		}
-		tmp = tmp->next;
-	}
-	set_cmd_size(*cmds);
+    tmp = *tokens;
+    first = *tokens;
+    i = 0;
+    while (tmp != NULL)
+    {
+        if (tmp->symbol == PIPE)
+        {
+            if (i == 0)
+                    *cmds = cmd_new(cmd_init_norme(first), i, envs, stat);
+            else
+                    cmd_add_back(cmds, cmd_new(cmd_init_norme(first), i, envs, stat));
+            i++;
+            first = tmp->next;
+            if (i == num_pipes(tokens))
+                cmd_add_back(cmds, cmd_new(cmd_init_norme(first), i, envs, stat));
+        }
+        tmp = tmp->next;
+    }
+    if (num_pipes(tokens) == 0)
+        *cmds = cmd_new(cmd_init_norme(first), i, envs, stat);
+    set_cmd_size(*cmds);
 }
 
 t_command	*cmd_last(t_command *head)
