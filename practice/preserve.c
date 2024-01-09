@@ -1,4 +1,4 @@
-# cc -Wall -Wextra -Werror -Wno-unused-variable -fsanitize=address preserve.c && ./a.out
+// cc -Wall -Wextra -Werror -Wno-unused-variable -fsanitize=address preserve.c && ./a.out
 
 #include <stdio.h>
 #include <stdbool.h>
@@ -42,19 +42,19 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	return (sub);
 }
 
-void    check_double_quote(char c, int index, bool *s)
+void    check_double_quote(char c, int index, bool *d)
 {
-    if (c == 34 && !*s)
+    if (c == 34 && !*d)
     {
-        *s = true;
+        *d = true;
         fprintf(stderr, "\n\x1b[34mfound starting double quote at %i\x1b[m\n", index);
     }
-    else if (c == 34 && *s)
+    else if (c == 34 && *d)
     {
-        *s = false;
+        *d = false;
         fprintf(stderr, "\n\x1b[34mfound closing double quote at %i\x1b[m\n", index);
     }
-    else if (*s)
+    else if (*d)
         fprintf(stderr, "%c", c);
 }
 
@@ -74,6 +74,21 @@ void    check_single_quote(char c, int index, bool *s)
         fprintf(stderr, "%c", c);
 }
 
+int iterate_until_closing(char *s, int start, char c)
+{
+    int i = start + 1;
+    while (s[i] != '\0')
+    {
+        if (s[i] == c)
+        {
+            fprintf(stderr, "closing at index %i\n", i);
+            return i;
+        }
+        i++;
+    }
+    return i;
+}
+
 int main()
 {
     char *single_str = "i am not in quotes except for \'1. one\' \'2. two\' \'3. three\', they are the exception";
@@ -84,12 +99,29 @@ int main()
     char *str = single_str;
     void (*func)(char, int, bool *) = NULL;
     func = check_single_quote;
+    (void) func;
     printf("str: %s\n", str);
 
     bool q = false;
-    for (int i = 0; str[i] != '\0'; i++)
+    int i = 0;
+    int end = 0;
+    char *sub = NULL;
+    while (str[i] != '\0')
     {
-        func(str[i], i, &q);
+        //func(str[i], i, &q);
+        if (str[i] == 39 && !q)
+        {
+            q = true;
+            end = iterate_until_closing(str, i, 39);
+            if (i != end)
+                sub = ft_substr(str, i, (size_t) end);
+            fprintf(stderr, "sub -> %s (start %i) and (end %i)\n", sub, i, end);
+            i += end - 1;
+            continue ;
+        }
+        if (str[i] == 39 && q)
+            q = false;
+        i++;
     }
     fprintf(stderr, "\n");
 }
