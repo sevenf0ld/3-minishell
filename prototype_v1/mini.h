@@ -37,6 +37,7 @@
 # include <fcntl.h>
 # include <sys/wait.h>
 # include <signal.h>
+# include <termios.h>
 # include <limits.h>
 # include "libft/include/libft.h"
 # include <sys/types.h>
@@ -250,7 +251,10 @@ void		n_builtins(t_command **a, t_status *stat);
 
 /*	SIGNAL HANDLER	*/
 //signal.c
-void sig_int(int signum);
+void 	sig_int(int signum);
+void 	sig_quit(int signum);
+void 	init_sig(void);
+void	restore(void);
 
 /*	BUILTINS EXECUTOR	*/
 //b_echo.c

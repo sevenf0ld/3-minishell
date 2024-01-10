@@ -94,7 +94,7 @@ int	main(int argc, char **argv, char **envp)
 	env_init(&env, envp, fix, stat);
 	while (1)
 	{
-		signal(SIGINT, sig_int);
+		init_sig();
 		pipeline = readline("prompt> ");
 		// hrdc(pipeline);
 		if (!pipeline)
