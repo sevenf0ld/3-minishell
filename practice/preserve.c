@@ -1,4 +1,5 @@
 // cc -Wall -Wextra -Werror -Wno-unused-variable -fsanitize=address preserve.c && ./a.out
+// cc -Wall -Wextra -Wno-unused-variable -Wno-unused-but-set-variable preserve.c && ./a.out
 
 #include <stdio.h>
 #include <stdbool.h>
@@ -77,11 +78,12 @@ void    check_single_quote(char c, int index, bool *s)
 int iterate_until_closing(char *s, int start, char c)
 {
     int i = start + 1;
+    fprintf(stderr, "opening at \x1b[34mindex %i (%c)\x1b[m or \x1b[34m index %i (%c)\x1b[m\n", start, s[start], i, s[i]);
     while (s[i] != '\0')
     {
         if (s[i] == c)
         {
-            fprintf(stderr, "closing at index %i\n", i);
+            fprintf(stderr, "closing at \x1b[34mindex %i (%c)\x1b[m\n", i, s[i]);
             return i;
         }
         i++;
@@ -91,36 +93,46 @@ int iterate_until_closing(char *s, int start, char c)
 
 int main()
 {
-    char *single_str = "i am not in quotes except for \'1. one\' \'2. two\' \'3. three\', they are the exception";
-    char *double_str = "i am not in quotes except for \"1. one\" \"2. two\" \"3. three\", they are the exception";
-    char *d_in_s_str = "i am not in quotes except for \'\"1. one\"\' \'\"2. two\"\' \'\"3. three\"\', they are the exception";
-    char *s_in_d_str = "i am not in quotes except for \"\'1. one\'\" \"\'2. two\'\" \"\'3. three\'\", they are the exception";
+    char *single_str = "i am not in quotes except for \'1. one\' \'2. two\' \'3. three\', they are the exception \'4. four\'";
+    char *double_str = "i am not in quotes except for \"1. one\" \"2. two\" \"3. three\", they are the exception \"4. four\"";
+    char *d_in_s_str = "i am not in quotes except for \'\"1. one\"\' \'\"2. two\"\' \'\"3. three\"\', they are the exception \'\"4. four\"\'";
+    char *s_in_d_str = "i am not in quotes except for \"\'1. one\'\" \"\'2. two\'\" \"\'3. three\'\", they are the exception \"\'5. five\'\"";
 
     char *str = single_str;
+    printf("\x1b[35mstr: %s\x1b[m\n", str);
     void (*func)(char, int, bool *) = NULL;
     func = check_single_quote;
     (void) func;
-    printf("str: %s\n", str);
+    char quote_to_check = 39;
 
     bool q = false;
     int i = 0;
-    int end = 0;
+    int close = 0;
     char *sub = NULL;
+    int start = 0;
+    int end = ft_strlen(str);
     while (str[i] != '\0')
     {
         //func(str[i], i, &q);
-        if (str[i] == 39 && !q)
+        if (str[i] == quote_to_check && !q)
         {
+            end = i - 1;
+            sub = ft_substr(str, start, (size_t) end - start);
+            fprintf(stderr, "   unquoted ft_substr() =\x1b[36m %s \x1b[m\n", sub);
+            fprintf(stderr, "\x1b[33m   starts at %i\x1b[m\n", i);
             q = true;
-            end = iterate_until_closing(str, i, 39);
-            if (i != end)
-                sub = ft_substr(str, i, (size_t) end);
-            fprintf(stderr, "sub -> %s (start %i) and (end %i)\n", sub, i, end);
-            i += end - 1;
+            close = iterate_until_closing(str, i, quote_to_check);
+            sub = ft_substr(str, i, (size_t) close - i + 1);
+            fprintf(stderr, "   quoted ft_substr() =\x1b[36m %s \x1b[m\n", sub);
+            i += close - i;
+            fprintf(stderr, "\x1b[33m   ends at %i\x1b[m\n", i);
             continue ;
         }
-        if (str[i] == 39 && q)
+        if (str[i] == quote_to_check && q)
+        {
             q = false;
+            start = i + 1;
+        }
         i++;
     }
     fprintf(stderr, "\n");
