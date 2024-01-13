@@ -43,38 +43,6 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	return (sub);
 }
 
-void    check_double_quote(char c, int index, bool *d)
-{
-    if (c == 34 && !*d)
-    {
-        *d = true;
-        fprintf(stderr, "\n\x1b[34mfound starting double quote at %i\x1b[m\n", index);
-    }
-    else if (c == 34 && *d)
-    {
-        *d = false;
-        fprintf(stderr, "\n\x1b[34mfound closing double quote at %i\x1b[m\n", index);
-    }
-    else if (*d)
-        fprintf(stderr, "%c", c);
-}
-
-void    check_single_quote(char c, int index, bool *s)
-{
-    if (c == 39 && !*s)
-    {
-        *s = true;
-        fprintf(stderr, "\n\x1b[32mfound starting single quote at %i\x1b[m\n", index);
-    }
-    else if (c == 39 && *s)
-    {
-        *s = false;
-        fprintf(stderr, "\n\x1b[32mfound closing single quote at %i\x1b[m\n", index);
-    }
-    else if (*s)
-        fprintf(stderr, "%c", c);
-}
-
 int iterate_until_closing(char *s, char c)
 {
     int i = 0;
@@ -95,13 +63,12 @@ int main()
     char *double_str = "i am not in     quotes except for   \"1. one\" \"2. two\" \"3. three\", they are the exception \"4. four\"5.five";
     char *d_in_s_str = "i am   not in quotes except    for \'\"1. one\"\'     \'\"2. two\"\' \'\"3. three\"\', they are the exception \'\"4.    four\"\'5.five";
     char *s_in_d_str = "i am not in quotes    except for \"\'1. one\'\" \"\'2.     two\'\"      \"\'3. three\'\", they are the exception \"\'5.     five\'\"5.five";
-
-    char *str = d_in_s_str;
+    char *mess = "\'single\' \"double\" \'\"d_in_s\"\' \"\'s_in_d\'\"";
+    char *stick = "hi\'single\'hello hello\"double\"hi hello\'\"d_in_s\"\'hello hi\"\'s_in_d\'\"hi";
+    
+    char *str = stick;
     printf("\x1b[35mstr: %s\x1b[m\n", str);
-    void (*func)(char, int, bool *) = NULL;
-    func = check_single_quote;
-    (void) func;
-    char quote_to_check = 39;
+    char quote_to_check = 34;
 
     bool q = false;
     int i = 0;
