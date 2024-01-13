@@ -95,13 +95,13 @@ args=("ls -la | cat | grep -wn c > outfile"
     'echo abc"$HOME"hh'
     'echo abc"$HOME                      "hh'
     # BONUS
-#"echo '\"\$PATH\"'"
+    "echo '\"\$PATH\"'"
     # heap buffer overflow in new_split if there is no space
-#"echo '\"\$PATH\" \"\$USER\"'"
-#"echo \"'\$PATH'\""
+    "echo '\"\$PATH\" \"\$USER\"'"
+    "echo \"'\$PATH'\""
     # heap buffer overflow in new_split if there is no space
-#"echo \"'\$PATH' '\$USER'\""
-#"echo \"'\$PATH' '\$USER'\" \"'\$PATH' '\$USER'\""
+    "echo \"'\$PATH' '\$USER'\""
+    "echo \"'\$PATH' '\$USER'\" \"'\$PATH' '\$USER'\""
     # QUOTE NO EXPANSION
     "echo \"'sdf\""
     "echo 'asd'"
@@ -144,6 +144,8 @@ set -e
 # specify name of Makefile
 # make re -f Makefile
 make re --silent
+
+reset
 
 for arg in "${args[@]}"; do
     echo -e "$red $exe $arg: $none"

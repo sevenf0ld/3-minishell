@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:20:01 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/01/01 13:23:21 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/13 19:09:19 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,17 +139,19 @@ typedef struct  s_restore
 
 /*	TOKENIZER	*/
 //tokenizer.c
-char		**new_split(char *str, t_status *stat);
+//char		**new_split(char *str, t_status *stat);
+void            new_split(char *str, t_token **tokens, t_status *stat);
 
 //tokenizer_utils.c
-int			is_delim(char a);
-char		*handle_spaces_btwn_q(char a, char c);
-char		**init_split_pipeline(char *s, int w_c, t_status *stat);
+int		is_delim(char a);
+//char		*handle_spaces_btwn_q(char a, char c);
+//char		**init_split_pipeline(char *s, int w_c, t_status *stat);
 
 //init_token.c
 t_token		*token_new(char *token, t_status *stat);
 void		token_add_back(t_token **head, t_token *node);
-void		token_init(char **args, t_token **head, t_status *stat);
+//void		token_init(char **args, t_token **head, t_status *stat);
+void		token_init(char *s, t_token **head, t_status *stat, int i);
 t_token		*token_last(t_token *head);
 int			token_size(t_token *head);
 
@@ -162,8 +164,9 @@ t_pipe		*double_ll_convert3(t_pipe **lst);
 //lexer.c
 void		categorize_symbol(t_token **tokens);
 void		categorize_params(t_token **tokens);
-void		categorize_params_norme(t_token **tokens);
-void		categorize_cmdwflags(t_token **tokens);
+//void		categorize_params_norme(t_token **tokens);
+void		categorize_cmd_w_args(t_token **tokens);
+//void		categorize_cmdwflags(t_token **tokens);
 void		lexer(char *pipeline, t_token **tokens, t_status *stat);
 
 //lexer_utils.c
