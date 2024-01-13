@@ -96,20 +96,19 @@ int main()
     char *d_in_s_str = "i am   not in quotes except    for \'\"1. one\"\'     \'\"2. two\"\' \'\"3. three\"\', they are the exception \'\"4.    four\"\'5.five";
     char *s_in_d_str = "i am not in quotes    except for \"\'1. one\'\" \"\'2.     two\'\"      \"\'3. three\'\", they are the exception \"\'5.     five\'\"5.five";
 
-    char *str = double_str;
+    char *str = d_in_s_str;
     printf("\x1b[35mstr: %s\x1b[m\n", str);
     void (*func)(char, int, bool *) = NULL;
-    func = check_double_quote;
+    func = check_single_quote;
     (void) func;
-    char quote_to_check = 34;
+    char quote_to_check = 39;
 
     bool q = false;
     int i = 0;
     int close = 0;
     char *sub = NULL;
     int check;
-    int start = 0;
-    int end = 0;
+    int start = -1;
     while (str[i] != '\0')
     {
         //func(str[i], i, &q);
@@ -125,26 +124,26 @@ int main()
         if (str[i] != 32 || (str[i] == 32 && q))
         {
             close += 1;
-            printf("|%c|    %i, %i\n", str[i], close, i);
+            //fprintf(stderr, "|%c|    %i, %i\n", str[i], close, i);
+            if (start == -1)
+            {
+                start = i;
+                //fprintf(stderr, "\x1b[42mSTART %i\x1b[m\n", start);
+            }
         }
         else if (str[i] == 32 && !q)
         {
             //fprintf(stderr, "%s (%i, %i)\n", str + i, close, i);
-            if (!start)
-                start = i;
-            if (start && !end)
-                end  = i;
             // skip the spaces outside of quotes
-            //if (check != close)
-            //{
-            //    check = close;
-            //    fprintf(stderr, "(%i, %i) %i\n", close, i, check);
-            //    fprintf(stderr, "substr %s (start: %i, end %i)\n", ft_substr(str, start, (size_t) end - start), start, end);
-            //}
-            check = close;
-            fprintf(stderr, "(%i, %i) %i\n", close, i, check);
-            fprintf(stderr, "substr %s (start: %i, end %i)\n", ft_substr(str, start, (size_t) end - start), start, end);
+            if (check != close)
+            {
+                check = close;
+                //fprintf(stderr, "\x1b[41m(%i, %i) %i\x1b[m\n", close, i, check);
+                fprintf(stderr, "SUBSTR-> %s\n", ft_substr(str, start, (size_t) i - start));
+            }
+            start = -1;
         }
         i++;
     }
+    fprintf(stderr, "SUBSTR-> %s\n", ft_substr(str, start, (size_t) i - start));
 }
