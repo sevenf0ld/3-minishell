@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/17 16:19:30 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/12/30 12:34:05 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/14 22:20:43 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,11 @@
  */
 int	is_delim(char a)
 {
+    fprintf(stderr, "delim %c\n", a);
 	if (a == 124 || a == 62 || a == 60)
 		return (1);
-	if (a == 34 || a == 39)
-		return (1);
+	//if (a == 34 || a == 39)
+	//	return (1);
 	return (0);
 }
 

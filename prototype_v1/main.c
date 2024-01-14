@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:19:04 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/01/13 15:14:46 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/13 23:40:59 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,16 +149,11 @@ int	main(int argc, char **argv)
 	{
 		redirect_command_io(tmp);
 		//fprintf(stderr, "@ [%s]\n", tmp->cmd);
-		if (tmp->flags != NULL)
-		{
-			for (int i = 0; i < tmp->num_f; i++)
-				fprintf(stderr, "--- {%s}\n", tmp->flags[i]);
-		}
-		if (tmp->args != NULL)
-		{
-			for (int i = 0; i < tmp->num_a; i++)
-				fprintf(stderr, "::: {%s}\n", tmp->args[i]);
-		}
+		//if (tmp->args != NULL)
+		//{
+		//	for (int i = 0; i < tmp->num_a; i++)
+		//		fprintf(stderr, "::: {%s}\n", tmp->args[i]);
+		//}
                 //fprintf(stderr, "should be executed. \x1b[35m%s\x1b[m\n", tmp->exec?"true":"false");
                 dup2_err(std_out, STDOUT_FILENO, stat);
                 dup2_err(std_in, STDIN_FILENO, stat);

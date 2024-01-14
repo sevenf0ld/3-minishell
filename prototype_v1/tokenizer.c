@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:26:59 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/01/13 18:16:50 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/14 21:53:10 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,6 +140,13 @@ void    new_split(char *str, t_token **tokens, t_status *stat)
         }
         if (str[i] != 32 || (str[i] == 32 && (sq || wq)))
         {
+            //if (str[i] == 124 && (!wq && !sq))
+            //{
+            //    fprintf(stderr, "PIPE\n");
+            //    token_init("|", tokens, stat, count);
+            //    count += 1;
+            //    start = -1;
+            //}
             close += 1;
             if (start == -1)
                 start = i;

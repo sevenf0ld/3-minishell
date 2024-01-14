@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:25:31 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/01/13 19:04:45 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/14 21:19:49 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,9 +58,30 @@ void	categorize_params(t_token **tokens)
 	}
 }
 
+void    categorize_cmd_args_norme(t_token *token)
+{
+    t_token *tmp;
+    bool    cmd;
+
+    tmp = token;
+    cmd = false;
+    while (tmp != NULL)
+    {
+        if (tmp->symbol == PIPE)
+            break ;
+        if (tmp->symbol == CMD)
+            cmd = true;
+        tmp = tmp->prev;
+    }
+    if (!cmd)
+        token->symbol = CMD;
+    else
+        token->symbol = ARGS;
+}
+
 /*
- * categorizes command (5)
- * categorizes command (executable & builtins) and flags/options
+ * categorizes command (5) and arguments (7)
+ * categorizes command (executable & builtins) and arguments (flags/options included)
  */
 void	categorize_cmd_w_args(t_token **tokens)
 {
@@ -75,8 +96,10 @@ void	categorize_cmd_w_args(t_token **tokens)
                     tmp->symbol = CMD;
                 else if (tmp->prev != NULL)
                 {
-                    if (tmp->prev->symbol == PIPE || tmp->prev->symbol == FILN)
+                    if (tmp->prev->symbol == PIPE)
                         tmp->symbol = CMD;
+                    else if (tmp->prev->symbol == FILN || tmp->prev->symbol == LIM)
+                        categorize_cmd_args_norme(tmp);
                     else
                         tmp->symbol = ARGS;
                 }
@@ -97,7 +120,8 @@ void	lexer(char *pipeline, t_token **tokens, t_status *stat)
 	categorize_symbol(tokens);
         categorize_params(tokens);
         categorize_cmd_w_args(tokens);
-
+        reject(tokens, stat);
+        
         //char	**words;
 
 	//words = new_split(ft_strtrim(pipeline, " 	"), stat);

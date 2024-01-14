@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 17:00:50 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/01/01 13:21:58 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/14 22:04:50 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ void	close_err(int fd, t_status *stat)
 
 void	quote_err(t_status *stat)
 {
-	report_err("error: unterminated quotes\n", 0, stat);
+	report_err("minishell: unterminated quotes\n", 0, stat);
 }
 
 void	pipe_err(int *pipe_arr, t_status *stat)
@@ -87,4 +87,19 @@ int	dup_err(int old_fd, t_status *stat)
 	if (new_fd == -1)
 		report_err("dup", 1, stat);
 	return (new_fd);
+}
+
+void    redir_err(char *token, t_status *stat)
+{
+    report_err("minishell: syntax error near unexpected token `", 0, stat);
+    if (!token)
+        report_err("newline", 0, stat);
+    else
+        report_err(token, 0, stat);
+    report_err("'\n", 0, stat);
+}
+
+void    symbols_err(t_status *stat)
+{
+    report_err("minishell: this is not required by the subject\n", 0, stat);
 }
