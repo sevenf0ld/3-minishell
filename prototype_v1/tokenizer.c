@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:26:59 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/01/14 21:53:10 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/15 14:38:31 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,6 +130,7 @@ void    new_split(char *str, t_token **tokens, t_status *stat)
     int check;
     int start = -1;
     int count = 0;
+    bool last = false;
     while (str[i] != '\0')
     {
         if (str[i] == 39 || str[i] == 34)
@@ -140,13 +141,22 @@ void    new_split(char *str, t_token **tokens, t_status *stat)
         }
         if (str[i] != 32 || (str[i] == 32 && (sq || wq)))
         {
-            //if (str[i] == 124 && (!wq && !sq))
-            //{
-            //    fprintf(stderr, "PIPE\n");
-            //    token_init("|", tokens, stat, count);
-            //    count += 1;
-            //    start = -1;
-            //}
+            if (str[i] == 124 && (!wq && !sq))
+            {
+                if (str[i + 1] != '\0' && str[i + 1] != 32 && str[i + 1] != 124)
+                {
+                    token_init("|", tokens, stat, count);
+                    count += 1;
+                    i += 1;
+                    continue ;
+                }
+                if (i - 1 > 0 && str[i - 1] != 32 && ((str[i + 1] != '\0' && str[i + 1] == 32) || str[i + 1] == '\0'))
+                {
+                    i += 1;
+                    last = true;
+                    continue ;
+                }
+            }
             close += 1;
             if (start == -1)
                 start = i;
@@ -160,10 +170,29 @@ void    new_split(char *str, t_token **tokens, t_status *stat)
                 continue ;
             }
             token_init(ft_substr(str, start, (size_t) i - start), tokens, stat, count);
+            /*
+            if (!last)
+                token_init(ft_substr(str, start, (size_t) i - start), tokens, stat, count);
+            else
+            {
+                token_init(ft_substr(str, start, (size_t) i - start - 1), tokens, stat, count);
+                token_init("|", tokens, stat, count);
+            }
+            */
             count += 1;
             start = -1;
         }
         i++;
     }
     token_init(ft_substr(str, start, (size_t) i - start), tokens, stat, count);
+    (void) last;
+    /*
+    if (!last)
+        token_init(ft_substr(str, start, (size_t) i - start), tokens, stat, count);
+    else
+    {
+        token_init(ft_substr(str, start, (size_t) i - start - 1), tokens, stat, count);
+        token_init("|", tokens, stat, count);
+    }
+    */
 }

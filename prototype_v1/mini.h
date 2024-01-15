@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:20:01 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/01/14 22:05:25 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/15 14:50:08 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -170,7 +170,7 @@ void		categorize_cmd_w_args(t_token **tokens);
 void		lexer(char *pipeline, t_token **tokens, t_status *stat);
 
 //reject.c
-void            reject(t_token **tokens, t_status *stat);
+void            reject(char *s, t_token **tokens, t_status *stat);
 
 //lexer_utils.c
 void		identify_symbols(t_token **tokens);
@@ -225,11 +225,12 @@ void		*malloc_err(size_t size, t_status *stat);
 int			open_err(char *file, int flags, mode_t mode, t_command *c_node);
 void		dup2_err(int old_fd, int new_fd, t_status *stat);
 void		close_err(int fd, t_status *stat);
-void		quote_err(t_status *stat);
+void		quote_err(char *a, t_status *stat);
 void		pipe_err(int *pipe_arr, t_status *stat);
 int			dup_err(int old_fd, t_status *stat);
 void            redir_err(char *token, t_status *stat);
 void            symbols_err(t_status *stat);
+void            first_err(t_status *stat);
 
 //free.c
 void		free_2d_arr(char **input);

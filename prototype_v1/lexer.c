@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:25:31 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/01/14 21:19:49 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/15 14:56:11 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,6 +108,8 @@ void	categorize_cmd_w_args(t_token **tokens)
 	}
 }
 
+
+
 /*
  * turns the words into tokens
  * categorizes the tokens
@@ -115,12 +117,18 @@ void	categorize_cmd_w_args(t_token **tokens)
  */
 void	lexer(char *pipeline, t_token **tokens, t_status *stat)
 {
-        new_split(ft_strtrim(pipeline, "     "), tokens, stat);
+        char    *trimmed;
+
+        trimmed = ft_strtrim(pipeline, "     ");
+        new_split(trimmed, tokens, stat);
         double_ll_convert(tokens);
-	categorize_symbol(tokens);
+        
+        //split_non_arg_pipe(tokens);
+	
+        categorize_symbol(tokens);
         categorize_params(tokens);
         categorize_cmd_w_args(tokens);
-        reject(tokens, stat);
+        reject(trimmed, tokens, stat);
         
         //char	**words;
 

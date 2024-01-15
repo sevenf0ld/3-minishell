@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 16:36:05 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/12/30 12:36:58 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/15 10:25:41 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,7 @@ void	reject_unterminated_q(t_token **tokens, t_sym symbol, t_status *stat)
 		tmp = tmp->next;
 	}
 	if (num == 1)
-		quote_err(stat);
+		quote_err("?", stat);
 }
 
 /*

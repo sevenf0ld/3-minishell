@@ -108,8 +108,7 @@ args=("ls -la | cat | grep -wn c > outfile"
     "echo '\"'"
     "echo \"'''\""
     "echo '\"\"'"
-    "echo '  \"                   '"
-    "echo '\""
+    "echo \"\"USER\"\""
     'echo "cat main.c | wc"'
     "echo \"cat lol.c | cat > lol.c\""
     "echo 'cat lol.c | cat > lol.c'"
@@ -127,19 +126,40 @@ args=("ls -la | cat | grep -wn c > outfile"
     "echo '     '"
     'echo "     "'
     # ERROR HANDLING
+    # multi adjacent symbols
+    "wc <<< herestring"
+    "ls >>> outfile"
+    "ls >| file"
+    "ls file >"
     "cat *.c || | grep -wn token"
     "cat *.c ||| grep -wn token"
     "cat *.c || || grep -wn token"
     "cat *.c |||| grep -wn token"
+    "cat *.c | | | | grep -wn token"
     "cat *.c | grep | -wn token"
+    # mutli redir
     "ls -l > > > outfile firstfile"
     "ls -l >> > file lastfile"
     "ls -l > > file lastfile"
-    "wc <<< herestring"
-    "ls >>> outfile"
+    "ls -l> > file lastfile"
+    "ls file> >"
+    # pipe as first node
     "| wc main.c"
     "|wc main.c"
-    "ls >| file"
+    "|wc main.c|"
+    " | wc main.c | "
+    "wc main.c |"
+    "wc main.c|"
+    "wc |main.c"
+    "ls |\"\""
+    "ls | \"\""
+    "ls | \"\""
+    "ls \"\"|"
+    # unterminated quotes
+    "echo '  \"                   '"
+    "echo '\""
+    "echo \"''"
+    "echo '\$USER' '\"\$HOME' \""
     )
 
 # create a variable with the name of the executable
