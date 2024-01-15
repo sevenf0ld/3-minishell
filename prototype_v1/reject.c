@@ -6,7 +6,7 @@
 /*   By: maiman-m <maiman-m@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/14 15:37:27 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/01/15 14:57:10 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/15 15:58:09 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -170,7 +170,8 @@ void    multi_pipe(t_token *t_node, t_status *stat)
 */
 void    reject(char *s, t_token **tokens, t_status *stat)
 {
-    pipe_first_last(s, stat);
+    //pipe_first_last(s, stat);
+    (void) s;
     unterminated_quotes(*tokens, stat);
     redir_as_end(*tokens, stat);
     multi_pipe(*tokens, stat);

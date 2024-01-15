@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:25:31 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/01/15 14:56:11 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/15 20:49:31 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,44 @@ void	categorize_cmd_w_args(t_token **tokens)
 	}
 }
 
+/*
+char    *stupid_modification(char *s)
+{
+    char    *ret;
+    int     i;
+    bool    sq;
+    bool    wq;
 
+    ret = malloc(sizeof(char) * 5000);
+    i = 0;
+    sq = false;
+    wq = false;
+    while (s[i] != '\0')
+    {
+        if (s[i] == 39 || s[i] == 34)
+            decide_quote(s[i], &sq, &wq);
+        if (is_delim(s[i]) && (!sq && !wq)))
+        {
+            if (i - 1 > 0 && !ft_iswhite(s[i - 1]) && !is_delim(s[i - 1]))
+            {
+                ret[i] = 32;
+                i += 1;
+                ret[i] = s[i];
+                continue ;
+            }
+            if (s[i + 1] != '\0' && !ft_iswhite(s[i + 1] && !is_delim(s[i + 1])))
+            {
+                ret[i] = s[i];
+                i += 1;
+                ret[i] = 32;
+                continue ;
+            }
+        }
+
+        i++;
+    }
+}
+*/
 
 /*
  * turns the words into tokens
