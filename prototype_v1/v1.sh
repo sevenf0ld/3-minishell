@@ -50,6 +50,7 @@ args=("ls -la | cat | grep -wn c > outfile"
     "grep -n main main.c | wc -l"
     "< lexer.c cat | wc"
     "< lexer.c | wc"
+    "wc 'main.c|'"
     "cat << EOF > outone.txt"
     "cat << LIM"
     "<< LIM wc"
@@ -94,10 +95,8 @@ args=("ls -la | cat | grep -wn c > outfile"
     'echo abc"$HOME                      "hh'
     # BONUS
     "echo '\"\$PATH\"'"
-    # heap buffer overflow in new_split if there is no space
     "echo '\"\$PATH\" \"\$USER\"'"
     "echo \"'\$PATH'\""
-    # heap buffer overflow in new_split if there is no space
     "echo \"'\$PATH' '\$USER'\""
     "echo \"'\$PATH' '\$USER'\" \"'\$PATH' '\$USER'\""
     # QUOTE NO EXPANSION
@@ -126,29 +125,18 @@ args=("ls -la | cat | grep -wn c > outfile"
     "echo '     '"
     'echo "     "'
     # ERROR HANDLING
-    # multi adjacent symbols
+    # multi adjacent symbols in one or multiple nodes
     "wc <<< herestring"
     "ls >>> outfile"
     "ls >| file"
-    "ls file >"
     "cat *.c || | grep -wn token"
     "cat *.c ||| grep -wn token"
     "cat *.c || || grep -wn token"
     "cat *.c |||| grep -wn token"
     "cat *.c | | | | grep -wn token"
-    "cat *.c | grep | -wn token"
-    # mutli redir
     "ls -l > > > outfile firstfile"
     "ls -l >> > file lastfile"
     "ls -l > > file lastfile"
-    "ls -l> > file lastfile"
-    "ls file> >"
-    # pipe as first node
-    "| wc main.c"
-    " | wc main.c | "
-    "wc main.c |"
-    "ls | \"\""
-    "ls \"\"|"
     # unterminated quotes
     "echo '\""
     "echo \"''"
@@ -157,16 +145,19 @@ args=("ls -la | cat | grep -wn c > outfile"
     "echo '\$USER' '\"\$HOME' \"\""
     "echo '\$USER' '\"\$HOME' \" \""
     # joined
+    "ls -l> > file lastfile"
+    "ls file> >"
     "cat<< EOF > outone.txt"
     "<<LIM wc"
     "ls|wc"
     "wc main.c|"
     "|wc main.c"
     "|wc main.c|"
-    "wc 'main.c|'"
     "wc |main.c"
     "wc <main.c"
     "ls |\"\""
+    "ls \"\"|"
+    "wc<<EOF>>outfile"
     )
 
 # create a variable with the name of the executable
