@@ -6,7 +6,7 @@
 /*   By: maiman-m <maiman-m@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 21:48:48 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/01/17 12:05:24 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/17 13:38:34 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,7 @@
 
 bool    is_pipe(char a)
 {
-    fprintf(stderr, "is_pipe %c? %c\n", a, a == '|' ? 'y' : 'n');
-    if  (a == '|')
+    if  (a == 124)
         return (true);
     return (false);
 }
@@ -76,7 +75,7 @@ void    slot_in_token(t_token *t_node, char *s, t_status *stat, t_token **tokens
         t_node->prev = new;
     }
     t_node->token = r;
-    t_node->symbol = ANON;
+    //t_node->symbol = ANON;
 }
 
 void    separate_delim(char *s, t_token *t_node, t_token **tokens, t_status *stat)
@@ -150,7 +149,6 @@ void    separate_delim(char *s, t_token *t_node, t_token **tokens, t_status *sta
             break ;
         }
         */
-        fprintf(stderr, "in2 %c\n", s[i]);
         if (is_hd(s, i, len) || is_add(s, i, len))
         {
             if (i > 0)
@@ -161,7 +159,6 @@ void    separate_delim(char *s, t_token *t_node, t_token **tokens, t_status *sta
         }
         else if (is_pipe(s[i] || is_in_re(s[i]) || is_out_re(s[i])))
         {
-            fprintf(stderr, "in\n");
             if (i > 0)
                 slot_in_token(t_node, ft_substr(s, 0, i), stat, tokens, ft_substr(s, i , (int) ft_strlen(s)));
             else
@@ -202,22 +199,25 @@ void    split_tokens(t_token **tokens, t_status *stat)
     tmp = *tokens;
     while (tmp != NULL)
     {
+        fprintf(stderr, "going in [%s]\n", tmp->token);
         //function to check and split
         if (tmp->symbol == CMD || tmp->symbol == ARGS || tmp->symbol == FILN || tmp->symbol == LIM)
         {
             if (delim_present(tmp->token))
             {
+                fprintf(stderr, "-------------------------------------------------\n");
+                fprintf(stderr, " delim present before [%s]\n", tmp->token);
                 separate_delim(tmp->token, tmp, tokens, stat);
-                t_token *cur = *tokens;
-                while (cur != NULL)
-                {
-                    fprintf(stderr, "cur: %s\n", cur->token);
-                    cur = cur->next;
-                }
-                tmp = tmp->prev;
+                fprintf(stderr, " delim present after [%s]\n", tmp->token);
+                for (t_token *cur = *tokens; cur != NULL; cur = cur->next)
+                    fprintf(stderr, "-> %s\n", cur->token);
+                fprintf(stderr, "-------------------------------------------------\n");
+                while (tmp->prev != NULL)
+                    tmp = tmp->prev;
                 continue ;
             }
         }
+        fprintf(stderr, "outside [%s]\n", tmp->token);
         tmp = tmp->next;
     }
 }
