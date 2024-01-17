@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:19:04 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/01/17 18:47:57 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/17 20:52:08 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,6 @@ int	all_whitespace(char *cmd)
     return (1);
 }
 
-/*
 int	main(int argc, char **argv, char **envp)
 {
 	char		*pipeline;
@@ -99,9 +98,9 @@ int	main(int argc, char **argv, char **envp)
 			if (lexer(pipeline, &tok, stat))
                             return (1);
                         (void)cmd;
-	                char	*type[] = {"PIPE", "OUT_RE", "IN_RE", "W_Q", "S_Q", "CMD", "OPT", "ARGS", "FILN", "LIM", "HD", "ADD", "ANON"};
-	                for (t_token *dl = tok; dl != NULL; dl = dl->next)
-		            fprintf(stderr, "[%s] is a [%s]. expand? \x1b[32m%s\x1b[m\n", dl->token, type[dl->symbol], dl->exp?"true":"false");
+	                //char	*type[] = {"PIPE", "OUT_RE", "IN_RE", "W_Q", "S_Q", "CMD", "OPT", "ARGS", "FILN", "LIM", "HD", "ADD", "ANON"};
+	                //for (t_token *dl = tok; dl != NULL; dl = dl->next)
+		        //    fprintf(stderr, "[%s] is a [%s]. expand? \x1b[32m%s\x1b[m\n", dl->token, type[dl->symbol], dl->exp?"true":"false");
                         (void) res;
 			//res->std_out = dup_err(STDOUT_FILENO, stat);
 			//res->std_in = dup_err(STDIN_FILENO, stat);
@@ -138,8 +137,8 @@ int	main(int argc, char **argv, char **envp)
                     }
         }
 }
-*/
 
+/*
 int	main(int argc, char **argv)
 {
 	t_token		*tok;
@@ -170,7 +169,8 @@ int	main(int argc, char **argv)
 		fprintf(stderr, "@ [%s]\n", tmp->cmd);
 		if (tmp->args != NULL)
 		{
-			for (int i = 0; i < tmp->num_a; i++)
+			//for (int i = 0; i < tmp->num_a; i++)
+			for (int i = 0; tmp->args[i] != NULL; i++)
 				fprintf(stderr, "::: {%s}\n", tmp->args[i]);
 		}
                 fprintf(stderr, "should be executed. \x1b[35m%s\x1b[m\n", tmp->exec?"true":"false");
@@ -178,3 +178,4 @@ int	main(int argc, char **argv)
                 dup2_err(std_in, STDIN_FILENO, stat);
 	}
 }
+*/
