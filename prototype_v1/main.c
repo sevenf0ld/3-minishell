@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:19:04 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/01/17 16:59:40 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/17 18:47:57 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ int	all_whitespace(char *cmd)
     }
     return (1);
 }
+
 /*
 int	main(int argc, char **argv, char **envp)
 {
@@ -95,7 +96,8 @@ int	main(int argc, char **argv, char **envp)
 		else if (ft_strcmp(pipeline, "") && !all_whitespace(pipeline))
 		{
 			add_history(pipeline);
-			lexer(pipeline, &tok, stat);
+			if (lexer(pipeline, &tok, stat))
+                            return (1);
                         (void)cmd;
 	                char	*type[] = {"PIPE", "OUT_RE", "IN_RE", "W_Q", "S_Q", "CMD", "OPT", "ARGS", "FILN", "LIM", "HD", "ADD", "ANON"};
 	                for (t_token *dl = tok; dl != NULL; dl = dl->next)
@@ -137,6 +139,7 @@ int	main(int argc, char **argv, char **envp)
         }
 }
 */
+
 int	main(int argc, char **argv)
 {
 	t_token		*tok;
@@ -149,27 +152,28 @@ int	main(int argc, char **argv)
         stat = NULL;
 	stat = malloc_err(sizeof(t_status), stat);
 	stat->s_code = 0;
-	char	*type[] = {"PIPE", "OUT_RE", "IN_RE", "W_Q", "S_Q", "CMD", "OPT", "ARGS", "FILN", "LIM", "HD", "ADD", "ANON"};
+	//char	*type[] = {"PIPE", "OUT_RE", "IN_RE", "W_Q", "S_Q", "CMD", "OPT", "ARGS", "FILN", "LIM", "HD", "ADD", "ANON"};
 	if (argc != 2)
 		return (1);
-	lexer(argv[1], &tok, stat);
+	if (lexer(argv[1], &tok, stat))
+            return (1);
         int std_out = dup_err(STDOUT_FILENO, stat);
         int std_in = dup_err(STDIN_FILENO, stat);
-	for (t_token *dl = tok; dl != NULL; dl = dl->next)
-	    fprintf(stderr, "[%s] is a \x1b[36m[%s]\x1b[m\n", dl->token, type[dl->symbol]);
+	//for (t_token *dl = tok; dl != NULL; dl = dl->next)
+	//    fprintf(stderr, "[%s] is a \x1b[36m[%s]\x1b[m\n", dl->token, type[dl->symbol]);
 	    //fprintf(stderr, "[%s] is a [%s]. expand? \x1b[32m%s\x1b[m\n", dl->token, type[dl->symbol], dl->exp?"true":"false");
 	parser(&tok, &cmd, env, stat);
 	t_command *tmp;
 	for (tmp = cmd; tmp != NULL; tmp = tmp->next)
 	{
 		redirect_command_io(tmp);
-		//fprintf(stderr, "@ [%s]\n", tmp->cmd);
-		//if (tmp->args != NULL)
-		//{
-		//	for (int i = 0; i < tmp->num_a; i++)
-		//		fprintf(stderr, "::: {%s}\n", tmp->args[i]);
-		//}
-                //fprintf(stderr, "should be executed. \x1b[35m%s\x1b[m\n", tmp->exec?"true":"false");
+		fprintf(stderr, "@ [%s]\n", tmp->cmd);
+		if (tmp->args != NULL)
+		{
+			for (int i = 0; i < tmp->num_a; i++)
+				fprintf(stderr, "::: {%s}\n", tmp->args[i]);
+		}
+                fprintf(stderr, "should be executed. \x1b[35m%s\x1b[m\n", tmp->exec?"true":"false");
                 dup2_err(std_out, STDOUT_FILENO, stat);
                 dup2_err(std_in, STDIN_FILENO, stat);
 	}

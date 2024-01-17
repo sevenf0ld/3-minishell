@@ -6,13 +6,13 @@
 /*   By: maiman-m <maiman-m@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/14 15:37:27 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/01/17 17:55:13 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/17 18:40:19 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mini.h"
 
-void    multi_redir(t_token *t_node, t_status *stat)
+int multi_redir(t_token *t_node, t_status *stat)
 {
     t_token *tmp;
 
@@ -24,14 +24,14 @@ void    multi_redir(t_token *t_node, t_status *stat)
                 if (tmp->next->symbol == IN_RE || tmp->next->symbol == OUT_RE || tmp->next->symbol == ADD || tmp->next->symbol == HD)
                 {
                     redir_err(tmp->next->token, stat);
-                    return ;
+                    return (1);
                 }
         tmp = tmp->next;
     }
-    
+    return (0);
 }
 
-void    redir_as_end(t_token *t_node, t_status *stat)
+int redir_as_end(t_token *t_node, t_status *stat)
 {
     t_token *tmp;
 
@@ -42,13 +42,14 @@ void    redir_as_end(t_token *t_node, t_status *stat)
             if (tmp->next == NULL || (tmp->next != NULL && tmp->next->symbol == PIPE))
             {
                 redir_err(NULL, stat);
-                return ;
+                return (1);
             }
         tmp = tmp->next;
     }
+    return (0);
 }
 
-void    multi_adjacent_symbols(t_token *t_node, t_status *stat)
+int multi_adjacent_symbols(t_token *t_node, t_status *stat)
 {
     t_token *tmp;
     char    *s;
@@ -68,20 +69,22 @@ void    multi_adjacent_symbols(t_token *t_node, t_status *stat)
                 if (is_delim(s[i]) && s[i + 1] != '\0' && is_delim(s[i + 1]))
                 {
                     //symbols_err(stat);
+                    //redir_err(&s[i + 1], stat);
                     if (s[i + 1] == '>')
                         redir_err(">", stat);
                     else
                         symbols_err(stat);
-                    return ;
+                    return (1);
                 }
                 i++;
             }
         }
         tmp = tmp->next;
     }
+    return (0);
 }
 
-void    unterminated_quotes(t_token *t_node, t_status *stat)
+int unterminated_quotes(t_token *t_node, t_status *stat)
 {
     t_token *tmp;
     char    *s;
@@ -115,15 +118,22 @@ void    unterminated_quotes(t_token *t_node, t_status *stat)
                 i++;
             }
             if (sq && !wq)
+            {
                 quote_err("\'", stat);
+                return (1);
+            }
             else if (wq && !sq)
+            {
                 quote_err("\"", stat);
+                return (1);
+            }
         }
         tmp = tmp->next;
     }
+    return (0);
 }
 
-void    pipe_first_last(t_token *t_node, t_status *stat)
+int pipe_first_last(t_token *t_node, t_status *stat)
 {
     t_token *tmp;
     t_token *last;
@@ -131,10 +141,14 @@ void    pipe_first_last(t_token *t_node, t_status *stat)
     tmp = t_node;
     last = token_last(t_node);
     if (tmp->symbol == PIPE || last->symbol == PIPE)
+    {
         first_err(stat);
+        return (1);
+    }
+    return (0);
 }
 
-void    multi_pipe(t_token *t_node, t_status *stat)
+int multi_pipe(t_token *t_node, t_status *stat)
 {
     t_token *tmp;
 
@@ -146,11 +160,12 @@ void    multi_pipe(t_token *t_node, t_status *stat)
             if (tmp->next != NULL && tmp->next->symbol == PIPE)
             {
                 first_err(stat);
-                return ;
+                return (1);
             }
         }
         tmp = tmp->next;
     }
+    return (0);
 }
 
 /*
@@ -163,12 +178,19 @@ void    multi_pipe(t_token *t_node, t_status *stat)
         ╰ in one node (ARGS only)
         ╰ across multiple nodes (redirections and pipe)
 */
-void    reject(t_token **tokens, t_status *stat)
+int reject(t_token **tokens, t_status *stat)
 {
-    pipe_first_last(*tokens, stat);
-    unterminated_quotes(*tokens, stat);
-    redir_as_end(*tokens, stat);
-    multi_adjacent_symbols(*tokens, stat);
-    multi_redir(*tokens, stat);
-    multi_pipe(*tokens, stat);
+    if (pipe_first_last(*tokens, stat))
+        return (1);
+    if (unterminated_quotes(*tokens, stat))
+        return (1);
+    if (redir_as_end(*tokens, stat))
+        return (1);
+    if (multi_adjacent_symbols(*tokens, stat))
+        return (1);
+    if (multi_redir(*tokens, stat))
+        return (1);
+    if (multi_pipe(*tokens, stat))
+        return (1);
+    return (0);
 }

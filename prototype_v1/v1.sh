@@ -165,7 +165,7 @@ args=("ls -la | cat | grep -wn c > outfile"
 # create a variable with the name of the executable
 exe="./v1"
 
-# set -e
+set -e
 
 # specify name of Makefile
 # make re -f Makefile

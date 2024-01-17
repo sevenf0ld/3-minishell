@@ -6,7 +6,7 @@
 /*   By: maiman-m <maiman-m@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 21:48:48 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/01/17 17:03:13 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/17 18:29:59 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,63 +91,6 @@ void    separate_delim(char *s, t_token *t_node, t_token **tokens, t_status *sta
     len = ft_strlen(s);
     while (s[i] != '\0')
     {
-        /*
-        if (is_pipe(s[i]))
-        {
-            fprintf(stderr, "pipe: %c\n", s[i]);
-            if (i > 0)
-                slot_in_token(t_node, ft_substr(s, 0, i), stat, tokens, ft_substr(s, i , (int) ft_strlen(s)));
-            else
-                slot_in_token(t_node, ft_substr(s, 0, 1), stat, tokens, ft_substr(s, 1, (int) ft_strlen(s)));
-            break ;
-        }
-        else if (is_add(s, i, len))
-        {
-            //fprintf(stderr, "add: %s\n", ft_substr(s, i, 2));
-            if (i > 0)
-                slot_in_token(t_node, ft_substr(s, 0, i), stat, tokens, ft_substr(s, i , (int) ft_strlen(s)));
-            else
-                slot_in_token(t_node, ft_substr(s, 0, 2), stat, tokens, ft_substr(s, 2, (int) ft_strlen(s)));
-            break ;
-        }
-        else if (is_hd(s, i, len))
-        {
-            //if before hd
-            fprintf(stderr, "   before hd (%zu): %s\n", i, ft_substr(s, 0, i));
-            // wc, <<
-            //slot_in_token(t_node, ft_substr(s, 0, i), stat, tokens, ft_substr(s, i , 2), i);
-            // wc, <<LIM
-            slot_in_token(t_node, ft_substr(s, 0, i), stat, tokens, ft_substr(s, i , (int)ft_strlen(s)), i);
-            //hd symbol itself
-            fprintf(stderr, "hd (%zu): %s\n", i, ft_substr(s, i, 2));
-            i += 2;
-            //if after hd
-            fprintf(stderr, "   after hd (%zu): %s\n", i, s + i);
-            if (i > 0)
-                slot_in_token(t_node, ft_substr(s, 0, i), stat, tokens, ft_substr(s, i , (int) ft_strlen(s)));
-            else
-                slot_in_token(t_node, ft_substr(s, 0, 2), stat, tokens, ft_substr(s, 2, (int) ft_strlen(s)));
-            break ;
-        }
-        else if (is_in_re(s[i]))
-        {
-            fprintf(stderr, "in_re: %c\n", s[i]);
-            if (i > 0)
-                slot_in_token(t_node, ft_substr(s, 0, i), stat, tokens, ft_substr(s, i , (int) ft_strlen(s)));
-            else
-                slot_in_token(t_node, ft_substr(s, 0, 1), stat, tokens, ft_substr(s, 1, (int) ft_strlen(s)));
-            break ;
-        }
-        else if (is_out_re(s[i]))
-        {
-            fprintf(stderr, "out_re: %c\n", s[i]);
-            if (i > 0)
-                slot_in_token(t_node, ft_substr(s, 0, i), stat, tokens, ft_substr(s, i , (int) ft_strlen(s)));
-            else
-                slot_in_token(t_node, ft_substr(s, 0, 1), stat, tokens, ft_substr(s, 1, (int) ft_strlen(s)));
-            break ;
-        }
-        */
         if (is_hd(s, i, len) || is_add(s, i, len))
         {
             if (i > 0)

@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 12:07:39 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/01/04 10:03:41 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/17 18:46:40 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,16 +15,12 @@
 static void	set_multi_fa(t_token **tokens, t_command *c_node)
 {
 	t_token	*tmp;
-	int		i;
 	int		j;
 
 	tmp = *tokens;
-	i = 0;
 	j = 0;
 	while (tmp != NULL)
 	{
-		if (tmp->symbol == OPT && c_node->flags != NULL)
-			c_node->flags[i++] = ft_strdup(tmp->token);
 		if (tmp->symbol == ARGS && c_node->args != NULL)
 			c_node->args[j++] = ft_strdup(tmp->token);
 		if (tmp->end == true)
@@ -40,16 +36,12 @@ void	init_multi_fa(t_token **tokens, t_command *c_node)
 	tmp = *tokens;
 	while (tmp != NULL)
 	{
-		if (tmp->symbol == OPT)
-			c_node->num_f += 1;
 		if (tmp->symbol == ARGS)
 			c_node->num_a += 1;
 		if (tmp->end == true)
 			break ;
 		tmp = tmp->next;
 	}
-	if (c_node->num_f > 0)
-		c_node->flags = malloc_err(sizeof(char *) * (c_node->num_f + 1), c_node->stat);
 	if (c_node->num_a > 0)
 		c_node->args = malloc_err(sizeof(char *) * (c_node->num_a + 1), c_node->stat);
 	set_multi_fa(tokens, c_node);

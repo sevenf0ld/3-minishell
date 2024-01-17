@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:25:31 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/01/17 17:58:34 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/17 18:41:17 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,16 +152,18 @@ char    *stupid_modification(char *s)
  * categorizes the tokens
  * group the tokens and set an identifier/separator
  */
-void	lexer(char *pipeline, t_token **tokens, t_status *stat)
+int lexer(char *pipeline, t_token **tokens, t_status *stat)
 {
         new_split(ft_strtrim(pipeline, "    "), tokens, stat);
         double_ll_convert(tokens);
         categorize_symbol(tokens);
         categorize_params(tokens);
         categorize_cmd_w_args(tokens);
-        reject(tokens, stat);
+        //reject(tokens, stat);
         split_tokens(tokens, stat);
-        reject(tokens, stat);
+        if (reject(tokens, stat))
+            return (1);
+        return (0);
         
         //char	**words;
 
