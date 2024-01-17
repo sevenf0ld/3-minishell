@@ -1,4 +1,4 @@
-#!/bin/bash
+!/bin/bash
 
 red='\033[0;31m'
 green='\033[0;33m'
@@ -149,6 +149,7 @@ args=("ls -la | cat | grep -wn c > outfile"
     "ls file> >"
     "cat<< EOF > outone.txt"
     "<<LIM wc"
+    "wc<<EOF>>outfile"
     "ls|wc"
     "wc main.c|"
     "|wc main.c"
@@ -157,13 +158,12 @@ args=("ls -la | cat | grep -wn c > outfile"
     "wc <main.c"
     "ls |\"\""
     "ls \"\"|"
-    "wc<<EOF>>outfile"
     )
 
 # create a variable with the name of the executable
 exe="./v1"
 
-set -e
+# set -e
 
 # specify name of Makefile
 # make re -f Makefile

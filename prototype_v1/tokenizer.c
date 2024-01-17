@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:26:59 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/01/15 20:55:08 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/16 17:33:23 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,8 +143,6 @@ void    new_split(char *str, t_token **tokens, t_status *stat)
             close += 1;
             if (start == -1)
                 start = i;
-            if (is_delim(str[i]) && !sq && !wq)
-                fprintf(stderr, "\x1b[32mfound delimiter outside of quotes\x1b[m\n");
         }
         else if (str[i] == 32 && (!wq && !sq))
         {

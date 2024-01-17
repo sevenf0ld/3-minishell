@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:25:31 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/01/15 20:49:31 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/17 11:03:50 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,13 +159,13 @@ void	lexer(char *pipeline, t_token **tokens, t_status *stat)
         trimmed = ft_strtrim(pipeline, "     ");
         new_split(trimmed, tokens, stat);
         double_ll_convert(tokens);
-        
-        //split_non_arg_pipe(tokens);
-	
         categorize_symbol(tokens);
         categorize_params(tokens);
         categorize_cmd_w_args(tokens);
+        
         reject(trimmed, tokens, stat);
+        split_tokens(tokens, stat);
+        //reject(trimmed, tokens, stat);
         
         //char	**words;
 

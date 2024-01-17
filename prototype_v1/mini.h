@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:20:01 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/01/15 14:50:08 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/16 17:32:41 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,6 +168,9 @@ void		categorize_params(t_token **tokens);
 void		categorize_cmd_w_args(t_token **tokens);
 //void		categorize_cmdwflags(t_token **tokens);
 void		lexer(char *pipeline, t_token **tokens, t_status *stat);
+
+//split.c
+void            split_tokens(t_token **tokens, t_status *stat);
 
 //reject.c
 void            reject(char *s, t_token **tokens, t_status *stat);
