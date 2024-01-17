@@ -6,7 +6,7 @@
 /*   By: maiman-m <maiman-m@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 21:48:48 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/01/17 13:38:34 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/17 17:03:13 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,6 @@ void    slot_in_token(t_token *t_node, char *s, t_status *stat, t_token **tokens
         t_node->prev = new;
     }
     t_node->token = r;
-    //t_node->symbol = ANON;
 }
 
 void    separate_delim(char *s, t_token *t_node, t_token **tokens, t_status *stat)
@@ -155,18 +154,21 @@ void    separate_delim(char *s, t_token *t_node, t_token **tokens, t_status *sta
                 slot_in_token(t_node, ft_substr(s, 0, i), stat, tokens, ft_substr(s, i , (int) ft_strlen(s)));
             else
                 slot_in_token(t_node, ft_substr(s, 0, 2), stat, tokens, ft_substr(s, 2, (int) ft_strlen(s)));
-            return ;
+            break ;
         }
-        else if (is_pipe(s[i] || is_in_re(s[i]) || is_out_re(s[i])))
+        else if (is_pipe(s[i]) || is_in_re(s[i]) || is_out_re(s[i]))
         {
             if (i > 0)
                 slot_in_token(t_node, ft_substr(s, 0, i), stat, tokens, ft_substr(s, i , (int) ft_strlen(s)));
             else
                 slot_in_token(t_node, ft_substr(s, 0, 1), stat, tokens, ft_substr(s, 1, (int) ft_strlen(s)));
-            return ;
+            break ;
         }
         i++;
     }
+    categorize_symbol(tokens);
+    categorize_params(tokens);
+    categorize_cmd_w_args(tokens);
 }
 
 size_t delim_present(char *s)
@@ -194,30 +196,25 @@ size_t delim_present(char *s)
 */
 void    split_tokens(t_token **tokens, t_status *stat)
 {
+    (void) stat;
+
     t_token *tmp;
 
     tmp = *tokens;
     while (tmp != NULL)
     {
-        fprintf(stderr, "going in [%s]\n", tmp->token);
         //function to check and split
+        categorize_symbol(tokens);
         if (tmp->symbol == CMD || tmp->symbol == ARGS || tmp->symbol == FILN || tmp->symbol == LIM)
         {
             if (delim_present(tmp->token))
             {
-                fprintf(stderr, "-------------------------------------------------\n");
-                fprintf(stderr, " delim present before [%s]\n", tmp->token);
                 separate_delim(tmp->token, tmp, tokens, stat);
-                fprintf(stderr, " delim present after [%s]\n", tmp->token);
-                for (t_token *cur = *tokens; cur != NULL; cur = cur->next)
-                    fprintf(stderr, "-> %s\n", cur->token);
-                fprintf(stderr, "-------------------------------------------------\n");
                 while (tmp->prev != NULL)
                     tmp = tmp->prev;
                 continue ;
             }
         }
-        fprintf(stderr, "outside [%s]\n", tmp->token);
         tmp = tmp->next;
     }
 }

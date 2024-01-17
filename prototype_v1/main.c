@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:19:04 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/01/17 11:34:35 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/17 16:59:40 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ int	all_whitespace(char *cmd)
     }
     return (1);
 }
-
+/*
 int	main(int argc, char **argv, char **envp)
 {
 	char		*pipeline;
@@ -136,8 +136,7 @@ int	main(int argc, char **argv, char **envp)
                     }
         }
 }
-
-/*
+*/
 int	main(int argc, char **argv)
 {
 	t_token		*tok;
@@ -175,4 +174,3 @@ int	main(int argc, char **argv)
                 dup2_err(std_in, STDIN_FILENO, stat);
 	}
 }
-*/
