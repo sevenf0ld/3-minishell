@@ -6,7 +6,7 @@
 /*   By: maiman-m <maiman-m@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/14 15:37:27 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/01/15 15:58:09 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/17 17:55:13 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,11 @@ void    multi_adjacent_symbols(t_token *t_node, t_status *stat)
             {
                 if (is_delim(s[i]) && s[i + 1] != '\0' && is_delim(s[i + 1]))
                 {
-                    symbols_err(stat);
+                    //symbols_err(stat);
+                    if (s[i + 1] == '>')
+                        redir_err(">", stat);
+                    else
+                        symbols_err(stat);
                     return ;
                 }
                 i++;
@@ -119,22 +123,14 @@ void    unterminated_quotes(t_token *t_node, t_status *stat)
     }
 }
 
-/*
 void    pipe_first_last(t_token *t_node, t_status *stat)
 {
-    if (t_node->symbol == PIPE)
-        first_err(stat);
-    if (token_last(t_node)->symbol == PIPE)
-        first_err(stat);
-}
-*/
+    t_token *tmp;
+    t_token *last;
 
-void    pipe_first_last(char *s, t_status *stat)
-{
-    size_t  len;
-
-    len = ft_strlen(s);
-    if (s[0] == 124 || s[len - 1] == 124)
+    tmp = t_node;
+    last = token_last(t_node);
+    if (tmp->symbol == PIPE || last->symbol == PIPE)
         first_err(stat);
 }
 
@@ -158,23 +154,21 @@ void    multi_pipe(t_token *t_node, t_status *stat)
 }
 
 /*
-   ╰ pipe as the first node (character) in the command group
-   ╰ nothing after pipe / pipe as the last node (character)
+   ╰ pipe as the first or last node
    ╰ unterminated quotes
         ╰ single quote
         ╰ double quote
-   ╰ nothing/pipe after redirection symbol / redirection as the last node
+   ╰ nothing after redirection symbol / redirection as the last node
    ╰ multiple adjacent symbols
         ╰ in one node (ARGS only)
         ╰ across multiple nodes (redirections and pipe)
 */
-void    reject(char *s, t_token **tokens, t_status *stat)
+void    reject(t_token **tokens, t_status *stat)
 {
-    //pipe_first_last(s, stat);
-    (void) s;
+    pipe_first_last(*tokens, stat);
     unterminated_quotes(*tokens, stat);
     redir_as_end(*tokens, stat);
-    multi_pipe(*tokens, stat);
     multi_adjacent_symbols(*tokens, stat);
     multi_redir(*tokens, stat);
+    multi_pipe(*tokens, stat);
 }

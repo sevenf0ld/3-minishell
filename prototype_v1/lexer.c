@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:25:31 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/01/17 13:25:08 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/17 17:58:34 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ void	categorize_cmd_w_args(t_token **tokens)
                     tmp->symbol = CMD;
                 else if (tmp->prev != NULL)
                 {
-                    if (tmp->prev->symbol == PIPE)
+                    if (tmp->prev->symbol == PIPE || tmp->prev->symbol == LIM)
                         tmp->symbol = CMD;
                     else if (tmp->prev->symbol == FILN || tmp->prev->symbol == LIM)
                         categorize_cmd_args_norme(tmp);
@@ -154,18 +154,14 @@ char    *stupid_modification(char *s)
  */
 void	lexer(char *pipeline, t_token **tokens, t_status *stat)
 {
-        char    *trimmed;
-
-        trimmed = ft_strtrim(pipeline, "     ");
-        new_split(trimmed, tokens, stat);
+        new_split(ft_strtrim(pipeline, "    "), tokens, stat);
         double_ll_convert(tokens);
         categorize_symbol(tokens);
         categorize_params(tokens);
         categorize_cmd_w_args(tokens);
-        
-        //reject(trimmed, tokens, stat);
+        reject(tokens, stat);
         split_tokens(tokens, stat);
-        //reject(trimmed, tokens, stat);
+        reject(tokens, stat);
         
         //char	**words;
 

@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:20:01 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/01/16 17:32:41 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/17 17:41:19 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -173,7 +173,7 @@ void		lexer(char *pipeline, t_token **tokens, t_status *stat);
 void            split_tokens(t_token **tokens, t_status *stat);
 
 //reject.c
-void            reject(char *s, t_token **tokens, t_status *stat);
+void            reject(t_token **tokens, t_status *stat);
 
 //lexer_utils.c
 void		identify_symbols(t_token **tokens);
