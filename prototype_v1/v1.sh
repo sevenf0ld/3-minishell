@@ -127,6 +127,8 @@ args=("ls -la | cat | grep -wn c > outfile"
     # multi heredoc
     "wc << EOF << HELLO << HELP"
     "ls << KILLME<<WTF<<MINIHELL"
+    "ls << KILLME<<WTF<<MINIHELL"
+    "wc << eof << help << test << wtf"
     # ERROR HANDLING
     # multi adjacent symbols in one or multiple nodes
     "wc <<< herestring"

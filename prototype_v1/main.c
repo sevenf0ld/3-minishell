@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:19:04 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/01/18 11:55:42 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/18 14:30:59 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,8 +60,6 @@ int	main(int argc, char **argv, char **envp)
         t_restore       *res;
 
 	pipeline = NULL;
-	// signal(SIGINT, sig_int);
-	// signal(SIGQUIT, sig_quit);
 	tok = NULL;
 	cmd = NULL;
 	env = NULL;
@@ -78,14 +76,6 @@ int	main(int argc, char **argv, char **envp)
 	env_init(&env, envp, fix, stat);
 	while (1)
 	{
-		// ft_putstr_fd("minishell > ", STDERR_FILENO);
-		// pipeline = get_next_line(0);
-		// if (pipeline == NULL)
-		// {
-		// 	ft_putstr_fd("\b exit\n", STDERR_FILENO);
-		// 	return (0);
-		// }
-		// printf("%s", pipeline);
 		pipeline = readline("prompt> ");
 		if (!pipeline)
 		{
@@ -97,34 +87,21 @@ int	main(int argc, char **argv, char **envp)
 			add_history(pipeline);
 			if (lexer(pipeline, &tok, stat))
                             return (1);
-                        (void)cmd;
-	                //char	*type[] = {"PIPE", "OUT_RE", "IN_RE", "W_Q", "S_Q", "CMD", "OPT", "ARGS", "FILN", "LIM", "HD", "ADD", "ANON"};
-	                //for (t_token *dl = tok; dl != NULL; dl = dl->next)
-		        //    fprintf(stderr, "[%s] is a [%s]. end? \x1b[32m%s\x1b[m\n", dl->token, type[dl->symbol], dl->end?"true":"false");
-                        (void) res;
 			res->std_out = dup_err(STDOUT_FILENO, stat);
 			res->std_in = dup_err(STDIN_FILENO, stat);
 			parser(&tok, &cmd, env, stat);
 			for (t_command *cur = cmd; cur != NULL; cur = cur->next)
 			{
 				redirect_command_io(cur);
-                                //fprintf(stderr, "@ [%s]\n", cur->cmd);
-                                //if (cur->args != NULL)
-                                //{
-                                //        //for (int i = 0; i < cur->num_a; i++)
-                                //        for (int i = 0; cur->args[i] != NULL; i++)
-                                //                fprintf(stderr, "::: {%s}\n", cur->args[i]);
-                                //}
-                                //fprintf(stderr, "should be executed. \x1b[35m%s\x1b[m\n", cur->exec?"true":"false");
-                                //heredoc(cur, stat);
-
+                                heredoc(cur, stat);
                                 n_builtins(&cur, stat);
-                                //if (!ft_strcmp(cur->cmd, "unset") && cur->size == 1)
-                                //    b_unset(cur, &fix);
-                                //if (!ft_strcmp(cur->cmd, "exit") && cur->size == 1)
-                                //    b_exit(cur);
+                                if (!ft_strcmp(cur->cmd, "unset") && cur->size == 1)
+                                    b_unset(cur, &fix);
+                                if (!ft_strcmp(cur->cmd, "exit") && cur->size == 1)
+                                    b_exit(cur);
 				dup2_err(res->std_out, STDOUT_FILENO, stat);
 			        dup2_err(res->std_in, STDIN_FILENO, stat);
+                                unlink("tmp_lim.txt");
 			}
                     }
         }
