@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:19:04 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/01/17 20:52:08 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/18 10:15:27 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ int	all_whitespace(char *cmd)
     return (1);
 }
 
+/*
 int	main(int argc, char **argv, char **envp)
 {
 	char		*pipeline;
@@ -98,24 +99,32 @@ int	main(int argc, char **argv, char **envp)
 			if (lexer(pipeline, &tok, stat))
                             return (1);
                         (void)cmd;
-	                //char	*type[] = {"PIPE", "OUT_RE", "IN_RE", "W_Q", "S_Q", "CMD", "OPT", "ARGS", "FILN", "LIM", "HD", "ADD", "ANON"};
-	                //for (t_token *dl = tok; dl != NULL; dl = dl->next)
-		        //    fprintf(stderr, "[%s] is a [%s]. expand? \x1b[32m%s\x1b[m\n", dl->token, type[dl->symbol], dl->exp?"true":"false");
+	                char	*type[] = {"PIPE", "OUT_RE", "IN_RE", "W_Q", "S_Q", "CMD", "OPT", "ARGS", "FILN", "LIM", "HD", "ADD", "ANON"};
+	                for (t_token *dl = tok; dl != NULL; dl = dl->next)
+		            fprintf(stderr, "[%s] is a [%s]. end? \x1b[32m%s\x1b[m\n", dl->token, type[dl->symbol], dl->end?"true":"false");
                         (void) res;
 			//res->std_out = dup_err(STDOUT_FILENO, stat);
 			//res->std_in = dup_err(STDIN_FILENO, stat);
-			//parser(&tok, &cmd, env, stat);
-			//for (t_command *cur = cmd; cur != NULL; cur = cur->next)
-			//{
-			//	redirect_command_io(cur);
-                        //        n_builtins(&cur, stat);
-                        //        if (!ft_strcmp(cur->cmd, "unset") && cur->size == 1)
-                        //            b_unset(cur, &fix);
-                        //        if (!ft_strcmp(cur->cmd, "exit") && cur->size == 1)
-                        //            b_exit(cur);
-			//	dup2_err(res->std_out, STDOUT_FILENO, stat);
-			//        dup2_err(res->std_in, STDIN_FILENO, stat);
-			//}
+			parser(&tok, &cmd, env, stat);
+			for (t_command *cur = cmd; cur != NULL; cur = cur->next)
+			{
+				redirect_command_io(cur);
+                                fprintf(stderr, "@ [%s]\n", cur->cmd);
+                                if (cur->args != NULL)
+                                {
+                                        //for (int i = 0; i < cur->num_a; i++)
+                                        for (int i = 0; cur->args[i] != NULL; i++)
+                                                fprintf(stderr, "::: {%s}\n", cur->args[i]);
+                                }
+                                fprintf(stderr, "should be executed. \x1b[35m%s\x1b[m\n", cur->exec?"true":"false");
+                                //n_builtins(&cur, stat);
+                                //if (!ft_strcmp(cur->cmd, "unset") && cur->size == 1)
+                                //    b_unset(cur, &fix);
+                                //if (!ft_strcmp(cur->cmd, "exit") && cur->size == 1)
+                                //    b_exit(cur);
+				//dup2_err(res->std_out, STDOUT_FILENO, stat);
+			        //dup2_err(res->std_in, STDIN_FILENO, stat);
+			}
                         //int	wstat;
                         //int	got_pid;
                         //do
@@ -137,8 +146,8 @@ int	main(int argc, char **argv, char **envp)
                     }
         }
 }
+*/
 
-/*
 int	main(int argc, char **argv)
 {
 	t_token		*tok;
@@ -178,4 +187,3 @@ int	main(int argc, char **argv)
                 dup2_err(std_in, STDIN_FILENO, stat);
 	}
 }
-*/

@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 12:07:39 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/01/17 20:49:55 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/18 10:11:10 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,14 +18,16 @@ static void	set_multi_fa(t_token **tokens, t_command *c_node)
 	int		j;
 
 	tmp = *tokens;
-	j = 1;
+	j = 0;
 	while (tmp != NULL)
 	{
-		if (tmp->symbol == ARGS && c_node->args != NULL)
-			c_node->args[j++] = ft_strdup(tmp->token);
-		if (tmp->end == true)
-			break ;
-		tmp = tmp->next;
+            if (tmp->symbol == CMD && c_node->args != NULL && j == 0)
+                c_node->args[j++] = ft_strdup(tmp->token);
+            else if (tmp->symbol == ARGS && c_node->args != NULL && j > 0)
+                    c_node->args[j++] = ft_strdup(tmp->token);
+            if (tmp->end == true)
+                    break ;
+            tmp = tmp->next;
 	}
 }
 
@@ -36,16 +38,16 @@ void	init_multi_fa(t_token **tokens, t_command *c_node)
 	tmp = *tokens;
 	while (tmp != NULL)
 	{
-		if (tmp->symbol == ARGS)
+		if (tmp->symbol == ARGS || tmp->symbol == CMD)
 			c_node->num_a += 1;
 		if (tmp->end == true)
 			break ;
 		tmp = tmp->next;
 	}
-	//if (c_node->num_a > 0)
-	c_node->args = malloc_err(sizeof(char *) * (c_node->num_a + 1), c_node->stat);
+	if (c_node->num_a > 0)
+	    c_node->args = malloc_err(sizeof(char *) * (c_node->num_a + 1), c_node->stat);
 	if (c_node->args != NULL)
-            c_node->args[c_node->num_a + 1] = NULL;
+            c_node->args[c_node->num_a] = NULL;
 	set_multi_fa(tokens, c_node);
 }
 
