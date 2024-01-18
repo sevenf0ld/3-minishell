@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:20:01 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/01/17 18:41:28 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/18 10:22:22 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,8 @@ typedef struct s_command
 	int					num_f;
 	char				**args;
 	int					num_a;
-	char				*lim;
+	char				**lim;
+	int					num_l;
 	int					*std_in; // <
 	int					num_si;
 	int					*std_out_o; // >
@@ -194,7 +195,8 @@ void		double_check_quotes(t_token **tokens, t_sym symbol);
 
 /*	PARSER	*/
 //parser.c
-void		init_multi_fa(t_token **tokens, t_command *c_node);
+void		init_multi_a(t_token **tokens, t_command *c_node);
+void		init_multi_l(t_token **tokens, t_command *c_node);
 void		complete_cmd(t_token **tokens, t_command **cmds);
 void		parser(t_token **tokens, t_command **cmds, t_env *envs, t_status *stat);
 

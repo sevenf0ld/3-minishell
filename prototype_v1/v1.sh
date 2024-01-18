@@ -124,6 +124,9 @@ args=("ls -la | cat | grep -wn c > outfile"
     "echo build.h '>' outfile"
     "echo '     '"
     'echo "     "'
+    # multi heredoc
+    "wc << EOF << HELLO << HELP"
+    "ls << KILLME<<WTF<<MINIHELL"
     # ERROR HANDLING
     # multi adjacent symbols in one or multiple nodes
     "wc <<< herestring"
@@ -165,7 +168,7 @@ args=("ls -la | cat | grep -wn c > outfile"
 # create a variable with the name of the executable
 exe="./v1"
 
-set -e
+# set -e
 
 # specify name of Makefile
 # make re -f Makefile

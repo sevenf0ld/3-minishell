@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/17 14:26:35 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/01/01 13:19:38 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/18 10:27:24 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,7 @@ void	init_multi_redir(t_token **tokens, t_command *c_node)
 /*
  * set delimiter for here_doc or else leave it NULL
  */
+/*
 void	set_delimiter(t_token **tokens, t_command *c_node)
 {
 	t_token	*tmp;
@@ -103,3 +104,4 @@ void	set_delimiter(t_token **tokens, t_command *c_node)
 		tmp = tmp->next;
 	}
 }
+*/

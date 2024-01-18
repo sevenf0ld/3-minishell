@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:19:04 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/01/18 10:15:27 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/18 10:28:27 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -181,6 +181,8 @@ int	main(int argc, char **argv)
 			//for (int i = 0; i < tmp->num_a; i++)
 			for (int i = 0; tmp->args[i] != NULL; i++)
 				fprintf(stderr, "::: {%s}\n", tmp->args[i]);
+			for (int i = 0; i < tmp->num_l; i++)
+				fprintf(stderr, "# {%s}\n", tmp->lim[i]);
 		}
                 fprintf(stderr, "should be executed. \x1b[35m%s\x1b[m\n", tmp->exec?"true":"false");
                 dup2_err(std_out, STDOUT_FILENO, stat);
