@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/30 14:47:12 by folim             #+#    #+#             */
-/*   Updated: 2024/01/16 13:11:56 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/18 11:58:44 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,6 +109,26 @@ void	n_builtins_2(t_command **a, char **input, char *cmd, t_status *stat)
                 if (input != NULL)
 		    free_2d_arr(input);
 		cmd = NULL;
+		int	wstat;
+		int	got_pid;
+		do
+		{
+			got_pid = wait(&wstat);
+			if (got_pid == pid)
+				break ;
+			if (got_pid == -1)
+			{
+				perror("waitpid");
+				return ;
+			}
+		}
+		while (got_pid == wait(&wstat));
+		if (WIFEXITED(wstat))
+			stat->s_code = WEXITSTATUS(wstat);
+		else if (WIFSIGNALED(wstat))
+			stat->s_code = WTERMSIG(wstat);
+		else if (WIFSTOPPED(wstat))
+			stat->s_code = WIFSTOPPED(wstat);
 	}
 }
 
@@ -134,7 +154,7 @@ void	n_builtins_1(t_command **a, char *path_str, t_status *stat)
 		while (++i < tmp->num_a)
 			input[i + tmp->num_f + 1] = tmp->args[i];
 	}
-	n_builtins_2(a, input, tmp->cmd, stat);
+	n_builtins_2(a, tmp->args, tmp->cmd, stat);
 	//n_builtins_2(a, input, path_str, stat);
 	return ;
 }

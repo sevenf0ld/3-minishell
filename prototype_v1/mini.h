@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:20:01 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/01/18 10:22:22 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/18 10:57:51 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -228,6 +228,7 @@ void		pipe_init(t_pipe **pipes, int loop, t_status *stat);
 void		report_err(char *fn, int flag, t_status *stat);
 void		*malloc_err(size_t size, t_status *stat);
 int			open_err(char *file, int flags, mode_t mode, t_command *c_node);
+int			lim_err(char *file, int flags, mode_t mode, t_status *stat);
 void		dup2_err(int old_fd, int new_fd, t_status *stat);
 void		close_err(int fd, t_status *stat);
 void		quote_err(char *a, t_status *stat);
@@ -239,6 +240,9 @@ void            first_err(t_status *stat);
 
 //free.c
 void		free_2d_arr(char **input);
+
+//heredoc.c
+void            heredoc(t_command *c_node, t_status *stat);
 
 /*	NON-BUILTINS EXECUTOR	*/
 //command=ls.c

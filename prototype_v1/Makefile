@@ -6,7 +6,7 @@
 #    By: folim <folim@student.42kl.edu.my>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/15 12:21:40 by maiman-m          #+#    #+#              #
-#    Updated: 2024/01/16 17:32:50 by maiman-m         ###   ########.fr        #
+#    Updated: 2024/01/18 10:36:58 by maiman-m         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -41,7 +41,8 @@ SRCS = main.c tokenizer.c tokenizer_utils.c init_token.c d_ll_convert.c \
 	   parser_utils.c parser_utils2.c parser_utils3.c init_pipe.c \
 	   err_handling.c n_builtins.c free.c signal.c \
 	   b_echo.c b_dir.c b_environ.c b_exit.c \
-	   init_env.c init_fixed.c
+	   init_env.c init_fixed.c \
+           heredoc.c
 	   
 
 OBJS = $(SRCS:.c=.o)

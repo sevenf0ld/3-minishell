@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 17:00:50 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/01/17 17:39:22 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/18 10:57:31 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,16 @@ void	*malloc_err(size_t size, t_status *stat)
 	if (!ret)
 		report_err("malloc", 1, stat);
 	return (ret);
+}
+
+int	lim_err(char *file, int flags, mode_t mode, t_status *stat)
+{
+	int	fd;
+
+	fd = open(file, flags, mode);
+	if (fd == -1)
+		report_err("open", 1, stat);
+	return (fd);
 }
 
 int	open_err(char *file, int flags, mode_t mode, t_command *c_node)
