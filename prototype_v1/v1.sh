@@ -6,7 +6,7 @@ blue='\033[0;34m'
 none='\033[m'
 
 # create an array of cmd line arguments
-args=("ls -la | cat | grep -wn c > outfile"
+arr=("ls -la | cat | grep -wn c > outfile"
     "ls -l -a | cat | grep -w -n c > outfile"
     "ls -l -a | cat | grep -w -n c >> outfile"
     "ls-la"
@@ -167,10 +167,42 @@ args=("ls -la | cat | grep -wn c > outfile"
     "grep>"
     )
 
+args=(
+    "echo \$SHELL"
+    "echo '\$SHELL'"
+    'echo "$SHELL"'
+    'echo "$SHELL" $SHELL'
+    "echo "\$SHELL" '\$SHELL'"
+    'echo "$SHELL" "$SHELL"'
+    "echo '\$SHELL' \"\$SHELL\""
+    "echo '\$SHELL' \"\$SHELL\" \"\$SHELL\""
+    "echo \"\$SHELL\" \"\$SHELL\" '\$SHELL'"
+    "echo \"\$SHELL\" \"\$SHELL\" '\$SHELL' \"\$SHELL\""
+    "echo '\$?'"
+    'echo "\$?"'
+    "echo \$?"
+    "echo '$example'"
+    "echo '\$example'"
+    'echo "$example"'
+    "echo \$example"
+    "echo \$HOME"
+    'echo $USER'
+    "echo \$MADi\$HATTER"
+    "echo \$"
+    "echo '$'"
+    'echo "$"'
+    "echo '\$SHELL' '\$SHELL'"
+    'echo "$SHELL$SHELL" "$HOME"'
+    'echo "$PATHi$USER$PATH" "$HOME"'
+    'echo abc"$HOME"'
+    'echo abc"$HOME"hh'
+    'echo abc"$HOME                      "hh'
+    )
+
 # create a variable with the name of the executable
 exe="./v1"
 
-# set -e
+set -e
 
 # specify name of Makefile
 # make re -f Makefile
