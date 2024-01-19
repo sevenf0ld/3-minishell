@@ -6,7 +6,7 @@
 /*   By: maiman-m <maiman-m@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 21:48:48 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/01/20 06:37:10 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/20 07:10:08 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ static bool    is_hd(char *s, size_t i, size_t len)
     return (false);
 }
 
-static void    slot_in_token(t_token *t_node, char *s, t_status *stat, t_token **tokens, char *r)
+static void    slot_in_token(t_token *t_node, char *s, t_token **tokens, char *r)
 {
     t_token *tmp;
     t_token *new;
@@ -61,7 +61,7 @@ static void    slot_in_token(t_token *t_node, char *s, t_status *stat, t_token *
 
     tmp = t_node;
     new = NULL;
-    new = token_new(s, stat);
+    new = token_new(s, t_node->stat);
     new->next = t_node;
     if (t_node->prev == NULL)
     {
@@ -75,9 +75,7 @@ static void    slot_in_token(t_token *t_node, char *s, t_status *stat, t_token *
         t_node->prev = new;
     }
     t_node->token = r;
-    categorize_symbol(tokens);
-    categorize_params(tokens);
-    categorize_cmd_w_args(tokens);
+    categorize(tokens);
 }
 
 static void    separate_delim(char *s, t_token *t_node, t_token **tokens, t_status *stat)
@@ -97,17 +95,17 @@ static void    separate_delim(char *s, t_token *t_node, t_token **tokens, t_stat
         if (is_hd(s, i, len) || is_add(s, i, len))
         {
             if (i > 0)
-                slot_in_token(t_node, ft_substr(s, 0, i), stat, tokens, ft_substr(s, i , (int) ft_strlen(s)));
+                slot_in_token(t_node, ft_substr(s, 0, i), tokens, ft_substr(s, i , (int) ft_strlen(s)));
             else
-                slot_in_token(t_node, ft_substr(s, 0, 2), stat, tokens, ft_substr(s, 2, (int) ft_strlen(s)));
+                slot_in_token(t_node, ft_substr(s, 0, 2), tokens, ft_substr(s, 2, (int) ft_strlen(s)));
             break ;
         }
         else if (is_pipe(s[i]) || is_in_re(s[i]) || is_out_re(s[i]))
         {
             if (i > 0)
-                slot_in_token(t_node, ft_substr(s, 0, i), stat, tokens, ft_substr(s, i , (int) ft_strlen(s)));
+                slot_in_token(t_node, ft_substr(s, 0, i), tokens, ft_substr(s, i , (int) ft_strlen(s)));
             else
-                slot_in_token(t_node, ft_substr(s, 0, 1), stat, tokens, ft_substr(s, 1, (int) ft_strlen(s)));
+                slot_in_token(t_node, ft_substr(s, 0, 1), tokens, ft_substr(s, 1, (int) ft_strlen(s)));
             break ;
         }
         i++;

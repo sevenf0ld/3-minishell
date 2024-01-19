@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:19:04 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/01/20 06:06:49 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/20 07:26:34 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ int	main(int argc, char **argv, char **envp)
 		{
 			add_history(pipeline);
 			if (lexer(pipeline, &tok, stat))
-                            return (1);
+                            continue ;
                         res->std_out = dup_err(STDOUT_FILENO, stat);
 			res->std_in = dup_err(STDIN_FILENO, stat);
 			parser(&tok, &cmd, env, stat);
