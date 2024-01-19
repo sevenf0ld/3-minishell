@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 14:17:08 by folim             #+#    #+#             */
-/*   Updated: 2024/01/19 15:13:13 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/19 15:28:02 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,38 +164,23 @@ char    **get_exp_key(char *to_expand, int len, t_status *stat)
         return (exp);
 }
 
-char    **get_exp_value(char *to_expand, int len, t_status *stat)
+char    **get_exp_value(char *to_expand, int len, t_status *stat, char **key)
 {
 	int	i;
-	int	j;
-	char	*displace;
         char    *sub;
-        int     k;
         char    **exp;
 
 	i = 0;
-	displace = NULL;
         sub = NULL;
-        k = 0;
         exp = init_expandables(to_expand, len, stat);
-        (void) sub;
-        while (i < len && to_expand[i] != '\0')
+        while (key[i] != NULL)
 	{
-		while (i < len && to_expand[i] != '\0' && to_expand[i] != '$') 
-			i++;
-		j = i + 1;
-		while (j < len && to_expand[j] != '\0' && (to_expand[j] != '\"' && to_expand[j] != 32 && to_expand[j] != '$'))
-			j++;
-                displace = ft_substr(to_expand + i, 0, j - i);
-                if (displace && *displace)
-                {
-                    sub = getenv(displace + 1);
-                    if (sub != NULL)
-                        exp[k++] = sub;
-                    else
-                        exp[k++] = "";
-                }
-                i += ft_strlen(displace);
+            sub = getenv(key[i] + 1);
+            if (sub != NULL)
+                exp[i] = sub;
+            else
+                exp[i] = "";
+            i++;
 	}
         return (exp);
 }
@@ -217,9 +202,8 @@ static void expand_env_var(t_token **tokens, t_status *stat)
             if (tmp->exp && ft_strcmp(tmp->token, "$?") != 0)
             {
                 len = ft_strlen(tmp->token);
-                fprintf(stderr, "TMP->TOKEN %s\n", tmp->token);
                 exp_key = get_exp_key(tmp->token, len, stat);
-                exp_value = get_exp_value(tmp->token, len, stat);
+                exp_value = get_exp_value(tmp->token, len, stat, exp_key);
                 tmp->token = sub_exp(tmp->token, len, exp_key, exp_value);
             }
             else if (tmp->exp && !ft_strcmp(tmp->token, "$?"))
@@ -252,6 +236,14 @@ static int  not_in_single(char *s)
     return (0);
 }
 
+static int  not_standalone_dollar(char *s)
+{
+    fprintf(stderr, "DOLLAR %s\n", s);
+    if (!ft_strcmp(s, "$") || !ft_strcmp(s, "\"$\""))
+        return (0);
+    return (1);
+}
+
 /*
  * set the token boolean exp to true if it is enclosed by double or no quotes
  * calls expand_env_var() which replaces the environment variables and join accordingly
@@ -264,7 +256,7 @@ void	expansion(t_token **tokens, t_status *stat)
 	while (tmp != NULL)
 	{
             if (ft_strchr(tmp->token, '$'))
-                if (not_in_single(tmp->token))
+                if (not_in_single(tmp->token) && not_standalone_dollar(tmp->token))
 		    tmp->exp = true;
 	    tmp = tmp->next;
 	}

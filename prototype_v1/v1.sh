@@ -185,8 +185,8 @@ args=(
     'echo $USER'
     "echo \$MADi\$HATTER"
     "echo \$"
-    "echo '$'"
-    'echo "$"'
+    "echo \"\$\""
+    'echo $'
     "echo '\$SHELL' '\$SHELL'"
     'echo "$SHELL$SHELL" "$HOME"'
     'echo "$PATHi$USER$PATH" "$HOME"'
