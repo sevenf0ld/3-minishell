@@ -163,6 +163,9 @@ arr=("ls -la | cat | grep -wn c > outfile"
     "ls \"\"|"
     "|grep"
     "grep>"
+    "wc -l v1.sh |export z y x| wc"
+    # spaces between command groups
+    "ls    | wc"
     )
 
 args=(
@@ -195,6 +198,11 @@ args=(
     'echo abc"$HOME"'
     'echo abc"$HOME"hh'
     'echo abc"$HOME                      "hh'
+    "echo '\"\$PATH\"'"
+    "echo '\"\$PATH\" \"\$USER\"'"
+    "echo \"'\$PATH'\""
+    "echo \"'\$PATH' '\$USER'\""
+    "echo \"'\$PATH' '\$USER'\" \"'\$PATH' '\$USER'\""
     )
 
 # create a variable with the name of the executable

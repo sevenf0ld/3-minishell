@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:19:04 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/01/19 21:14:57 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/20 06:06:49 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,14 +37,14 @@ bool	is_builtin(char *cmd)
         return (false);
 }
 
-static int	all_whitespace(char *cmd)
+int	all_whitespace(char *s)
 {
     int	i;
 
     i = 0;
-    while (cmd[i] != '\0')
+    while (s[i] != '\0')
     {
-        if (!ft_iswhite(cmd[i]))
+        if (!ft_iswhite(s[i]))
             return (0);
         i++;
     }

@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:20:01 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/01/19 16:06:44 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/20 05:55:00 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,6 +131,7 @@ typedef struct  s_restore
 /*      MINISHELL       */
 //main.c
 bool            is_builtin(char *cmd);
+int             all_whitespace(char *s);
 
 /*	TOKENIZER	*/
 //tokenizer.c

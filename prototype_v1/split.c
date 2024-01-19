@@ -6,7 +6,7 @@
 /*   By: maiman-m <maiman-m@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 21:48:48 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/01/19 15:44:18 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/20 06:37:10 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,9 @@ static void    slot_in_token(t_token *t_node, char *s, t_status *stat, t_token *
         t_node->prev = new;
     }
     t_node->token = r;
+    categorize_symbol(tokens);
+    categorize_params(tokens);
+    categorize_cmd_w_args(tokens);
 }
 
 static void    separate_delim(char *s, t_token *t_node, t_token **tokens, t_status *stat)
@@ -109,9 +112,6 @@ static void    separate_delim(char *s, t_token *t_node, t_token **tokens, t_stat
         }
         i++;
     }
-    categorize_symbol(tokens);
-    categorize_params(tokens);
-    categorize_cmd_w_args(tokens);
 }
 
 static size_t delim_present(char *s)
@@ -146,7 +146,6 @@ void    split_tokens(t_token **tokens, t_status *stat)
     tmp = *tokens;
     while (tmp != NULL)
     {
-        //function to check and split
         categorize_symbol(tokens);
         if (tmp->symbol == CMD || tmp->symbol == ARGS || tmp->symbol == FILN || tmp->symbol == LIM)
         {
