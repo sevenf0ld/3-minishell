@@ -6,13 +6,13 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 11:26:35 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/01/01 13:17:03 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/19 15:54:49 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mini.h"
 
-void	redirect_io_file(int *fd_arr, char mode, t_command *c_node)
+static void	redirect_io_file(int *fd_arr, char mode, t_command *c_node)
 {
 	int	i;
 
@@ -38,7 +38,7 @@ void	redirect_io_file(int *fd_arr, char mode, t_command *c_node)
  * ├ read from pipe read_end[0]
  * └ write to pipe write_end[1]
  */
-void	redirect_io_pipe(t_command *c_node)
+static void	redirect_io_pipe(t_command *c_node)
 {
 	t_command	*cur;
 

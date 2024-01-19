@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 02:57:44 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/12/28 20:02:24 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/19 16:17:03 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,9 @@ void	b_echo(t_command	*c_node)
 	nl = true;
 	i = 0;
 	k = 1;
+        (void) j;
+        (void) k;
+        /*
 	if (cur.num_f > 0)
 	{
 		while (i < cur.num_f)
@@ -47,6 +50,7 @@ void	b_echo(t_command	*c_node)
 			i++;
 		}
 	}
+        */
 	i = -1;
 	if (cur.num_a > 0)
 	{

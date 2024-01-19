@@ -6,22 +6,21 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:25:31 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/12/31 14:13:17 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/19 16:15:51 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mini.h"
 
 /*
- * categorizes enum 0 to 4
- * categorizes | > < " '
+ * categorizes enum 0 to 2 and 10 to 11
+ * categorizes | > < << >>
  */
 void	categorize_symbol(t_token **tokens)
 {
 	t_token	*tmp;
 
 	tmp = *tokens;
-	tmp->symbol = CMD;
 	while (tmp != NULL)
 	{
 		if (!ft_strcmp(tmp->token, "|"))
@@ -30,10 +29,10 @@ void	categorize_symbol(t_token **tokens)
 			tmp->symbol = OUT_RE;
 		else if (!ft_strcmp(tmp->token, "<"))
 			tmp->symbol = IN_RE;
-		else if (!ft_strcmp(tmp->token, "\""))
-			tmp->symbol = W_Q;
-		else if (!ft_strcmp(tmp->token, "'"))
-			tmp->symbol = S_Q;
+		else if (!ft_strcmp(tmp->token, "<<"))
+			tmp->symbol = HD;
+		else if (!ft_strcmp(tmp->token, ">>"))
+			tmp->symbol = ADD;
 		tmp = tmp->next;
 	}
 }
@@ -51,117 +50,85 @@ void	categorize_params(t_token **tokens)
 	{
 		if (tmp->symbol == IN_RE || tmp->symbol == OUT_RE || tmp->symbol == ADD)
 			if (tmp->next != NULL)
-                            if (tmp->next->symbol != S_Q && tmp->next->symbol != W_Q)
-				tmp->next->symbol = FILN;
+		                if (tmp->next->symbol != IN_RE && tmp->next->symbol != OUT_RE && tmp->next->symbol != ADD)
+			            tmp->next->symbol = FILN;
 		if (tmp->symbol == HD && tmp->next != NULL)
 			tmp->next->symbol = LIM;
 		tmp = tmp->next;
 	}
-	categorize_params_norme(tokens);
 }
 
-/*
- * categorizes arguments (7) in command set
- * categorize files if any output/input redirection, heredoc's limiter, arguments in pipeline
- */
-void	categorize_params_norme(t_token **tokens)
-{
-	t_token	*tmp;
-
-	tmp = *tokens;
-	while (tmp != NULL)
-	{
-		if (tmp->symbol == ANON)
-			tmp->symbol = ARGS;
-		if (tmp->symbol == PIPE && tmp->prev != NULL)
-			if (tmp->prev->symbol == S_Q || tmp->prev->symbol == W_Q)
-				if (tmp->next != NULL)
-					if (tmp->next->symbol == S_Q || tmp->next->symbol == W_Q)
-						tmp->symbol = ARGS;
-		tmp = tmp->next;
-	}
-}
-
-/*
- * categorizes command (5) and its flags/options (6)
- * categorizes command (executable & builtins) and flags/options
- */
-void	categorize_cmdwflags(t_token **tokens)
-{
-	t_token	*tmp;
-
-	tmp = *tokens;
-	while (tmp != NULL)
-	{
-		if (tmp->symbol == PIPE && tmp->next != NULL)
-			if (tmp->next->symbol != S_Q && tmp->next->symbol != W_Q)
-				if (tmp->next->symbol != PIPE)
-                                    if (tmp->next->symbol != IN_RE && tmp->next->symbol != ADD && tmp->next->symbol != OUT_RE)
-                                        tmp->next->symbol = CMD;
-		if (tmp->symbol == ARGS && tmp->next != NULL)
-			if (tmp->prev != NULL && tmp->prev->prev != NULL)
-				if (tmp->prev->symbol == FILN)
-					if (tmp->prev->prev->symbol == IN_RE || tmp->prev->prev->symbol == ADD || tmp->prev->prev->symbol == OUT_RE)
-						tmp->symbol = CMD;
-		if (tmp->token[0] == '-' && tmp->prev != NULL)
-			if (ft_strlen(tmp->token) > 1)
-				if (tmp->prev->symbol == CMD || tmp->prev->symbol == OPT)
-					tmp->symbol = OPT;
-		if (tmp->symbol == ARGS && tmp->prev != NULL)
-			if (tmp->prev->symbol == FILN)
-				tmp->symbol = CMD;
-		tmp = tmp->next;
-	}
-}
-
-void    categorize_quoted(t_token **tokens, t_sym symbol)
+void    categorize_cmd_args_norme(t_token *token)
 {
     t_token *tmp;
-    bool    arg;
-    t_sym   check;
+    bool    cmd;
 
-    tmp = *tokens;
-    arg = false;
-    check = S_Q;
-    if (symbol == check)
-        check = W_Q;
+    tmp = token;
+    cmd = false;
     while (tmp != NULL)
     {
-        if (tmp->symbol == symbol && !arg)
-            arg = true;
-        else if (tmp->symbol == symbol && arg)
-            arg = false;
-        if (tmp->symbol != ARGS && arg && tmp->symbol != symbol && tmp->symbol != check)
-            tmp->symbol = ARGS;
-        tmp = tmp->next;
+        if (tmp->symbol == PIPE)
+            break ;
+        if (tmp->symbol == CMD)
+            cmd = true;
+        tmp = tmp->prev;
     }
+    if (!cmd)
+        token->symbol = CMD;
+    else
+        token->symbol = ARGS;
+}
+
+/*
+ * categorizes command (5) and arguments (7)
+ * categorizes command (executable & builtins) and arguments (flags/options included)
+ */
+void	categorize_cmd_w_args(t_token **tokens)
+{
+	t_token	*tmp;
+
+	tmp = *tokens;
+	while (tmp != NULL)
+	{
+            if (tmp->symbol == ANON)
+            {
+                if (tmp->prev == NULL)
+                    tmp->symbol = CMD;
+                else if (tmp->prev != NULL)
+                {
+                    if (tmp->prev->symbol == PIPE || tmp->prev->symbol == LIM)
+                        tmp->symbol = CMD;
+                    else if (tmp->prev->symbol == FILN || tmp->prev->symbol == LIM)
+                        categorize_cmd_args_norme(tmp);
+                    else
+                        tmp->symbol = ARGS;
+                }
+            }
+            tmp = tmp->next;
+	}
 }
 
 /*
  * turns the words into tokens
  * categorizes the tokens
  * group the tokens and set an identifier/separator
+ * further break down the tokens for those involving quotes
+ * error_handling
+ * ╳ expand environment variables (relying on getenv instead of t_fixed)
+ * ╳ remove quotes
+ * group the command groups
  */
-void	lexer(char *pipeline, t_token **tokens, t_status *stat)
+int lexer(char *pipeline, t_token **tokens, t_status *stat)
 {
-	char	**words;
-
-	words = new_split(ft_strtrim(pipeline, " 	"), stat);
-	token_init(words, tokens, stat);
-	double_ll_convert(tokens);
-	categorize_symbol(tokens);
-	double_check_quotes(tokens, W_Q);
-	double_check_quotes(tokens, S_Q);
-	reject_unterminated_q(tokens, W_Q, stat);
-	reject_unterminated_q(tokens, S_Q, stat);
+        new_split(ft_strtrim(pipeline, "    "), tokens, stat);
+        double_ll_convert(tokens);
+        categorize_symbol(tokens);
+        categorize_params(tokens);
+        categorize_cmd_w_args(tokens);
+        split_tokens(tokens, stat);
+        if (reject(tokens, stat))
+            return (1);
 	expansion(tokens, stat);
-	manage_quotes(tokens);
-	identify_symbols(tokens);
-	categorize_params(tokens);
-	categorize_cmdwflags(tokens);
-        categorize_quoted(tokens, W_Q);
-        categorize_quoted(tokens, S_Q);
-	group_cmds(tokens);
-	delete_quotes_after_expand(tokens, W_Q);
-	delete_quotes_after_expand(tokens, S_Q);
+        group_cmds(tokens);
+        return (0);
 }

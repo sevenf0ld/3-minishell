@@ -6,36 +6,11 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 20:48:46 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/01/01 16:26:25 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/19 16:23:27 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mini.h"
-
-/*
- * use an array of cmds to make it shorter
- */
-static bool	is_builtin(char *cmd)
-{
-    if (!cmd)
-        return (false);
-    if (!ft_strcmp(cmd, "echo"))
-            return (true);
-    else if (!ft_strcmp(cmd, "cd"))
-            return (true);
-    else if (!ft_strcmp(cmd, "pwd"))
-            return (true);
-    else if (!ft_strcmp(cmd, "export"))
-            return (true);
-    else if (!ft_strcmp(cmd, "unset"))
-            return (true);
-    else if (!ft_strcmp(cmd, "env"))
-            return (true);
-    else if (!ft_strcmp(cmd, "exit"))
-            return (true);
-    else
-            return (false);
-}
 
 t_command	*cmd_new(char *cmd, int n, t_env *envs, t_status *stat)
 {
@@ -45,11 +20,10 @@ t_command	*cmd_new(char *cmd, int n, t_env *envs, t_status *stat)
 	node->pos = n;
 	node->size = 0;
 	node->cmd = cmd;
-	node->flags = NULL;
-	node->num_f = 0;
 	node->args = NULL;
 	node->num_a = 0;
 	node->lim = NULL;
+	node->num_l = 0;
 	node->std_in = NULL;
 	node->num_si = 0;
 	node->std_out_o = NULL;
@@ -59,7 +33,7 @@ t_command	*cmd_new(char *cmd, int n, t_env *envs, t_status *stat)
 	node->read_end = -1;
 	node->write_end = -1;
 	node->og = NULL;
-	node->builtin = is_builtin(node->cmd);
+	node->builtin = false;
 	node->last_out = INT_MIN;
         node->exec = true;
 	node->env_var = envs;
