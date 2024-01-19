@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 17:00:50 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/01/18 10:57:31 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/19 15:56:58 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,7 +116,7 @@ void    symbols_err(t_status *stat)
     report_err("minishell: this is not required by the subject\n", 0, stat);
 }
 
-void    first_err(t_status *stat)
+void    pipe_related_err(t_status *stat)
 {
     report_err("minishell: syntax error near unexpected token `|'\n", 0, stat);
 }

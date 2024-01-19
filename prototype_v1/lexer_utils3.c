@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 14:17:08 by folim             #+#    #+#             */
-/*   Updated: 2024/01/19 15:28:02 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/19 15:48:17 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
    displace     refers to the word to be replaced
    sub          refers to the word to replace displace with
 */
-char    *repl(char *og, char *displace, char *sub, int len_og)
+static char    *repl(char *og, char *displace, char *sub, int len_og)
 {
     // get the length of each param
     //int len_og = strlen(og);
@@ -86,7 +86,7 @@ char    *repl(char *og, char *displace, char *sub, int len_og)
     return (ret);
 }
 
-char    *sub_exp(char *s, int len, char **key, char **val)
+static char    *sub_exp(char *s, int len, char **key, char **val)
 {
     int i;
     char    *ret;
@@ -106,7 +106,7 @@ char    *sub_exp(char *s, int len, char **key, char **val)
     return (ret);
 }
 
-char    **init_expandables(char *to_expand, int len, t_status *stat)
+static char    **init_expandables(char *to_expand, int len, t_status *stat)
 {
 	int	i;
 	int	j;
@@ -137,7 +137,7 @@ char    **init_expandables(char *to_expand, int len, t_status *stat)
         return (exp);
 }
 
-char    **get_exp_key(char *to_expand, int len, t_status *stat)
+static char    **get_exp_key(char *to_expand, int len, t_status *stat)
 {
 	int	i;
 	int	j;
@@ -164,7 +164,7 @@ char    **get_exp_key(char *to_expand, int len, t_status *stat)
         return (exp);
 }
 
-char    **get_exp_value(char *to_expand, int len, t_status *stat, char **key)
+static char    **get_exp_value(char *to_expand, int len, t_status *stat, char **key)
 {
 	int	i;
         char    *sub;
@@ -238,7 +238,6 @@ static int  not_in_single(char *s)
 
 static int  not_standalone_dollar(char *s)
 {
-    fprintf(stderr, "DOLLAR %s\n", s);
     if (!ft_strcmp(s, "$") || !ft_strcmp(s, "\"$\""))
         return (0);
     return (1);

@@ -6,34 +6,34 @@
 /*   By: maiman-m <maiman-m@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 21:48:48 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/01/17 18:29:59 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/19 15:44:18 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mini.h"
 
-bool    is_pipe(char a)
+static bool    is_pipe(char a)
 {
     if  (a == 124)
         return (true);
     return (false);
 }
 
-bool    is_in_re(char a)
+static bool    is_in_re(char a)
 {
     if (a == 60)
         return (true);
     return (false);
 }
 
-bool    is_out_re(char a)
+static bool    is_out_re(char a)
 {
     if (a == 62)
         return (true);
     return (false);
 }
 
-bool    is_add(char *s, size_t i, size_t len)
+static bool    is_add(char *s, size_t i, size_t len)
 {
     if (i + 1 >= len)
         return (false);
@@ -42,7 +42,7 @@ bool    is_add(char *s, size_t i, size_t len)
     return (false);
 }
 
-bool    is_hd(char *s, size_t i, size_t len)
+static bool    is_hd(char *s, size_t i, size_t len)
 {
     if (i + 1 >= len)
         return (false);
@@ -51,7 +51,7 @@ bool    is_hd(char *s, size_t i, size_t len)
     return (false);
 }
 
-void    slot_in_token(t_token *t_node, char *s, t_status *stat, t_token **tokens, char *r)
+static void    slot_in_token(t_token *t_node, char *s, t_status *stat, t_token **tokens, char *r)
 {
     t_token *tmp;
     t_token *new;
@@ -77,7 +77,7 @@ void    slot_in_token(t_token *t_node, char *s, t_status *stat, t_token **tokens
     t_node->token = r;
 }
 
-void    separate_delim(char *s, t_token *t_node, t_token **tokens, t_status *stat)
+static void    separate_delim(char *s, t_token *t_node, t_token **tokens, t_status *stat)
 {
     (void) s;
     (void) t_node;
@@ -114,7 +114,7 @@ void    separate_delim(char *s, t_token *t_node, t_token **tokens, t_status *sta
     categorize_cmd_w_args(tokens);
 }
 
-size_t delim_present(char *s)
+static size_t delim_present(char *s)
 {
     size_t  i;
     size_t  len;

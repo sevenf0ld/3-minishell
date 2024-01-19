@@ -6,13 +6,13 @@
 /*   By: maiman-m <maiman-m@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 10:35:46 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/01/18 14:30:24 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/19 15:57:31 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mini.h"
 
-char *join_and_free(char *to_free, char *to_concat)
+static char *join_and_free(char *to_free, char *to_concat)
 {
     char *end;
 
@@ -22,7 +22,7 @@ char *join_and_free(char *to_free, char *to_concat)
     return (end);
 }
 
-void    prompt_and_wait(char *delim, t_status *stat)
+static void    prompt_and_wait(char *delim, t_status *stat)
 {
     char    *input;
     int     tmp_output;

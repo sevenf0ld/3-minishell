@@ -6,13 +6,13 @@
 /*   By: maiman-m <maiman-m@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/14 15:37:27 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/01/17 18:40:19 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/19 15:56:48 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mini.h"
 
-int multi_redir(t_token *t_node, t_status *stat)
+static int multi_redir(t_token *t_node, t_status *stat)
 {
     t_token *tmp;
 
@@ -31,7 +31,7 @@ int multi_redir(t_token *t_node, t_status *stat)
     return (0);
 }
 
-int redir_as_end(t_token *t_node, t_status *stat)
+static int redir_as_end(t_token *t_node, t_status *stat)
 {
     t_token *tmp;
 
@@ -49,7 +49,7 @@ int redir_as_end(t_token *t_node, t_status *stat)
     return (0);
 }
 
-int multi_adjacent_symbols(t_token *t_node, t_status *stat)
+static int multi_adjacent_symbols(t_token *t_node, t_status *stat)
 {
     t_token *tmp;
     char    *s;
@@ -84,7 +84,7 @@ int multi_adjacent_symbols(t_token *t_node, t_status *stat)
     return (0);
 }
 
-int unterminated_quotes(t_token *t_node, t_status *stat)
+static int unterminated_quotes(t_token *t_node, t_status *stat)
 {
     t_token *tmp;
     char    *s;
@@ -133,7 +133,7 @@ int unterminated_quotes(t_token *t_node, t_status *stat)
     return (0);
 }
 
-int pipe_first_last(t_token *t_node, t_status *stat)
+static int pipe_first_last(t_token *t_node, t_status *stat)
 {
     t_token *tmp;
     t_token *last;
@@ -142,13 +142,13 @@ int pipe_first_last(t_token *t_node, t_status *stat)
     last = token_last(t_node);
     if (tmp->symbol == PIPE || last->symbol == PIPE)
     {
-        first_err(stat);
+        pipe_related_err(stat);
         return (1);
     }
     return (0);
 }
 
-int multi_pipe(t_token *t_node, t_status *stat)
+static int multi_pipe(t_token *t_node, t_status *stat)
 {
     t_token *tmp;
 
@@ -159,7 +159,7 @@ int multi_pipe(t_token *t_node, t_status *stat)
         {
             if (tmp->next != NULL && tmp->next->symbol == PIPE)
             {
-                first_err(stat);
+                pipe_related_err(stat);
                 return (1);
             }
         }

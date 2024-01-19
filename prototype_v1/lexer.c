@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:25:31 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/01/18 14:50:08 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/19 16:15:51 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,48 +109,14 @@ void	categorize_cmd_w_args(t_token **tokens)
 }
 
 /*
-char    *stupid_modification(char *s)
-{
-    char    *ret;
-    int     i;
-    bool    sq;
-    bool    wq;
-
-    ret = malloc(sizeof(char) * 5000);
-    i = 0;
-    sq = false;
-    wq = false;
-    while (s[i] != '\0')
-    {
-        if (s[i] == 39 || s[i] == 34)
-            decide_quote(s[i], &sq, &wq);
-        if (is_delim(s[i]) && (!sq && !wq)))
-        {
-            if (i - 1 > 0 && !ft_iswhite(s[i - 1]) && !is_delim(s[i - 1]))
-            {
-                ret[i] = 32;
-                i += 1;
-                ret[i] = s[i];
-                continue ;
-            }
-            if (s[i + 1] != '\0' && !ft_iswhite(s[i + 1] && !is_delim(s[i + 1])))
-            {
-                ret[i] = s[i];
-                i += 1;
-                ret[i] = 32;
-                continue ;
-            }
-        }
-
-        i++;
-    }
-}
-*/
-
-/*
  * turns the words into tokens
  * categorizes the tokens
  * group the tokens and set an identifier/separator
+ * further break down the tokens for those involving quotes
+ * error_handling
+ * ╳ expand environment variables (relying on getenv instead of t_fixed)
+ * ╳ remove quotes
+ * group the command groups
  */
 int lexer(char *pipeline, t_token **tokens, t_status *stat)
 {
@@ -159,35 +125,10 @@ int lexer(char *pipeline, t_token **tokens, t_status *stat)
         categorize_symbol(tokens);
         categorize_params(tokens);
         categorize_cmd_w_args(tokens);
-        //reject(tokens, stat);
         split_tokens(tokens, stat);
         if (reject(tokens, stat))
             return (1);
 	expansion(tokens, stat);
         group_cmds(tokens);
         return (0);
-        
-        //char	**words;
-
-	//words = new_split(ft_strtrim(pipeline, " 	"), stat);
-	//token_init(words, tokens, stat);
-	//double_ll_convert(tokens);
-	//categorize_symbol(tokens);
-        // BONUS
-        //turns S_Q to ARGS
-	//double_check_quotes(tokens, W_Q);
-	//double_check_quotes(tokens, S_Q);
-	
-        //reject_unterminated_q(tokens, W_Q, stat);
-	//reject_unterminated_q(tokens, S_Q, stat);
-	//expansion(tokens, stat);
-	//manage_quotes(tokens);
-	//identify_symbols(tokens);
-	//categorize_params(tokens);
-	//categorize_cmdwflags(tokens);
-        //categorize_quoted(tokens, W_Q);
-        //categorize_quoted(tokens, S_Q);
-        //group_cmds(tokens);
-	//delete_quotes_after_expand(tokens, W_Q);
-	//delete_quotes_after_expand(tokens, S_Q);
 }

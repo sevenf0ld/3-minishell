@@ -6,15 +6,12 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/10 00:09:50 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/01/13 15:35:23 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/19 16:06:21 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mini.h"
 
-/*
- * symbol will be set to -1 after testing
- */
 t_token	*token_new(char *token, t_status *stat)
 {
 	t_token	*node;
@@ -25,7 +22,6 @@ t_token	*token_new(char *token, t_status *stat)
 	node->end = false;
 	node->rm = false;
 	node->exp = false;
-	node->enclosed = false;
         node->stat = stat;
 	node->prev = NULL;
 	node->next = NULL;

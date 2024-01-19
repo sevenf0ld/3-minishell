@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/24 03:45:36 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/01/05 14:05:39 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/19 16:17:27 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,12 +23,12 @@ void	b_env(t_command *c_node, t_fixed **f_node)
             ft_putendl_fd("minishell does not require env to handle arguments", STDERR_FILENO);
 	    return ;
 	}
-        if (c_node->num_f > 0)
-        {
-            c_node->stat->s_code = 64;
-            ft_putendl_fd("minishell does not require env to handle flags", STDERR_FILENO);
-	    return ;
-        }
+        //if (c_node->num_f > 0)
+        //{
+        //    c_node->stat->s_code = 64;
+        //    ft_putendl_fd("minishell does not require env to handle flags", STDERR_FILENO);
+	//    return ;
+        //}
 	while (ftmp != NULL)
 	{
 		if (ftmp->fvalue)
@@ -78,7 +78,7 @@ void	b_unset(t_command *c_node, t_fixed **f_node)
 	}
 }
 
-char	*get_key(char *exported)
+static char	*get_key(char *exported)
 {
 	int	i;
 
