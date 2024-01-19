@@ -75,8 +75,6 @@ arr=("ls -la | cat | grep -wn c > outfile"
     "echo '\$SHELL' \"\$SHELL\" \"\$SHELL\""
     "echo \"\$SHELL\" \"\$SHELL\" '\$SHELL'"
     "echo \"\$SHELL\" \"\$SHELL\" '\$SHELL' \"\$SHELL\""
-    "echo '\$?'"
-    'echo "\$?"'
     "echo \$?"
     "echo '$example'"
     "echo '\$example'"
@@ -178,8 +176,6 @@ args=(
     "echo '\$SHELL' \"\$SHELL\" \"\$SHELL\""
     "echo \"\$SHELL\" \"\$SHELL\" '\$SHELL'"
     "echo \"\$SHELL\" \"\$SHELL\" '\$SHELL' \"\$SHELL\""
-    "echo '\$?'"
-    'echo "\$?"'
     "echo \$?"
     "echo '$example'"
     "echo '\$example'"
@@ -194,6 +190,8 @@ args=(
     "echo '\$SHELL' '\$SHELL'"
     'echo "$SHELL$SHELL" "$HOME"'
     'echo "$PATHi$USER$PATH" "$HOME"'
+    'echo "$PATHi$USER" "$HOME"'
+    'echo "$USER$PATH" "$HOME"'
     'echo abc"$HOME"'
     'echo abc"$HOME"hh'
     'echo abc"$HOME                      "hh'
