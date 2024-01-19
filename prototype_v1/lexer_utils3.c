@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 14:17:08 by folim             #+#    #+#             */
-/*   Updated: 2024/01/19 15:48:17 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/20 06:55:12 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,6 +144,7 @@ static char    **get_exp_key(char *to_expand, int len, t_status *stat)
 	char	*displace;
         int     k;
         char    **exp;
+        int     len_dis;
 
 	i = 0;
 	displace = NULL;
@@ -157,9 +158,14 @@ static char    **get_exp_key(char *to_expand, int len, t_status *stat)
 		while (j < len && to_expand[j] != '\0' && (to_expand[j] != '\"' && to_expand[j] != 32 && to_expand[j] != '$'))
 			j++;
                 displace = ft_substr(to_expand + i, 0, j - i);
+                len_dis = ft_strlen(displace);
                 if (displace && *displace)
+                {
+                    if (displace[len_dis - 1] == 39)
+                        displace = ft_strndup(displace, len_dis - 1);
                     exp[k++] = displace;
-                i += ft_strlen(displace);
+                }
+                i += len_dis;
 	}
         return (exp);
 }
@@ -212,26 +218,34 @@ static void expand_env_var(t_token **tokens, t_status *stat)
 	}
 }
 
-static void    decide_quote(char c, bool *sq)
+static void    decide_quote(char c, bool *sq, bool *wq)
 {
-    if (c == 39 && !*sq)
+    if (c == 39 && !*sq && !*wq)
         *sq = true;
+    else if (c == 34 && !*wq && !*sq)
+        *wq = true;
+    //else if (c == 39 && *sq && !*wq)
+    //    *sq = false;
+    //else if (c == 34 && *wq && !*sq)
+    //    *wq = false;
 }
 
 static int  not_in_single(char *s)
 {
     int i;
     bool    sq;
+    bool    wq;
 
     i = 0;
     sq = false;
+    wq = false;
     while (s[i] != '\0')
     {
-        if (s[i] == 39)
-            decide_quote(s[i], &sq);
+        if (s[i] == 39 || s[i] == 34)
+            decide_quote(s[i], &sq, &wq);
         i++;
     }
-    if (!sq)
+    if ((!sq && wq) || (sq && wq))
         return (1);
     return (0);
 }

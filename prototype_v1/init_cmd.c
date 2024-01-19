@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 20:48:46 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/01/19 16:23:27 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/19 19:02:09 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ t_command	*cmd_new(char *cmd, int n, t_env *envs, t_status *stat)
 	node->read_end = -1;
 	node->write_end = -1;
 	node->og = NULL;
-	node->builtin = false;
+	node->builtin = is_builtin(cmd);
 	node->last_out = INT_MIN;
         node->exec = true;
 	node->env_var = envs;

@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:26:59 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/01/19 15:39:58 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/20 05:56:05 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ void    new_split(char *str, t_token **tokens, t_status *stat)
     int check;
     int start = -1;
     int count = 0;
+    char *sub = NULL;
     while (str[i] != '\0')
     {
         if (str[i] == 39 || str[i] == 34)
@@ -79,7 +80,14 @@ void    new_split(char *str, t_token **tokens, t_status *stat)
                 check = close;
                 continue ;
             }
-            token_init(ft_substr(str, start, (size_t) i - start), tokens, stat, count);
+            sub = ft_substr(str, start, (size_t) i - start);
+            if (!all_whitespace(sub))
+                token_init(sub, tokens, stat, count);
+            else
+            {
+                free(sub);
+                sub = NULL;
+            }
             count += 1;
             start = -1;
         }

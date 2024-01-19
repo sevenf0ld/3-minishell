@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 17:00:50 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/01/19 15:56:58 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/20 07:25:52 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,11 +78,12 @@ void	close_err(int fd, t_status *stat)
             i++;
 }
 
-void	quote_err(char *a, t_status *stat)
+int quote_err(char *a, t_status *stat)
 {
 	report_err("minishell: unterminated quotes ", 0, stat);
 	report_err(a, 0, stat);
 	report_err((" \n"), 0, stat);
+        return (1);
 }
 
 void	pipe_err(int *pipe_arr, t_status *stat)
@@ -101,7 +102,7 @@ int	dup_err(int old_fd, t_status *stat)
 	return (new_fd);
 }
 
-void    redir_err(char *token, t_status *stat)
+int redir_err(char *token, t_status *stat)
 {
     report_err("minishell: syntax error near unexpected token `", 0, stat);
     if (!token)
@@ -109,14 +110,17 @@ void    redir_err(char *token, t_status *stat)
     else
         report_err(token, 0, stat);
     report_err("'\n", 0, stat);
+    return (1);
 }
 
-void    symbols_err(t_status *stat)
+int symbols_err(t_status *stat)
 {
     report_err("minishell: this is not required by the subject\n", 0, stat);
+    return (1);
 }
 
-void    pipe_related_err(t_status *stat)
+int pipe_related_err(t_status *stat)
 {
     report_err("minishell: syntax error near unexpected token `|'\n", 0, stat);
+    return (1);
 }

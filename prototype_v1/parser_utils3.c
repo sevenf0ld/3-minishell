@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 11:26:35 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/01/19 15:54:49 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/19 17:03:47 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,12 +52,12 @@ static void	redirect_io_pipe(t_command *c_node)
 	}
 	else if (cur->pos == cur->size - 1)
 	{
-		if (cur->std_in == NULL)
+		if (cur->std_in == NULL && cur->num_l == 0)
 			dup2_err(cur->read_end, STDIN_FILENO, c_node->stat);
 	}
 	else
 	{
-		if (cur->std_in == NULL)
+		if (cur->std_in == NULL && cur->num_l == 0)
 			dup2_err(cur->read_end, STDIN_FILENO, c_node->stat);
 		if (cur->std_out_o == NULL && cur->std_out_a == NULL)
 			dup2_err(cur->write_end, STDOUT_FILENO, c_node->stat);
