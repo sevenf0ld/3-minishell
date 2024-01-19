@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/30 14:47:12 by folim             #+#    #+#             */
-/*   Updated: 2024/01/04 15:13:54 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/18 13:48:30 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,8 @@ int	n_builtins_3(char *path_str)
 void	n_builtins_2(t_command **a, char **input, char *cmd, t_status *stat)
 {
 	(void) cmd;
+        (void) input;
+        (void) stat;
 	pid_t		pid;
 	t_command	*tmp;
 
@@ -76,7 +78,7 @@ void	n_builtins_2(t_command **a, char **input, char *cmd, t_status *stat)
 	pid = fork();
 	if (pid == -1)
 	{
-		free(input);
+		//free(input);
 		return ;
 	}
 	if (pid == 0) // child process
@@ -113,8 +115,8 @@ void	n_builtins_2(t_command **a, char **input, char *cmd, t_status *stat)
 			g_sig.sigva_1 = 0;
 		if (tmp->write_end != -1)
 			close_err(tmp->write_end, stat);
-                if (input != NULL)
-		    free_2d_arr(input);
+                //if (input != NULL)
+		//    free_2d_arr(input);
 		cmd = NULL;
 		int	wstat; // status
 		int	got_pid;
@@ -150,32 +152,17 @@ void	n_builtins_2(t_command **a, char **input, char *cmd, t_status *stat)
 	// printf("n_builtins>>g_sig.sigva_1 = %d\n", g_sig.sigva_1);
 }
 
+
 void	n_builtins_1(t_command **a, char *path_str, t_status *stat)
 {
 	t_command	*tmp;
-	int			i;
-	char		**input;
 
 	tmp = *a;
-	input = (char **)malloc_err((tmp->num_f + tmp->num_a + 2) * sizeof(char *), stat);
-	input[0] = path_str;
-	input[tmp->num_f + tmp->num_a + 1] = NULL;
-	i = -1;
-	if (tmp->flags != NULL)
-	{
-		while (++i < tmp->num_f)
-			input[i + 1] = tmp->flags[i];
-	}
-	i = -1;
-	if (tmp->args != NULL)
-	{
-		while (++i < tmp->num_a)
-			input[i + tmp->num_f + 1] = tmp->args[i];
-	}
-	n_builtins_2(a, input, tmp->cmd, stat);
-	//n_builtins_2(a, input, path_str, stat);
+        tmp->args[0] = path_str;
+	n_builtins_2(a, tmp->args, tmp->cmd, stat);
 	return ;
 }
+
 
 void	n_builtins(t_command **a, t_status *stat)
 {

@@ -8,11 +8,11 @@ void	b_exit(t_command *c_node)
 
 	end = NULL;
 	n = 0;
-	if (c_node->num_f == 0 && c_node->num_a == 0)
-	{
-		c_node->stat->s_code = 0;
-                exit(c_node->stat->s_code);
-	}
+	//if (c_node->num_f == 0 && c_node->num_a == 0)
+	//{
+	//	c_node->stat->s_code = 0;
+	//	return ;
+	//}
 	end = ft_split(c_node->og, ' ');
 	while (end[n] != NULL)
 		n++;

@@ -6,15 +6,12 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/10 00:09:50 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/12/30 12:36:10 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/19 16:06:21 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mini.h"
 
-/*
- * symbol will be set to -1 after testing
- */
 t_token	*token_new(char *token, t_status *stat)
 {
 	t_token	*node;
@@ -25,7 +22,6 @@ t_token	*token_new(char *token, t_status *stat)
 	node->end = false;
 	node->rm = false;
 	node->exp = false;
-	node->enclosed = false;
         node->stat = stat;
 	node->prev = NULL;
 	node->next = NULL;
@@ -43,16 +39,14 @@ void	token_add_back(t_token **head, t_token *node)
 }
 
 /*
- * converts the splitted pipeline into individual tokens
+ * convert the substr from preserve into individual tokens
  */
-void	token_init(char **args, t_token **head, t_status *stat)
+void	token_init(char *s, t_token **head, t_status *stat, int i)
 {
-	int	i;
-
-	*head = token_new(args[0], stat);
-	i = 1;
-	while (args[i] != NULL)
-		token_add_back(head, token_new(args[i++], stat));
+    if (i == 0)
+        *head = token_new(s, stat);
+    else
+        token_add_back(head, token_new(s, stat));
 }
 
 t_token	*token_last(t_token *head)

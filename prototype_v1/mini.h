@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:20:01 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/01/01 13:23:21 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/19 16:06:44 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@
 
 
 # include <stdio.h>
+# include "libft/include/libft.h"
 # include <readline/readline.h>
 # include <stddef.h>
 # include <stdlib.h>
@@ -49,26 +50,20 @@
  * 0 PIPE
  * 1 >
  * 2 <
- * 3 "
- * 4 '
- * 5 COMMAND
- * 6 OPTIONS/FLAGS
- * 7 ARGUMENTS
- * 8 FILENAME
- * 9 LIMITER
- * 10 HEREDOC <<
- * 11 ADDEND >>
- * 12 ANONYMOUS (will remove)
+ * 3 COMMAND
+ * 4 ARGUMENTS
+ * 5 FILENAME
+ * 6 LIMITER
+ * 7 HEREDOC <<
+ * 8 ADDEND >>
+ * 9 ANONYMOUS
  */
 typedef enum e_sym
 {
 	PIPE,
 	OUT_RE,
 	IN_RE,
-	W_Q,
-	S_Q,
 	CMD,
-	OPT,
 	ARGS,
 	FILN,
 	LIM,
@@ -84,7 +79,6 @@ typedef struct s_token
 	bool			end;
 	bool			rm;
 	bool			exp;
-	bool			enclosed;
         struct s_status *stat;
 	struct s_token	*prev;
 	struct s_token	*next;
@@ -95,11 +89,10 @@ typedef struct s_command
 	int					pos;
 	int					size;
 	char				*cmd;
-	char				**flags;
-	int					num_f;
-	char				**args;
-	int					num_a;
-	char				*lim;
+	char				**args; //everything expanded
+	int					num_a; //
+	char				**lim;
+	int					num_l;
 	int					*std_in; // <
 	int					num_si;
 	int					*std_out_o; // >
@@ -108,10 +101,10 @@ typedef struct s_command
 	int					num_so_a;
 	int					read_end;
 	int					write_end;
-	char				*og;
+	char				*og; // compare with 92, if it's not in nested code, remove outtermost quote
 	bool				builtin;
-	int				last_out;
-        bool                            exec;
+	int					last_out;
+	bool         		exec;
 	struct s_env		*env_var;
 	struct s_status		*stat;
 	struct s_command	*prev;
@@ -163,21 +156,24 @@ typedef struct s_sig
 
 extern t_sig g_sig;
 
+
+
+
+/*      MINISHELL       */
+//main.c
+bool            is_builtin(char *cmd);
+
 /*	TOKENIZER	*/
 //tokenizer.c
-char		**new_split(char *str, t_status *stat);
-
-//tokenizer_utils.c
-int			is_delim(char a);
-char		*handle_spaces_btwn_q(char a, char c);
-char		**init_split_pipeline(char *s, int w_c, t_status *stat);
+int		is_delim(char a);
+void            new_split(char *str, t_token **tokens, t_status *stat);
 
 //init_token.c
 t_token		*token_new(char *token, t_status *stat);
 void		token_add_back(t_token **head, t_token *node);
-void		token_init(char **args, t_token **head, t_status *stat);
+void		token_init(char *s, t_token **head, t_status *stat, int i);
 t_token		*token_last(t_token *head);
-int			token_size(t_token *head);
+int		token_size(t_token *head);
 
 //d_ll_convert.c
 t_token		*double_ll_convert(t_token **lst);
@@ -188,49 +184,34 @@ t_pipe		*double_ll_convert3(t_pipe **lst);
 //lexer.c
 void		categorize_symbol(t_token **tokens);
 void		categorize_params(t_token **tokens);
-void		categorize_params_norme(t_token **tokens);
-void		categorize_cmdwflags(t_token **tokens);
-void		lexer(char *pipeline, t_token **tokens, t_status *stat);
+void		categorize_cmd_w_args(t_token **tokens);
+int             lexer(char *pipeline, t_token **tokens, t_status *stat);
 
-//lexer_utils.c
-void		identify_symbols(t_token **tokens);
-void		group_cmds(t_token **tokens);
+//split.c
+void            split_tokens(t_token **tokens, t_status *stat);
 
-//lexer_utils2.c
-void		manage_quotes(t_token **tokens);
-void		reject_unterminated_q(t_token **tokens, t_sym symbol, t_status *stat);
-void		delete_quotes_after_expand(t_token **tokens, t_sym symbol);
+//reject.c
+int             reject(t_token **tokens, t_status *stat);
 
 //lexer_utils3.c
 void		expansion(t_token **lst, t_status *stat);
 
-//lexer_utils4.c
-t_token		*get_first_quote(t_token **tokens, t_sym symbol);
-t_token		*get_last_quote(t_token **tokens, t_sym symbol);
-void		double_check_quotes(t_token **tokens, t_sym symbol);
+//lexer_utils.c
+void		group_cmds(t_token **tokens);
 
 /*	PARSER	*/
 //parser.c
-void		init_multi_fa(t_token **tokens, t_command *c_node);
+void		init_multi_a(t_token **tokens, t_command *c_node);
+void		init_multi_l(t_token **tokens, t_command *c_node);
 void		complete_cmd(t_token **tokens, t_command **cmds);
 void		parser(t_token **tokens, t_command **cmds, t_env *envs, t_status *stat);
-
-//parser_utils.c
-void		init_multi_redir(t_token **tokens, t_command *c_node);
-void		set_delimiter(t_token **tokens, t_command *c_node);
-
-//parser_utils2.c
-void		assign_pipe_ends(t_command *c_node, t_pipe *p_node);
-
-//parser_utils3.c
-void		redirect_command_io(t_command *c_node);
 
 //init_cmd.c
 t_command	*cmd_new(char *cmd, int n, t_env *envs, t_status *stat);
 void		cmd_add_back(t_command **head, t_command *node);
 void		cmd_init(t_token **tokens, t_command **cmds, t_env *envs, t_status *stat);
 t_command	*cmd_last(t_command *head);
-int			cmd_size(t_command *head);
+int		cmd_size(t_command *head);
 
 //init_pipe.c
 t_pipe		*pipe_new(int n, t_status *stat);
@@ -238,24 +219,22 @@ t_pipe		*pipe_last(t_pipe *head);
 void		pipe_add_back(t_pipe **head, t_pipe *node);
 void		pipe_init(t_pipe **pipes, int loop, t_status *stat);
 
-/*	ERROR AND MEMORY HANDLER	*/
-//err_handling.c
-void		report_err(char *fn, int flag, t_status *stat);
-void		*malloc_err(size_t size, t_status *stat);
-int			open_err(char *file, int flags, mode_t mode, t_command *c_node);
-void		dup2_err(int old_fd, int new_fd, t_status *stat);
-void		close_err(int fd, t_status *stat);
-void		quote_err(t_status *stat);
-void		pipe_err(int *pipe_arr, t_status *stat);
-int			dup_err(int old_fd, t_status *stat);
+//parser_utils.c
+void		init_multi_redir(t_token **tokens, t_command *c_node);
 
-//free.c
-void		free_2d_arr(char **input);
+//parser_utils2.c
+void		assign_pipe_ends(t_command *c_node, t_pipe *p_node);
+
+//parser_utils3.c
+void		redirect_command_io(t_command *c_node);
+
+/*      HEREDOC     */
+//heredoc.c
+void            heredoc(t_command *c_node, t_status *stat);
 
 /*	NON-BUILTINS EXECUTOR	*/
-//command=ls.c
+//n_builtins.c
 void		n_builtins(t_command **a, t_status *stat);
-// void		cmd_ls_attach(int c);
 
 /*	SIGNAL HANDLER	*/
 //signal.c
@@ -273,7 +252,6 @@ char		*b_pwd(t_command *c_node, char mode);
 void		b_cd(t_command *c_node);
 
 //b_environ.c
-//void		b_env(t_command *c_node);
 void		b_env(t_command *c_node, t_fixed **f_node);
 void		b_unset(t_command *c_node, t_fixed **f_node);
 void		b_export(t_command *c_node, t_fixed **f_node);
@@ -293,5 +271,23 @@ t_fixed		*f_new(char *var, t_status *stat);
 t_fixed		*f_last(t_fixed *head);
 void		f_add_back(t_fixed **head, t_fixed *node);
 void		f_init(t_fixed **envs, char **envp, t_status *stat);
+
+/*	ERROR AND MEMORY HANDLER	*/
+//err_handling.c
+void		report_err(char *fn, int flag, t_status *stat);
+void		*malloc_err(size_t size, t_status *stat);
+int		lim_err(char *file, int flags, mode_t mode, t_status *stat);
+int		open_err(char *file, int flags, mode_t mode, t_command *c_node);
+void		dup2_err(int old_fd, int new_fd, t_status *stat);
+void		close_err(int fd, t_status *stat);
+void		quote_err(char *a, t_status *stat);
+void		pipe_err(int *pipe_arr, t_status *stat);
+int		dup_err(int old_fd, t_status *stat);
+void            redir_err(char *token, t_status *stat);
+void            symbols_err(t_status *stat);
+void            pipe_related_err(t_status *stat);
+
+//free.c
+void		free_2d_arr(char **input);
 
 #endif

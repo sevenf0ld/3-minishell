@@ -6,53 +6,86 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 12:07:39 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/01/04 10:03:41 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/19 15:52:49 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mini.h"
 
-static void	set_multi_fa(t_token **tokens, t_command *c_node)
+static void	set_multi_a(t_token **tokens, t_command *c_node)
 {
 	t_token	*tmp;
-	int		i;
 	int		j;
 
 	tmp = *tokens;
-	i = 0;
 	j = 0;
 	while (tmp != NULL)
 	{
-		if (tmp->symbol == OPT && c_node->flags != NULL)
-			c_node->flags[i++] = ft_strdup(tmp->token);
-		if (tmp->symbol == ARGS && c_node->args != NULL)
-			c_node->args[j++] = ft_strdup(tmp->token);
-		if (tmp->end == true)
-			break ;
-		tmp = tmp->next;
+            if (tmp->symbol == CMD && c_node->args != NULL && j == 0)
+                c_node->args[j++] = ft_strdup(tmp->token);
+            else if (tmp->symbol == ARGS && c_node->args != NULL && j > 0)
+                    c_node->args[j++] = ft_strdup(tmp->token);
+            if (tmp->end == true)
+                    break ;
+            tmp = tmp->next;
 	}
 }
 
-void	init_multi_fa(t_token **tokens, t_command *c_node)
+void	init_multi_a(t_token **tokens, t_command *c_node)
 {
 	t_token	*tmp;
 
 	tmp = *tokens;
 	while (tmp != NULL)
 	{
-		if (tmp->symbol == OPT)
-			c_node->num_f += 1;
-		if (tmp->symbol == ARGS)
+		if (tmp->symbol == ARGS || tmp->symbol == CMD)
 			c_node->num_a += 1;
 		if (tmp->end == true)
 			break ;
 		tmp = tmp->next;
 	}
-	if (c_node->num_f > 0)
-		c_node->flags = malloc_err(sizeof(char *) * (c_node->num_f + 1), c_node->stat);
 	if (c_node->num_a > 0)
-		c_node->args = malloc_err(sizeof(char *) * (c_node->num_a + 1), c_node->stat);
-	set_multi_fa(tokens, c_node);
+	    c_node->args = malloc_err(sizeof(char *) * (c_node->num_a + 1), c_node->stat);
+	if (c_node->args != NULL)
+            c_node->args[c_node->num_a] = NULL;
+	set_multi_a(tokens, c_node);
+}
+
+static void	set_multi_l(t_token **tokens, t_command *c_node)
+{
+	t_token	*tmp;
+	int		j;
+
+	tmp = *tokens;
+	j = 0;
+	while (tmp != NULL)
+	{
+            if (tmp->symbol == LIM && c_node->lim != NULL)
+                    c_node->lim[j++] = ft_strdup(tmp->token);
+            if (tmp->end == true)
+                    break ;
+            tmp = tmp->next;
+	}
+}
+
+void	init_multi_l(t_token **tokens, t_command *c_node)
+{
+	t_token	*tmp;
+
+	tmp = *tokens;
+	while (tmp != NULL)
+	{
+		if (tmp->symbol == LIM)
+			c_node->num_l += 1;
+		if (tmp->end == true)
+			break ;
+		tmp = tmp->next;
+	}
+	if (c_node->num_l > 0)
+	    c_node->lim = malloc_err(sizeof(char *) * (c_node->num_l + 1), c_node->stat);
+	if (c_node->lim != NULL)
+            c_node->lim[c_node->num_l] = NULL;
+	set_multi_l(tokens, c_node);
 }
 
 static char	*join_and_free(char *to_free, char *to_concat)
@@ -101,9 +134,9 @@ void	complete_cmd(t_token **tokens, t_command **cmds)
 	c_node = *cmds;
 	while (c_node != NULL)
 	{
-		init_multi_fa(tokens, c_node);
+		init_multi_a(tokens, c_node);
+		init_multi_l(tokens, c_node);
 		init_multi_redir(tokens, c_node);
-		set_delimiter(tokens, c_node);
 		c_node->og = rm_till_end(tokens);
 		c_node = c_node->next;
 	}	

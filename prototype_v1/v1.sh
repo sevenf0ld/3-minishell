@@ -6,7 +6,7 @@ blue='\033[0;34m'
 none='\033[m'
 
 # create an array of cmd line arguments
-args=("ls -la | cat | grep -wn c > outfile"
+arr=("ls -la | cat | grep -wn c > outfile"
     "ls -l -a | cat | grep -w -n c > outfile"
     "ls -l -a | cat | grep -w -n c >> outfile"
     "ls-la"
@@ -20,9 +20,6 @@ args=("ls -la | cat | grep -wn c > outfile"
     "ls -l bs.txt"
     "ls help.txt die.txt"
     "ls something.txt -l"
-    "ls -l > > > outfile firstfile"
-    "ls -l >> > file lastfile"
-    "ls -l > > file lastfile"
     "ls -la >> outone.txt >> outtwo.txt | wc -c"
     ">> outone.txt >> outtwo.txt ls -la | wc -l"
     "> outone.txt > outtwo.txt > outthree.txt ls -llllllla | wc -l"
@@ -39,52 +36,35 @@ args=("ls -la | cat | grep -wn c > outfile"
     "cmd1 << LIMITER | cmd2 >> file"
     "echo -n -n -n"
     "echo -n"
-    'echo " " " " " " | cat -e'
-    'echo " " " " " "'
-    'echo " " " " "'
-    "echo ' ' ' ' ' ' | cat -e"
-    "echo '$example'"
-    "echo '\$example'"
-    'echo "$example"'
-    "echo \$example"
-    "echo \$HOME"
-    'echo $USER'
-    "echo \$MADi\$HATTER"
-    'echo $HOME$USER'
-    'echo $HOME$USER $HOME$USER'
-    'echo $HOME$USERi'
-    'echo i$HOME$USERi'
-    'echo $HOMEi'
-    'echo i$HOMEi'
-    'echo i$HOME'
-    'echo something something $HOME random $USER $PATHi$SHELL$LANG'
-    "echo '\"\$PATH\"'"
-    # heap buffer overflow in new_split if there is no space
-    "echo '\"\$PATH\" \"\$USER\"'"
-    "echo \"'\$PATH'\""
-    # heap buffer overflow in new_split if there is no space
-    "echo \"'\$PATH' '\$USER'\""
-    "echo \"'\$PATH' '\$USER'\" \"'\$PATH' '\$USER'\""
-    "echo \$"
-    "echo '\$'"
-    'echo "\$"'
-    "echo ''"
-    "echo ' '"
-    'echo " "'
-    "echo ' \""
-    "echo build.h '|' grep b"
     "echo build.h | grep b"
     "echo -n-n-n-n-n"
-    "echo '\"'"
-    "echo '\$SHELL' '\$SHELL'"
-    'echo "$SHELL$SHELL" "$HOME"'
-    "echo \"'''\""
-    "echo '\"\"'"
-    "echo '  \"                   '"
-    "echo '\""
     "echo -n -n -n bs"
     "echo bs -n -n"
     "echo -nnn something"
+    #"echo 'sdf\n'"
+    #"echo \"'sdf\n\""
+    "rm -r-f bs"
+    "rm ------rf bs"
+    "rm bs -rf"
+    "< main.c grep -n main | wc -l"
+    "grep -n main main.c | wc -l"
+    "< lexer.c cat | wc"
+    "< lexer.c | wc"
+    "wc 'main.c|'"
+    "cat << EOF > outone.txt"
+    "cat << LIM"
+    "<< LIM wc"
+    # 3 in_re checks
+    "< nothing cat | wc | wc"
+    "wc main.c | < nothing cat | wc"
+    "wc main.c | cat -e main.c | < nothing cat"
+    "< main.c | wc | wc"
+    "< main.c cat | < main.c | wc"
+    "< main.c cat | wc | < main.c"
+    "< nothing | wc | wc"
+    "< nothing cat | < nothing | wc"
+    "< nothing cat"
+    # EXPANSION
     "echo \$SHELL"
     "echo '\$SHELL'"
     'echo "$SHELL"'
@@ -95,59 +75,143 @@ args=("ls -la | cat | grep -wn c > outfile"
     "echo '\$SHELL' \"\$SHELL\" \"\$SHELL\""
     "echo \"\$SHELL\" \"\$SHELL\" '\$SHELL'"
     "echo \"\$SHELL\" \"\$SHELL\" '\$SHELL' \"\$SHELL\""
-    'echo "cat main.c | wc"'
-    "echo '\$?'"
-    'echo "\$?"'
     "echo \$?"
-    "echo \"cat lol.c | cat > lol.c\""
-    "echo 'cat lol.c | cat > lol.c'"
-    "echo \"cat lol.c | cat >\""
-    #"echo 'sdf\n'"
-    #"echo \"'sdf\n\""
+    "echo '$example'"
+    "echo '\$example'"
+    'echo "$example"'
+    "echo \$example"
+    "echo \$HOME"
+    'echo $USER'
+    "echo \$MADi\$HATTER"
+    "echo \$"
+    "echo '\$'"
+    'echo "\$"'
+    "echo '\$SHELL' '\$SHELL'"
+    'echo "$SHELL$SHELL" "$HOME"'
+    'echo abc"$HOME"'
+    'echo abc"$HOME"hh'
+    'echo abc"$HOME                      "hh'
+    # BONUS
+    "echo '\"\$PATH\"'"
+    "echo '\"\$PATH\" \"\$USER\"'"
+    "echo \"'\$PATH'\""
+    "echo \"'\$PATH' '\$USER'\""
+    "echo \"'\$PATH' '\$USER'\" \"'\$PATH' '\$USER'\""
+    # QUOTE NO EXPANSION
     "echo \"'sdf\""
     "echo 'asd'"
     "echo '\"asd'"
     "echo '\"asd'"
-    "rm -r-f bs"
-    "rm ------rf bs"
-    "rm bs -rf"
-    "< main.c grep -n main | wc -l"
-    "grep -n main main.c | wc -l"
-    "< lexer.c cat | wc"
-    "< lexer.c | wc"
-    "cat << EOF > outone.txt"
-    "cat << LIM"
+    "echo '\"'"
+    "echo \"'''\""
+    "echo '\"\"'"
+    "echo \"\"USER\"\""
+    'echo "cat main.c | wc"'
+    "echo \"cat lol.c | cat > lol.c\""
+    "echo 'cat lol.c | cat > lol.c'"
+    "echo \"cat lol.c | cat >\""
+    'echo " " " " " " | cat -e'
+    'echo " " " " " "'
+    'echo " " " " "'
+    "echo ' ' ' ' ' ' | cat -e"
+    "echo ''"
+    "echo ' '"
+    'echo " "'
+    "echo ' \""
+    "echo build.h '|' grep b"
+    "echo build.h '>' outfile"
+    "echo '     '"
+    'echo "     "'
+    # multi heredoc
+    "wc << EOF << HELLO << HELP"
+    "ls << KILLME<<WTF<<MINIHELL"
+    "ls << KILLME<<WTF<<MINIHELL"
+    "wc << eof << help << test << wtf"
+    # ERROR HANDLING
+    # multi adjacent symbols in one or multiple nodes
+    "wc <<< herestring"
+    "ls >>> outfile"
+    "ls >| file"
+    "cat *.c || | grep -wn token"
+    "cat *.c ||| grep -wn token"
+    "cat *.c || || grep -wn token"
+    "cat *.c |||| grep -wn token"
+    "cat *.c | | | | grep -wn token"
+    "ls -l > > > outfile firstfile"
+    "ls -l >> > file lastfile"
+    "ls -l > > file lastfile"
+    # unterminated quotes
+    "echo '\""
+    "echo \"''"
+    "echo '\$USER' '\"\$HOME' \""
+    "echo '\$USER' '\"\$HOME'"
+    "echo '\$USER' '\"\$HOME' \"\""
+    "echo '\$USER' '\"\$HOME' \" \""
+    # joined
+    "ls -l> > file lastfile"
+    "ls file> >"
+    "cat<< EOF > outone.txt"
+    "<<LIM wc"
+    "wc<<EOF>>outfile"
+    "ls|wc"
+    "wc main.c|"
+    "|wc main.c"
+    "|wc main.c|"
+    "wc |main.c"
+    "wc <main.c"
+    "ls |\"\""
+    "ls \"\"|"
+    "|grep"
+    "grep>"
     )
-# 1/1 & 4/1
-in_re=("< nothing cat | wc | wc"
-        "wc main.c | < nothing cat | wc"
-        "wc main.c | cat -e main.c | < nothing cat"
-        "< main.c | wc | wc"
-        "< main.c cat | < main.c | wc"
-        "< main.c cat | wc | < main.c"
-        "< nothing | wc | wc"
-        "< nothing cat | < nothing | wc"
-        "< nothing cat | wc | < nothing"
-        )
+
+args=(
+    "echo \$SHELL"
+    "echo '\$SHELL'"
+    'echo "$SHELL"'
+    'echo "$SHELL" $SHELL'
+    "echo "\$SHELL" '\$SHELL'"
+    'echo "$SHELL" "$SHELL"'
+    "echo '\$SHELL' \"\$SHELL\""
+    "echo '\$SHELL' \"\$SHELL\" \"\$SHELL\""
+    "echo \"\$SHELL\" \"\$SHELL\" '\$SHELL'"
+    "echo \"\$SHELL\" \"\$SHELL\" '\$SHELL' \"\$SHELL\""
+    "echo \$?"
+    "echo '$example'"
+    "echo '\$example'"
+    'echo "$example"'
+    "echo \$example"
+    "echo \$HOME"
+    'echo $USER'
+    "echo \$MADi\$HATTER"
+    "echo \$"
+    "echo \"\$\""
+    'echo $'
+    "echo '\$SHELL' '\$SHELL'"
+    'echo "$SHELL$SHELL" "$HOME"'
+    'echo "$PATHi$USER$PATH" "$HOME"'
+    'echo "$PATHi$USER" "$HOME"'
+    'echo "$USER$PATH" "$HOME"'
+    'echo abc"$HOME"'
+    'echo abc"$HOME"hh'
+    'echo abc"$HOME                      "hh'
+    )
 
 # create a variable with the name of the executable
 exe="./v1"
 
-#set -e
+set -e
 
 # specify name of Makefile
 # make re -f Makefile
 make re --silent
 
-#for arg in "${args[@]}"; do
-#    echo -e "$red $exe $arg: $none"
-#    #leaks -atExit -- ./"$exe" "$arg"
-#    ./"$exe" "$arg"
-#done
+reset
 
-for inre in "${in_re[@]}"; do
-    echo -e "$red $exe $inre: $none"
-    ./"$exe" "$inre"
+for arg in "${args[@]}"; do
+    echo -e "$red $exe $arg: $none"
+    #leaks -atExit -- ./"$exe" "$arg"
+    ./"$exe" "$arg"
 done
 
 rm -rf v1.dSYM v1 outfile firstfile lastfile outone.txt outtwo.txt outthree.txt file

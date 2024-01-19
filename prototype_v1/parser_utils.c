@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/17 14:26:35 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/01/01 13:19:38 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/19 15:54:17 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,22 +84,4 @@ void	init_multi_redir(t_token **tokens, t_command *c_node)
 	if (c_node->num_so_a > 0)
 		c_node->std_out_a = malloc_err(sizeof(int) * (c_node->num_so_a + 1), c_node->stat);
 	set_multi_fildes(tokens, c_node);
-}
-
-/*
- * set delimiter for here_doc or else leave it NULL
- */
-void	set_delimiter(t_token **tokens, t_command *c_node)
-{
-	t_token	*tmp;
-
-	tmp = *tokens;
-	while (tmp != NULL)
-	{
-		if (tmp->symbol == LIM)
-			c_node->lim = tmp->token;
-		if (tmp->end == true)
-			break ;
-		tmp = tmp->next;
-	}
 }
