@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 02:57:44 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/01/19 16:17:03 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/19 19:37:31 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,56 +15,25 @@
 void	b_echo(t_command	*c_node)
 {
 	t_command	cur;
-	bool		nl;
-	int			i;
-	int			j;
-	int			k;
+	int		i;
 
 	cur = *c_node;
-	nl = true;
 	i = 0;
-	k = 1;
-        (void) j;
-        (void) k;
-        /*
-	if (cur.num_f > 0)
-	{
-		while (i < cur.num_f)
-		{
-			j = 0;
-			if (cur.flags[i][0] == 45)
-				j += 1;
-			while (cur.flags[i][j] != '\0')
-			{
-				j++;
-				if (cur.flags[i][j] == 'n')
-					k += 1;
-			}
-			if (cur.flags[i][k + 1] == '\0')
-				nl = false;
-			else
-			{
-				ft_putstr_fd(cur.flags[i], STDOUT_FILENO);
-				ft_putchar_fd(' ', STDOUT_FILENO);
-			}	
-			i++;
-		}
-	}
-        */
-	i = -1;
-	if (cur.num_a > 0)
-	{
-		while (++i < cur.num_a)
-		{
-			ft_putstr_fd(cur.args[i], STDOUT_FILENO);
-			if (i < cur.num_a - 1)
-                        {
-                            if (ft_strcmp(cur.args[i], "'") != 0)
-                                if (ft_strcmp(cur.args[i], "\"") != '\0')
-				    ft_putchar_fd(' ', STDOUT_FILENO);
-                        }
-		}
-	}
-	if (nl)
-		ft_putchar_fd('\n', STDOUT_FILENO);
+
+        if (cur.num_a == 1)
+        {
+            printf("\n");
+            return ;
+        }
+        while (cur.args[++i] != NULL)
+        {
+            if (i == 1 && !ft_strcmp(cur.args[i], "-n"))
+                continue ;
+            if (i + 1 != cur.num_a)
+                printf("%s ", cur.args[i]);
+            else
+                printf("%s", cur.args[i]);
+        }
+        if (i >= 2 && ft_strcmp(cur.args[1], "-n") != 0)
+            printf("\n");
 }

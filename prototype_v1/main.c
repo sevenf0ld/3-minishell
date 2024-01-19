@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:19:04 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/01/19 16:22:22 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/19 21:14:57 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,19 +19,19 @@ bool	is_builtin(char *cmd)
 {
     if (!cmd)
         return (false);
-    if (ft_strcmp(cmd, "echo"))
+    if (!ft_strcmp(cmd, "echo"))
         return (true);
-    else if (ft_strcmp(cmd, "cd"))
+    else if (!ft_strcmp(cmd, "cd"))
         return (true);
-    else if (ft_strcmp(cmd, "pwd"))
+    else if (!ft_strcmp(cmd, "pwd"))
         return (true);
-    else if (ft_strcmp(cmd, "export"))
+    else if (!ft_strcmp(cmd, "export"))
         return (true);
-    else if (ft_strcmp(cmd, "unset"))
+    else if (!ft_strcmp(cmd, "unset"))
         return (true);
-    else if (ft_strcmp(cmd, "env"))
+    else if (!ft_strcmp(cmd, "env"))
         return (true);
-    else if (ft_strcmp(cmd, "exit"))
+    else if (!ft_strcmp(cmd, "exit"))
         return (true);
     else
         return (false);
@@ -94,14 +94,16 @@ int	main(int argc, char **argv, char **envp)
 			parser(&tok, &cmd, env, stat);
 			for (t_command *cur = cmd; cur != NULL; cur = cur->next)
 			{
-				redirect_command_io(cur);
                                 if (cur->num_l > 0)
                                     heredoc(cur, stat);
+				redirect_command_io(cur);
                                 n_builtins(&cur, stat);
                                 if (!ft_strcmp(cur->cmd, "unset") && cur->size == 1)
                                     b_unset(cur, &fix);
                                 if (!ft_strcmp(cur->cmd, "exit") && cur->size == 1)
                                     b_exit(cur);
+                                if (!ft_strcmp(cur->cmd, "export") && cur->size == 1)
+                                    b_export(cur, &fix);
 				dup2_err(res->std_out, STDOUT_FILENO, stat);
 			        dup2_err(res->std_in, STDIN_FILENO, stat);
                                 unlink("tmp_lim.txt");

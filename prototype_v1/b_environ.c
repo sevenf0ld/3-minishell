@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/24 03:45:36 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/01/19 16:17:27 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/19 21:05:53 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,8 +96,8 @@ void	b_export(t_command *c_node, t_fixed **f_node)
 	char	*val;
 	char	*key;
 
-	i = -1;
-	if (c_node->num_a == 0)
+	i = 0;
+	if (c_node->num_a == 1)
 	{
 		ftmp = *f_node;
 		while (ftmp != NULL)
@@ -106,7 +106,7 @@ void	b_export(t_command *c_node, t_fixed **f_node)
 			if (!ftmp->fvalue)
 				printf("%s\n", ftmp->fkey);
 			else
-				printf("%s=%s\n", ftmp->fkey, ftmp->fvalue);
+				printf("%s=\"%s\"\n", ftmp->fkey, ftmp->fvalue);
 			ftmp = ftmp->fnext;
 		}
 		c_node->stat->s_code = 0;
