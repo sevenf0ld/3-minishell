@@ -18,36 +18,57 @@
 //     tcsetattr(STDIN_FILENO, TCSANOW, &saved);
 // }
 
-void sig_quit(int signum)
+void sig_qt_chld(int signum)
 {
 	(void)signum;
+    // wait(NULL);
+    ft_putstr_fd("Quit\n", 1);
 }
 
-void sig_int(int signum)
+void sig_int_prnt(int signum)
 {
 
-    // printf("there\n");
+    (void)signum;
+    // if (g_sig.sigva_1 != 1)
+    // {
+    // printf("g_sig.sigva_1 = %d\n", g_sig.sigva_1);
+        ft_putstr_fd("\n", STDOUT_FILENO);
+        rl_replace_line("", STDIN_FILENO);
+        rl_on_new_line();
+        rl_redisplay();
+    // g_sig.sigva_1 = 2;
+    // }
+}
+
+void sig_int_chld(int signum)
+{
 
     (void)signum;
-    ft_putstr_fd("\n", STDOUT_FILENO);
-    rl_replace_line("", STDIN_FILENO);
-    rl_on_new_line();
-    rl_redisplay();
-
+    // if (g_sig.sigva_1 != 1)
+    // {
+    // printf("g_sig.sigva_1 = %d\n", g_sig.sigva_1);
+        ft_putstr_fd("\n", STDOUT_FILENO);
+        // rl_replace_line("", STDIN_FILENO);
+        // rl_on_new_line();
+        // rl_redisplay();
+    // g_sig.sigva_1 = 2;
+    // }
 }
 
 
 void init_sig(void)
 {
-    struct termios 	saved;
-    struct termios  attributes;
+    // struct termios 	saved;
+    // struct termios  attributes;
 
     // printf("hey\n");
-    tcgetattr(STDIN_FILENO, &attributes);
-    attributes.c_lflag &= ~ ECHOCTL;
-    tcsetattr(STDIN_FILENO, TCSAFLUSH, &attributes);tcgetattr(STDIN_FILENO, &saved);
-    signal(SIGINT, sig_int);
+    // tcgetattr(STDIN_FILENO, &attributes);
+    // attributes.c_lflag &= ~ ECHOCTL;
+    // tcsetattr(STDIN_FILENO, TCSAFLUSH, &attributes);
+    // tcgetattr(STDIN_FILENO, &saved);
+    signal(SIGINT, sig_int_prnt);
     signal(SIGQUIT, SIG_IGN);
-    tcsetattr(STDIN_FILENO, TCSAFLUSH, &saved);
-
-}
+    // tcsetattr(STDIN_FILENO, TCSAFLUSH, &saved);
+    // g_sig.sigva_1 = 2;
+    // printf("sigint_child = %d\n", g_sig.sigint_child);
+} 

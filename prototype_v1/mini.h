@@ -155,6 +155,14 @@ typedef struct  s_restore
         int     std_in;
 }               t_restore;
 
+typedef struct s_sig
+{
+	int	sigva_1;
+	int	sigva_2;
+}				t_sig;
+
+extern t_sig g_sig;
+
 /*	TOKENIZER	*/
 //tokenizer.c
 char		**new_split(char *str, t_status *stat);
@@ -251,10 +259,10 @@ void		n_builtins(t_command **a, t_status *stat);
 
 /*	SIGNAL HANDLER	*/
 //signal.c
-void 	sig_int(int signum);
-void 	sig_quit(int signum);
+void 	sig_int_prnt(int signum);
+void 	sig_int_chld(int signum);
+void 	sig_qt_chld(int signum);
 void 	init_sig(void);
-void	restore(void);
 
 /*	BUILTINS EXECUTOR	*/
 //b_echo.c

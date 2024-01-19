@@ -30,6 +30,13 @@
 // 	return (0);
 // }
 
+
+/*
+	Global Sturct for Signal Handling
+*/
+t_sig	g_sig;
+
+
 /*
  * use an array of cmds to make it shorter
  */
@@ -94,12 +101,27 @@ int	main(int argc, char **argv, char **envp)
 	env_init(&env, envp, fix, stat);
 	while (1)
 	{
+
+		// printf(">g_sig.sigva_1 = %d\n", g_sig.sigva_1);
 		init_sig();
-		pipeline = readline("prompt> ");
+		// if (g_sig.sigva_1 == 1)
+		// {
+		// 	// printf("a\n"); 
+		// 	pipeline = readline("S");
+		// 	g_sig.sigva_1 = 2;
+		// }
+		// else
+			pipeline = readline("prompt> ");
+
 		// hrdc(pipeline);
 		if (!pipeline)
 		{
-			ft_putstr_fd("\bexit\n", STDIN_FILENO);
+			ft_putstr_fd("exit\n", STDOUT_FILENO);
+			// ft_putstr_fd("\b\rbl\n", STDOUT_FILENO);
+			// rl_replace_line("prompt> exit", STDIN_FILENO);
+			// rl_redisplay();
+        	// rl_on_new_line();
+        	// rl_redisplay();
 			exit(1);
 		}
 		else if (ft_strcmp(pipeline, "") && !all_whitespace(pipeline))
@@ -112,15 +134,19 @@ int	main(int argc, char **argv, char **envp)
 			for (t_command *cur = cmd; cur != NULL; cur = cur->next)
 			{
 				redirect_command_io(cur);
-                                n_builtins(&cur, stat);
-                                if (!ft_strcmp(cur->cmd, "unset") && cur->size == 1)
-                                    b_unset(cur, &fix);
-                                if (!ft_strcmp(cur->cmd, "exit") && cur->size == 1)
-                                    b_exit(cur);
-				dup2_err(res->std_out, STDOUT_FILENO, stat);
-				dup2_err(res->std_in, STDIN_FILENO, stat);
+				signal(SIGINT, sig_int_chld);
+				signal(SIGQUIT, sig_qt_chld);
+				n_builtins(&cur, stat);
+				if (!ft_strcmp(cur->cmd, "unset") && cur->size == 1)
+					b_unset(cur, &fix);
+				if (!ft_strcmp(cur->cmd, "exit") && cur->size == 1)
+					b_exit(cur);
+				dup2_err(res->std_out, STDOUT_FILENO, stat); //
+				dup2_err(res->std_in, STDIN_FILENO, stat); //
 			}
 		}
+		// printf(">>g_sig.sigva_1 = %d\n", g_sig.sigva_1);
+    	// printf("sigint_child = %d\n", g_sig.sigint_child);
 	}
 }
 

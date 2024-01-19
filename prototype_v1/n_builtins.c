@@ -79,10 +79,14 @@ void	n_builtins_2(t_command **a, char **input, char *cmd, t_status *stat)
 		free(input);
 		return ;
 	}
-	if (pid == 0)
+	if (pid == 0) // child process
 	{
+		// printf("child process\n");
+		if (g_sig.sigva_1 == 2)
+			g_sig.sigva_1 = 1;
 		if (!tmp->builtin)
                 {
+					// signal(SIGINT, sig_int2);
 			execve(input[0], input, NULL);
 		        stat->s_code = 127;
                 }
@@ -102,14 +106,17 @@ void	n_builtins_2(t_command **a, char **input, char *cmd, t_status *stat)
                     b_exit(tmp);
                 exit(EXIT_SUCCESS);
 	}
-	else
+	else // parent process
 	{
+		// printf("parent process\n");
+		if (g_sig.sigva_1 == 2)
+			g_sig.sigva_1 = 0;
 		if (tmp->write_end != -1)
 			close_err(tmp->write_end, stat);
                 if (input != NULL)
 		    free_2d_arr(input);
 		cmd = NULL;
-		int	wstat;
+		int	wstat; // status
 		int	got_pid;
 		do
 		{
@@ -124,12 +131,23 @@ void	n_builtins_2(t_command **a, char **input, char *cmd, t_status *stat)
 		}
 		while (got_pid == wait(&wstat));
 		if (WIFEXITED(wstat))
+		{
+			// if (g_sig.sigva_1 == 2)
+				// g_sig.sigva_1 = 0;
+			// printf("Command exited with status: %d\n", WEXITSTATUS(wstat)); //
 			stat->s_code = WEXITSTATUS(wstat);
+		}
 		else if (WIFSIGNALED(wstat))
+		{   
+			// if (g_sig.sigva_1 == 2)
+				// g_sig.sigva_1 = 1;
+			// printf("Command terminated by signal: %d\n", WTERMSIG(wstat)); //
 			stat->s_code = WTERMSIG(wstat);
+		}
 		else if (WIFSTOPPED(wstat))
 			stat->s_code = WIFSTOPPED(wstat);
 	}
+	// printf("n_builtins>>g_sig.sigva_1 = %d\n", g_sig.sigva_1);
 }
 
 void	n_builtins_1(t_command **a, char *path_str, t_status *stat)
@@ -182,6 +200,7 @@ void	n_builtins(t_command **a, t_status *stat)
 	path = NULL;
 	path_str = NULL;
 	//path_exists = true;
+	g_sig.sigva_1 = 2;
 	if (j == 1)
 	{
 		path_str = tmp->cmd;
@@ -244,6 +263,8 @@ void	n_builtins(t_command **a, t_status *stat)
 		return ;
 	}
         */
+	// printf("1 sigint_child = %d\n", g_sig.sigint_child);
 	n_builtins_1(a, path_str, stat);
+	// printf("2 sigint_child = %d\n", g_sig.sigint_child);
 	return ;
 }
