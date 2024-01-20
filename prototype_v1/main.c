@@ -12,30 +12,19 @@
 
 #include "mini.h"
 
-// int hrdc(char *pipeline)
-// {
-// 	int	i;
-// 	int kw;
+void	print_map(char **map)
+{
+	int	y;
 
-// 	i = 1;
-// 	while (pipeline[++i])
-// 	{
-// 		if (pipeline[i + 1] == '<' && pipeline[i] == '<')
-// 		{
-// 			printf("Contain <<\n");
-
-// 		}
-// 	}
-// 	printf("Doesn't contain\n");
-// 	return (0);
-// }
-
-
-/*
-	Global Sturct for Signal Handling
-*/
-t_sig	g_sig;
-
+	y = 0;
+	while (map[y] != NULL)
+	{
+		ft_putstr_fd("args: ", 1);
+		ft_putstr_fd(map[y], 1);
+		ft_putstr_fd("\n", 1);
+		y++;
+	}
+}
 
 /*
  * use an array of cmds to make it shorter
@@ -104,27 +93,11 @@ int	main(int argc, char **argv, char **envp)
 	while (1)
 	{
 
-		// printf(">g_sig.sigva_1 = %d\n", g_sig.sigva_1);
 		init_sig();
-		// if (g_sig.sigva_1 == 1)
-		// {
-		// 	// printf("a\n"); 
-		// 	pipeline = readline("S");
-		// 	g_sig.sigva_1 = 2;
-		// }
-		// else
-			pipeline = readline("prompt> ");
-
-		// hrdc(pipeline);
 		pipeline = readline("prompt> ");
 		if (!pipeline)
 		{
 			ft_putstr_fd("exit\n", STDOUT_FILENO);
-			// ft_putstr_fd("\b\rbl\n", STDOUT_FILENO);
-			// rl_replace_line("prompt> exit", STDIN_FILENO);
-			// rl_redisplay();
-        	// rl_on_new_line();
-        	// rl_redisplay();
 			exit(1);
 		}
 		else if (ft_strcmp(pipeline, "") && !all_whitespace(pipeline))
@@ -152,7 +125,7 @@ int	main(int argc, char **argv, char **envp)
 				unlink("tmp_lim.txt");
 			}
 		}
-		// printf(">>g_sig.sigva_1 = %d\n", g_sig.sigva_1);
-    	// printf("sigint_child = %d\n", g_sig.sigint_child);
+		// print_map(cmd->args);
+		// printf("og: %s\n", cmd->og);
 	}
 }

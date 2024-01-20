@@ -75,6 +75,18 @@ void	n_builtins_2(t_command **a, char **input, char *cmd, t_status *stat)
 	t_command	*tmp;
 
 	tmp = *a;
+
+	// printf("t_command **a:");
+	// print_map(a);
+
+	// printf("char **input: ");
+	print_map(input);
+
+
+
+
+
+
 	pid = fork();
 	if (pid == -1)
 	{
@@ -83,9 +95,7 @@ void	n_builtins_2(t_command **a, char **input, char *cmd, t_status *stat)
 	}
 	if (pid == 0) // child process
 	{
-		// printf("child process\n");
-		if (g_sig.sigva_1 == 2)
-			g_sig.sigva_1 = 1;
+
 		if (!tmp->builtin)
                 {
 					// signal(SIGINT, sig_int2);
@@ -111,8 +121,8 @@ void	n_builtins_2(t_command **a, char **input, char *cmd, t_status *stat)
 	else // parent process
 	{
 		// printf("parent process\n");
-		if (g_sig.sigva_1 == 2)
-			g_sig.sigva_1 = 0;
+		// if (g_sig.sigva_1 == 2)
+		// 	g_sig.sigva_1 = 0;
 		if (tmp->write_end != -1)
 			close_err(tmp->write_end, stat);
                 //if (input != NULL)
@@ -187,7 +197,7 @@ void	n_builtins(t_command **a, t_status *stat)
 	path = NULL;
 	path_str = NULL;
 	//path_exists = true;
-	g_sig.sigva_1 = 2;
+	// g_sig.sigva_1 = 2;
 	if (j == 1)
 	{
 		path_str = tmp->cmd;

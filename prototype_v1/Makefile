@@ -42,6 +42,15 @@
 
 # all: $(PROG_NAME)
 
+NAME		:= minishell
+
+LIBFT		:= libft.a
+LIBFT_PATH	:= "libft"
+
+CC			:= cc
+
+CFLAGS		:= -Wall -Werror -Wextra
+
 SRCS = main.c tokenizer.c init_token.c d_ll_convert.c \
 	   lexer.c split.c reject.c lexer_utils3.c lexer_utils.c \
 	   parser.c init_cmd.c init_pipe.c parser_utils.c parser_utils2.c parser_utils3.c \

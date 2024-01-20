@@ -101,7 +101,7 @@ typedef struct s_command
 	int					num_so_a;
 	int					read_end;
 	int					write_end;
-	char				*og; // compare with 92, if it's not in nested code, remove outtermost quote
+	char				*og; // compare with 92, if it's not in nested quote, remove outtermost quote
 	bool				builtin;
 	int					last_out;
 	bool         		exec;
@@ -148,13 +148,13 @@ typedef struct  s_restore
         int     std_in;
 }               t_restore;
 
-typedef struct s_sig
-{
-	int	sigva_1;
-	int	sigva_2;
-}				t_sig;
+// typedef struct s_sig
+// {
+// 	int	sigva_1;
+// 	int	sigva_2;
+// }				t_sig;
 
-extern t_sig g_sig;
+// extern t_sig g_sig;
 
 
 
@@ -289,5 +289,9 @@ void            pipe_related_err(t_status *stat);
 
 //free.c
 void		free_2d_arr(char **input);
+
+//for testing
+void	print_map(char **map);
+
 
 #endif
