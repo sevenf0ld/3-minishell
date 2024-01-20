@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:19:04 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/01/19 16:22:22 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/20 07:26:34 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,36 +33,36 @@ bool	is_builtin(char *cmd)
 {
     if (!cmd)
         return (false);
-    if (ft_strcmp(cmd, "echo"))
+    if (!ft_strcmp(cmd, "echo"))
         return (true);
-    else if (ft_strcmp(cmd, "cd"))
+    else if (!ft_strcmp(cmd, "cd"))
         return (true);
-    else if (ft_strcmp(cmd, "pwd"))
+    else if (!ft_strcmp(cmd, "pwd"))
         return (true);
-    else if (ft_strcmp(cmd, "export"))
+    else if (!ft_strcmp(cmd, "export"))
         return (true);
-    else if (ft_strcmp(cmd, "unset"))
+    else if (!ft_strcmp(cmd, "unset"))
         return (true);
-    else if (ft_strcmp(cmd, "env"))
+    else if (!ft_strcmp(cmd, "env"))
         return (true);
-    else if (ft_strcmp(cmd, "exit"))
+    else if (!ft_strcmp(cmd, "exit"))
         return (true);
     else
         return (false);
 }
 
-static int	all_whitespace(char *cmd)
+int	all_whitespace(char *s)
 {
 	int	i;
 
-	i = 0;
-	while (cmd[i] != '\0')
-	{
-		if (!ft_iswhite(cmd[i]))
-			return (0);
-		i++;
-	}
-	return (1);
+    i = 0;
+    while (s[i] != '\0')
+    {
+        if (!ft_iswhite(s[i]))
+            return (0);
+        i++;
+    }
+    return (1);
 }
 
 int	main(int argc, char **argv, char **envp)
@@ -104,22 +104,22 @@ int	main(int argc, char **argv, char **envp)
 		{
 			add_history(pipeline);
 			if (lexer(pipeline, &tok, stat))
-                            return (1);
+                            continue ;
                         res->std_out = dup_err(STDOUT_FILENO, stat);
 			res->std_in = dup_err(STDIN_FILENO, stat);
 			parser(&tok, &cmd, env, stat);
 			for (t_command *cur = cmd; cur != NULL; cur = cur->next)
 			{
+                                if (cur->num_l > 0)
+                                    heredoc(cur, stat);
 				redirect_command_io(cur);
-				signal(SIGINT, sig_int_chld);
-				signal(SIGQUIT, sig_qt_chld);
-				if (cur->num_l > 0)
-					heredoc(cur, stat);
-				n_builtins(&cur, stat);
-				if (!ft_strcmp(cur->cmd, "unset") && cur->size == 1)
-					b_unset(cur, &fix);
-				if (!ft_strcmp(cur->cmd, "exit") && cur->size == 1)
-					b_exit(cur);
+                                n_builtins(&cur, stat);
+                                if (!ft_strcmp(cur->cmd, "unset") && cur->size == 1)
+                                    b_unset(cur, &fix);
+                                if (!ft_strcmp(cur->cmd, "exit") && cur->size == 1)
+                                    b_exit(cur);
+                                if (!ft_strcmp(cur->cmd, "export") && cur->size == 1)
+                                    b_export(cur, &fix);
 				dup2_err(res->std_out, STDOUT_FILENO, stat);
 				dup2_err(res->std_in, STDIN_FILENO, stat);
 				unlink("tmp_lim.txt");

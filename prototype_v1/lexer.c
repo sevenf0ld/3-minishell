@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:25:31 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/01/19 16:15:51 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/20 07:02:50 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	categorize_symbol(t_token **tokens)
  * categorizes filename (8) and heredoc's limiter (9)
  * categorize files if any output/input redirection, heredoc's limiter, arguments in pipeline
  */
-void	categorize_params(t_token **tokens)
+static void	categorize_params(t_token **tokens)
 {
 	t_token	*tmp;
 
@@ -58,7 +58,7 @@ void	categorize_params(t_token **tokens)
 	}
 }
 
-void    categorize_cmd_args_norme(t_token *token)
+static void    categorize_cmd_args_norme(t_token *token)
 {
     t_token *tmp;
     bool    cmd;
@@ -83,7 +83,7 @@ void    categorize_cmd_args_norme(t_token *token)
  * categorizes command (5) and arguments (7)
  * categorizes command (executable & builtins) and arguments (flags/options included)
  */
-void	categorize_cmd_w_args(t_token **tokens)
+static void	categorize_cmd_w_args(t_token **tokens)
 {
 	t_token	*tmp;
 
@@ -104,8 +104,25 @@ void	categorize_cmd_w_args(t_token **tokens)
                         tmp->symbol = ARGS;
                 }
             }
+            else
+            {
+                if (tmp->prev != NULL)
+                {
+                    if (tmp->prev->symbol == PIPE || tmp->prev->symbol == LIM)
+                        tmp->symbol = CMD;
+                    else if (tmp->prev->symbol == FILN || tmp->prev->symbol == LIM)
+                        categorize_cmd_args_norme(tmp);
+                }
+            }
             tmp = tmp->next;
 	}
+}
+
+void    categorize(t_token **tokens)
+{
+    categorize_symbol(tokens);
+    categorize_params(tokens);
+    categorize_cmd_w_args(tokens);
 }
 
 /*
@@ -122,9 +139,7 @@ int lexer(char *pipeline, t_token **tokens, t_status *stat)
 {
         new_split(ft_strtrim(pipeline, "    "), tokens, stat);
         double_ll_convert(tokens);
-        categorize_symbol(tokens);
-        categorize_params(tokens);
-        categorize_cmd_w_args(tokens);
+        categorize(tokens);
         split_tokens(tokens, stat);
         if (reject(tokens, stat))
             return (1);
