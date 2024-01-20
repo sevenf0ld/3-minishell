@@ -2,33 +2,29 @@
 
 void	b_exit(t_command *c_node)
 {
-	char		**end;
-	int		n;
 	long long	code;
 
-	end = NULL;
-	n = 0;
-	//if (c_node->num_f == 0 && c_node->num_a == 0)
-	//{
-	//	c_node->stat->s_code = 0;
-	//	return ;
-	//}
-	end = ft_split(c_node->og, ' ');
-	while (end[n] != NULL)
-		n++;
-	code = ft_atoll(end[1]);
-	if (ft_strcmp(ft_lltoa(code), end[1]) != 0)
+	if (c_node->num_a == 1)
 	{
-		printf("minishell: exit: %s: numeric argument required\n", end[1]);
+		c_node->stat->s_code = 0;
+                ft_putendl_fd("exit", STDOUT_FILENO);
+                exit(c_node->stat->s_code);
+		return ;
+	}
+	code = ft_atoll(c_node->args[1]);
+	if (ft_strcmp(ft_lltoa(code), c_node->args[1]) != 0)
+	{
+		printf("minishell: exit: %s: numeric argument required\n", c_node->args[1]);
 		c_node->stat->s_code = 2;
 		exit(c_node->stat->s_code);
 	}
 	else
 	{
-		if (n > 2)
+		if (c_node->num_a > 2)
 		{
 			printf("minishell: exit: too many arguments\n");
 			c_node->stat->s_code = 1;
+                        return ;
 		}
 	}
 	if (code >= 0)
@@ -44,5 +40,6 @@ void	b_exit(t_command *c_node)
 		if (code <= -255)
 			c_node->stat->s_code %= (256 + 0U);
 	}
+        ft_putendl_fd("exit", STDOUT_FILENO);
         exit(c_node->stat->s_code);
 }
