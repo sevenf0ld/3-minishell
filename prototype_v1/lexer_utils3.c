@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 14:17:08 by folim             #+#    #+#             */
-/*   Updated: 2024/01/20 06:55:12 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/20 17:22:32 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -212,8 +212,10 @@ static void expand_env_var(t_token **tokens, t_status *stat)
                 exp_value = get_exp_value(tmp->token, len, stat, exp_key);
                 tmp->token = sub_exp(tmp->token, len, exp_key, exp_value);
             }
-            else if (tmp->exp && !ft_strcmp(tmp->token, "$?"))
+            else if (tmp->exp && ft_strlen(tmp->token) == 2 && tmp->token[1] == '?')
+            {
                 tmp->token = ft_lltoa(stat->s_code);
+            }
             tmp = tmp->next;
 	}
 }
@@ -269,7 +271,7 @@ void	expansion(t_token **tokens, t_status *stat)
 	while (tmp != NULL)
 	{
             if (ft_strchr(tmp->token, '$'))
-                if (not_in_single(tmp->token) && not_standalone_dollar(tmp->token))
+                if ((not_in_single(tmp->token) && not_standalone_dollar(tmp->token)) || !ft_strcmp(tmp->token, "$?"))
 		    tmp->exp = true;
 	    tmp = tmp->next;
 	}

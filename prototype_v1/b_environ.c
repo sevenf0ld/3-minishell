@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/24 03:45:36 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/01/19 21:05:53 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/20 16:37:45 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,18 +17,12 @@ void	b_env(t_command *c_node, t_fixed **f_node)
 	t_fixed	*ftmp;
 
 	ftmp = *f_node;
-	if (c_node->num_a > 0)
+	if (c_node->num_a > 1)
 	{
             c_node->stat->s_code = 64;
             ft_putendl_fd("minishell does not require env to handle arguments", STDERR_FILENO);
 	    return ;
 	}
-        //if (c_node->num_f > 0)
-        //{
-        //    c_node->stat->s_code = 64;
-        //    ft_putendl_fd("minishell does not require env to handle flags", STDERR_FILENO);
-	//    return ;
-        //}
 	while (ftmp != NULL)
 	{
 		if (ftmp->fvalue)
