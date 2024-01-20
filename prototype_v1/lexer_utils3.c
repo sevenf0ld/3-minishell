@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 14:17:08 by folim             #+#    #+#             */
-/*   Updated: 2024/01/20 17:22:32 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/21 07:47:02 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -247,7 +247,7 @@ static int  not_in_single(char *s)
             decide_quote(s[i], &sq, &wq);
         i++;
     }
-    if ((!sq && wq) || (sq && wq))
+    if ((!sq && wq) || (sq && wq) || (!sq && !wq))
         return (1);
     return (0);
 }
@@ -272,8 +272,11 @@ void	expansion(t_token **tokens, t_status *stat)
 	{
             if (ft_strchr(tmp->token, '$'))
                 if ((not_in_single(tmp->token) && not_standalone_dollar(tmp->token)) || !ft_strcmp(tmp->token, "$?"))
+                //if (not_in_single(tmp->token) && not_standalone_dollar(tmp->token))
+                //if (not_in_single(tmp->token))
 		    tmp->exp = true;
 	    tmp = tmp->next;
 	}
         expand_env_var(tokens, stat);
+        (void) not_standalone_dollar;
 }
