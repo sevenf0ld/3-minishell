@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:20:01 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/01/21 08:41:01 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/21 14:59:05 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,6 +128,11 @@ typedef struct  s_restore
         int     std_in;
 }               t_restore;
 
+typedef struct  s_pid
+{
+    pid_t       *pid_c;
+}               t_pid;
+
 /*      MINISHELL       */
 //main.c
 bool            is_builtin(char *cmd);
@@ -203,7 +208,7 @@ void            heredoc(t_command *c_node, t_status *stat);
 
 /*	NON-BUILTINS EXECUTOR	*/
 //n_builtins.c
-void		n_builtins(t_command **a, t_status *stat, t_command **cmds);
+void		n_builtins(t_command **a, t_status *stat, t_command **cmds, t_pid *all_pid);
 
 //concurrent.c
 void            close_unused_ends(t_command **cmds, int i);

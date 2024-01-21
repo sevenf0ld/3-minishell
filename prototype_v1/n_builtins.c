@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/30 14:47:12 by folim             #+#    #+#             */
-/*   Updated: 2024/01/21 11:29:53 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/21 15:53:13 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,22 +66,21 @@ int	n_builtins_3(char *path_str)
 	return (0);
 }
 
-void	n_builtins_2(t_command **a, char **input, char *cmd, t_status *stat, t_command **cmds)
+void	n_builtins_2(t_command **a, char **input, char *cmd, t_status *stat, t_command **cmds, t_pid *all_pid)
 {
 	(void) cmd;
         (void) input;
         (void) stat;
-	pid_t		pid;
 	t_command	*tmp;
 
 	tmp = *a;
-	pid = fork();
-	if (pid == -1)
+        all_pid->pid_c[tmp->pos] = fork();
+	if (all_pid->pid_c[tmp->pos] == -1)
 	{
 		//free(input);
 		return ;
 	}
-	if (pid == 0)
+	if (all_pid->pid_c[tmp->pos] == 0)
 	{
                 close_unused_ends(cmds, tmp->pos);
                 redirect_command_io(*a);
@@ -109,18 +108,18 @@ void	n_builtins_2(t_command **a, char **input, char *cmd, t_status *stat, t_comm
 }
 
 
-void	n_builtins_1(t_command **a, char *path_str, t_status *stat, t_command **cmds)
+void	n_builtins_1(t_command **a, char *path_str, t_status *stat, t_command **cmds, t_pid *all_pid)
 {
 	t_command	*tmp;
 
 	tmp = *a;
         tmp->args[0] = path_str;
-	n_builtins_2(a, tmp->args, tmp->cmd, stat, cmds);
+	n_builtins_2(a, tmp->args, tmp->cmd, stat, cmds, all_pid);
 	return ;
 }
 
 
-void	n_builtins(t_command **a, t_status *stat, t_command **cmds)
+void	n_builtins(t_command **a, t_status *stat, t_command **cmds, t_pid *all_pid)
 {
 	int			i;
 	int			j;
@@ -157,7 +156,7 @@ void	n_builtins(t_command **a, t_status *stat, t_command **cmds)
 	{
 		if (tmp->builtin)
                 {
-                        n_builtins_2(a, NULL, NULL, stat, cmds);
+                        n_builtins_2(a, NULL, NULL, stat, cmds, all_pid);
 			return ;
                 }
 		t_fixed	*ftmp;
@@ -205,6 +204,6 @@ void	n_builtins(t_command **a, t_status *stat, t_command **cmds)
 		return ;
 	}
         */
-	n_builtins_1(a, path_str, stat, cmds);
+	n_builtins_1(a, path_str, stat, cmds, all_pid);
 	return ;
 }

@@ -6,7 +6,7 @@
 /*   By: maiman-m <maiman-m@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/21 08:01:50 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/01/21 11:32:05 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/21 15:52:54 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,35 +38,30 @@ void	close_unused_ends(t_command **cmds, int i)
     cur = *cmds;
     while (cur != NULL)
     {
-        //fprintf(stderr, "%i / %i\n", cur->pos, cur->size);
+        if (cur->pos == i)
+        {
+            fprintf(stderr, "WE ARE EXECUTING %s (index %i)\n", cur->cmd, cur->pos);
+            break ;
+        }
+        cur = cur->next;
+    }
+    cur = *cmds;
+    while (cur != NULL)
+    {
         if (cur->pos != i)
         {
-            /*
-            //if (cur->read_end != -1 && cur->pos != 0)
-            //if (cur->pos != 0)
-            if (cur->read_end != -1)
-            {
-                print_inode(cur->read_end, cur->cmd, 'r');
-                close_err(cur->read_end, cur->stat);
-            }
-            //if (cur->write_end != -1 && cur->pos != cur->size - 1) 
-            //if (cur->pos != cur->size - 1) 
-            if (cur->write_end != -1)
-            {
-                print_inode(cur->write_end, cur->cmd, 'w');
-                close_err(cur->write_end, cur->stat);
-            }
-            */
-            /*
+            fprintf(stderr, "CLOSING %s (index %i)\n", cur->cmd, cur->pos);
             if (cur->pos == 0)
             {
                 print_inode(cur->write_end, cur->cmd, 'w');
                 close_err(cur->write_end, cur->stat);
+                //print_inode(cur->write_end, cur->cmd, 'w');
             }
             else if (cur->pos == cur->size - 1)
             {
                 print_inode(cur->read_end, cur->cmd, 'r');
                 close_err(cur->read_end, cur->stat);
+                //print_inode(cur->read_end, cur->cmd, 'r');
             }
             else
             {
@@ -75,9 +70,6 @@ void	close_unused_ends(t_command **cmds, int i)
                 print_inode(cur->read_end, cur->cmd, 'r');
                 close_err(cur->read_end, cur->stat);
             }
-            */
-            close_err(cur->write_end, cur->stat);
-            close_err(cur->read_end, cur->stat);
         }
         cur = cur->next;
     }
