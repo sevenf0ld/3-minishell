@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:19:04 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/01/21 09:10:38 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/21 11:38:57 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,8 +101,8 @@ int	main(int argc, char **argv, char **envp)
 			add_history(pipeline);
 			if (lexer(pipeline, &tok, stat))
                             continue ;
-                        res->std_out = dup_err(STDOUT_FILENO, stat);
-			res->std_in = dup_err(STDIN_FILENO, stat);
+                        //res->std_out = dup_err(STDOUT_FILENO, stat);
+			//res->std_in = dup_err(STDIN_FILENO, stat);
                         //print_inode(STDIN_FILENO, "\e[1;34minitial SI\e[m");
 			//print_inode(STDOUT_FILENO, "\e[1;34minitial SO\e[m");
 			parser(&tok, &cmd, env, stat);
@@ -110,7 +110,7 @@ int	main(int argc, char **argv, char **envp)
 			{
                                 if (cur->num_l > 0)
                                     heredoc(cur, stat);
-				redirect_command_io(cur);
+				//redirect_command_io(cur);
                                 n_builtins(&cur, stat, &cmd);
                                 if (!ft_strcmp(cur->cmd, "unset") && cur->size == 1)
                                     b_unset(cur, &fix);
@@ -122,21 +122,19 @@ int	main(int argc, char **argv, char **envp)
                                     b_cd(cur);
 				//print_inode(STDIN_FILENO, "\e[1;31mexec SI\e[m");
 				//print_inode(STDOUT_FILENO, "\e[1;31mexec SO\e[m");
-                                dup2_err(res->std_out, STDOUT_FILENO, stat);
-			        dup2_err(res->std_in, STDIN_FILENO, stat);
+                                //dup2_err(res->std_out, STDOUT_FILENO, stat);
+			        //dup2_err(res->std_in, STDIN_FILENO, stat);
                                 //print_inode(STDIN_FILENO, "\e[1;32mrestore SI\e[m");
 				//print_inode(STDOUT_FILENO, "\e[1;32mrestore SO\e[m");
                                 unlink("tmp_lim.txt");
 			}
                         for (int i = 0; i < cmd->size; i++)
                         {
-                            //fprintf(stderr, "outside loop wait\n");
                             int wstat;
 
                             wstat = 0;
-                            //wait(&wstat);
-                            waitpid(-1, &wstat, 0);
-                            //waitpid(-1, &wstat, WUNTRACED | WCONTINUED);
+                            //waitpid(-1, &wstat, 0);
+                            waitpid(-1, &wstat, WUNTRACED | WCONTINUED);
                             if (WIFEXITED(wstat))
                                 stat->s_code = WEXITSTATUS(wstat);
                             else if (WIFSIGNALED(wstat))

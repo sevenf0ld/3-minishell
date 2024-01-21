@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/30 14:47:12 by folim             #+#    #+#             */
-/*   Updated: 2024/01/21 08:42:21 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/21 11:29:53 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,7 @@ void	n_builtins_2(t_command **a, char **input, char *cmd, t_status *stat, t_comm
 	if (pid == 0)
 	{
                 close_unused_ends(cmds, tmp->pos);
+                redirect_command_io(*a);
 		if (!tmp->builtin)
                 {
 			execve(input[0], input, NULL);
