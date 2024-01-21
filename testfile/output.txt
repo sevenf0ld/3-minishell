@@ -1,0 +1,4 @@
+total 0
+-rwxrwxrwx 1 folim folim 0 Jan 22 22:05 output.txt
+total 0
+-rwxrwxrwx 1 folim folim 59 Jan 22 22:05 output.txt

@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/30 14:47:12 by folim             #+#    #+#             */
-/*   Updated: 2024/01/20 18:12:49 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/21 21:42:13 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,103 +66,65 @@ int	n_builtins_3(char *path_str)
 	return (0);
 }
 
-void	n_builtins_2(t_command **a, char **input, char *cmd, t_status *stat)
+void	n_builtins_2(t_command **a, char **input, char *cmd, t_status *stat, t_command **cmds, t_pid *all_pid)
 {
 	(void) cmd;
-        (void) input;
-        (void) stat;
-	pid_t		pid;
+	(void) input;
+	(void) stat;
+	// char *clear_env[] = {"TERM=xterm", NULL};
+	// char *grep_env[] = { "PATH=/usr/bin", NULL };
 	t_command	*tmp;
 
 	tmp = *a;
-	pid = fork();
-	if (pid == -1)
+        all_pid->pid_c[tmp->pos] = fork();
+	if (all_pid->pid_c[tmp->pos] == -1)
 	{
 		//free(input);
 		return ;
 	}
-	if (pid == 0) // child process
+	if (all_pid->pid_c[tmp->pos] == 0)
 	{
-
+		close_unused_ends(cmds, tmp->pos);
+		redirect_command_io(*a);
 		if (!tmp->builtin)
-                {
-					// signal(SIGINT, sig_int2);
-			execve(input[0], input, NULL);
-		        stat->s_code = 127;
-                }
-                else if (!ft_strcmp(tmp->cmd, "echo"))
-                    b_echo(tmp);
-                else if (!ft_strcmp(tmp->cmd, "pwd"))
-                    b_pwd(tmp, 'w');
-                else if (!ft_strcmp(tmp->cmd, "cd") && tmp->size > 1)
-                    b_cd(tmp);
-                else if (!ft_strcmp(tmp->cmd, "env"))
-                    b_env(tmp, &(tmp->env_var->fixed));
-                else if (!ft_strcmp(tmp->cmd, "unset"))
-                    b_unset(tmp, &(tmp->env_var->fixed));
-                else if (!ft_strcmp(tmp->cmd, "export") && tmp->size > 1)
-                    b_export(tmp, &(tmp->env_var->fixed));
-                else if (!ft_strcmp(tmp->cmd, "exit") && tmp->size > 1)
-                    b_exit(tmp);
-                exit(EXIT_SUCCESS);
-	}
-	else // parent process
-	{
-		// printf("parent process\n");
-		// if (g_sig.sigva_1 == 2)
-		// 	g_sig.sigva_1 = 0;
-		if (tmp->write_end != -1)
-			close_err(tmp->write_end, stat);
-                //if (input != NULL)
-		//    free_2d_arr(input);
-		cmd = NULL;
-		int	wstat; // status
-		int	got_pid;
-		do
 		{
-			got_pid = wait(&wstat);
-			if (got_pid == pid)
-				break ;
-			if (got_pid == -1)
-			{
-				perror("waitpid");
-				return ;
-			}
+			// printf("%s\n", input[0]);
+			// print_map(input);
+			if (execve(input[0], input, NULL) == -1)
+				perror("execve");
+			stat->s_code = 127;
 		}
-		while (got_pid == wait(&wstat));
-		if (WIFEXITED(wstat))
-		{
-			// if (g_sig.sigva_1 == 2)
-				// g_sig.sigva_1 = 0;
-			// printf("Command exited with status: %d\n", WEXITSTATUS(wstat)); //
-			stat->s_code = WEXITSTATUS(wstat);
-		}
-		else if (WIFSIGNALED(wstat))
-		{   
-			// if (g_sig.sigva_1 == 2)
-				// g_sig.sigva_1 = 1;
-			// printf("Command terminated by signal: %d\n", WTERMSIG(wstat)); //
-			stat->s_code = WTERMSIG(wstat);
-		}
-		else if (WIFSTOPPED(wstat))
-			stat->s_code = WIFSTOPPED(wstat);
+		else if (!ft_strcmp(tmp->cmd, "echo"))
+			b_echo(tmp);
+		else if (!ft_strcmp(tmp->cmd, "pwd"))
+			b_pwd(tmp, 'w');
+		else if (!ft_strcmp(tmp->cmd, "cd") && tmp->size > 1)
+			b_cd(tmp);
+		else if (!ft_strcmp(tmp->cmd, "env"))
+			b_env(tmp, &(tmp->env_var->fixed));
+		else if (!ft_strcmp(tmp->cmd, "unset"))
+			b_unset(tmp, &(tmp->env_var->fixed));
+		else if (!ft_strcmp(tmp->cmd, "export") && tmp->size > 1)
+			b_export(tmp, &(tmp->env_var->fixed));
+		else if (!ft_strcmp(tmp->cmd, "exit") && tmp->size > 1)
+			b_exit(tmp);
+		exit(EXIT_SUCCESS);
 	}
-	// printf("n_builtins>>g_sig.sigva_1 = %d\n", g_sig.sigva_1);
 }
 
 
-void	n_builtins_1(t_command **a, char *path_str, t_status *stat)
+void	n_builtins_1(t_command **a, char *path_str, t_status *stat, t_command **cmds, t_pid *all_pid)
 {
 	t_command	*tmp;
 
 	tmp = *a;
         tmp->args[0] = path_str;
-	n_builtins_2(a, tmp->args, tmp->cmd, stat);
+	n_builtins_2(a, tmp->args, tmp->cmd, stat, cmds, all_pid);
 	return ;
 }
 
 
-void	n_builtins(t_command **a, t_status *stat)
+void	n_builtins(t_command **a, t_status *stat, t_command **cmds, t_pid *all_pid)
 {
 	int			i;
 	int			j;
@@ -174,10 +136,10 @@ void	n_builtins(t_command **a, t_status *stat)
 	tmp = *a;
         if (!tmp->exec)
         {
-            if (tmp->write_end != -1)
-                close_err(tmp->write_end, stat);
-            if (tmp->read_end != -1)
-                close_err(tmp->read_end, stat);
+            //if (tmp->write_end != -1)
+            //    close_err(tmp->write_end, stat);
+            //if (tmp->read_end != -1)
+            //    close_err(tmp->read_end, stat);
             return ;
         }
 	i = 0;
@@ -185,7 +147,6 @@ void	n_builtins(t_command **a, t_status *stat)
 	path = NULL;
 	path_str = NULL;
 	//path_exists = true;
-	// g_sig.sigva_1 = 2;
 	if (j == 1)
 	{
 		path_str = tmp->cmd;
@@ -200,7 +161,7 @@ void	n_builtins(t_command **a, t_status *stat)
 	{
 		if (tmp->builtin)
                 {
-                        n_builtins_2(a, NULL, NULL, stat);
+                        n_builtins_2(a, NULL, NULL, stat, cmds, all_pid);
 			return ;
                 }
 		t_fixed	*ftmp;
@@ -248,8 +209,6 @@ void	n_builtins(t_command **a, t_status *stat)
 		return ;
 	}
         */
-	// printf("1 sigint_child = %d\n", g_sig.sigint_child);
-	n_builtins_1(a, path_str, stat);
-	// printf("2 sigint_child = %d\n", g_sig.sigint_child);
+	n_builtins_1(a, path_str, stat, cmds, all_pid);
 	return ;
 }

@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:20:01 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/01/20 20:22:06 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/21 22:36:40 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,9 +79,9 @@ typedef struct s_token
 	bool			end;
 	bool			rm;
 	bool			exp;
-        struct s_status *stat;
-	struct s_token	*prev;
-	struct s_token	*next;
+    struct 			s_status *stat;
+	struct 			s_token	*prev;
+	struct 			s_token	*next;
 }					t_token;
 
 typedef struct s_command
@@ -139,7 +139,7 @@ typedef struct	s_fixed
 
 typedef struct	s_status
 {
-	int	s_code;
+	int	s_code; // exit code
 }		t_status;
 
 typedef struct  s_restore
@@ -148,16 +148,10 @@ typedef struct  s_restore
         int     std_in;
 }               t_restore;
 
-// typedef struct s_sig
-// {
-// 	int	sigva_1;
-// 	int	sigva_2;
-// }				t_sig;
-
-// extern t_sig g_sig;
-
-
-
+typedef struct  s_pid
+{
+    pid_t       *pid_c;
+}               t_pid;
 
 /*      MINISHELL       */
 //main.c
@@ -204,7 +198,7 @@ void		group_cmds(t_token **tokens);
 void		init_multi_a(t_token **tokens, t_command *c_node);
 void		init_multi_l(t_token **tokens, t_command *c_node);
 void		complete_cmd(t_token **tokens, t_command **cmds);
-void		parser(t_token **tokens, t_command **cmds, t_env *envs, t_status *stat);
+t_pipe          *parser(t_token **tokens, t_command **cmds, t_env *envs, t_status *stat);
 
 //init_cmd.c
 t_command	*cmd_new(char *cmd, int n, t_env *envs, t_status *stat);
@@ -228,13 +222,20 @@ void		assign_pipe_ends(t_command *c_node, t_pipe *p_node);
 //parser_utils3.c
 void		redirect_command_io(t_command *c_node);
 
+//parser_utils4.c
+void            remove_quotes(char **args);
+
 /*      HEREDOC     */
 //heredoc.c
 void            heredoc(t_command *c_node, t_status *stat);
 
 /*	NON-BUILTINS EXECUTOR	*/
 //n_builtins.c
-void		n_builtins(t_command **a, t_status *stat);
+void		n_builtins(t_command **a, t_status *stat, t_command **cmds, t_pid *all_pid);
+
+//concurrent.c
+void            close_unused_ends(t_command **cmds, int i);
+void            last_close(t_pipe **pipes);
 
 /*	SIGNAL HANDLER	*/
 //signal.c
@@ -294,6 +295,10 @@ int             pipe_related_err(t_status *stat);
 
 //free.c
 void		free_2d_arr(char **input);
+
+//alex.c
+void	print_map(char **map);
+
 
 
 

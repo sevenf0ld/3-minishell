@@ -1,0 +1,9 @@
+total 4
+drwxrwxrwx 1 folim folim 4096 Jan 19 17:24 builtin_attempt
+-rwxrwxrwx 1 folim folim 1016 Jan 19 17:24 dummy.txt
+-rwxrwxrwx 1 folim folim  508 Jan 19 17:24 dummy2.txt
+drwxrwxrwx 1 folim folim 4096 Jan 19 17:24 parse_attempt
+drwxrwxrwx 1 folim folim 4096 Jan 19 17:24 pipex
+drwxrwxrwx 1 folim folim 4096 Jan 21 23:38 practice
+drwxrwxrwx 1 folim folim 4096 Jan 22 19:35 prototype_v1
+drwxrwxrwx 1 folim folim 4096 Jan 22 22:20 testfile
