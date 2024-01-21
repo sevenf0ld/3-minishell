@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/30 14:47:12 by folim             #+#    #+#             */
-/*   Updated: 2024/01/19 21:16:39 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/20 18:12:49 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ void	n_builtins_2(t_command **a, char **input, char *cmd, t_status *stat)
                     b_echo(tmp);
                 else if (!ft_strcmp(tmp->cmd, "pwd"))
                     b_pwd(tmp, 'w');
-                else if (!ft_strcmp(tmp->cmd, "cd"))
+                else if (!ft_strcmp(tmp->cmd, "cd") && tmp->size > 1)
                     b_cd(tmp);
                 else if (!ft_strcmp(tmp->cmd, "env"))
                     b_env(tmp, &(tmp->env_var->fixed));
@@ -102,7 +102,7 @@ void	n_builtins_2(t_command **a, char **input, char *cmd, t_status *stat)
                     b_unset(tmp, &(tmp->env_var->fixed));
                 else if (!ft_strcmp(tmp->cmd, "export") && tmp->size > 1)
                     b_export(tmp, &(tmp->env_var->fixed));
-                else if (!ft_strcmp(tmp->cmd, "exit"))
+                else if (!ft_strcmp(tmp->cmd, "exit") && tmp->size > 1)
                     b_exit(tmp);
                 exit(EXIT_SUCCESS);
 	}

@@ -1,5 +1,8 @@
 #!/bin/bash
 
+green='\033[0;42m'
+none='\033[m'
+
 args=("0"
 	"2"
 	"90"
@@ -20,6 +23,8 @@ args=("0"
 	"2147483647"
 	"2147483648"
 	"2147483646"
+        "abc"
+        "9z"
 	"2 a"
 	"b 3"
 	"4 4"
@@ -30,9 +35,10 @@ exe="./v1"
 
 make re --silent
 
+reset
+
 for arg in "${args[@]}"; do
 	echo "exit $arg" | ./v1
-
-# make fclean -s
+	echo -e "$green $? $none"
 
 done

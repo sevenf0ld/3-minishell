@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:20:01 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/01/20 07:25:39 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/20 20:22:06 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -271,6 +271,11 @@ t_fixed		*f_new(char *var, t_status *stat);
 t_fixed		*f_last(t_fixed *head);
 void		f_add_back(t_fixed **head, t_fixed *node);
 void		f_init(t_fixed **envs, char **envp, t_status *stat);
+
+//fixed_utils.c
+char            *get_fvalue(t_fixed *f_node, char *fkey);
+void            update_fvalue(t_fixed **fix, char *fkey, char *fval);
+char            *get_oldpwd(t_fixed *f_node);
 
 /*	ERROR AND MEMORY HANDLER	*/
 //err_handling.c

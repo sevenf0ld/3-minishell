@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:19:04 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/01/20 07:26:34 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/20 18:50:03 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,15 +99,15 @@ int	main(int argc, char **argv, char **envp)
 				if (cur->num_l > 0)
 					heredoc(cur, stat);
 				redirect_command_io(cur);
-				signal(SIGINT, sig_int_chld);
-				signal(SIGQUIT, sig_qt_chld);
-				n_builtins(&cur, stat);
-				if (!ft_strcmp(cur->cmd, "unset") && cur->size == 1)
-					b_unset(cur, &fix);
-				if (!ft_strcmp(cur->cmd, "exit") && cur->size == 1)
-					b_exit(cur);
-				if (!ft_strcmp(cur->cmd, "export") && cur->size == 1)
-					b_export(cur, &fix);
+                                n_builtins(&cur, stat);
+                                if (!ft_strcmp(cur->cmd, "unset") && cur->size == 1)
+                                    b_unset(cur, &fix);
+                                if (!ft_strcmp(cur->cmd, "exit") && cur->size == 1)
+                                    b_exit(cur);
+                                if (!ft_strcmp(cur->cmd, "export") && cur->size == 1)
+                                    b_export(cur, &fix);
+                                if (!ft_strcmp(cur->cmd, "cd") && cur->size == 1)
+                                    b_cd(cur);
 				dup2_err(res->std_out, STDOUT_FILENO, stat);
 				dup2_err(res->std_in, STDIN_FILENO, stat);
 				unlink("tmp_lim.txt");
