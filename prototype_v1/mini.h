@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:20:01 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/01/21 14:59:05 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/21 21:33:30 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -178,7 +178,7 @@ void		group_cmds(t_token **tokens);
 void		init_multi_a(t_token **tokens, t_command *c_node);
 void		init_multi_l(t_token **tokens, t_command *c_node);
 void		complete_cmd(t_token **tokens, t_command **cmds);
-void		parser(t_token **tokens, t_command **cmds, t_env *envs, t_status *stat);
+t_pipe          *parser(t_token **tokens, t_command **cmds, t_env *envs, t_status *stat);
 
 //init_cmd.c
 t_command	*cmd_new(char *cmd, int n, t_env *envs, t_status *stat);
@@ -212,6 +212,7 @@ void		n_builtins(t_command **a, t_status *stat, t_command **cmds, t_pid *all_pid
 
 //concurrent.c
 void            close_unused_ends(t_command **cmds, int i);
+void            last_close(t_pipe **pipes);
 
 /*	SIGNAL HANDLER	*/
 //signal.c

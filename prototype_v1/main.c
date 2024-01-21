@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:19:04 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/01/21 15:55:58 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/21 21:41:38 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,7 @@ int	main(int argc, char **argv, char **envp)
 			res->std_in = dup_err(STDIN_FILENO, stat);
                         //print_inode(STDIN_FILENO, "\e[1;34minitial SI\e[m");
 			//print_inode(STDOUT_FILENO, "\e[1;34minitial SO\e[m");
-			parser(&tok, &cmd, env, stat);
+			t_pipe *pipes = parser(&tok, &cmd, env, stat);
                         pid = malloc_err(sizeof(t_pid), stat);
                         pid->pid_c = malloc_err(sizeof(pid_t) * cmd->size, stat);
 			for (t_command *cur = cmd; cur != NULL; cur = cur->next)
@@ -126,7 +126,7 @@ int	main(int argc, char **argv, char **envp)
                                 if (!ft_strcmp(cur->cmd, "cd") && cur->size == 1)
                                     b_cd(cur);
 
-                                fprintf(stderr, "\x1b[32m %i \x1b[m\n", pid->pid_c[cur->pos]);
+                                //fprintf(stderr, "\x1b[32m %i \x1b[m\n", pid->pid_c[cur->pos]);
 
 			        //print_inode(STDIN_FILENO, "\e[1;31mexec SI\e[m");
 			        //print_inode(STDOUT_FILENO, "\e[1;31mexec SO\e[m");
@@ -136,18 +136,11 @@ int	main(int argc, char **argv, char **envp)
 				//print_inode(STDOUT_FILENO, "\e[1;32mrestore SO\e[m");
                                 unlink("tmp_lim.txt");
                         }
+                        last_close(&pipes);
                         int wstat = 0;
-                        int i;
-                        /*
-                        for (i = 0; i < cmd->size; i++)
-                        {
-                            waitpid(pid->pid_c[i], &wstat, WNOHANG | WUNTRACED);
-                            fprintf(stderr, "\x1b[42m %i \x1b[m\n", pid->pid_c[i]);
-                        }
-                        */
-                        i = 0;
-                        while (waitpid(pid->pid_c[i++], &wstat, WCONTINUED) > 0)
-                            ;
+                        pid_t c = wait(&wstat);
+                        while (c > 0)
+                            c = wait(&wstat);
                 } 
         }
 }
