@@ -12,20 +12,6 @@
 
 #include "mini.h"
 
-void	print_map(char **map)
-{
-	int	y;
-
-	y = 0;
-	while (map[y] != NULL)
-	{
-		ft_putstr_fd("args: ", 1);
-		ft_putstr_fd(map[y], 1);
-		ft_putstr_fd("\n", 1);
-		y++;
-	}
-}
-
 /*
  * use an array of cmds to make it shorter
  */
@@ -94,7 +80,7 @@ int	main(int argc, char **argv, char **envp)
 	{
 
 		init_sig();
-		pipeline = readline("prompt> ");
+		pipeline = readline("\033[32mminishell> ");
 		if (!pipeline)
 		{
 			ft_putstr_fd("exit\n", STDOUT_FILENO);
@@ -110,22 +96,22 @@ int	main(int argc, char **argv, char **envp)
 			parser(&tok, &cmd, env, stat);
 			for (t_command *cur = cmd; cur != NULL; cur = cur->next)
 			{
-                                if (cur->num_l > 0)
-                                    heredoc(cur, stat);
+				if (cur->num_l > 0)
+					heredoc(cur, stat);
 				redirect_command_io(cur);
-                                n_builtins(&cur, stat);
-                                if (!ft_strcmp(cur->cmd, "unset") && cur->size == 1)
-                                    b_unset(cur, &fix);
-                                if (!ft_strcmp(cur->cmd, "exit") && cur->size == 1)
-                                    b_exit(cur);
-                                if (!ft_strcmp(cur->cmd, "export") && cur->size == 1)
-                                    b_export(cur, &fix);
+				signal(SIGINT, sig_int_chld);
+				signal(SIGQUIT, sig_qt_chld);
+				n_builtins(&cur, stat);
+				if (!ft_strcmp(cur->cmd, "unset") && cur->size == 1)
+					b_unset(cur, &fix);
+				if (!ft_strcmp(cur->cmd, "exit") && cur->size == 1)
+					b_exit(cur);
+				if (!ft_strcmp(cur->cmd, "export") && cur->size == 1)
+					b_export(cur, &fix);
 				dup2_err(res->std_out, STDOUT_FILENO, stat);
 				dup2_err(res->std_in, STDIN_FILENO, stat);
 				unlink("tmp_lim.txt");
 			}
 		}
-		// print_map(cmd->args);
-		// printf("og: %s\n", cmd->og);
 	}
 }

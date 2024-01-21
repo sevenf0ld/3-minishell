@@ -75,18 +75,6 @@ void	n_builtins_2(t_command **a, char **input, char *cmd, t_status *stat)
 	t_command	*tmp;
 
 	tmp = *a;
-
-	// printf("t_command **a:");
-	// print_map(a);
-
-	// printf("char **input: ");
-	print_map(input);
-
-
-
-
-
-
 	pid = fork();
 	if (pid == -1)
 	{

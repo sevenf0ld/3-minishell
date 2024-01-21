@@ -175,15 +175,13 @@ static char    **get_exp_value(char *to_expand, int len, t_status *stat, char **
 	int	i;
     char    *sub;
     char    **exp;
-    printf("IN get_exp_value\n");
+
 	i = 0;
         sub = NULL;
         exp = init_expandables(to_expand, len, stat);
         while (key[i] != NULL)
 	{
-            printf("key[i] >> %s\n", key[i]);
-            sub = getenv(key[i] + 1);
-            printf("sub >> %s\n", sub);
+            sub = getenv(key[i] + 1);   
             if (sub != NULL)
                 exp[i] = sub;
             else
@@ -195,7 +193,6 @@ static char    **get_exp_value(char *to_expand, int len, t_status *stat, char **
 
 static void expand_env_var(t_token **tokens, t_status *stat)
 {
-    printf("IN expand_env_var\n");
 	t_token	*tmp;
         int     len;
         char    **exp_key;
@@ -208,7 +205,6 @@ static void expand_env_var(t_token **tokens, t_status *stat)
         (void) exp_value;
 	while (tmp != NULL)
 	{
-            printf("token >> %s\n", tmp->token);
             if (tmp->exp && ft_strcmp(tmp->token, "$?") != 0)
             {
                 len = ft_strlen(tmp->token);
@@ -267,14 +263,13 @@ static int  not_standalone_dollar(char *s)
  */
 void	expansion(t_token **tokens, t_status *stat)
 {
-    printf("IN expansion\n");
 	t_token	*tmp;
 	
 	tmp = *tokens;
 	while (tmp != NULL)
 	{
             if (ft_strchr(tmp->token, '$'))
-                if (not_in_single(tmp->token) && not_standalone_dollar(tmp->token))
+                if (not_in_single(tmp->token) || not_standalone_dollar(tmp->token))
 		    tmp->exp = true;
 	    tmp = tmp->next;
 	}

@@ -290,8 +290,6 @@ int             pipe_related_err(t_status *stat);
 //free.c
 void		free_2d_arr(char **input);
 
-//for testing
-void	print_map(char **map);
 
 
 #endif
