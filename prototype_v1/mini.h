@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:20:01 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/01/22 15:00:43 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/22 15:09:50 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,6 +143,16 @@ typedef struct s_cmd_norme
 	t_env		*envs;
 	t_status	*stat;
 }			t_cmd_norme;
+
+typedef struct s_fildes_norme
+{
+	t_token		**tokens;
+	t_command	*c_node;
+	t_token		*tmp;
+	int			i;
+	int			j;
+	int			k;
+}	t_fildes_norme;
 
 /*      MINISHELL       */
 //main.c
