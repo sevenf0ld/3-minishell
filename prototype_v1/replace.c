@@ -6,7 +6,7 @@
 /*   By: maiman-m <maiman-m@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 18:18:03 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/01/22 18:54:24 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/23 00:30:52 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,13 @@ static void	count_replacements(t_repl_norme *repl_params)
     repl_params->len_sub = ft_strlen(repl_params->sub);
     repl_params->occur = -1;
     repl_params->shift = repl_params->og;
-    repl_params->extracted = ft_strnstr(repl_params->shift, repl_params->displace, repl_params->len_dis);
+    repl_params->extracted = ft_strnstr(repl_params->shift, repl_params->displace, repl_params->len_og);
+    //repl_params->extracted = strstr(repl_params->shift, repl_params->displace);
     while (repl_params->extracted != NULL)
     {
         repl_params->occur++;
-        repl_params->extracted = ft_strnstr(repl_params->shift, repl_params->displace, repl_params->len_dis);
+        repl_params->extracted = ft_strnstr(repl_params->shift, repl_params->displace, ft_strlen(repl_params->shift));
+        //repl_params->extracted = strstr(repl_params->shift, repl_params->displace);
         if (repl_params->extracted != NULL)
                 repl_params->shift = repl_params->extracted + repl_params->len_dis;
     }
@@ -39,15 +41,19 @@ static void	replace_and_shift(t_repl_norme *repl_params)
 {
 	while (repl_params->occur-- && repl_params->occur >= 0)
         {
-            repl_params->shift = ft_strnstr(repl_params->og, repl_params->displace, repl_params->len_dis);
+            repl_params->shift = ft_strnstr(repl_params->og, repl_params->displace, ft_strlen(repl_params->og));
+            //repl_params->shift = strstr(repl_params->og, repl_params->displace);
             repl_params->moved = repl_params->shift - repl_params->og;
             ft_strlcpy(repl_params->tmp, repl_params->og, repl_params->moved + 1);
+            //strncpy(repl_params->tmp, repl_params->og, repl_params->moved);
             repl_params->tmp += repl_params->moved;
             ft_strlcpy(repl_params->tmp, repl_params->sub, repl_params->len_sub + 1);
+            //strcpy(repl_params->tmp, repl_params->sub);
             repl_params->tmp += repl_params->len_sub;
             repl_params->og += repl_params->moved + repl_params->len_dis;
         }
 	ft_strlcpy(repl_params->tmp, repl_params->og, repl_params->len_og + 1);
+	//strcpy(repl_params->tmp, repl_params->og);
 }
 
 char	*repl(char *og, char *displace, char *sub, int len_og)

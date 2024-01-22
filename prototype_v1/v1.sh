@@ -209,6 +209,7 @@ args=(
     "echo ''\$USER''"
     "echo '''\$USER'''"
     "echo ''''\$USER''''"
+    "echo \'$USER\'$HOME\"$PATH\""
     )
 
 # create a variable with the name of the executable
