@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:20:01 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/01/22 15:09:50 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/22 16:35:23 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,6 +154,15 @@ typedef struct s_fildes_norme
 	int			k;
 }	t_fildes_norme;
 
+typedef struct	s_unterm_norme
+{
+	int	i;
+	bool	sq;
+	bool	wq;
+	char	*s;
+	t_token	*tmp;
+}				t_unterm_norme;
+
 /*      MINISHELL       */
 //main.c
 bool            is_builtin(char *cmd);
@@ -186,7 +195,17 @@ int             lexer(char *pipeline, t_token **tokens, t_status *stat);
 void            split_tokens(t_token **tokens, t_status *stat);
 
 //reject.c
+int             pipe_first_last(t_token *t_node, t_status *stat);
+int             multi_pipe(t_token *t_node, t_status *stat);
 int             reject(t_token **tokens, t_status *stat);
+
+//reject_utils.c
+int             multi_redir(t_token *t_node, t_status *stat);
+int             redir_as_end(t_token *t_node, t_status *stat);
+int             multi_adjacent_symbols(t_token *t_node, t_status *stat);
+
+//reject_utils2.c
+int             unterminated_quotes(t_token *t_node, t_status *stat);
 
 //lexer_utils3.c
 void		expansion(t_token **lst, t_status *stat);
