@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 20:09:11 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/01/21 21:40:10 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/22 16:01:00 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,28 @@ static t_pipe	*retrieve_pipe(t_pipe *p_node, int n)
 		end = end->next;
 	}
 	return end;
+}
+
+static void	assign_norme(t_command *c_node, t_pipe *end, t_pipe *p_node, int i)
+{
+	if (i == 0)
+	{
+		end = retrieve_pipe(p_node, c_node->pos);
+		if (end)
+		{
+			c_node->read_end = STDIN_FILENO;
+			c_node->write_end = end->pipe_fd[1];
+		}
+	}
+	else if (i == 1)
+	{
+		end = retrieve_pipe(p_node, c_node->pos - 1);
+		if (end)
+		{
+			c_node->read_end = end->pipe_fd[0];
+			c_node->write_end = STDOUT_FILENO;
+		}
+	}
 }
 
 /*
@@ -49,26 +71,12 @@ void	assign_pipe_ends(t_command *c_node, t_pipe *p_node)
 
 	cur = c_node;
 	end = NULL;
-	while (cur != NULL)
+        while (cur != NULL)
 	{
 		if (cur->pos == 0)
-		{
-			end = retrieve_pipe(p_node, cur->pos);
-			if (end)
-			{
-				cur->read_end = STDIN_FILENO;;
-				cur->write_end = end->pipe_fd[1];
-			}
-		}
+			assign_norme(cur, end, p_node, 0);
 		if (cur->pos == cur->size - 1)
-		{
-			end = retrieve_pipe(p_node, cur->pos - 1);
-			if (end)
-			{
-				cur->read_end = end->pipe_fd[0];
-				cur->write_end = STDOUT_FILENO;
-			}
-		}
+			assign_norme(cur, end, p_node, 1);
 		if (cur->pos > 0 && cur->pos < cur->size - 1)
 		{
 			end = retrieve_pipe(p_node, cur->pos);
