@@ -6,7 +6,7 @@
 #    By: folim <folim@student.42kl.edu.my>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/15 12:21:40 by maiman-m          #+#    #+#              #
-#    Updated: 2024/01/21 22:27:03 by maiman-m         ###   ########.fr        #
+#    Updated: 2024/01/22 14:56:34 by maiman-m         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,7 +36,7 @@ LDFLAGS = -Llibft -lft -lreadline -L/goinfre/folim/.brew/opt/readline/lib -I/goi
 
 SRCS = main.c tokenizer.c init_token.c d_ll_convert.c \
 	   lexer.c split.c reject.c lexer_utils3.c lexer_utils.c \
-	   parser.c init_cmd.c init_pipe.c parser_utils.c parser_utils2.c parser_utils3.c parser_utils4.c \
+	   parser.c init_cmd.c init_cmd_utils.c init_cmd_utils2.c init_pipe.c parser_utils.c parser_utils2.c parser_utils3.c parser_utils4.c \
            heredoc.c \
            n_builtins.c concurrent.c \
            signal.c \

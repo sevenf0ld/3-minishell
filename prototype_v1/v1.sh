@@ -166,6 +166,8 @@ arr=("ls -la | cat | grep -wn c > outfile"
     "wc -l v1.sh |export z y x| wc"
     # spaces between command groups
     "ls    | wc"
+    # heredoc with pipe
+    "wc << eof << hi | ls"
     )
 
 args=(
@@ -203,6 +205,10 @@ args=(
     "echo \"'\$PATH'\""
     "echo \"'\$PATH' '\$USER'\""
     "echo \"'\$PATH' '\$USER'\" \"'\$PATH' '\$USER'\""
+    "echo '\$USER'"
+    "echo ''\$USER''"
+    "echo '''\$USER'''"
+    "echo ''''\$USER''''"
     )
 
 # create a variable with the name of the executable

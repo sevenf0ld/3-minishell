@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:20:01 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/01/21 22:36:40 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/22 15:00:43 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,6 +133,17 @@ typedef struct  s_pid
     pid_t       *pid_c;
 }               t_pid;
 
+typedef struct s_cmd_norme
+{
+	int		i;
+	t_token		*tmp;
+	t_token		*first;
+	t_token		**tokens;
+	t_command	**cmds;
+	t_env		*envs;
+	t_status	*stat;
+}			t_cmd_norme;
+
 /*      MINISHELL       */
 //main.c
 bool            is_builtin(char *cmd);
@@ -183,9 +194,18 @@ t_pipe          *parser(t_token **tokens, t_command **cmds, t_env *envs, t_statu
 //init_cmd.c
 t_command	*cmd_new(char *cmd, int n, t_env *envs, t_status *stat);
 void		cmd_add_back(t_command **head, t_command *node);
-void		cmd_init(t_token **tokens, t_command **cmds, t_env *envs, t_status *stat);
 t_command	*cmd_last(t_command *head);
 int		cmd_size(t_command *head);
+void            set_cmd_size(t_command *head);
+
+//init_cmd_utils.c
+void		cmd_init(t_token **tokens, t_command **cmds, t_env *envs, t_status *stat);
+
+//init_cmd_utils2.c
+void            cmd_add_back(t_command **head, t_command *node);
+t_command	*cmd_last(t_command *head);
+int	        cmd_size(t_command *head);
+void            set_cmd_size(t_command *head);
 
 //init_pipe.c
 t_pipe		*pipe_new(int n, t_status *stat);
