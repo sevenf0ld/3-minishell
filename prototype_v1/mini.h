@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:20:01 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/01/22 18:00:39 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/22 18:45:49 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -178,6 +178,42 @@ typedef struct s_token_norme
 	char		*sub;
 }				t_token_norme;
 
+typedef struct s_exp_norme
+{
+	int	i;
+	int	j;
+	char	*displace;
+	int	count;
+	char	**exp;
+}			t_exp_norme;
+
+typedef struct s_exp_key_norme
+{
+	int		i;
+	int		j;
+	char	*displace;
+	int		k;
+	char	**exp;
+	int		len_dis;
+}			t_exp_key_norme;
+
+typedef struct s_repl_norme
+{
+	char	*og;
+	char	*displace;
+	char	*sub;
+	int		len_og;
+	int		len_dis;
+	int		len_sub;
+	int		occur;
+	char	*shift;
+	char	*extracted;
+	int		diff;
+	char	*ret;
+	char	*tmp;
+	int		moved;
+}	t_repl_norme;
+
 /*      MINISHELL       */
 //main.c
 bool            is_builtin(char *cmd);
@@ -238,8 +274,19 @@ int             multi_adjacent_symbols(t_token *t_node, t_status *stat);
 //reject_utils2.c
 int             unterminated_quotes(t_token *t_node, t_status *stat);
 
-//lexer_utils3.c
-void		expansion(t_token **lst, t_status *stat);
+//expand.c
+void		expansion(t_token **tokens, t_status *stat);
+
+//expand_utils.c
+char            **init_expandables(char *to_expand, int len, t_status *stat);
+
+//expand_utils2.c
+char            **get_exp_key(char *to_expand, int len, t_status *stat);
+char            **get_exp_value(char *to_expand, int len, t_status *stat, char **key);
+char            *sub_exp(char *s, int len, char **key, char **val);
+
+//replace.c
+char            *repl(char *og, char *displace, char *sub, int len_og);
 
 //lexer_utils.c
 void		group_cmds(t_token **tokens);
