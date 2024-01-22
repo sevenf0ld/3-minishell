@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:20:01 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/01/22 16:35:23 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/22 16:59:37 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -192,7 +192,19 @@ void		categorize(t_token **tokens);
 int             lexer(char *pipeline, t_token **tokens, t_status *stat);
 
 //split.c
-void            split_tokens(t_token **tokens, t_status *stat);
+void            split_tokens(t_token **tokens);
+
+//split_utils.c
+bool            is_pipe(char a);
+bool            is_in_re(char a);
+bool            is_out_re(char a);
+bool            is_add(char *s, size_t i, size_t len);
+bool            is_hd(char *s, size_t i, size_t len);
+
+//split_utils2.c
+void            slot_in_token(t_token *t_node, char *s, t_token **tokens, char *r);
+size_t          delim_present(char *s);
+void            separate_delim(char *s, t_token *t_node, t_token **tokens);
 
 //reject.c
 int             pipe_first_last(t_token *t_node, t_status *stat);
