@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:25:31 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/01/22 16:59:52 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/22 17:53:40 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,7 +137,7 @@ void    categorize(t_token **tokens)
  */
 int lexer(char *pipeline, t_token **tokens, t_status *stat)
 {
-        new_split(ft_strtrim(pipeline, "    "), tokens, stat);
+        tokenizer(ft_strtrim(pipeline, "    "), tokens, stat);
         double_ll_convert(tokens);
         categorize(tokens);
         split_tokens(tokens);

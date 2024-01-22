@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:20:01 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/01/22 16:59:37 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/22 18:00:39 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,6 +163,21 @@ typedef struct	s_unterm_norme
 	t_token	*tmp;
 }				t_unterm_norme;
 
+typedef struct s_token_norme
+{
+	char		*s;
+	t_token		**tokens;
+	t_status	*stat;
+	bool		sq;
+	bool		wq;
+	int		i;
+	int		close;
+	int		check;
+	int		start;
+	int		count;
+	char		*sub;
+}				t_token_norme;
+
 /*      MINISHELL       */
 //main.c
 bool            is_builtin(char *cmd);
@@ -170,8 +185,12 @@ int             all_whitespace(char *s);
 
 /*	TOKENIZER	*/
 //tokenizer.c
+void            within_alongside_quotes(t_token_norme *token_params, char *s, char mode);
+void            tokenizer(char *str, t_token **tokens, t_status *stat);
+
+//tokenizer_utils.c
 int		is_delim(char a);
-void            new_split(char *str, t_token **tokens, t_status *stat);
+int             decide_chunk(t_token_norme *token_params, char *s);
 
 //init_token.c
 t_token		*token_new(char *token, t_status *stat);
