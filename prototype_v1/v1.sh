@@ -190,6 +190,7 @@ args=(
     'echo $USER'
     "echo \$MADi\$HATTER"
     "echo \$"
+    "echo '\$'"
     "echo \"\$\""
     'echo $'
     "echo '\$SHELL' '\$SHELL'"
@@ -200,6 +201,7 @@ args=(
     'echo abc"$HOME"'
     'echo abc"$HOME"hh'
     'echo abc"$HOME                      "hh'
+    "echo abc'      \$HOME                      'hh"
     "echo '\"\$PATH\"'"
     "echo '\"\$PATH\" \"\$USER\"'"
     "echo \"'\$PATH'\""
@@ -209,7 +211,7 @@ args=(
     "echo ''\$USER''"
     "echo '''\$USER'''"
     "echo ''''\$USER''''"
-    "echo \'$USER\'$HOME\"$PATH\""
+    "echo '\$USER'\$HOME\"\$PATH\""
     )
 
 # create a variable with the name of the executable

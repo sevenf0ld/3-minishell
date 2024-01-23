@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:20:01 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/01/22 18:45:49 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/23 14:23:03 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -284,6 +284,9 @@ char            **init_expandables(char *to_expand, int len, t_status *stat);
 char            **get_exp_key(char *to_expand, int len, t_status *stat);
 char            **get_exp_value(char *to_expand, int len, t_status *stat, char **key);
 char            *sub_exp(char *s, int len, char **key, char **val);
+
+//expand_utils2.c
+char			**new_split(char *str, t_status *stat);
 
 //replace.c
 char            *repl(char *og, char *displace, char *sub, int len_og);

@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 14:17:08 by folim             #+#    #+#             */
-/*   Updated: 2024/01/22 18:58:27 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/23 14:22:55 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ static void	expand_env_var(t_token **tokens, t_status *stat)
 	exp_value = NULL;
 	while (tmp != NULL)
 	{
+		/*
 		if (tmp->exp && ft_strcmp(tmp->token, "$?") != 0)
 		{
 			len = ft_strlen(tmp->token);
@@ -68,6 +69,22 @@ static void	expand_env_var(t_token **tokens, t_status *stat)
 		}
 		else if (tmp->exp && !ft_strcmp(tmp->token, "$?"))
 			tmp->token = ft_lltoa(stat->s_code);
+		*/
+		if (ft_strchr(tmp->token, '$'))
+		{
+
+			fprintf(stderr, "\x1b[32m token: %s, strchr: %s \x1b[m\n", tmp->token, ft_strchr(tmp->token, '$'));
+			char **end = new_split(tmp->token, stat);
+			for (int i = 0; end[i] != NULL; i++)
+			{
+				fprintf(stderr, "\x1b[42m %s \x1b[m\n", end[i]);
+			}
+
+			len = ft_strlen(tmp->token);
+			exp_key = get_exp_key(tmp->token, len, stat);
+			exp_value = get_exp_value(tmp->token, len, stat, exp_key);
+			tmp->token = sub_exp(tmp->token, len, exp_key, exp_value);
+		}
 		tmp = tmp->next;
 	}
 }
@@ -77,6 +94,9 @@ void	expansion(t_token **tokens, t_status *stat)
 	t_token	*tmp;
 
 	tmp = *tokens;
+	(void) not_in_single;
+	(void) not_standalone_dollar;
+	/*
 	while (tmp != NULL)
 	{
 		if (ft_strchr(tmp->token, '$'))
@@ -84,5 +104,6 @@ void	expansion(t_token **tokens, t_status *stat)
                         tmp->exp = true;
 		tmp = tmp->next;
 	}
+	*/
 	expand_env_var(tokens, stat);
 }
