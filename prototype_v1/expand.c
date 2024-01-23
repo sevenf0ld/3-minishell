@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 14:17:08 by folim             #+#    #+#             */
-/*   Updated: 2024/01/23 14:22:55 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/23 15:05:50 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,13 +72,8 @@ static void	expand_env_var(t_token **tokens, t_status *stat)
 		*/
 		if (ft_strchr(tmp->token, '$'))
 		{
-
-			fprintf(stderr, "\x1b[32m token: %s, strchr: %s \x1b[m\n", tmp->token, ft_strchr(tmp->token, '$'));
-			char **end = new_split(tmp->token, stat);
-			for (int i = 0; end[i] != NULL; i++)
-			{
-				fprintf(stderr, "\x1b[42m %s \x1b[m\n", end[i]);
-			}
+			
+			expand_utils(tmp->token, stat);
 
 			len = ft_strlen(tmp->token);
 			exp_key = get_exp_key(tmp->token, len, stat);
