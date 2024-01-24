@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:20:01 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/01/24 22:37:10 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/24 23:10:15 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -269,6 +269,10 @@ void		expansion(t_token **tokens);
 
 //expand_utils4.c
 void		expand_utils(char **token);
+
+//expand_utils5.c
+void            decide_word(char c, bool *sq, bool *wq);
+char		*ext_dollar(char *s);
 
 //replace.c
 char            *repl(char *og, char *displace, char *sub, int len_og);
