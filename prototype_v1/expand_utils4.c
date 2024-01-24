@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 14:34:58 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/01/24 16:57:09 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/24 22:15:19 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ void	expand_utils(char **token, t_status *stat)
         while (s[i] != '\0')
 	{
 		decide_word(s[i], &sq, &wq);
-                if (!sq)
+                if (!sq && s[i + 1] != '\0' && s[i + 1] != 39)
                 {
                     part = token_partial_repl(s, i, &close);
                     *token = part;

@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 14:17:08 by folim             #+#    #+#             */
-/*   Updated: 2024/01/24 21:59:56 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/24 22:10:02 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,18 +59,20 @@ static void	expand_env_var(t_token **tokens, t_status *stat)
 	exp_value = NULL;
         (void) exp_key;
         (void) exp_value;
+        (void) len;
 	while (tmp != NULL)
 	{
 		if (tmp->exp && ft_strcmp(tmp->token, "$?") != 0)
 		{
+                    /*
 			len = ft_strlen(tmp->token);
 			exp_key = get_exp_key(tmp->token, len, stat);
-                        for (int i = 0; exp_key[i] != NULL; i++)
-                            fprintf(stderr, "exp_key %s\n", exp_key[i]);
-                        return ;
 			exp_value = get_exp_value(tmp->token, len, stat, exp_key);
-			tmp->token = sub_exp(tmp->token, len, exp_key, exp_value);
-			//expand_utils(&tmp->token, stat);
+                        for (int i = 0; exp_key[i] != NULL; i++)
+                            fprintf(stderr, "{%s: %s}\n", exp_key[i], exp_value[i]);
+			//tmp->token = sub_exp(tmp->token, len, exp_key, exp_value);
+                    */
+			expand_utils(&tmp->token, stat);
 		}
 		else if (tmp->exp && !ft_strcmp(tmp->token, "$?"))
 			tmp->token = ft_lltoa(stat->s_code);
