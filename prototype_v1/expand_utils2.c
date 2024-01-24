@@ -6,7 +6,7 @@
 /*   By: maiman-m <maiman-m@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 18:08:55 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/01/22 18:44:22 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/24 21:59:28 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,8 @@ static void	e_k_params_helper(t_exp_key_norme *e_k_params, char *to_expand, int 
 	while (e_k_params->j < len && to_expand[e_k_params->j] != '\0'
 		&& (to_expand[e_k_params->j] != '\"'
 			&& to_expand[e_k_params->j] != 32
-			&& to_expand[e_k_params->j] != '$'))
+			&& to_expand[e_k_params->j] != '$')
+			&& to_expand[e_k_params->j] != 39)
 		e_k_params->j++;
 }
 
