@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 14:34:58 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/01/24 22:15:19 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/24 22:37:37 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,10 +68,9 @@ char    *token_partial_repl(char *s, int i, int *close)
     char    *rep;
     char    *ret;
     char    *og;
-    rep = NULL;
     int     start;
 
-    // i to shift start of s and + 1 to skip the quote
+    rep = NULL;
     og = s + i;
     start = 0;
     if (s[i] == 34)
@@ -88,29 +87,23 @@ char    *token_partial_repl(char *s, int i, int *close)
     return (ret);
 }
 
-//echo '$USER'$HOME"$PATH"
-//echo '$HOME'"$PATH"'$HOME'
-void	expand_utils(char **token, t_status *stat)
+void	expand_utils(char **token)
 {
-	int		i = 0;
-	bool	sq = false;
-	bool	wq = false;
-        int     close = 0;
-        char    *part;
-        char    *s = *token;
-        (void) stat;
-	
-        while (s[i] != '\0')
+        t_exp_norme exp_params;
+        int         i;
+
+        exp_params = (t_exp_norme){0};
+        exp_params.s = *token;
+        i = 0;
+        while (exp_params.s[i] != '\0')
 	{
-		decide_word(s[i], &sq, &wq);
-                if (!sq && s[i + 1] != '\0' && s[i + 1] != 39)
+		decide_word(exp_params.s[i], &exp_params.sq, &exp_params.wq);
+                if (!exp_params.sq && exp_params.s[i + 1] != '\0' && exp_params.s[i + 1] != 39)
                 {
-                    part = token_partial_repl(s, i, &close);
-                    *token = part;
-                    if (part != NULL)
-                        fprintf(stderr, "repl: %s\n", part);
-                    if (!part)
-                        expand_utils(&part, stat);
+                    exp_params.part = token_partial_repl(exp_params.s, i, &exp_params.close);
+                    *token = exp_params.part;
+                    if (!exp_params.part)
+                        expand_utils(&exp_params.part);
                     break ;
                 }
 		i++;

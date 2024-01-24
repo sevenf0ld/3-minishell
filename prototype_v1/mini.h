@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:20:01 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/01/24 16:41:42 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/24 22:37:10 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -180,22 +180,12 @@ typedef struct s_token_norme
 
 typedef struct s_exp_norme
 {
-	int	i;
-	int	j;
-	char	*displace;
-	int	count;
-	char	**exp;
+        bool    sq;
+        bool    wq;
+        int     close;
+        char    *part;
+        char    *s;
 }			t_exp_norme;
-
-typedef struct s_exp_key_norme
-{
-	int		i;
-	int		j;
-	char	*displace;
-	int		k;
-	char	**exp;
-	int		len_dis;
-}			t_exp_key_norme;
 
 typedef struct s_repl_norme
 {
@@ -275,18 +265,10 @@ int             multi_adjacent_symbols(t_token *t_node, t_status *stat);
 int             unterminated_quotes(t_token *t_node, t_status *stat);
 
 //expand.c
-void		expansion(t_token **tokens, t_status *stat);
-
-//expand_utils.c
-char            **init_expandables(char *to_expand, int len, t_status *stat);
-
-//expand_utils2.c
-char            **get_exp_key(char *to_expand, int len, t_status *stat);
-char            **get_exp_value(char *to_expand, int len, t_status *stat, char **key);
-char            *sub_exp(char *s, int len, char **key, char **val);
+void		expansion(t_token **tokens);
 
 //expand_utils4.c
-void			expand_utils(char **token, t_status *stat);
+void		expand_utils(char **token);
 
 //replace.c
 char            *repl(char *og, char *displace, char *sub, int len_og);
