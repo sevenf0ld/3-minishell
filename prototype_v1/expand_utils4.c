@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 14:34:58 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/01/24 23:10:41 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/24 23:24:31 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,12 @@ static char    *partial_norme(char *ext, char *s, int start, int i)
 
     sub = getenv(ext + 1);
     og = s + i;
+    /*
+    if (og[0] == 39)
+        og  += 1;
+    */
+    while (og[0] == 39)
+        og++;
     if (!sub)
         sub = "";
     rep = repl(og, ext, sub, ft_strlen(og));
@@ -57,8 +63,6 @@ static char    *token_partial_repl(char *s, int i, int *close)
         i += 1;
     *close = iterate_until_closing(og, s[i]);
     ext = ext_dollar(og);
-    if (og[0] == 39)
-        og  += 1;
     return (partial_norme(ext, s, start, i));
 }
 
