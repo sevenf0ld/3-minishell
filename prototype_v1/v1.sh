@@ -221,6 +221,8 @@ args=(
     "echo '\$HOME'\$HOME"
     "echo '''\$USER'''"
     "echo ''''\$USER''''"
+    "echo \"\$SHELL\$SHELL\" \"\$HOME\"\"\$PATH\""
+    "echo \"\$SHELL\$SHELL\" \"\$HOME\"\$PATH"
     )
 
 # create a variable with the name of the executable
