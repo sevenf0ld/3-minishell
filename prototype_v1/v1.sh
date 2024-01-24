@@ -218,6 +218,7 @@ args=(
     "echo '\$HOME'\$PATH'\$HOME'"
     "echo \$PATH'\$HOME'"
     "echo '\$HOME'\$PATH"
+    "echo '\$HOME'\$HOME"
     "echo '''\$USER'''"
     "echo ''''\$USER''''"
     )
