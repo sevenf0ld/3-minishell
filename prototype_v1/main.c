@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:19:04 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/01/24 14:23:44 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/24 16:59:39 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,9 +142,9 @@ int	main(int argc, char **argv)
 		return (1);
 	if (lexer(argv[1], &tok, stat))
             return (1);
-        //char	*type[] = {"PIPE", "OUT_RE", "IN_RE", "CMD", "ARGS", "FILN", "LIM", "HD", "ADD", "ANON"};
-	//for (t_token *dl = tok; dl != NULL; dl = dl->next)
-	//    fprintf(stderr, "[%s] is a [%s]. expand? \x1b[32m%s\x1b[m\n", dl->token, type[dl->symbol], dl->exp?"true":"false");
+        char	*type[] = {"PIPE", "OUT_RE", "IN_RE", "CMD", "ARGS", "FILN", "LIM", "HD", "ADD", "ANON"};
+	for (t_token *dl = tok; dl != NULL; dl = dl->next)
+	    fprintf(stderr, "[%s] is a [%s]. expand? \x1b[32m%s\x1b[m\n", dl->token, type[dl->symbol], dl->exp?"true":"false");
         (void) cmd;
         (void) env;
 }

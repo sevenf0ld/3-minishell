@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 14:17:08 by folim             #+#    #+#             */
-/*   Updated: 2024/01/23 15:05:50 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/24 16:59:12 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,6 @@ static void	expand_env_var(t_token **tokens, t_status *stat)
 	exp_value = NULL;
 	while (tmp != NULL)
 	{
-		/*
 		if (tmp->exp && ft_strcmp(tmp->token, "$?") != 0)
 		{
 			len = ft_strlen(tmp->token);
@@ -69,17 +68,17 @@ static void	expand_env_var(t_token **tokens, t_status *stat)
 		}
 		else if (tmp->exp && !ft_strcmp(tmp->token, "$?"))
 			tmp->token = ft_lltoa(stat->s_code);
-		*/
-		if (ft_strchr(tmp->token, '$'))
+                /*
+                else if (ft_strchr(tmp->token, '$'))
 		{
-			
-			expand_utils(tmp->token, stat);
-
-			len = ft_strlen(tmp->token);
-			exp_key = get_exp_key(tmp->token, len, stat);
-			exp_value = get_exp_value(tmp->token, len, stat, exp_key);
-			tmp->token = sub_exp(tmp->token, len, exp_key, exp_value);
+			expand_utils(&tmp->token, stat);
+                        fprintf(stderr, "AFTER UTILS: %s\n", tmp->token);
+                        (void) len;
+                        (void) exp_key;
+                        (void) exp_value;
+                        (void) tmp->token;
 		}
+                */
 		tmp = tmp->next;
 	}
 }
@@ -91,7 +90,7 @@ void	expansion(t_token **tokens, t_status *stat)
 	tmp = *tokens;
 	(void) not_in_single;
 	(void) not_standalone_dollar;
-	/*
+        (void) tmp;
 	while (tmp != NULL)
 	{
 		if (ft_strchr(tmp->token, '$'))
@@ -99,6 +98,5 @@ void	expansion(t_token **tokens, t_status *stat)
                         tmp->exp = true;
 		tmp = tmp->next;
 	}
-	*/
 	expand_env_var(tokens, stat);
 }

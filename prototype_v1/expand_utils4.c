@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 14:34:58 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/01/24 16:13:47 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/24 16:57:09 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,18 +42,10 @@ static char    *ext_dollar(char *s)
 {
     int i;
     int j;
-    int k;
-    char    *ret;
-    (void) i;
-    (void) j;
-    (void) k;
-    (void) ret;
-
+    
     i = 0;
     if (s[i] == 39)
         i += 1;
-    k = i;
-    fprintf(stderr, "EXT_DOLLAR %s\n", s + i);
     while (s[i] != '\0')
     {
         if (s[i] == '$')
@@ -67,9 +59,7 @@ static char    *ext_dollar(char *s)
             break ;
         j++;
     }
-    ret = ft_substr(s, i, j - i);
-    fprintf(stderr, "\x1b[42m RET %s \x1b[m\n", ret);
-    return (ret);
+    return (ft_substr(s, i, j - i));
 }
 
 char    *token_partial_repl(char *s, int i, int *close)
@@ -88,33 +78,26 @@ char    *token_partial_repl(char *s, int i, int *close)
         i += 1;
     *close = iterate_until_closing(og, s[i]);
     ext = ext_dollar(og);
-    fprintf(stderr, "\x1b[41m EXT %s \x1b[m\n", ext);
     if (og[0] == 39)
         og  += 1;
-    fprintf(stderr, "\x1b[44m ORIGINAL %s \x1b[m\n", og);
-    fprintf(stderr, "\x1b[45m SUB %s \x1b[m\n", getenv(ext + 1));
     rep = repl(og, ext, getenv(ext + 1), ft_strlen(og));
-    fprintf(stderr, "\x1b[43m REP %s \x1b[m\n", rep);
-    fprintf(stderr, "is it dollar %c\n", s[i]);
     ret = ft_substr(s + start, 0, i + 1);
-    if (!ret)
+    if (!ret || s[i] == '$' || (s[i] == 34 && s[i + 1] == '$'))
         ret = "";
-    if (s[i] == '$' || (s[i] == 34 && s[i + 1] == '$'))
-        ret = "";
-    fprintf(stderr, "\x1b[46m RET %s \x1b[m\n", ret);
     ret = ft_strjoin(ret, rep);
     return (ret);
 }
 
 //echo '$USER'$HOME"$PATH"
 //echo '$HOME'"$PATH"'$HOME'
-void	expand_utils(char *s, t_status *stat)
+void	expand_utils(char **token, t_status *stat)
 {
 	int		i = 0;
 	bool	sq = false;
 	bool	wq = false;
-        char    *in_sq = NULL;
         int     close = 0;
+        char    *part;
+        char    *s = *token;
         (void) stat;
 	
         while (s[i] != '\0')
@@ -122,10 +105,13 @@ void	expand_utils(char *s, t_status *stat)
 		decide_word(s[i], &sq, &wq);
                 if (!sq)
                 {
-                    fprintf(stderr, "repl: %s\n", token_partial_repl(s, i, &close));
-                    in_sq = ft_strndup(s + 1 + i, close);
+                    part = token_partial_repl(s, i, &close);
+                    *token = part;
+                    if (part != NULL)
+                        fprintf(stderr, "repl: %s\n", part);
+                    if (!part)
+                        expand_utils(&part, stat);
                     break ;
-                    i += ft_strlen(in_sq);
                 }
 		i++;
 	}
