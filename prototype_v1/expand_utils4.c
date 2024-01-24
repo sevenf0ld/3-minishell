@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 14:34:58 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/01/24 14:36:23 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/24 16:13:47 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,21 +78,30 @@ char    *token_partial_repl(char *s, int i, int *close)
     char    *rep;
     char    *ret;
     char    *og;
+    rep = NULL;
+    int     start;
 
     // i to shift start of s and + 1 to skip the quote
     og = s + i;
+    start = 0;
     if (s[i] == 34)
         i += 1;
     *close = iterate_until_closing(og, s[i]);
     ext = ext_dollar(og);
     fprintf(stderr, "\x1b[41m EXT %s \x1b[m\n", ext);
-    fprintf(stderr, "\x1b[44m ORIGINAL %s \x1b[m\n", og);
     if (og[0] == 39)
         og  += 1;
-    rep = repl(og, ext, getenv(ext + 1), ft_strlen(s) - i + 1);
-    fprintf(stderr, "\x1b[43m REP %s \x1b[m\n", rep);
     fprintf(stderr, "\x1b[44m ORIGINAL %s \x1b[m\n", og);
-    ret = ft_substr(s, 0, i + 1);
+    fprintf(stderr, "\x1b[45m SUB %s \x1b[m\n", getenv(ext + 1));
+    rep = repl(og, ext, getenv(ext + 1), ft_strlen(og));
+    fprintf(stderr, "\x1b[43m REP %s \x1b[m\n", rep);
+    fprintf(stderr, "is it dollar %c\n", s[i]);
+    ret = ft_substr(s + start, 0, i + 1);
+    if (!ret)
+        ret = "";
+    if (s[i] == '$' || (s[i] == 34 && s[i + 1] == '$'))
+        ret = "";
+    fprintf(stderr, "\x1b[46m RET %s \x1b[m\n", ret);
     ret = ft_strjoin(ret, rep);
     return (ret);
 }
