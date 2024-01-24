@@ -170,7 +170,7 @@ arr=("ls -la | cat | grep -wn c > outfile"
     "wc << eof << hi | ls"
     )
 
-args=(
+args1=(
     "echo \$SHELL"
     "echo '\$SHELL'"
     'echo "$SHELL"'
@@ -211,7 +211,16 @@ args=(
     "echo ''\$USER''"
     "echo '''\$USER'''"
     "echo ''''\$USER''''"
+    )
+
+args=(
     "echo '\$USER'\$HOME\"\$PATH\""
+    "echo '\$HOME'\"\$PATH\"'\$HOME'"
+    "echo \"\$PATH\"'\$HOME'"
+    "echo '\$HOME'\"\$PATH\""
+    "echo '\$HOME'\$PATH'\$HOME'"
+    "echo \$PATH'\$HOME'"
+    "echo '\$HOME'\$PATH"
     )
 
 # create a variable with the name of the executable

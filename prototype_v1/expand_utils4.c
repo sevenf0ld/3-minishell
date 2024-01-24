@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 14:34:58 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/01/24 13:10:42 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/24 14:36:23 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,14 +77,21 @@ char    *token_partial_repl(char *s, int i, int *close)
     char    *ext;
     char    *rep;
     char    *ret;
+    char    *og;
 
     // i to shift start of s and + 1 to skip the quote
-    if ((s[i] == 34 && s[i + 1] == '$') || s[i] == '$')
+    og = s + i;
+    if (s[i] == 34)
         i += 1;
-    *close = iterate_until_closing(s + i, s[i]);
-    ext = ext_dollar(s + i);
+    *close = iterate_until_closing(og, s[i]);
+    ext = ext_dollar(og);
     fprintf(stderr, "\x1b[41m EXT %s \x1b[m\n", ext);
-    rep = repl(s + i, ext, getenv(ext + 1), ft_strlen(s) - i + 1);
+    fprintf(stderr, "\x1b[44m ORIGINAL %s \x1b[m\n", og);
+    if (og[0] == 39)
+        og  += 1;
+    rep = repl(og, ext, getenv(ext + 1), ft_strlen(s) - i + 1);
+    fprintf(stderr, "\x1b[43m REP %s \x1b[m\n", rep);
+    fprintf(stderr, "\x1b[44m ORIGINAL %s \x1b[m\n", og);
     ret = ft_substr(s, 0, i + 1);
     ret = ft_strjoin(ret, rep);
     return (ret);
