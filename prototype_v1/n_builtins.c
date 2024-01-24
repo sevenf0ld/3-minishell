@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/30 14:47:12 by folim             #+#    #+#             */
-/*   Updated: 2024/01/21 21:42:13 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/24 23:33:40 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,8 +72,11 @@ void	n_builtins_2(t_command **a, char **input, char *cmd, t_status *stat, t_comm
         (void) input;
         (void) stat;
 	t_command	*tmp;
+        char    **envp = malloc(sizeof(char *) * 2);
 
 	tmp = *a;
+        envp[1] = NULL;
+        envp[0] = ft_strjoin("TERM=", get_fvalue(tmp->env_var->fixed, "TERM"));
         all_pid->pid_c[tmp->pos] = fork();
 	if (all_pid->pid_c[tmp->pos] == -1)
 	{
@@ -86,7 +89,7 @@ void	n_builtins_2(t_command **a, char **input, char *cmd, t_status *stat, t_comm
                 redirect_command_io(*a);
 		if (!tmp->builtin)
                 {
-			execve(input[0], input, NULL);
+			execve(input[0], input, envp);
 		        stat->s_code = 127;
                 }
                 else if (!ft_strcmp(tmp->cmd, "echo"))
