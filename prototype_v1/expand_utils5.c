@@ -6,7 +6,7 @@
 /*   By: maiman-m <maiman-m@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 23:08:38 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/01/25 14:11:31 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/25 23:27:25 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,26 +26,16 @@ void	decide_word(char c, bool *sq, bool *wq)
 
 char    *ext_dollar(char *s)
 {
-    int i;
     int j;
     
-    i = 0;
     if (!s)
         return (NULL);
-    if (s[i] == 39)
-        i += 1;
-    while (s[i] != '\0')
-    {
-        if (s[i] == '$')
-            break ;
-        i++;
-    }
-    j = i + 1;
+    j = 1;
     while (s[j] != '\0')
     {
         if (s[j] == 39 || s[j] == 34 || s[j] == '$')
             break ;
         j++;
     }
-    return (ft_substr(s, i, j - i));
+    return (ft_substr(s, 0, j));
 }
