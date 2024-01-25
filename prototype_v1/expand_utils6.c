@@ -1,19 +1,4 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   expand_utils4.c                                    :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/23 14:34:58 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/01/26 03:26:08 by maiman-m         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
 
-#include "mini.h"
-// -----------------------------------------//
-//      LOCAL-STATIC                        //
-// -----------------------------------------//
 int ecd_helper(char *str, int *i, int *j, int *in_quote)
 {
     if (str[*i] == 39)
@@ -85,7 +70,7 @@ static void eu_set_front(char **hd_front, char *str)
 {
     int i;
 
-    check_free_and_null(hd_front);
+    //check_free_and_null(hd_front);
     i = 0;
     while (str[i] != 36 && str[i])
         i++;
@@ -93,11 +78,10 @@ static void eu_set_front(char **hd_front, char *str)
         *hd_front = ft_strndup(str, i - 1);
 }
 
-
 static void se_insert_expandable(char *str, int *i, int *j, char **holder)
 {
    *j = *i + 1;
-   while (ft_isalnum(str[*j] && str[*j])
+   while (ft_isalnum(str[*j]) && str[*j])
        (*j)++;
    *holder = ft_substr(str, *i + 1, *j);
 }
@@ -107,6 +91,7 @@ static void se_insert_converted_exp(char *src, char **dst)
     *dst = getenv(src);
     if (!*dst)
         *dst = "";
+    fprintf(stderr, "{%s: %s}\n", src, *dst);
 }
 
 static void eu_set_expand(char **hd_expand, char *str)
@@ -115,30 +100,30 @@ static void eu_set_expand(char **hd_expand, char *str)
     int     j;
     char    *holder;
 
-    check_free_and_null(hd_expand);
+    //check_free_and_null(hd_expand);
     i = 0;
     while (str[i] != 36 && str[i])
         i++;
     if (str[i] == 36)
         se_insert_expandable(str, &i, &j, &holder);
-    se_insert_converted_exp(hd_expand, holder); 
-    check_free_and_null(&holder);
+    se_insert_converted_exp(holder, hd_expand); 
+    //check_free_and_null(&holder);
 }
 
 static void eu_set_back(char **hd_back, char *str)
 {
     int i;
 
-    check_free_and_null(hd_back);
+    //check_free_and_null(hd_back);
     i = 0;
     while (str[i] != 36 && str[i])
         i++;
     if (str[i] == 36)
     {
         i++;
-        while (ft_isalnum(str[i] && str[i])
+        while (ft_isalnum(str[i] && str[i]))
             i++;
-        *hd_back = ft_substr(str, i, ft_strlen(str) - 1)
+        *hd_back = ft_substr(str, i, strlen(str) - 1);
     }
 }
 
@@ -146,28 +131,29 @@ static void mj_join_and_free(char **holder, char **new)
 {
     char    *tmp;
 
-    tmp = ft_strdup(*holder);
-    check_free_and_null(holder);
+    tmp = strdup(*holder);
+    //check_free_and_null(holder);
     *holder = ft_strjoin(tmp, *new);
-    check_free_and_null(&tmp);
+    //check_free_and_null(&tmp);
 }
 
 static void eu_multi_join(char **s0, char **s1, char **s2, char **s3)
 {
+    fprintf(stderr, "FRONT %s\nEXPAND %s\nBACK %s\n", *s1, *s2, *s3);
     char    *holder;
 
     holder = strdup("");
     mj_join_and_free(&holder, s1);
     mj_join_and_free(&holder, s2);
     mj_join_and_free(&holder, s3);
-    check_free_and_null(s0);
+    //check_free_and_null(s0);
     *s0 = strdup(holder);
-    check_free_and_null(holder);
+    //check_free_and_null(&holder);
 }
 
 static void free_and_dup(char **str, char *holder)
 {
-    check_free_and_null(str);
+    //check_free_and_null(str);
     *str = strdup(holder);
 }
 
@@ -191,8 +177,8 @@ void    expand_utils(char **str)
 
     if (*str == NULL)
         return ;
-    holder = ft_strdup(*str);
-    ini_holders(hd_front, hd_expand, hd_back);
+    holder = strdup(*str);
+    ini_holders(&hd_front, &hd_expand, &hd_back);
     while (eu_contain_dollar(holder))
     {
         eu_set_front(&hd_front, holder);
@@ -200,7 +186,9 @@ void    expand_utils(char **str)
         eu_set_back(&hd_back, holder);
         eu_multi_join(&holder, &hd_front, &hd_expand, &hd_back);
     }
-    if (ft_strcmp(*str, holder) != 0)
+    if (strcmp(*str, holder) != 0)
         free_and_dup(str, holder);
-    free_holders(&holder, &hd_front, &hd_expand, &hd_back);
+    //free_holders(&holder, &hd_front, &hd_expand, &hd_back);
+    (void) free_holders;
 }
+
