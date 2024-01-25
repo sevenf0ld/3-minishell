@@ -6,64 +6,90 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 14:34:58 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/01/26 00:08:36 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/26 02:21:35 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mini.h"
-
-char    *till_dollar(char *s, int i)
+// -----------------------------------------//
+//      LOCAL-STATIC                        //
+// -----------------------------------------//
+int ecd_helper(char *str, int *i, int *j, int *in_quote)
 {
-    char    *ret;
-    
-    if (i == 0)
-        return (NULL);
-    ret = ft_strndup(s, i);
-    //fprintf(stderr, "up to %s\n", ret);
-    return (ret);
-}
-
-char    *sub_exp(char *s)
-{
-    char    *ext;
-    char    *sub;
-    
-    ext = NULL;
-    sub = NULL;
-    ext = ft_strtrim(ext_dollar(s), "   ");
-    sub = getenv(ext + 1);
-    if (!sub)
-        sub = "";
-    //fprintf(stderr, "{%s: %s}\n", ext, sub);
-    return (sub);
-}
-
-/*
-   anything that is not in single quotes and has a dollar sign, expand
-*/
-char    *expand_utils(char *s)
-{
-    fprintf(stderr, "%s\n", s);
-
-    int i;
-    bool    sq;
-    bool    wq;
-
-    i = 0;
-    sq = false;
-    wq = false;
-    while (s[i] != '\0')
+    if (str[*i] == 39)
+        in_quote[1] *= -1;
+    if (str[*i] == 39
+        && str[*i + 1] 
+        && str[*i + 1] != str[*i]
+        && in_quote[0] != 1
+        && in_quote[1] == 1)
     {
-        if (s[i] == 39 || s[i] == 34)
-            decide_word(s[i], &sq, &wq);
-        if (s[i] == '$' && !sq)
+        *j = *i + 1;
+        while (str[*j] != str[*i] && str[*j])
+            (*j)++;
+        if (str[*j] == str[*i])
         {
-            sub_exp(s + i);
-            till_dollar(s, i);
-            fprintf(stderr, "join %s\n", ft_strjoin(till_dollar(s, i), sub_exp(s + i)));
+            *i = *j;
+            in_quote[1] *= -1;
         }
-        i++;
+        if (str[*j] == '\0')
+            return (1);
     }
+    return (0);
+}
 
-    return (NULL);
+// ascii 36 = '$', 39 = single_quote, 34 = double_quote
+// in_quote[0] = double_quote, in_quote[1] = single_quote
+int eu_contain_dollar(char  *str)
+{
+    int i;
+    int j;
+    int in_quote[2];
+
+    if (str == NULL)
+        return (0);
+    i = 0;
+    in_quote[0] = -1;
+    in_quote[1] = -1;
+    while (str[i] != '\0')
+    {
+        if (str[i] == 34)
+           in_quote[0] *= -1; 
+        if (ecd_helper(str, &i, &j, in_quote))
+            break ;
+        if (str[i] == 36 && str[i + 1] && ft_isalnum(str[i + 1]))
+            return (1);
+        if (str[i] != '\0')
+            i++;
+    }
+    return (0);
+}
+
+// -----------------------------------------//
+//      MAIN                                //
+// -----------------------------------------//
+void    expand_utils(char *str)
+{
+    printf("RESULT %i\n", eu_contain_dollar(str));
+    /*
+    char    *holder;
+    char    *hd_front;
+    char    *hd_expand;
+    char    *hd_back;
+
+    if (str == NULL)
+        return ;
+    holder = ft_strdup(str);
+    while (eu_contain_dollar(holder))
+    {
+        eu_set_front(hd_front);
+        eu_set_expand(hd_expand);
+        eu_set_back(hd_back);
+        holder = eu_multi_join(hd_front, hd_expand, hd_back);
+    }
+    if (ft_strcmp(str, holder) != 0)
+        free_and_dup(str, holder);
+    if (holder || hd_front || hd_expand || hd_back)
+        free_holders(holder, hd_front, hd_expand, hd_back);
+    */
 }
