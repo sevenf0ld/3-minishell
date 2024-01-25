@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 14:34:58 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/01/25 19:43:11 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/25 22:18:55 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,29 @@ static int iterate_until_closing(char *s, char c)
     return i;
 }
 
+void    shift_start(char *og, char *sub, char *ret, int *shift)
+{
+    (void) shift;
+    int i;
+    char    *tmp;
+
+    i = 0;
+    while (og[i] != '\0' && ret[i] != '\0' && og[i] == ret[i] && og[i] != '\"')
+        i++;
+    tmp = ret + i + ft_strlen(sub);
+    while (tmp[i] != '\0' && tmp[i] != '$' && tmp[i] != '\"')
+        i++;
+    tmp = ret + i + ft_strlen(sub);
+    *shift = i + ft_strlen(sub);
+    fprintf(stderr, "OG %s\n", og);
+    fprintf(stderr, "EXT %s\n", sub);
+    fprintf(stderr, "RET %s\n", ret);
+    fprintf(stderr, "TMP %s\n", tmp);
+}
+
 static char    *partial_norme(char *ext, char *s, int start, int i, int *shift)
 {
+    (void) shift;
     char    *sub;
     char    *og;
     char    *rep;
@@ -42,8 +63,6 @@ static char    *partial_norme(char *ext, char *s, int start, int i, int *shift)
     if (!ft_strcmp(ext, sub))
         return (NULL);
     rep = repl(og, ext, sub, ft_strlen(og));
-    //*shift = ft_strlen(sub) - ft_strlen(og);
-    *shift = ft_strlen(sub);
     int end = i;
     if (end != 0)
         end += 1;
@@ -51,6 +70,8 @@ static char    *partial_norme(char *ext, char *s, int start, int i, int *shift)
     if (!ret || s[i] == '$' || (s[i] == 34 && s[i + 1] == '$'))
         ret = "";
     ret = ft_strjoin(ret, rep);
+    //fprintf(stderr, "RET %s\n", ret);
+    shift_start(s, sub, ret, shift);
     return (ret);
 }
 
@@ -88,9 +109,9 @@ char    *expand_utils(char **token, int call)
 
         exp_params = (t_exp_norme){0};
         exp_params.s = *token;
-        i = 0;
+        i = call;
         shift = 0;
-        //fprintf(stderr, "START %s\n", exp_params.s);
+        fprintf(stderr, "\x1b[43mSTART %s\n\x1b[m", exp_params.s + i);
         if (!exp_params.s)
             return (*token);
         while (exp_params.s[i] != '\0' && ft_strchr(exp_params.s, '$'))
@@ -99,6 +120,7 @@ char    *expand_utils(char **token, int call)
                 if (!exp_params.sq && exp_params.s[i + 1] != '\0' && exp_params.s[i + 1] != 39)
                 {
                     exp_params.part = token_partial_repl(exp_params.s, i, &exp_params.close, &shift);
+                    call = shift;
                     exp_params.s = exp_params.part;
                     //fprintf(stderr, "TOKEN 1 %s\n", *token);
                     if (!exp_params.s)
@@ -107,7 +129,7 @@ char    *expand_utils(char **token, int call)
                     //fprintf(stderr, "TOKEN 2 %s\n", *token);
                     //fprintf(stderr, "\x1b[43m PARAM part as is %s \x1b[m\n", exp_params.part);
                     //fprintf(stderr, "END %s\n", exp_params.s);
-                    return (expand_utils(&exp_params.s, 0));
+                    return (expand_utils(&exp_params.s, call));
                     return (*token);
                 }
 		i++;
