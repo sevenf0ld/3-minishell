@@ -6,7 +6,7 @@
 /*   By: maiman-m <maiman-m@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 23:08:38 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/01/24 23:09:20 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/25 14:11:31 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@ char    *ext_dollar(char *s)
     int j;
     
     i = 0;
+    if (!s)
+        return (NULL);
     if (s[i] == 39)
         i += 1;
     while (s[i] != '\0')

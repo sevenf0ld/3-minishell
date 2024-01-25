@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 14:34:58 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/01/25 12:00:34 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/25 14:17:49 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,15 +63,28 @@ static char    *token_partial_repl(char *s, int i, int *close)
     return (partial_norme(ft_strtrim(ext, "     "), s, start, i));
 }
 
-void	expand_utils(char **token, char *s, int call)
+char    *utils(char *partial, char *og, int call)
+{
+    fprintf(stderr, "UTILS: partial (%s) and og (%s)\n", partial, og);
+    if (call == 0)
+        og = partial;
+    if (!ft_strcmp(og, partial))
+        return (NULL);
+    og = repl(og, partial, getenv(partial + 1), ft_strlen(og));
+    fprintf(stderr, "OG: %s\n", og);
+    return og;
+}
+
+void	expand_utils(char **token, int call)
 {
     (void) call;
-    (void) s;
         t_exp_norme exp_params;
         int i;
+        char    *s;
 
         exp_params = (t_exp_norme){0};
         exp_params.s = *token;
+        s = NULL;
         i = 0;
         while (exp_params.s[i] != '\0')
 	{
@@ -79,21 +92,37 @@ void	expand_utils(char **token, char *s, int call)
                 if (!exp_params.sq && exp_params.s[i + 1] != '\0' && exp_params.s[i + 1] != 39)
                 {
                     exp_params.part = token_partial_repl(exp_params.s, i, &exp_params.close);
-                    fprintf(stderr, "\x1b[43m PARAM part as is %s \x1b[m\n", exp_params.part);
-                    fprintf(stderr, "\x1b[42m *TOKEN as is %s \x1b[m\n", *token);
-                    if (call == 0)    
+                    utils(exp_params.part, *token, call);
+                    if (call == 0)
                         *token = exp_params.part;
-                    s = *token;
-                    fprintf(stderr, "\x1b[42m *TOKEN replaced %s \x1b[m\n", *token);
-                    exp_params.part += 1;
-                    while (exp_params.part[0] != '\0' && exp_params.part[0] != '$')
-                        exp_params.part += 1;
-                    fprintf(stderr, "\x1b[43m PARAM part shifted %s \x1b[m\n", exp_params.part);
-                    fprintf(stderr, "\x1b[44m UNCHANGED S %s \x1b[m\n", s);
-                    //expand_utils(&exp_params.part, s, 1);
-                    int moved = ft_strlen(*token) - ft_strlen(exp_params.part);
-                    fprintf(stderr, "\x1b[44m SHIFTED S %s \x1b[m\n", s + moved);
-                    expand_utils(&exp_params.part, s, 1);
+                    call += 1;
+                    fprintf(stderr, "\x1b[43m PARAM part as is %s \x1b[m\n", exp_params.part);
+                    s = ext_dollar(exp_params.part);
+                    if (s != NULL && ft_strlen(s) != 0)
+                    {
+                        *token = exp_params.part;
+                        fprintf(stderr, "\x1b[44m DOLLAR %s \x1b[m\n", s);
+                        exp_params.part = utils(s, *token, call);
+                        *token = exp_params.part;
+                    }
+                    fprintf(stderr, "\x1b[43m PARAM part as is %s \x1b[m\n", exp_params.part);
+                    s = ext_dollar(exp_params.part);
+                    if (s != NULL && ft_strlen(s) != 0)
+                    {
+                        *token = exp_params.part;
+                        fprintf(stderr, "\x1b[44m DOLLAR %s \x1b[m\n", s);
+                        exp_params.part = utils(s, *token, call);
+                        *token = exp_params.part;
+                    }
+                    fprintf(stderr, "\x1b[43m PARAM part as is %s \x1b[m\n", exp_params.part);
+                    s = ext_dollar(exp_params.part);
+                    if (s != NULL && ft_strlen(s) != 0)
+                    {
+                        *token = exp_params.part;
+                        fprintf(stderr, "\x1b[44m DOLLAR %s \x1b[m\n", s);
+                        exp_params.part = utils(s, *token, call);
+                        *token = exp_params.part;
+                    }
                     return ;
                 }
 		i++;
