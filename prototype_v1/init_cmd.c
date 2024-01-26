@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 20:48:46 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/01/22 14:55:23 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/26 13:44:51 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ static void cmd_new_norme_two(t_command *node)
 	node->read_end = -1;
 	node->write_end = -1;
 	node->og = NULL;
+        node->builtin = is_builtin(node->cmd);
 	node->last_out = INT_MIN;
 	node->exec = true;
 }

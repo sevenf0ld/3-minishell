@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:25:31 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/01/24 22:28:47 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/26 12:31:22 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,15 +135,16 @@ void    categorize(t_token **tokens)
  * ╳ remove quotes
  * group the command groups
  */
-int lexer(char *pipeline, t_token **tokens, t_status *stat)
+//int lexer(char *pipeline, t_token **tokens, t_status *stat)
+int lexer(char *pipeline, t_mini *mi)
 {
-        tokenizer(ft_strtrim(pipeline, "    "), tokens, stat);
-        double_ll_convert(tokens);
-        categorize(tokens);
-        split_tokens(tokens);
-        if (reject(tokens, stat))
+        tokenizer(ft_strtrim(pipeline, "    "), &mi->tok, mi->stat);
+        double_ll_convert(&mi->tok);
+        categorize(&mi->tok);
+        split_tokens(&mi->tok);
+        if (reject(&mi->tok, mi->stat))
             return (1);
-	expansion(tokens);
-        group_cmds(tokens);
+	expansion(&mi->tok);
+        group_cmds(&mi->tok);
         return (0);
 }

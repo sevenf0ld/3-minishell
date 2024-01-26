@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 12:07:39 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/01/21 22:32:40 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/26 13:27:58 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,20 +156,22 @@ static void update_cmd_exec(t_command **cmds)
     }
 }
 
-t_pipe *parser(t_token **tokens, t_command **cmds, t_env *envs, t_status *stat)
+//t_pipe *parser(t_token **tokens, t_command **cmds, t_env *envs, t_status *stat)
+void    parser(t_mini *mi)
 {
-	t_pipe	*pipes;
+        t_token     **tokens;
+	t_command   **cmds;
 
-	pipes = NULL;
-	cmd_init(tokens, cmds, envs, stat);
+        tokens = &mi->tok;
+	cmds = &mi->cmd;
+	cmd_init(tokens, cmds, mi->env, mi->stat);
         update_cmd_exec(cmds);
 	double_ll_convert2(cmds);
 	complete_cmd(tokens, cmds);
 	if (*cmds != NULL && (*cmds)->size > 1)
 	{
-		pipe_init(&pipes, (*cmds)->size - 1, stat);
-		double_ll_convert3(&pipes);
-		assign_pipe_ends(*cmds, pipes);
+		pipe_init(&mi->pip, (*cmds)->size - 1, mi->stat);
+		double_ll_convert3(&mi->pip);
+		assign_pipe_ends(*cmds, mi->pip);
 	}
-        return (pipes);
 }

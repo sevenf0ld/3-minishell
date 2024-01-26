@@ -6,7 +6,7 @@
 /*   By: maiman-m <maiman-m@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 15:54:11 by maiman-m          #+#    #+#             */
-/*   Updated: 2023/12/20 10:35:08 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/26 12:03:38 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 13
 # endif
-# include <stdlib.h>
 # include <stddef.h>
+# include <stdlib.h>
 # include <unistd.h>
 # include <limits.h>
 # include <stdint.h>

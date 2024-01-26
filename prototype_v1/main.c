@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:19:04 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/01/25 22:21:02 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/26 13:47:00 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,35 +51,77 @@ int	all_whitespace(char *s)
     return (1);
 }
 
-/*
+void    no_fork_exec(t_mini *mi, t_command *cur)
+{
+    t_fixed     *fix;
+
+    fix = mi->fix;
+    if (!ft_strcmp(cur->cmd, "unset") && cur->size == 1)
+        b_unset(cur, &fix);
+    if (!ft_strcmp(cur->cmd, "exit") && cur->size == 1)
+        b_exit(cur);
+    if (!ft_strcmp(cur->cmd, "export") && cur->size == 1)
+        b_export(cur, &fix);
+    if (!ft_strcmp(cur->cmd, "cd") && cur->size == 1)
+        b_cd(cur);
+}
+
+void    restore_io(t_mini *mi)
+{
+    t_restore   *res;
+    t_status    *stat;
+
+    res = mi->res;
+    stat = mi->stat;
+    dup2_err(res->std_out, STDOUT_FILENO, stat);
+    dup2_err(res->std_in, STDIN_FILENO, stat);
+}
+
+void    execution(t_mini *mi)
+{
+    t_command   *cur;
+    t_status    *stat;
+    t_pid       *pid;
+
+    cur = mi->cmd;
+    stat = mi->stat;
+    pid = mi->pid;
+    while (cur != NULL)
+    {
+        if (cur->num_l > 0)
+            heredoc(cur, stat);
+        redirect_command_io(cur);
+        n_builtins(&cur, stat, &mi->cmd, pid);
+        no_fork_exec(mi, cur);
+        restore_io(mi);
+        unlink("tmp_lim.txt");
+        cur = cur->next;
+    }
+}
+
+void    close_and_wait(t_mini *mi)
+{
+    int     wstat;
+    pid_t   child;
+
+    last_close(&mi->pip);
+    child = wait(&wstat);
+    while (child > 0)
+        child = wait(&wstat);
+}
+
 int	main(int argc, char **argv, char **envp)
 {
-	char		*pipeline;
-	t_token		*tok;
-	t_command	*cmd;
-	t_env		*env;
-	t_fixed		*fix;
-	t_status	*stat;
-        t_restore       *res;
-        t_pid           *pid;
+	char    *pipeline;
+        t_mini  mini;
 
-	pipeline = NULL;
-	tok = NULL;
-	cmd = NULL;
-	env = NULL;
-	fix = NULL;
-        stat = NULL;
-        res = NULL;
-        pid = NULL;
-	stat = malloc_err(sizeof(t_status), stat);
-	stat->s_code = 0;
-        res = malloc_err(sizeof(t_restore), stat);
-        res->std_out = -1;
-        res->std_in = -1;
-	(void) argc;
 	(void) argv;
-	f_init(&fix, envp, stat);
-	env_init(&env, envp, fix, stat);
+        if (argc != 1)
+            ft_putendl_fd("minishell does not take in arguments", 2);
+	pipeline = NULL;
+        mini = (t_mini){0};
+        mini_init_stat_res(&mini);
+        mini_init_environ(&mini, envp);
 	while (1)
 	{
 		pipeline = readline("prompt> ");
@@ -91,60 +133,14 @@ int	main(int argc, char **argv, char **envp)
 		else if (ft_strcmp(pipeline, "") && !all_whitespace(pipeline))
 		{
 			add_history(pipeline);
-			if (lexer(pipeline, &tok, stat))
+			if (lexer(pipeline, &mini))
                             continue ;
-                        res->std_out = dup_err(STDOUT_FILENO, stat);
-			res->std_in = dup_err(STDIN_FILENO, stat);
-			t_pipe *pipes = parser(&tok, &cmd, env, stat);
-                        pid = malloc_err(sizeof(t_pid), stat);
-                        pid->pid_c = malloc_err(sizeof(pid_t) * cmd->size, stat);
-			for (t_command *cur = cmd; cur != NULL; cur = cur->next)
-			{
-                                if (cur->num_l > 0)
-                                    heredoc(cur, stat);
-				redirect_command_io(cur);
-                                n_builtins(&cur, stat, &cmd, pid);
-                                if (!ft_strcmp(cur->cmd, "unset") && cur->size == 1)
-                                    b_unset(cur, &fix);
-                                if (!ft_strcmp(cur->cmd, "exit") && cur->size == 1)
-                                    b_exit(cur);
-                                if (!ft_strcmp(cur->cmd, "export") && cur->size == 1)
-                                    b_export(cur, &fix);
-                                if (!ft_strcmp(cur->cmd, "cd") && cur->size == 1)
-                                    b_cd(cur);
-                                dup2_err(res->std_out, STDOUT_FILENO, stat);
-			        dup2_err(res->std_in, STDIN_FILENO, stat);
-                                unlink("tmp_lim.txt");
-                        }
-                        last_close(&pipes);
-                        int wstat = 0;
-                        pid_t c = wait(&wstat);
-                        while (c > 0)
-                            c = wait(&wstat);
+                        mini.res->std_out = dup_err(STDOUT_FILENO, mini.stat);
+			mini.res->std_in = dup_err(STDIN_FILENO, mini.stat);
+			parser(&mini);
+                        mini_init_pid(&mini);
+                        execution(&mini);
+                        close_and_wait(&mini);
                 } 
         }
-}
-*/
-
-int	main(int argc, char **argv)
-{
-	t_token		*tok;
-	t_command	*cmd;
-	t_env		*env;
-	t_status	*stat;
-	tok = NULL;
-	cmd = NULL;
-	env = NULL;
-        stat = NULL;
-	stat = malloc_err(sizeof(t_status), stat);
-	stat->s_code = 0;
-	if (argc != 2)
-		return (1);
-	if (lexer(argv[1], &tok, stat))
-            return (1);
-        char	*type[] = {"PIPE", "OUT_RE", "IN_RE", "CMD", "ARGS", "FILN", "LIM", "HD", "ADD", "ANON"};
-	for (t_token *dl = tok; dl != NULL; dl = dl->next)
-	    fprintf(stderr, "[%s] is a [%s]. expand? \x1b[32m%s\x1b[m\n", dl->token, type[dl->symbol], dl->exp?"true":"false");
-        (void) cmd;
-        (void) env;
 }

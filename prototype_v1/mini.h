@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:20:01 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/01/26 01:07:54 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/26 13:28:05 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,6 +133,19 @@ typedef struct  s_pid
     pid_t       *pid_c;
 }               t_pid;
 
+typedef struct s_mini
+{
+    t_sym       *sym;
+    t_token     *tok;
+    t_command   *cmd;
+    t_pipe      *pip;
+    t_env       *env;
+    t_fixed     *fix;
+    t_status    *stat;
+    t_restore   *res;
+    t_pid       *pid;
+}               t_mini;
+
 typedef struct s_cmd_norme
 {
 	int		i;
@@ -209,6 +222,11 @@ typedef struct s_repl_norme
 bool            is_builtin(char *cmd);
 int             all_whitespace(char *s);
 
+//init_mini.h
+void            mini_init_stat_res(t_mini *mi);
+void            mini_init_environ(t_mini *mi, char **envp);
+void            mini_init_pid(t_mini *mi);
+
 /*	TOKENIZER	*/
 //tokenizer.c
 void            within_alongside_quotes(t_token_norme *token_params, char *s, char mode);
@@ -234,7 +252,8 @@ t_pipe		*double_ll_convert3(t_pipe **lst);
 //lexer.c
 void		categorize_symbol(t_token **tokens);
 void		categorize(t_token **tokens);
-int             lexer(char *pipeline, t_token **tokens, t_status *stat);
+//int             lexer(char *pipeline, t_token **tokens, t_status *stat);
+int             lexer(char *pipeline, t_mini *mi);
 
 //split.c
 void            split_tokens(t_token **tokens);
@@ -268,7 +287,7 @@ int             unterminated_quotes(t_token *t_node, t_status *stat);
 void		expansion(t_token **tokens);
 
 //expand_utils4.c
-void            expand_utils(char *token);
+void            expand_utils(char **token);
 
 //expand_utils5.c
 void            decide_word(char c, bool *sq, bool *wq);
@@ -285,7 +304,8 @@ void		group_cmds(t_token **tokens);
 void		init_multi_a(t_token **tokens, t_command *c_node);
 void		init_multi_l(t_token **tokens, t_command *c_node);
 void		complete_cmd(t_token **tokens, t_command **cmds);
-t_pipe          *parser(t_token **tokens, t_command **cmds, t_env *envs, t_status *stat);
+//t_pipe          *parser(t_token **tokens, t_command **cmds, t_env *envs, t_status *stat);
+void            parser(t_mini *mi);
 
 //init_cmd.c
 t_command	*cmd_new(char *cmd, int n, t_env *envs, t_status *stat);

@@ -6,7 +6,7 @@
 #    By: folim <folim@student.42kl.edu.my>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/15 12:21:40 by maiman-m          #+#    #+#              #
-#    Updated: 2024/01/26 01:10:04 by maiman-m         ###   ########.fr        #
+#    Updated: 2024/01/26 12:02:26 by maiman-m         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@ CC = clang
 
 # CFLAGS = -Wall -Wextra -Werror -fsanitize=address -g3
 
-CFLAGS = -Wall -Wextra -Werror -g3 -Wno-unused-variable
+CFLAGS = -Wall -Wextra -Werror -g3
 
 # CPPFLAGS = -I include -I libft/include
 
@@ -34,7 +34,7 @@ LDFLAGS = -Llibft -lft -lreadline -L/goinfre/folim/.brew/opt/readline/lib -I/goi
 
 # SRCS = $(addprefix src/, $(SOURCE))
 
-SRCS = main.c tokenizer.c tokenizer_utils.c init_token.c d_ll_convert.c \
+SRCS = main.c init_mini.c tokenizer.c tokenizer_utils.c init_token.c d_ll_convert.c \
 	   lexer.c split.c split_utils.c split_utils2.c reject.c reject_utils.c reject_utils2.c expand.c expand_utils4.c expand_utils5.c replace.c lexer_utils.c \
 	   parser.c init_cmd.c init_cmd_utils.c init_cmd_utils2.c init_pipe.c parser_utils.c parser_utils2.c parser_utils3.c parser_utils4.c \
            heredoc.c \
