@@ -6,92 +6,83 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:26:59 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/01/20 05:56:05 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/22 18:01:07 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mini.h"
 
-/*
- * | > <
- */
-int	is_delim(char a)
+static void	tokenizer_norme_init(t_token_norme *token_params, char *s)
 {
-	if (a == 124 || a == 62 || a == 60)
-		return (1);
-	return (0);
+	token_params->s = s;
+	token_params->sq = false;
+	token_params->wq = false;
+	token_params->i = 0;
+	token_params->close = 0;
+	token_params->check = 0;
+	token_params->start = -1;
+	token_params->count = 0;
+	token_params->sub = NULL;
 }
 
-static int iterate_until_closing(char *s, char c)
+
+static void	decide_quote(char c, bool *sq, bool *wq)
 {
-    int i = 0;
-    while (s[i] != '\0')
-    {
-        if (s[i] == c)
-        {
-            return i;
-        }
-        i++;
-    }
-    return i;
+	if (c == 39 && !*sq && !*wq)
+		*sq = true;
+	else if (c == 34 && !*wq && !*sq)
+		*wq = true;
+	else if (c == 39 && *sq && !*wq)
+		*sq = false;
+	else if (c == 34 && *wq && !*sq)
+		*wq = false;
 }
 
-static void    decide_quote(char c, bool *sq, bool *wq)
+static int	iterate_until_closing(char *s, char c)
 {
-    if (c == 39 && !*sq && !*wq)
-        *sq = true;
-    else if (c == 34 && !*wq && !*sq)
-        *wq = true;
-    else if (c == 39 && *sq && !*wq)
-        *sq = false;
-    else if (c == 34 && *wq && !*sq)
-        *wq = false;
+	int	i;
+
+	i = 0;
+	while (s[i] != '\0')
+	{
+		if (s[i] == c)
+			return (i);
+		i++;
+	}
+	return (i);
 }
 
-void    new_split(char *str, t_token **tokens, t_status *stat)
+void	within_alongside_quotes(t_token_norme *token_params, char *s, char mode)
 {
-    bool sq = false;
-    bool wq = false;
-    int i = 0;
-    int close = 0;
-    int check;
-    int start = -1;
-    int count = 0;
-    char *sub = NULL;
-    while (str[i] != '\0')
-    {
-        if (str[i] == 39 || str[i] == 34)
-        {
-            decide_quote(str[i], &sq, &wq);
-            if (sq || wq)
-                close = iterate_until_closing(str, str[i]);
-        }
-        if (str[i] != 32 || (str[i] == 32 && (sq || wq)))
-        {
-            close += 1;
-            if (start == -1)
-                start = i;
-        }
-        else if (str[i] == 32 && (!wq && !sq))
-        {
-            // skip the spaces outside of quotes
-            if (check != close)
-            {
-                check = close;
-                continue ;
-            }
-            sub = ft_substr(str, start, (size_t) i - start);
-            if (!all_whitespace(sub))
-                token_init(sub, tokens, stat, count);
-            else
-            {
-                free(sub);
-                sub = NULL;
-            }
-            count += 1;
-            start = -1;
-        }
-        i++;
-    }
-    token_init(ft_substr(str, start, (size_t) i - start), tokens, stat, count);
+	if (mode == 'w')
+	{
+		decide_quote(s[token_params->i], &token_params->sq, &token_params->wq);
+		if (token_params->sq || token_params->wq)
+			token_params->close = iterate_until_closing(s, s[token_params->i]);
+	}
+	else if (mode == 'a')
+	{
+		token_params->close += 1;
+		if (token_params->start == -1)
+			token_params->start = token_params->i;
+	}
+}
+
+void    tokenizer(char *s, t_token **tokens, t_status *stat)
+{
+        t_token_norme	token_params;
+
+	token_params = (t_token_norme){0};
+	token_params.tokens = tokens;
+	token_params.stat = stat;
+	tokenizer_norme_init(&token_params, s);
+	while (s[token_params.i] != '\0')
+	{
+		if (decide_chunk(&token_params, s))
+			continue ;
+		(token_params.i)++;
+	}
+	token_init(ft_substr(s, token_params.start,
+			(size_t)(token_params.i) - (token_params.start)),
+		tokens, stat, token_params.count);
 }

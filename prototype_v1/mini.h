@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:20:01 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/01/21 22:36:40 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/26 13:28:05 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,15 +133,108 @@ typedef struct  s_pid
     pid_t       *pid_c;
 }               t_pid;
 
+typedef struct s_mini
+{
+    t_sym       *sym;
+    t_token     *tok;
+    t_command   *cmd;
+    t_pipe      *pip;
+    t_env       *env;
+    t_fixed     *fix;
+    t_status    *stat;
+    t_restore   *res;
+    t_pid       *pid;
+}               t_mini;
+
+typedef struct s_cmd_norme
+{
+	int		i;
+	t_token		*tmp;
+	t_token		*first;
+	t_token		**tokens;
+	t_command	**cmds;
+	t_env		*envs;
+	t_status	*stat;
+}			t_cmd_norme;
+
+typedef struct s_fildes_norme
+{
+	t_token		**tokens;
+	t_command	*c_node;
+	t_token		*tmp;
+	int			i;
+	int			j;
+	int			k;
+}	t_fildes_norme;
+
+typedef struct	s_unterm_norme
+{
+	int	i;
+	bool	sq;
+	bool	wq;
+	char	*s;
+	t_token	*tmp;
+}				t_unterm_norme;
+
+typedef struct s_token_norme
+{
+	char		*s;
+	t_token		**tokens;
+	t_status	*stat;
+	bool		sq;
+	bool		wq;
+	int		i;
+	int		close;
+	int		check;
+	int		start;
+	int		count;
+	char		*sub;
+}				t_token_norme;
+
+typedef struct s_exp_norme
+{
+        bool    sq;
+        bool    wq;
+        int     close;
+        char    *part;
+        char    *s;
+}			t_exp_norme;
+
+typedef struct s_repl_norme
+{
+	char	*og;
+	char	*displace;
+	char	*sub;
+	int		len_og;
+	int		len_dis;
+	int		len_sub;
+	int		occur;
+	char	*shift;
+	char	*extracted;
+	int		diff;
+	char	*ret;
+	char	*tmp;
+	int		moved;
+}	t_repl_norme;
+
 /*      MINISHELL       */
 //main.c
 bool            is_builtin(char *cmd);
 int             all_whitespace(char *s);
 
+//init_mini.h
+void            mini_init_stat_res(t_mini *mi);
+void            mini_init_environ(t_mini *mi, char **envp);
+void            mini_init_pid(t_mini *mi);
+
 /*	TOKENIZER	*/
 //tokenizer.c
+void            within_alongside_quotes(t_token_norme *token_params, char *s, char mode);
+void            tokenizer(char *str, t_token **tokens, t_status *stat);
+
+//tokenizer_utils.c
 int		is_delim(char a);
-void            new_split(char *str, t_token **tokens, t_status *stat);
+int             decide_chunk(t_token_norme *token_params, char *s);
 
 //init_token.c
 t_token		*token_new(char *token, t_status *stat);
@@ -159,16 +252,49 @@ t_pipe		*double_ll_convert3(t_pipe **lst);
 //lexer.c
 void		categorize_symbol(t_token **tokens);
 void		categorize(t_token **tokens);
-int             lexer(char *pipeline, t_token **tokens, t_status *stat);
+//int             lexer(char *pipeline, t_token **tokens, t_status *stat);
+int             lexer(char *pipeline, t_mini *mi);
 
 //split.c
-void            split_tokens(t_token **tokens, t_status *stat);
+void            split_tokens(t_token **tokens);
+
+//split_utils.c
+bool            is_pipe(char a);
+bool            is_in_re(char a);
+bool            is_out_re(char a);
+bool            is_add(char *s, size_t i, size_t len);
+bool            is_hd(char *s, size_t i, size_t len);
+
+//split_utils2.c
+void            slot_in_token(t_token *t_node, char *s, t_token **tokens, char *r);
+size_t          delim_present(char *s);
+void            separate_delim(char *s, t_token *t_node, t_token **tokens);
 
 //reject.c
+int             pipe_first_last(t_token *t_node, t_status *stat);
+int             multi_pipe(t_token *t_node, t_status *stat);
 int             reject(t_token **tokens, t_status *stat);
 
-//lexer_utils3.c
-void		expansion(t_token **lst, t_status *stat);
+//reject_utils.c
+int             multi_redir(t_token *t_node, t_status *stat);
+int             redir_as_end(t_token *t_node, t_status *stat);
+int             multi_adjacent_symbols(t_token *t_node, t_status *stat);
+
+//reject_utils2.c
+int             unterminated_quotes(t_token *t_node, t_status *stat);
+
+//expand.c
+void		expansion(t_token **tokens);
+
+//expand_utils4.c
+void            expand_utils(char **token);
+
+//expand_utils5.c
+void            decide_word(char c, bool *sq, bool *wq);
+char		*ext_dollar(char *s);
+
+//replace.c
+char            *repl(char *og, char *displace, char *sub, int len_og);
 
 //lexer_utils.c
 void		group_cmds(t_token **tokens);
@@ -178,14 +304,24 @@ void		group_cmds(t_token **tokens);
 void		init_multi_a(t_token **tokens, t_command *c_node);
 void		init_multi_l(t_token **tokens, t_command *c_node);
 void		complete_cmd(t_token **tokens, t_command **cmds);
-t_pipe          *parser(t_token **tokens, t_command **cmds, t_env *envs, t_status *stat);
+//t_pipe          *parser(t_token **tokens, t_command **cmds, t_env *envs, t_status *stat);
+void            parser(t_mini *mi);
 
 //init_cmd.c
 t_command	*cmd_new(char *cmd, int n, t_env *envs, t_status *stat);
 void		cmd_add_back(t_command **head, t_command *node);
-void		cmd_init(t_token **tokens, t_command **cmds, t_env *envs, t_status *stat);
 t_command	*cmd_last(t_command *head);
 int		cmd_size(t_command *head);
+void            set_cmd_size(t_command *head);
+
+//init_cmd_utils.c
+void		cmd_init(t_token **tokens, t_command **cmds, t_env *envs, t_status *stat);
+
+//init_cmd_utils2.c
+void            cmd_add_back(t_command **head, t_command *node);
+t_command	*cmd_last(t_command *head);
+int	        cmd_size(t_command *head);
+void            set_cmd_size(t_command *head);
 
 //init_pipe.c
 t_pipe		*pipe_new(int n, t_status *stat);

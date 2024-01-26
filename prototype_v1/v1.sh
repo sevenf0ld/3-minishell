@@ -166,6 +166,8 @@ arr=("ls -la | cat | grep -wn c > outfile"
     "wc -l v1.sh |export z y x| wc"
     # spaces between command groups
     "ls    | wc"
+    # heredoc with pipe
+    "wc << eof << hi | ls"
     )
 
 args=(
@@ -188,6 +190,7 @@ args=(
     'echo $USER'
     "echo \$MADi\$HATTER"
     "echo \$"
+    "echo '\$'"
     "echo \"\$\""
     'echo $'
     "echo '\$SHELL' '\$SHELL'"
@@ -198,11 +201,32 @@ args=(
     'echo abc"$HOME"'
     'echo abc"$HOME"hh'
     'echo abc"$HOME                      "hh'
+    "echo abc'      \$HOME                      'hh"
     "echo '\"\$PATH\"'"
     "echo '\"\$PATH\" \"\$USER\"'"
     "echo \"'\$PATH'\""
     "echo \"'\$PATH' '\$USER'\""
     "echo \"'\$PATH' '\$USER'\" \"'\$PATH' '\$USER'\""
+    "echo '\$USER'"
+    "echo ''\$USER''"
+    "echo '''\$USER'''"
+    "echo ''''\$USER''''"
+    "echo '\$USER'\$HOME\"\$PATH\""
+    "echo '\$HOME'\"\$PATH\"'\$HOME'"
+    "echo \"\$PATH\"'\$HOME'"
+    "echo '\$HOME'\"\$PATH\""
+    "echo '\$HOME'\$PATH'\$HOME'"
+    "echo \$PATH'\$HOME'"
+    "echo '\$HOME'\$PATH"
+    "echo '\$HOME'\$HOME"
+    "echo '''\$USER'''"
+    "echo ''''\$USER''''"
+    "echo \"\$SHELL\$SHELL\" \"\$HOME\"\"\$PATH\""
+    "echo \"\$SHELL\$SHELL\" \"\$HOME\"\$PATH"
+    "echo \"\$SHELL\$SHELL\" \$HOME\$PATH"
+    "echo \"\$SHELL\$SHELL\" \$HOME\$PATH\$SHLVL\$USER"
+    "echo \$HOME\$PATH\$SHLVL\$USER"
+    "echo '\$HOME''\$PATH'"
     )
 
 # create a variable with the name of the executable
