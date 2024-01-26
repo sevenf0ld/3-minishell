@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 14:17:08 by folim             #+#    #+#             */
-/*   Updated: 2024/01/26 12:03:56 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/26 15:31:39 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,13 +20,9 @@ static void	expand_env_var(t_token **tokens)
 	while (tmp != NULL)
 	{
 		if (tmp->exp && ft_strcmp(tmp->token, "$?") != 0)
-                {
-                    //fprintf(stderr, "TMP->TOKEN 1 %s\n", tmp->token);
 		    expand_utils(&tmp->token);
-                    //fprintf(stderr, "TMP->TOKEN 2 %s\n", tmp->token);
-                }
 		else if (tmp->exp && !ft_strcmp(tmp->token, "$?"))
-			tmp->token = ft_lltoa(tmp->stat->s_code);
+		    tmp->token = ft_lltoa(tmp->stat->s_code);
 		tmp = tmp->next;
 	}
 }

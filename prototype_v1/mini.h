@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:20:01 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/01/26 13:28:05 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/26 15:03:37 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -286,12 +286,23 @@ int             unterminated_quotes(t_token *t_node, t_status *stat);
 //expand.c
 void		expansion(t_token **tokens);
 
-//expand_utils4.c
+//expand_utils.c
 void            expand_utils(char **token);
 
+//expand_utils2.c
+void            set_bfr_exp(char **bfr, char *ref);
+void            set_aft_exp(char **aft, char *ref);
+
+//expand_utils3.c
+void            sub_exp(char **sub, char *ref);
+
+//expand_utils4.c
+void            check_free_and_null(char **s);
+void            reform_word(char **s, char **t, char **u, char **v);
+void            till_dollar(char *s, int *i, int *in_quote);
+
 //expand_utils5.c
-void            decide_word(char c, bool *sq, bool *wq);
-char		*ext_dollar(char *s);
+int             contain_expandable(char *s);
 
 //replace.c
 char            *repl(char *og, char *displace, char *sub, int len_og);
