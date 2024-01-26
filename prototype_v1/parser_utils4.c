@@ -6,7 +6,7 @@
 /*   By: maiman-m <maiman-m@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/21 22:26:39 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/01/21 23:01:32 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/26 16:35:25 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,7 @@ static void	init_enclosed_extract(char **ext, int size)
 	int	i;
 
 	i = -1;
-        //*ext = ft_calloc((size_t) size, sizeof(char));
-        //return ;
-        //make it safe
 	*ext = malloc(sizeof(char) * (size + 1));
-        return ;
 	if (!*ext)
 		return ;
 	while (++i < size)

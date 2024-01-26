@@ -5,37 +5,60 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: maiman-m <maiman-m@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/24 23:08:38 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/01/25 23:27:25 by maiman-m         ###   ########.fr       */
+/*   Created: 2024/01/26 14:51:20 by maiman-m          #+#    #+#             */
+/*   Updated: 2024/01/26 16:16:08 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mini.h"
 
-void	decide_word(char c, bool *sq, bool *wq)
+static int	contain_exp_norme(char *ref, int *i, int *j, int *q)
 {
-	if (c == 39 && !*sq && !*wq)
-		*sq = true;
-	else if (c == 34 && !*wq && !*sq)
-		*wq = true;
-	else if (c == 39 && *sq && !*wq)
-		*sq = false;
-	else if (c == 34 && *wq && !*sq)
-		*wq = false;
+	if (ref[*i] == 39)
+		q[1] *= -1;
+	if (ref[*i] == 39
+		&& ref[*i + 1]
+		&& ref[*i + 1] != ref[*i]
+		&& q[0] != 1
+		&& q[1] == 1)
+	{
+		*j = *i + 1;
+		while (ref[*j] != ref[*i] && ref[*j])
+			(*j)++;
+		if (ref[*j] == ref[*i])
+		{
+			*i = *j;
+			q[1] *= -1;
+		}
+		if (ref[*j] == '\0')
+			return (1);
+	}
+	return (0);
 }
 
-char    *ext_dollar(char *s)
+// ascii 36 = '$', 39 = single_quote, 34 = double_quote
+// q[0] = double_quote, q[1] = single_quote
+int	contain_expandable(char *ref)
 {
-    int j;
-    
-    if (!s)
-        return (NULL);
-    j = 1;
-    while (s[j] != '\0')
-    {
-        if (s[j] == 39 || s[j] == 34 || s[j] == '$')
-            break ;
-        j++;
-    }
-    return (ft_substr(s, 0, j));
+	int	i;
+	int	j;
+	int	q[2];
+
+	if (ref == NULL)
+		return (0);
+	i = 0;
+	q[0] = -1;
+	q[1] = -1;
+	while (ref[i] != '\0')
+	{
+		if (ref[i] == 34)
+			q[0] *= -1;
+		if (contain_exp_norme(ref, &i, &j, q))
+			break ;
+		if (ref[i] == 36 && ref[i + 1] && ft_isalnum(ref[i + 1]))
+			return (1);
+		if (ref[i] != '\0')
+			i++;
+	}
+	return (0);
 }
