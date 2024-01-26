@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:19:04 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/01/26 13:47:00 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/26 18:20:16 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,17 +81,16 @@ void    execution(t_mini *mi)
 {
     t_command   *cur;
     t_status    *stat;
-    t_pid       *pid;
 
     cur = mi->cmd;
     stat = mi->stat;
-    pid = mi->pid;
     while (cur != NULL)
     {
         if (cur->num_l > 0)
             heredoc(cur, stat);
         redirect_command_io(cur);
-        n_builtins(&cur, stat, &mi->cmd, pid);
+        //n_builtins(&cur, stat, &mi->cmd, pid);
+        fork_exec(cur, mi);
         no_fork_exec(mi, cur);
         restore_io(mi);
         unlink("tmp_lim.txt");
@@ -101,13 +100,23 @@ void    execution(t_mini *mi)
 
 void    close_and_wait(t_mini *mi)
 {
-    int     wstat;
-    pid_t   child;
+    int         wstat;
+    pid_t       child;
+    t_status    *stat;
 
     last_close(&mi->pip);
     child = wait(&wstat);
+    stat = mi->stat;
     while (child > 0)
+    {
+        if (WIFEXITED(wstat))
+            stat->s_code = WEXITSTATUS(wstat);
+        else if (WIFSIGNALED(wstat))
+            stat->s_code = WTERMSIG(wstat);
+        else if (WIFSTOPPED(wstat))
+            stat->s_code = WIFSTOPPED(wstat);
         child = wait(&wstat);
+    }
 }
 
 int	main(int argc, char **argv, char **envp)

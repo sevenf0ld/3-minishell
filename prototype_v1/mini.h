@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:20:01 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/01/26 15:03:37 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/26 19:17:47 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -358,7 +358,11 @@ void            heredoc(t_command *c_node, t_status *stat);
 
 /*	NON-BUILTINS EXECUTOR	*/
 //n_builtins.c
-void		n_builtins(t_command **a, t_status *stat, t_command **cmds, t_pid *all_pid);
+//void		n_builtins(t_command **a, t_status *stat, t_command **cmds, t_pid *all_pid);
+void            fork_exec(t_command *c_node, t_mini *mi);
+
+//n_builtins_utils.c
+int            mini_exec(t_command *c_node, t_mini *mi, char **envp);
 
 //concurrent.c
 void            close_unused_ends(t_command **cmds, int i);
@@ -417,6 +421,7 @@ int		dup_err(int old_fd, t_status *stat);
 int             redir_err(char *token, t_status *stat);
 int             symbols_err(t_status *stat);
 int             pipe_related_err(t_status *stat);
+int             path_err(char *cmd, int flag, t_status *stat);
 
 //free.c
 void		free_2d_arr(char **input);
