@@ -6,12 +6,15 @@
 /*   By: folim <folim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:20:01 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/01/26 19:17:47 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/27 08:43:32 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINI_H
 # define MINI_H
+# ifndef BUFFER_SIZE
+#  define BUFFER_SIZE 1000
+# endif
 
 # include "libft/include/libft.h"
 # include <readline/readline.h>
@@ -362,7 +365,14 @@ void            heredoc(t_command *c_node, t_status *stat);
 void            fork_exec(t_command *c_node, t_mini *mi);
 
 //n_builtins_utils.c
-int            mini_exec(t_command *c_node, t_mini *mi, char **envp);
+int             mini_exec(t_command *c_node, t_mini *mi, char **envp);
+
+//gnl.c
+char            *get_next_line(int fd);
+char            *read_and_store(char *store, int fd, char *buffer);
+char	        *extract_newline(char *store);
+char	        *update_store(char *store);
+int		look_for_nl(char *to_search);
 
 //concurrent.c
 void            close_unused_ends(t_command **cmds, int i);

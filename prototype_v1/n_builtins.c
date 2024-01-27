@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/30 14:47:12 by folim             #+#    #+#             */
-/*   Updated: 2024/01/26 19:15:41 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/27 10:14:17 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,17 +16,25 @@
    return 1 if absolute path
    return 0 if relative path
    return -1 on error
+   return 2 if ./
 */
 //n_builtins_3
 static int check_path_type(char *path_str)
 {
+    /*
 	if (!access(path_str, F_OK))
+        {
+                if (path_str[0] == '.' && path_str[1] == '/')
+                    return (2);
 		return (1);
+        }
+    */
+        if (path_str[0] == '.' && path_str[1] == '/')
+            return (2);
+        else if (!access(path_str, F_OK))
+            return (1);
 	else if (path_str[0] == '/')
-	{
-		printf("minishell: %s: No such file of directory\n", path_str);
-		return (-1);
-	}
+                return (-1);
 	return (0);
 }
 
@@ -59,6 +67,74 @@ static char    *get_path_str(char *path, char *cmd)
         i++;
     }
     return (NULL);
+}
+
+static void execute_non_exe(t_command *c_node, t_mini *mi)
+{
+    /*
+    int tmp_inre;
+    int tmp_outre;
+    int tmp_add;
+    char    *buf;
+    
+    if (!access(c_node->cmd, X_OK))
+    {
+        tmp_inre = lim_err(c_node->cmd + 2, O_RDONLY, 0444, mi->stat);
+        tmp_outre = lim_err("tmp_exe.txt", O_CREAT | O_WRONLY | O_TRUNC, 0777, mi->stat);
+        tmp_add = lim_err("tmp_exe.txt", O_CREAT | O_WRONLY | O_APPEND, 0666, mi->stat);
+        write(tmp_outre, "#!/usr/bin/bash\n\n", ft_strlen("#!/usr/bin/bash\n\n"));
+        buf = get_next_line(tmp_inre);
+        while (buf != NULL)
+        {
+            write(tmp_add, buf, ft_strlen(buf));
+            free(buf);
+            buf = get_next_line(tmp_inre);
+        }
+        free(buf);
+        //this will not work if we relaunch v1 and run non-builtins
+        //free_2d_arr(c_node->args);
+        //c_node->args = malloc(sizeof(char *) * 3);
+        //c_node->args[0] = "bash";
+        //c_node->args[1] = "tmp_exe.txt";
+        //c_node->args[2] = NULL;
+        //mini_exec(c_node, mi, NULL);
+        //rename the file to the original but the original will have the shebang statement
+        //pid_t tmp;
+        //tmp = fork();
+        //if (tmp == 0)
+        //{
+        //    char    **mv_tmp = malloc(sizeof(char *) * 4);
+        //    mv_tmp[0] = "/usr/bin/mv";
+        //    mv_tmp[1] = "tmp_exe.txt";
+        //    mv_tmp[2] = c_node->cmd + 2;
+        //    mv_tmp[3] = NULL;
+        //    execve(mv_tmp[0], mv_tmp, NULL);
+        //}
+        //execute the new file. use this or use bash (refer to 126.c)
+        //tmp = fork();
+        //if (tmp == 0)
+        //{
+        //    char    **exe_tmp = malloc(sizeof(char *) * 2);
+        //    exe_tmp[0] = c_node->cmd;
+        //    exe_tmp[1] = NULL;
+        //    execve(exe_tmp[0], exe_tmp, NULL);
+        //}
+    }
+    */
+    if (access(c_node->cmd + 2, F_OK) != 0)
+    {
+        ft_putstr_fd("minishell: ", 2);
+        report_err(c_node->cmd, 1, mi->stat);
+        mi->stat->s_code = 127;
+    }
+    else if (access(c_node->cmd + 2, X_OK) != 0)
+    {
+        ft_putstr_fd("minishell: ", 2);
+        report_err(c_node->cmd, 1, mi->stat);
+        mi->stat->s_code = 126;
+    }
+    else
+        ft_putendl_fd("not required by the subject", 2);
 }
 
 //n_builtins & n_builtins_1
@@ -97,12 +173,24 @@ void    fork_exec(t_command *c_node, t_mini *mi)
     abs_rel_path = check_path_type(c_node->cmd);
     path_str = NULL;
 
+    if (abs_rel_path == -1)
+        path_err(c_node->cmd, 1, mi->stat);
+    else if (abs_rel_path == 2)
+        execute_non_exe(c_node, mi);
+    else if (abs_rel_path == 1 || abs_rel_path == 0)
+    {
+        if (abs_rel_path == 1)
+            path_str = c_node->cmd;
+        execute_b_nb(c_node, mi, path_str);
+    }
+    /*
     if (abs_rel_path == 1)
         path_str = c_node->cmd;
     else if (abs_rel_path == 0)
         execute_b_nb(c_node, mi, path_str);
     else if (abs_rel_path == -1)
         return ;
+    */
 }
 
 /*
