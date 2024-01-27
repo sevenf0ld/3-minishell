@@ -6,7 +6,7 @@
 #    By: folim <folim@student.42kl.edu.my>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/15 12:21:40 by maiman-m          #+#    #+#              #
-#    Updated: 2024/01/26 15:09:54 by maiman-m         ###   ########.fr        #
+#    Updated: 2024/01/27 08:42:48 by maiman-m         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,7 +38,7 @@ SRCS = main.c init_mini.c tokenizer.c tokenizer_utils.c init_token.c d_ll_conver
 	   lexer.c split.c split_utils.c split_utils2.c reject.c reject_utils.c reject_utils2.c expand.c expand_utils.c expand_utils2.c expand_utils3.c expand_utils4.c expand_utils5.c replace.c lexer_utils.c \
 	   parser.c init_cmd.c init_cmd_utils.c init_cmd_utils2.c init_pipe.c parser_utils.c parser_utils2.c parser_utils3.c parser_utils4.c \
            heredoc.c \
-           n_builtins.c concurrent.c \
+           n_builtins.c n_builtins_utils.c gnl.c concurrent.c \
            signal.c \
 	   b_echo.c b_dir.c b_environ.c b_exit.c \
 	   init_env.c init_fixed.c fixed_utils.c \

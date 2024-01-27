@@ -6,7 +6,7 @@
 /*   By: maiman-m <maiman-m@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 14:40:45 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/01/26 15:31:20 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/27 14:07:47 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static void	free_and_dup(char **tokens, char *tmp)
 	check_free_and_null(&tmp);
 }
 
-void	expand_utils(char **tokens)
+void	expand_utils(char **tokens, t_mini *mi)
 {
 	char	*tmp;
 	char	*bfr_exp;
@@ -47,7 +47,7 @@ void	expand_utils(char **tokens)
 	while (contain_expandable(tmp))
 	{
 		set_bfr_exp(&bfr_exp, tmp);
-		sub_exp(&sub, tmp);
+		sub_exp(&sub, tmp, mi);
 		set_aft_exp(&aft_exp, tmp);
 		reform_word(&tmp, &bfr_exp, &sub, &aft_exp);
 		reset_exp(&bfr_exp, &sub, &aft_exp);

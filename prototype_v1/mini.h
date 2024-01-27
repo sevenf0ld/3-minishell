@@ -6,12 +6,15 @@
 /*   By: folim <folim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:20:01 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/01/26 15:03:37 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/27 12:51:30 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINI_H
 # define MINI_H
+# ifndef BUFFER_SIZE
+#  define BUFFER_SIZE 1000
+# endif
 
 # include "libft/include/libft.h"
 # include <readline/readline.h>
@@ -284,17 +287,17 @@ int             multi_adjacent_symbols(t_token *t_node, t_status *stat);
 int             unterminated_quotes(t_token *t_node, t_status *stat);
 
 //expand.c
-void		expansion(t_token **tokens);
+void		expansion(t_token **tokens, t_mini *mi);
 
 //expand_utils.c
-void            expand_utils(char **token);
+void            expand_utils(char **token, t_mini *mi);
 
 //expand_utils2.c
 void            set_bfr_exp(char **bfr, char *ref);
 void            set_aft_exp(char **aft, char *ref);
 
 //expand_utils3.c
-void            sub_exp(char **sub, char *ref);
+void            sub_exp(char **sub, char *ref, t_mini *mi);
 
 //expand_utils4.c
 void            check_free_and_null(char **s);
@@ -358,7 +361,18 @@ void            heredoc(t_command *c_node, t_status *stat);
 
 /*	NON-BUILTINS EXECUTOR	*/
 //n_builtins.c
-void		n_builtins(t_command **a, t_status *stat, t_command **cmds, t_pid *all_pid);
+//void		n_builtins(t_command **a, t_status *stat, t_command **cmds, t_pid *all_pid);
+void            fork_exec(t_command *c_node, t_mini *mi);
+
+//n_builtins_utils.c
+int             mini_exec(t_command *c_node, t_mini *mi, char **envp);
+
+//gnl.c
+char            *get_next_line(int fd);
+char            *read_and_store(char *store, int fd, char *buffer);
+char	        *extract_newline(char *store);
+char	        *update_store(char *store);
+int		look_for_nl(char *to_search);
 
 //concurrent.c
 void            close_unused_ends(t_command **cmds, int i);
@@ -417,6 +431,7 @@ int		dup_err(int old_fd, t_status *stat);
 int             redir_err(char *token, t_status *stat);
 int             symbols_err(t_status *stat);
 int             pipe_related_err(t_status *stat);
+int             path_err(char *cmd, int flag, t_status *stat);
 
 //free.c
 void		free_2d_arr(char **input);
