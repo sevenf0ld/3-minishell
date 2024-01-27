@@ -78,7 +78,7 @@ arr=("ls -la | cat | grep -wn c > outfile"
     "echo \$?"
     "echo '$example'"
     "echo '\$example'"
-    'echo "$example"'
+    'echo "\$example"'
     "echo \$example"
     "echo \$HOME"
     'echo $USER'
@@ -182,7 +182,16 @@ args=(
     "echo \"\$SHELL\" \"\$SHELL\" '\$SHELL'"
     "echo \"\$SHELL\" \"\$SHELL\" '\$SHELL' \"\$SHELL\""
     "echo \$?"
-    "echo '$example'"
+    "echo \$??"
+    "echo '\$?'"
+    "echo \"\$?\""
+    'echo $?'
+    "echo \$?'\$HOME'"
+    "echo \$??\$USER"
+    "echo '\$?'"
+    "echo \"\$?\$SHELL\""
+    'echo $?'
+    "echo \$example"
     "echo '\$example'"
     'echo "$example"'
     "echo \$example"

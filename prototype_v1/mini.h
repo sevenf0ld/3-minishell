@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:20:01 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/01/27 08:43:32 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/27 12:51:30 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -287,17 +287,17 @@ int             multi_adjacent_symbols(t_token *t_node, t_status *stat);
 int             unterminated_quotes(t_token *t_node, t_status *stat);
 
 //expand.c
-void		expansion(t_token **tokens);
+void		expansion(t_token **tokens, t_mini *mi);
 
 //expand_utils.c
-void            expand_utils(char **token);
+void            expand_utils(char **token, t_mini *mi);
 
 //expand_utils2.c
 void            set_bfr_exp(char **bfr, char *ref);
 void            set_aft_exp(char **aft, char *ref);
 
 //expand_utils3.c
-void            sub_exp(char **sub, char *ref);
+void            sub_exp(char **sub, char *ref, t_mini *mi);
 
 //expand_utils4.c
 void            check_free_and_null(char **s);
