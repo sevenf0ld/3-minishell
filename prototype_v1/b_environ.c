@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/24 03:45:36 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/01/28 15:24:46 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/28 20:38:12 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,23 @@ static char	*get_key(char *exported)
 	return (ft_substr(exported, 0, i));
 }
 
+static int  valid_identifier(char *s)
+{
+    int i;
+
+    i = 0;
+    if (s[i] != '\0' && ft_isdigit(s[i]))
+        return (0);
+    i += 1;
+    while (s[i] != '\0' && ft_isalpha(s[i]))
+        i++;
+    while (s[i] != '\0' && ft_isalnum(s[i]))
+        i++;
+    if (s[i] != '\0' && !ft_isalnum(s[i]) && s[i] != 61)
+        return (0);
+    return (1);
+}
+
 void	b_export(t_command *c_node, t_fixed **f_node, t_mini *mi)
 {
 	t_fixed	*ftmp;
@@ -110,6 +127,14 @@ void	b_export(t_command *c_node, t_fixed **f_node, t_mini *mi)
 	{
 		ftmp = *f_node;
 		to_repl = NULL;
+                if (!valid_identifier(c_node->args[i]))
+                {
+			mi->stat->s_code = 1;
+			ft_putstr_fd("minishell: export: `", STDERR_FILENO);
+			ft_putstr_fd(c_node->args[i], STDERR_FILENO);
+			ft_putendl_fd("': not a valid identifier", STDERR_FILENO);
+			return ;
+                }
 		val = ft_strchr(c_node->args[i], '=');
 		key = get_key(c_node->args[i]);
 		while (ftmp != NULL)
