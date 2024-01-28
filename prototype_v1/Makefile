@@ -6,7 +6,7 @@
 #    By: folim <folim@student.42kl.edu.my>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/15 12:21:40 by maiman-m          #+#    #+#              #
-#    Updated: 2024/01/27 08:42:48 by maiman-m         ###   ########.fr        #
+#    Updated: 2024/01/28 11:26:00 by maiman-m         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,23 +14,13 @@ PROG_NAME = v1
 
 CC = clang
 
-# CFLAGS = -Wall -Wextra -Werror -fsanitize=address -g3
-
 CFLAGS = -Wall -Wextra -Werror -g3
-
-# CPPFLAGS = -I include -I libft/include
 
 CPPFLAGS = -I/libft/include -I/mini.h
 
-# LDFLAGS = -Llibft -lft -lreadline -L/usr/local/opt/readline/lib -I/usr/local/opt/readline/include
+LDFLAGS = -Llibft 
 
-LDFLAGS = -Llibft -lft -lreadline -L/goinfre/folim/.brew/opt/readline/lib -I/goinfre/folim/.brew/opt/readline/include #for rl_replace_line
-
-# LDFLAGS = -Llibft -lft -lreadline -I/usr/local/opt/readline/include
-
-# LDFLAGS = -Llibft -lft -lreadline
-
-# SOURCE =
+LDLIBS = -lft -lreadline
 
 # SRCS = $(addprefix src/, $(SOURCE))
 
@@ -44,14 +34,13 @@ SRCS = main.c init_mini.c tokenizer.c tokenizer_utils.c init_token.c d_ll_conver
 	   init_env.c init_fixed.c fixed_utils.c \
 	   err_handling.c free.c
 	   
-
 OBJS = $(SRCS:.c=.o)
 
-#all: $(PROG_NAME)
+all: $(PROG_NAME)
 
 $(PROG_NAME): $(OBJS)
 	cd libft && $(MAKE)
-	$(CC) $^ $(CPPFLAGS) $(LDFLAGS) -o $(PROG_NAME)
+	$(CC) $^ $(CPPFLAGS) $(LDFLAGS) $(LDLIBS) -o $(PROG_NAME)
 
 clean:
 	cd libft && $(MAKE) clean
@@ -62,6 +51,6 @@ fclean: clean
 	cd libft && $(MAKE) fclean
 	rm -rf $(PROG_NAME)
 
-re: fclean all $(PROG_NAME)
+re: fclean all
 
 .PHONY: all clean fclean re
