@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:19:04 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/01/27 14:28:40 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/28 10:44:19 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,7 +126,7 @@ int	main(int argc, char **argv, char **envp)
 
 	(void) argv;
         if (argc != 1)
-            ft_putendl_fd("minishell does not take in arguments", 2);
+            ft_putendl_fd("minishell does not take in arguments", STDERR_FILENO);
 	pipeline = NULL;
         mini = (t_mini){0};
         mini_init_stat_res(&mini);

@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/30 14:47:12 by folim             #+#    #+#             */
-/*   Updated: 2024/01/27 10:14:17 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/28 10:44:31 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,7 +134,7 @@ static void execute_non_exe(t_command *c_node, t_mini *mi)
         mi->stat->s_code = 126;
     }
     else
-        ft_putendl_fd("not required by the subject", 2);
+        ft_putendl_fd("not required by the subject", STDERR_FILENO);
 }
 
 //n_builtins & n_builtins_1
