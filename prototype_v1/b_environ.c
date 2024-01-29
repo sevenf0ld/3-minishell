@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/24 03:45:36 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/01/28 20:38:12 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/29 19:01:00 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,44 +32,45 @@ void	b_env(t_command *c_node, t_fixed **f_node, t_mini *mi)
 	mi->stat->s_code = 0;
 }
 
-void	b_unset(t_command *c_node, t_fixed **f_node, t_mini *mi)
+//static void    b_unset_norme(t_fixed **f_node, char *to_rm)
+static void    b_unset_norme(t_fixed *f_node, char *to_rm)
 {
 	t_fixed	*ftmp;
 	t_fixed	*to_free;
-	int		i;
-	int		len;
 
-	i = -1;
-	if (c_node->num_a == 0)
+        //ftmp = *f_node;
+        ftmp = f_node;
+        if (!ft_strcmp(ftmp->fkey, to_rm))
+            *f_node = *ftmp->fnext;
+        //ftmp = *f_node;
+        ftmp = f_node;
+        while (ftmp->fnext != NULL)
+        {
+                if (!ft_strcmp(ftmp->fnext->fkey, to_rm))
+                {
+                        to_free = ftmp->fnext;
+                        ftmp->fnext = ftmp->fnext->fnext;
+                        free(to_free->fkey);
+                        to_free->fkey = NULL;
+                        free(to_free);
+                        to_free = NULL;
+                        if (!ftmp->fnext)
+                                break ;
+                }
+                ftmp = ftmp->fnext;
+        }
+}
+
+void	b_unset(t_command *c_node, t_fixed **f_node, t_mini *mi)
+{
+	int		i;
+
+	i = 0;
+        (void) f_node;
+	if (c_node->num_a == 1)
 		return ;
 	while (++i < c_node->num_a)
-	{
-		ftmp = *f_node;
-		while (ftmp->fnext != NULL)
-		{
-			if (!ft_strcmp(ftmp->fnext->fkey, c_node->args[i]))
-			{
-				to_free = ftmp->fnext;
-				ftmp->fnext = ftmp->fnext->fnext;
-				free(to_free->fkey);
-				to_free->fkey = NULL;
-				free(to_free);
-				to_free = NULL;
-				if (!ftmp->fnext)
-					break ;
-			}
-			ftmp = ftmp->fnext;
-		}
-		len = ft_strlen(c_node->args[i]);
-		if (!ft_isalnum(c_node->args[i][len - 1]) && c_node->args[i][len] == '\0')
-		{
-			mi->stat->s_code = 1;
-			ft_putstr_fd("minishell: unset: `", STDERR_FILENO);
-			ft_putstr_fd(c_node->args[0], STDERR_FILENO);
-			ft_putendl_fd("': not a valid identifier", STDERR_FILENO);
-			return ;
-		}
-	}
+                b_unset_norme(mi->fix, c_node->args[i]);
 }
 
 static char	*get_key(char *exported)
