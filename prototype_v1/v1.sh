@@ -6,7 +6,7 @@ blue='\033[0;34m'
 none='\033[m'
 
 # create an array of cmd line arguments
-arr=("ls -la | cat | grep -wn c > outfile"
+args=("ls -la | cat | grep -wn c > outfile"
     "ls -l -a | cat | grep -w -n c > outfile"
     "ls -l -a | cat | grep -w -n c >> outfile"
     "ls-la"
@@ -27,6 +27,7 @@ arr=("ls -la | cat | grep -wn c > outfile"
     "< main.c ls -l >> outfile | cat | ls"
     "< infile ls -l | grep one > outfile"
     "< main.c ls -l | grep one > outfile"
+    "> outone.txt cat main.c"
     "cat *.c | grep | -wn token"
     "cat | cat | ls"
     "< infile ls -l | wc -l > outfile"
@@ -168,9 +169,13 @@ arr=("ls -la | cat | grep -wn c > outfile"
     "ls    | wc"
     # heredoc with pipe
     "wc << eof << hi | ls"
+    "wc << eof << |"
+    "wc << >"
+    "wc -l main.c > outone.txt | cat"
+    "wc -l main.c > outone.txt >> outtwo.txt | ls"
     )
 
-args=(
+arr=(
     "echo \$SHELL"
     "echo '\$SHELL'"
     'echo "$SHELL"'
@@ -241,7 +246,7 @@ args=(
 # create a variable with the name of the executable
 exe="./v1"
 
-set -e
+# set -e
 
 # specify name of Makefile
 # make re -f Makefile

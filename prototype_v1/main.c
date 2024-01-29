@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:19:04 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/01/28 15:35:25 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/29 21:33:41 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,3 +161,34 @@ int	main(int argc, char **argv, char **envp)
                 } 
         }
 }
+
+/*
+int    main(int argc, char **argv, char **envp)
+{
+        t_mini  mini;
+        t_command *cmd;
+        t_token *tok;
+
+    (void) argv;
+    (void) cmd;
+        mini = (t_mini){0};
+        mini_init_stat_res(&mini);
+        mini_init_environ(&mini, envp);
+
+    if (argc != 2)
+        return (1);
+    if (lexer(argv[1], &mini))
+            return (1);
+    tok = mini.tok; 
+    char	*type[] = {"PIPE", "OUT_RE", "IN_RE", "CMD", "ARGS", "FILN", "LIM", "HD", "ADD", "ANON"};
+    for (t_token *dl = tok; dl != NULL; dl = dl->next)
+	    fprintf(stderr, "[%s] is a [%s]. expand? \x1b[32m%s\x1b[m\n", dl->token, type[dl->symbol], dl->exp?"true":"false");
+    parser(&mini);
+    cmd = mini.cmd;
+    for (t_command *cur = cmd; cur != NULL; cur = cur->next)
+    {
+        for (int i = 0; cur->args[i]; i++)
+            fprintf(stderr, "::: %s\n", cur->args[i]);
+    }
+}
+*/
