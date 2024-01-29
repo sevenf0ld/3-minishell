@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:19:04 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/01/29 21:33:41 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/29 23:43:06 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,8 +139,10 @@ int	main(int argc, char **argv, char **envp)
         mini = (t_mini){0};
         mini_init_stat_res(&mini);
         mini_init_environ(&mini, envp);
-	while (1)
+        while (1)
 	{
+                signal(SIGQUIT, sig_qt_prnt);
+                signal(SIGINT, sig_int_prnt);
 		pipeline = readline("prompt> ");
 		if (!pipeline)
 		{
