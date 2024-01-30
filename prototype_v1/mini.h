@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:20:01 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/01/29 23:34:50 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/30 13:32:33 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -382,10 +382,10 @@ void            last_close(t_pipe **pipes);
 //signal.c
 //void sig_int(int signum);
 //void sig_quit(int signum);
-void            sig_int_prnt(int signum);
-void            sig_qt_prnt(int signum);
 void            sig_qt_chld(int signum);
+void            sig_int_prnt(int signum);
 void            sig_int_chld(int signum);
+void            sig_qt_prnt(int signum);
 
 /*	BUILTINS EXECUTOR	*/
 //b_echo.c

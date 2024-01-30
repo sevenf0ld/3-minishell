@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/10 16:11:59 by folim             #+#    #+#             */
-/*   Updated: 2024/01/29 23:41:32 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/30 13:10:49 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,5 +38,5 @@ void    sig_qt_prnt(int signum)
 {
     (void) signum;
     rl_redisplay();
-    ft_putstr_fd("  \b\b  \b\b", STDOUT_FILENO);
+    ft_putstr_fd("  \b\b", STDOUT_FILENO);
 }
