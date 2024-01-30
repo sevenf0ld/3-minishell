@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/30 14:47:12 by folim             #+#    #+#             */
-/*   Updated: 2024/01/27 10:14:17 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/29 23:09:04 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,7 +134,7 @@ static void execute_non_exe(t_command *c_node, t_mini *mi)
         mi->stat->s_code = 126;
     }
     else
-        ft_putendl_fd("not required by the subject", 2);
+        ft_putendl_fd("not required by the subject", STDERR_FILENO);
 }
 
 //n_builtins & n_builtins_1
@@ -155,7 +155,7 @@ static int execute_b_nb(t_command *c_node, t_mini *mi, char *path_str)
         if (!path)
             return (path_err(c_node->cmd, 1, mi->stat));
         path_str = get_path_str(path, c_node->cmd);
-        if (!path_str)
+        if (!path_str || !ft_strlen(c_node->cmd) )
             return (path_err(c_node->cmd, 2, mi->stat));
     }
     c_node->args[0] = path_str;
@@ -170,6 +170,7 @@ void    fork_exec(t_command *c_node, t_mini *mi)
 
     if (!c_node->exec)
         return ;
+    c_node->cmd = c_node->args[0];
     abs_rel_path = check_path_type(c_node->cmd);
     path_str = NULL;
 

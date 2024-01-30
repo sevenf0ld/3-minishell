@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:25:31 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/01/27 12:50:22 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/29 22:36:47 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ static void	categorize_params(t_token **tokens)
 	}
 }
 
-static void    categorize_cmd_args_norme(t_token *token)
+void    categorize_cmd_args_norme(t_token *token)
 {
     t_token *tmp;
     bool    cmd;
@@ -90,30 +90,17 @@ static void	categorize_cmd_w_args(t_token **tokens)
 	tmp = *tokens;
 	while (tmp != NULL)
 	{
-            if (tmp->symbol == ANON)
+            if (!tmp->prev && tmp->symbol == ANON)
+                tmp->symbol = CMD;
+            else if (tmp->prev != NULL && tmp->prev->symbol == PIPE)
+                tmp->symbol = CMD;
+            else if (tmp->prev != NULL && (tmp->prev->symbol == FILN || tmp->prev->symbol == LIM))
             {
-                if (tmp->prev == NULL)
+                if (tmp->symbol != PIPE)
                     tmp->symbol = CMD;
-                else if (tmp->prev != NULL)
-                {
-                    if (tmp->prev->symbol == PIPE || tmp->prev->symbol == LIM)
-                        tmp->symbol = CMD;
-                    else if (tmp->prev->symbol == FILN || tmp->prev->symbol == LIM)
-                        categorize_cmd_args_norme(tmp);
-                    else
-                        tmp->symbol = ARGS;
-                }
             }
-            else
-            {
-                if (tmp->prev != NULL)
-                {
-                    if (tmp->prev->symbol == PIPE || tmp->prev->symbol == LIM)
-                        tmp->symbol = CMD;
-                    else if (tmp->prev->symbol == FILN || tmp->prev->symbol == LIM)
-                        categorize_cmd_args_norme(tmp);
-                }
-            }
+            else if (tmp->symbol == ANON)
+                tmp->symbol = ARGS;
             tmp = tmp->next;
 	}
 }
@@ -142,6 +129,7 @@ int lexer(char *pipeline, t_mini *mi)
         double_ll_convert(&mi->tok);
         categorize(&mi->tok);
         split_tokens(&mi->tok);
+        //categorize(&mi->tok);
         if (reject(&mi->tok, mi->stat))
             return (1);
 	expansion(&mi->tok, mi);

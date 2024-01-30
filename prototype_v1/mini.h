@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:20:01 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/01/27 12:51:30 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/30 13:32:33 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -380,24 +380,28 @@ void            last_close(t_pipe **pipes);
 
 /*	SIGNAL HANDLER	*/
 //signal.c
-void sig_int(int signum);
-void sig_quit(int signum);
+//void sig_int(int signum);
+//void sig_quit(int signum);
+void            sig_qt_chld(int signum);
+void            sig_int_prnt(int signum);
+void            sig_int_chld(int signum);
+void            sig_qt_prnt(int signum);
 
 /*	BUILTINS EXECUTOR	*/
 //b_echo.c
-void		b_echo(t_command *c_node);
+void		b_echo(t_command *c_node, t_mini *mi);
 
 //b_dir.c
-char		*b_pwd(t_command *c_node, char mode);
-void		b_cd(t_command *c_node);
+char		*b_pwd(t_command *c_node, char mode, t_mini *mi);
+void		b_cd(t_command *c_node, t_mini *mi);
 
 //b_environ.c
-void		b_env(t_command *c_node, t_fixed **f_node);
-void		b_unset(t_command *c_node, t_fixed **f_node);
-void		b_export(t_command *c_node, t_fixed **f_node);
+void		b_env(t_command *c_node, t_fixed **f_node, t_mini *mi);
+void		b_unset(t_command *c_node, t_fixed **f_node, t_mini *mi);
+void		b_export(t_command *c_node, t_fixed **f_node, t_mini *mi);
 
 //b_exit.c
-void		b_exit(t_command *c_node);
+void		b_exit(t_command *c_node, t_mini *mi);
 
 /*	ENVIRONMENT VARIABLES HANDLER	*/
 //init_env.c
