@@ -6,7 +6,7 @@
 /*   By: maiman-m <maiman-m@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 14:51:20 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/01/27 12:44:00 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/28 10:31:07 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,8 @@ int	contain_expandable(char *ref)
 			return (1);
                 else if (ref[i] == 36 && ref[i + 1] && ref[i + 1] == 63)
                         return (2);
+                else if (ref[i] == 36 && ref[i + 1] && !ft_isalnum(ref[i + 1]))
+                        return (3);
 		if (ref[i] != '\0')
 			i++;
 	}

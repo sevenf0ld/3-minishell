@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:19:04 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/01/27 14:28:40 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/29 23:43:06 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,19 +51,21 @@ int	all_whitespace(char *s)
     return (1);
 }
 
-void    no_fork_exec(t_mini *mi, t_command *cur)
+void    no_fork_b_exec(t_mini *mi, t_command *cur)
 {
     t_fixed     *fix;
 
     fix = mi->fix;
+    if (!cur->cmd || !cur->builtin)
+        return ;
     if (!ft_strcmp(cur->cmd, "unset") && cur->size == 1)
-        b_unset(cur, &fix);
+        b_unset(cur, &fix, mi);
     if (!ft_strcmp(cur->cmd, "exit") && cur->size == 1)
-        b_exit(cur);
+        b_exit(cur, mi);
     if (!ft_strcmp(cur->cmd, "export") && cur->size == 1)
-        b_export(cur, &fix);
+        b_export(cur, &fix, mi);
     if (!ft_strcmp(cur->cmd, "cd") && cur->size == 1)
-        b_cd(cur);
+        b_cd(cur, mi);
 }
 
 void    restore_io(t_mini *mi)
@@ -91,7 +93,7 @@ void    execution(t_mini *mi)
         redirect_command_io(cur);
         //n_builtins(&cur, stat, &mi->cmd, pid);
         fork_exec(cur, mi);
-        no_fork_exec(mi, cur);
+        no_fork_b_exec(mi, cur);
         restore_io(mi);
         unlink("tmp_lim.txt");
         cur = cur->next;
@@ -103,18 +105,24 @@ void    close_and_wait(t_mini *mi)
     int         wstat;
     pid_t       child;
     t_status    *stat;
+    t_command   *last_cmd;
+    (void)      last_cmd;
 
     last_close(&mi->pip);
     child = wait(&wstat);
     stat = mi->stat;
+    last_cmd = cmd_last(mi->cmd);
     while (child > 0)
     {
-        if (WIFEXITED(wstat))
-            stat->s_code = WEXITSTATUS(wstat);
-        else if (WIFSIGNALED(wstat))
-            stat->s_code = WTERMSIG(wstat);
-        else if (WIFSTOPPED(wstat))
-            stat->s_code = WIFSTOPPED(wstat);
+        if (!last_cmd->builtin)
+        {
+            if (WIFEXITED(wstat))
+                stat->s_code = WEXITSTATUS(wstat);
+            else if (WIFSIGNALED(wstat))
+                stat->s_code = WTERMSIG(wstat);
+            else if (WIFSTOPPED(wstat))
+                stat->s_code = WIFSTOPPED(wstat);
+        }
         child = wait(&wstat);
     }
 }
@@ -126,13 +134,15 @@ int	main(int argc, char **argv, char **envp)
 
 	(void) argv;
         if (argc != 1)
-            ft_putendl_fd("minishell does not take in arguments", 2);
+            ft_putendl_fd("minishell does not take in arguments", STDERR_FILENO);
 	pipeline = NULL;
         mini = (t_mini){0};
         mini_init_stat_res(&mini);
         mini_init_environ(&mini, envp);
-	while (1)
+        while (1)
 	{
+                signal(SIGQUIT, sig_qt_prnt);
+                signal(SIGINT, sig_int_prnt);
 		pipeline = readline("prompt> ");
 		if (!pipeline)
 		{
@@ -153,3 +163,34 @@ int	main(int argc, char **argv, char **envp)
                 } 
         }
 }
+
+/*
+int    main(int argc, char **argv, char **envp)
+{
+        t_mini  mini;
+        t_command *cmd;
+        t_token *tok;
+
+    (void) argv;
+    (void) cmd;
+        mini = (t_mini){0};
+        mini_init_stat_res(&mini);
+        mini_init_environ(&mini, envp);
+
+    if (argc != 2)
+        return (1);
+    if (lexer(argv[1], &mini))
+            return (1);
+    tok = mini.tok; 
+    char	*type[] = {"PIPE", "OUT_RE", "IN_RE", "CMD", "ARGS", "FILN", "LIM", "HD", "ADD", "ANON"};
+    for (t_token *dl = tok; dl != NULL; dl = dl->next)
+	    fprintf(stderr, "[%s] is a [%s]. expand? \x1b[32m%s\x1b[m\n", dl->token, type[dl->symbol], dl->exp?"true":"false");
+    parser(&mini);
+    cmd = mini.cmd;
+    for (t_command *cur = cmd; cur != NULL; cur = cur->next)
+    {
+        for (int i = 0; cur->args[i]; i++)
+            fprintf(stderr, "::: %s\n", cur->args[i]);
+    }
+}
+*/

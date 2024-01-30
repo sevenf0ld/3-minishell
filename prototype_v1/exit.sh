@@ -43,3 +43,5 @@ echo -e "exit b 3: $blue $? $none"
 echo -e "exit 4 4: $blue $? $none"
 (exit c c)
 echo -e "exit c b: $blue $? $none"
+(exit 3 4 a)
+echo -e "exit 3 4 a: $blue $? $none"
