@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/17 14:26:35 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/01/22 15:19:18 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/31 14:11:04 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 void	set_multi_fildes_norme(t_fildes_norme *fildes_params, int i)
 {
+        rm(&fildes_params->tmp->token, 0);
 	if (i == 0)
 	{
 		if (fildes_params->tmp->prev->symbol == IN_RE)
