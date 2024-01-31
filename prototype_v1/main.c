@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:19:04 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/01/29 23:43:06 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/31 11:00:23 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,7 +156,27 @@ int	main(int argc, char **argv, char **envp)
                             continue ;
                         mini.res->std_out = dup_err(STDOUT_FILENO, mini.stat);
 			mini.res->std_in = dup_err(STDIN_FILENO, mini.stat);
-			parser(&mini);
+                        /* 
+                        t_token *tok;
+                        tok = mini.tok; 
+                        char	*type[] = {"PIPE", "OUT_RE", "IN_RE", "CMD", "ARGS", "FILN", "LIM", "HD", "ADD", "ANON"};
+                        for (t_token *dl = tok; dl != NULL; dl = dl->next)
+                                fprintf(stderr, "[%s] is a [%s]. expand? \x1b[32m%s\x1b[m\n", dl->token, type[dl->symbol], dl->exp?"true":"false");
+		
+                        continue ;
+                        */
+                        parser(&mini);
+                        /*
+                        t_command *cmd;
+                        cmd = mini.cmd;
+                        for (t_command *cur = cmd; cur != NULL; cur = cur->next)
+                        {
+                            for (int i = 0; cur->args[i]; i++)
+                                fprintf(stderr, "::: %s\n", cur->args[i]);
+                        }
+                        
+                        continue ;
+                        */
                         mini_init_pid(&mini);
                         execution(&mini);
                         close_and_wait(&mini);

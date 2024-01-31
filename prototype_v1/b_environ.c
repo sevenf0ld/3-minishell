@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/24 03:45:36 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/01/29 19:01:00 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/31 12:37:49 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,8 @@ static int  valid_identifier(char *s)
     int i;
 
     i = 0;
-    if (s[i] != '\0' && ft_isdigit(s[i]))
+    //if (s[i] != '\0' && ft_isdigit(s[i]))
+    if (s[i] != '\0' && !ft_isalpha(s[i]))
         return (0);
     i += 1;
     while (s[i] != '\0' && ft_isalpha(s[i]))

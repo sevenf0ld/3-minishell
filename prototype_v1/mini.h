@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:20:01 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/01/30 13:32:33 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/31 11:22:08 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -353,6 +353,7 @@ void		assign_pipe_ends(t_command *c_node, t_pipe *p_node);
 void		redirect_command_io(t_command *c_node);
 
 //parser_utils4.c
+int             contain_quotes(char *s);
 void            remove_quotes(char **args);
 
 /*      HEREDOC     */
