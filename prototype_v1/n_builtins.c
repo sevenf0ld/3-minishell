@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/30 14:47:12 by folim             #+#    #+#             */
-/*   Updated: 2024/01/29 23:09:04 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/02/01 11:43:10 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,12 +126,14 @@ static void execute_non_exe(t_command *c_node, t_mini *mi)
         ft_putstr_fd("minishell: ", 2);
         report_err(c_node->cmd, 1, mi->stat);
         mi->stat->s_code = 127;
+        c_node->retval = mi->stat->s_code;
     }
     else if (access(c_node->cmd + 2, X_OK) != 0)
     {
         ft_putstr_fd("minishell: ", 2);
         report_err(c_node->cmd, 1, mi->stat);
         mi->stat->s_code = 126;
+        c_node->retval = mi->stat->s_code;
     }
     else
         ft_putendl_fd("not required by the subject", STDERR_FILENO);
@@ -153,10 +155,10 @@ static int execute_b_nb(t_command *c_node, t_mini *mi, char *path_str)
     {
         path = get_fvalue(mi->fix, "PATH");
         if (!path)
-            return (path_err(c_node->cmd, 1, mi->stat));
+            return (path_err(c_node, 1, mi->stat));
         path_str = get_path_str(path, c_node->cmd);
         if (!path_str || !ft_strlen(c_node->cmd) )
-            return (path_err(c_node->cmd, 2, mi->stat));
+            return (path_err(c_node, 2, mi->stat));
     }
     c_node->args[0] = path_str;
     return (mini_exec(c_node, mi, envp));
@@ -175,7 +177,7 @@ void    fork_exec(t_command *c_node, t_mini *mi)
     path_str = NULL;
 
     if (abs_rel_path == -1)
-        path_err(c_node->cmd, 1, mi->stat);
+        path_err(c_node, 1, mi->stat);
     else if (abs_rel_path == 2)
         execute_non_exe(c_node, mi);
     else if (abs_rel_path == 1 || abs_rel_path == 0)

@@ -6,7 +6,7 @@
 /*   By: maiman-m <maiman-m@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 19:13:30 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/01/30 13:16:11 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/02/01 11:34:06 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 //n_builtins_2
 static void    mini_exec_nb(t_command *c_node, t_mini *mi)
 {
-    if (!ft_strcmp(c_node->cmd, "echo"))
+    if (!ft_strcmp(c_node->cmd, "echo") && c_node->size > 1)
         b_echo(c_node, mi);
     else if (!ft_strcmp(c_node->cmd, "pwd"))
         b_pwd(c_node, 'w', mi);
@@ -51,12 +51,15 @@ int mini_exec(t_command *c_node, t_mini *mi, char **envp)
         redirect_command_io(c_node);
         if (!c_node->builtin)
         {
+            c_node->retval = 0;
             execve(c_node->args[0], c_node->args, envp);
+            c_node->retval = 2;
             exit(EXIT_FAILURE);
         }
         else
         {
             mini_exec_nb(c_node, mi);
+            c_node->retval = mi->stat->s_code;
             exit(mi->stat->s_code);
         }
     }

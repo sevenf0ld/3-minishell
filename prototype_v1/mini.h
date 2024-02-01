@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:20:01 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/01/31 14:08:47 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/02/01 11:25:56 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,7 @@ typedef struct s_command
 	bool				builtin;
 	int				last_out;
         bool                            exec;
+        int                             retval;
 	struct s_env		*env_var;
 	struct s_status		*stat;
 	struct s_command	*prev;
@@ -148,6 +149,16 @@ typedef struct s_mini
     t_restore   *res;
     t_pid       *pid;
 }               t_mini;
+
+typedef struct s_sig
+{
+    bool    sig_qt;
+    bool    sig_int;
+    int     sig_code;
+}           t_sig;
+
+extern t_sig g_sig;
+
 
 typedef struct s_cmd_norme
 {
@@ -437,7 +448,7 @@ int		dup_err(int old_fd, t_status *stat);
 int             redir_err(char *token, t_status *stat);
 int             symbols_err(t_status *stat);
 int             pipe_related_err(t_status *stat);
-int             path_err(char *cmd, int flag, t_status *stat);
+int             path_err(t_command *c_node, int flag, t_status *stat);
 
 //free.c
 void		free_2d_arr(char **input);

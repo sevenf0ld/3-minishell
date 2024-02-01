@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:19:04 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/01/31 11:00:23 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/02/01 11:42:35 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,9 @@ void    no_fork_b_exec(t_mini *mi, t_command *cur)
         b_export(cur, &fix, mi);
     if (!ft_strcmp(cur->cmd, "cd") && cur->size == 1)
         b_cd(cur, mi);
+    if (!ft_strcmp(cur->cmd, "echo") && cur->size == 1)
+        b_echo(cur, mi);
+    cur->retval = mi->stat->s_code;
 }
 
 void    restore_io(t_mini *mi)
@@ -94,6 +97,7 @@ void    execution(t_mini *mi)
         //n_builtins(&cur, stat, &mi->cmd, pid);
         fork_exec(cur, mi);
         no_fork_b_exec(mi, cur);
+        fprintf(stderr, "retval of %s (index %i) is %i\n", cur->cmd, cur->pos, cur->retval);
         restore_io(mi);
         unlink("tmp_lim.txt");
         cur = cur->next;
@@ -106,26 +110,46 @@ void    close_and_wait(t_mini *mi)
     pid_t       child;
     t_status    *stat;
     t_command   *last_cmd;
-    (void)      last_cmd;
+    t_pid       *c;
+    int         i;
 
     last_close(&mi->pip);
     child = wait(&wstat);
     stat = mi->stat;
     last_cmd = cmd_last(mi->cmd);
+    c = mi->pid;
+    i = 0;
+    (void) child;
+    (void) stat;
+    (void)      last_cmd;
+    (void) c;
+    (void) i;
+    child = waitpid(c->pid_c[i], &wstat, 0);
+    i += 1;
+    int tmp = 0;
     while (child > 0)
     {
-        if (!last_cmd->builtin)
+        if (WIFEXITED(wstat))
         {
-            if (WIFEXITED(wstat))
-                stat->s_code = WEXITSTATUS(wstat);
-            else if (WIFSIGNALED(wstat))
-                stat->s_code = WTERMSIG(wstat);
-            else if (WIFSTOPPED(wstat))
-                stat->s_code = WIFSTOPPED(wstat);
+            tmp = WEXITSTATUS(wstat);
+            fprintf(stderr, "EXIT RETURNS %i\n", WEXITSTATUS(wstat));
         }
-        child = wait(&wstat);
+        else if (WIFSIGNALED(wstat))
+        {
+            if (WTERMSIG(wstat) == 2)
+                tmp = 130;
+            else if (WTERMSIG(wstat) == 3)
+                tmp = 0;
+            fprintf(stderr, "TERMSIG RETURNS %i\n", WTERMSIG(wstat));
+        }
+        child = waitpid(c->pid_c[i], &wstat, 0);
+        i++;
     }
+    if (!last_cmd->builtin && last_cmd->exec)
+        stat->s_code = tmp;
 }
+
+t_sig g_sig;
 
 int	main(int argc, char **argv, char **envp)
 {
@@ -141,6 +165,7 @@ int	main(int argc, char **argv, char **envp)
         mini_init_environ(&mini, envp);
         while (1)
 	{
+                g_sig = (t_sig){0};
                 signal(SIGQUIT, sig_qt_prnt);
                 signal(SIGINT, sig_int_prnt);
 		pipeline = readline("prompt> ");
@@ -163,7 +188,7 @@ int	main(int argc, char **argv, char **envp)
                         for (t_token *dl = tok; dl != NULL; dl = dl->next)
                                 fprintf(stderr, "[%s] is a [%s]. expand? \x1b[32m%s\x1b[m\n", dl->token, type[dl->symbol], dl->exp?"true":"false");
 		
-                        continue ;
+                        //continue ;
                         */
                         parser(&mini);
                         /*
@@ -171,6 +196,7 @@ int	main(int argc, char **argv, char **envp)
                         cmd = mini.cmd;
                         for (t_command *cur = cmd; cur != NULL; cur = cur->next)
                         {
+                            fprintf(stderr, "EXEC? \x1b[33m%s\x1b[m\n", cur->exec ? "true" : "false");
                             for (int i = 0; cur->args[i]; i++)
                                 fprintf(stderr, "::: %s\n", cur->args[i]);
                         }
@@ -180,7 +206,11 @@ int	main(int argc, char **argv, char **envp)
                         mini_init_pid(&mini);
                         execution(&mini);
                         close_and_wait(&mini);
-                } 
+                        //if (g_sig.sig_qt || g_sig.sig_int)
+                        //    mini.stat->s_code = g_sig.sig_code;
+                }
+                else
+                    mini.stat->s_code = 0;
         }
 }
 

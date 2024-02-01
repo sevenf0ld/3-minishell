@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 02:57:44 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/01/28 15:20:57 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/02/01 11:19:40 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ void	b_echo(t_command *c_node, t_mini *mi)
 
         if (c_node->num_a == 1)
         {
+            mi->stat->s_code = 0;
             printf("\n");
             return ;
         }
