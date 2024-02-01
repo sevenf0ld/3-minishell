@@ -17,7 +17,7 @@ static void	ext_dollar(char *ref, int *i, int *j, char **ext)
 	*j = *i + 1;
 	while (ft_isalnum(ref[*j]) && ref[*j])
 		(*j)++;
-	*ext = ft_substr(ref, *i + 1, *j - *i - 1);
+	*ext = ft_substr(ref, *i + 1, *j - *i - 1);//handled
         if (all_whitespace(*ext) && ft_strchr(ref, '?'))
         {
             *ext = ft_strdup("?");

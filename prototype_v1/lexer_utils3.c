@@ -127,7 +127,7 @@ static char    **init_expandables(char *to_expand, int len, t_status *stat)
 		j = i + 1;
 		while (j < len && to_expand[j] != '\0' && (to_expand[j] != '\"' && to_expand[j] != 32 && to_expand[j] != '$'))
 			j++;
-                displace = ft_substr(to_expand + i, 0, j - i);
+                displace = ft_substr(to_expand + i, 0, j - i);//t_token's
                 if (displace && *displace)
                     count += 1;
                 i += ft_strlen(displace);
@@ -157,7 +157,7 @@ static char    **get_exp_key(char *to_expand, int len, t_status *stat)
 		j = i + 1;
 		while (j < len && to_expand[j] != '\0' && (to_expand[j] != '\"' && to_expand[j] != 32 && to_expand[j] != '$'))
 			j++;
-                displace = ft_substr(to_expand + i, 0, j - i);
+                displace = ft_substr(to_expand + i, 0, j - i);//t_token's
                 len_dis = ft_strlen(displace);
                 if (displace && *displace)
                 {

@@ -80,7 +80,7 @@ static char	*get_key(char *exported)
 	i = 0;
 	while (exported[i] != '\0' && exported[i] != '=')
 		i++;
-	return (ft_substr(exported, 0, i));
+	return (ft_substr(exported, 0, i)); //don't have to free
 }
 
 static int  valid_identifier(char *s)

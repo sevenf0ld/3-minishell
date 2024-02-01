@@ -44,7 +44,7 @@ void	set_aft_exp(char **aft, char *ref)
                 if (ref[i] == 63)
                     i += 1;
 		if (ref[i])
-			*aft = ft_substr(ref, i, ft_strlen(ref) - 1);
+			*aft = ft_substr(ref, i, ft_strlen(ref) - 1);//handled
 		else
 			*aft = ft_strdup("");
 	}

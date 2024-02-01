@@ -77,7 +77,7 @@ char	*extract_newline(char *store)
 		return (NULL);
 	while (store[i] != '\0' && store[i] != '\n')
 		i++;
-	aluminium = ft_substr(store, 0, i + 1);
+	aluminium = ft_substr(store, 0, i + 1);//handled(get_next_line/update_store)functions unused
 	return (aluminium);
 }
 
