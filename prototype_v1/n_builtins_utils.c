@@ -6,7 +6,7 @@
 /*   By: maiman-m <maiman-m@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 19:13:30 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/01/30 13:16:11 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/02/01 16:09:25 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,7 @@ int mini_exec(t_command *c_node, t_mini *mi, char **envp)
     pid_t   *child;
 
     child = mi->pid->pid_c;
-    signal(SIGINT, sig_int_chld);
-    signal(SIGQUIT, sig_qt_chld);
+    signal_child();
     child[c_node->pos] = fork();
     if (child[c_node->pos] == -1)
     {

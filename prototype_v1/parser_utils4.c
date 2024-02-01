@@ -6,7 +6,7 @@
 /*   By: maiman-m <maiman-m@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/21 22:26:39 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/01/26 16:35:25 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/31 14:08:19 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,8 @@ static void	extract_enclosed(char *s, char *ext)
 	}
 }
 
-static void	rm(char **args, int n)
+//static void	rm(char **args, int n)
+void	rm(char **args, int n)
 {
 	int		size;
 	char	*ext;
@@ -120,7 +121,8 @@ static void	rm(char **args, int n)
 	args[n] = ext;
 }
 
-static int	contain_quotes(char *s)
+//static int	contain_quotes(char *s)
+int	contain_quotes(char *s)
 {
 	int		i;
 

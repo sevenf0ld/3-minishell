@@ -6,7 +6,7 @@
 /*   By: maiman-m <maiman-m@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 16:22:18 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/01/22 16:39:21 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/31 11:22:46 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,8 @@ static int	mult_adj_sym_norme_one(t_token *tmp, int *i, char *s, t_status *stat)
 	if (tmp->symbol == ARGS)
 	{
 		s = tmp->token;
+                if (contain_quotes(s))
+                    return (0);
 		*i = 0;
 		while (s[*i] != '\0')
 		{

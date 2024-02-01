@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:20:01 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/01/30 13:32:33 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/02/01 15:38:30 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,6 +148,15 @@ typedef struct s_mini
     t_restore   *res;
     t_pid       *pid;
 }               t_mini;
+
+typedef struct s_sig
+{
+    bool    sig;
+    int     sig_code;
+}           t_sig;
+
+extern t_sig g_sig;
+
 
 typedef struct s_cmd_norme
 {
@@ -353,6 +362,8 @@ void		assign_pipe_ends(t_command *c_node, t_pipe *p_node);
 void		redirect_command_io(t_command *c_node);
 
 //parser_utils4.c
+void            rm(char **args, int n);
+int             contain_quotes(char *s);
 void            remove_quotes(char **args);
 
 /*      HEREDOC     */
@@ -382,10 +393,8 @@ void            last_close(t_pipe **pipes);
 //signal.c
 //void sig_int(int signum);
 //void sig_quit(int signum);
-void            sig_qt_chld(int signum);
-void            sig_int_prnt(int signum);
-void            sig_int_chld(int signum);
-void            sig_qt_prnt(int signum);
+void            signal_parent(void);
+void            signal_child(void);
 
 /*	BUILTINS EXECUTOR	*/
 //b_echo.c
@@ -435,7 +444,7 @@ int		dup_err(int old_fd, t_status *stat);
 int             redir_err(char *token, t_status *stat);
 int             symbols_err(t_status *stat);
 int             pipe_related_err(t_status *stat);
-int             path_err(char *cmd, int flag, t_status *stat);
+int             path_err(t_command *c_node, int flag, t_status *stat);
 
 //free.c
 void		free_2d_arr(char **input);

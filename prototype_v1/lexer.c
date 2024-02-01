@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:25:31 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/01/29 22:36:47 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/02/01 11:07:38 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,11 +94,15 @@ static void	categorize_cmd_w_args(t_token **tokens)
                 tmp->symbol = CMD;
             else if (tmp->prev != NULL && tmp->prev->symbol == PIPE)
                 tmp->symbol = CMD;
+            ///*
             else if (tmp->prev != NULL && (tmp->prev->symbol == FILN || tmp->prev->symbol == LIM))
             {
                 if (tmp->symbol != PIPE)
                     tmp->symbol = CMD;
             }
+            //*/
+            //else if (tmp->prev != NULL && (tmp->prev->symbol == FILN || tmp->prev->symbol == LIM))
+            //    categorize_cmd_args_norme(tmp);
             else if (tmp->symbol == ANON)
                 tmp->symbol = ARGS;
             tmp = tmp->next;

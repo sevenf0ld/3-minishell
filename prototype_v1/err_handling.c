@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 17:00:50 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/01/26 18:57:58 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/02/01 10:57:21 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,10 @@ int	open_err(char *file, int flags, mode_t mode, t_command *c_node)
 	fd = open(file, flags, mode);
 	if (fd == -1)
         {
-		report_err("open", 1, c_node->stat);
+                if (!c_node->exec)
+                    return (fd);
+                ft_putstr_fd("minishell: ", STDERR_FILENO);
+		report_err(file, 1, c_node->stat);
                 c_node->exec = false;
         }
 	return (fd);
@@ -125,10 +128,11 @@ int pipe_related_err(t_status *stat)
     return (1);
 }
 
-int path_err(char *cmd, int flag, t_status *stat)
+int path_err(t_command *c_node, int flag, t_status *stat)
 {
+    c_node->exec = false;
     ft_putstr_fd("minishell: ", STDERR_FILENO);
-    ft_putstr_fd(cmd, STDERR_FILENO);
+    ft_putstr_fd(c_node->cmd, STDERR_FILENO);
     if (flag == 1)
         ft_putendl_fd(": no such file or directory", STDERR_FILENO);
     else if (flag == 2)
