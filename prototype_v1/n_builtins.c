@@ -63,9 +63,16 @@ static char    *get_path_str(char *path, char *cmd)
         path_str = ft_strjoin(env_path[i], "/");
         path_str = join_and_free(path_str, cmd);
         if (!access(path_str, F_OK))
+        {
+            free_2d_arr(env_path);
             return (path_str);
+        }
+        free(path_str);
+        path_str = NULL;
         i++;
     }
+    // printf("env_path\n");
+    free_2d_arr(env_path);
     return (NULL);
 }
 
@@ -148,10 +155,12 @@ static int execute_b_nb(t_command *c_node, t_mini *mi, char *path_str)
     envp[0] = ft_strjoin("TERM=", get_fvalue(mi->fix, "TERM"));
     envp[1] = NULL;
     if (c_node->builtin)
-        return (mini_exec(c_node, mi, envp));
+        return (mini_exec(c_node, mi, envp)); //freed envp
     if (!path_str)
     {
+        // free_2d_arr(envp); //seg fault (ls) when free here, not sure why but no mem leaks
         path = get_fvalue(mi->fix, "PATH");
+        // printf("path: %s\n", path);
         if (!path)
             return (path_err(c_node->cmd, 1, mi->stat));
         path_str = get_path_str(path, c_node->cmd);
@@ -159,7 +168,7 @@ static int execute_b_nb(t_command *c_node, t_mini *mi, char *path_str)
             return (path_err(c_node->cmd, 2, mi->stat));
     }
     c_node->args[0] = path_str;
-    return (mini_exec(c_node, mi, envp));
+    return (mini_exec(c_node, mi, envp)); //freed envp
 }
 
 //n_builtins

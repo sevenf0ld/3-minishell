@@ -39,7 +39,9 @@ static void    prompt_and_wait(char *delim, t_status *stat)
             break ;
         input = join_and_free(input, "\n");
         write(tmp_add, input, ft_strlen(input));
+        free(input);
     }
+    free(input);
 }
 
 void    heredoc(t_command *c_node, t_status *stat)

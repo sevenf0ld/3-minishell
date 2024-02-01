@@ -108,7 +108,8 @@ void    close_and_wait(t_mini *mi)
     t_command   *last_cmd;
     (void)      last_cmd;
 
-    last_close(&mi->pip);
+	if (mi->piping)
+    	last_close(&mi->pip);
     child = wait(&wstat);
     stat = mi->stat;
     last_cmd = cmd_last(mi->cmd);
@@ -130,38 +131,41 @@ void    close_and_wait(t_mini *mi)
 int	main(int argc, char **argv, char **envp)
 {
 	char    *pipeline;
-        t_mini  mini;
+	t_mini  mini;
 
 	(void) argv;
-        if (argc != 1)
-            ft_putendl_fd("minishell does not take in arguments", STDERR_FILENO);
+	if (argc != 1)
+		ft_putendl_fd("minishell does not take in arguments", STDERR_FILENO);
 	pipeline = NULL;
-        mini = (t_mini){0};
-        mini_init_stat_res(&mini);
-        mini_init_environ(&mini, envp);
-        while (1)
+	mini = (t_mini){0};
+	mini_init_stat_res(&mini);
+	mini_init_environ(&mini, envp);
+	while (1)
 	{
-                signal(SIGQUIT, sig_qt_prnt);
-                signal(SIGINT, sig_int_prnt);
+		signal(SIGQUIT, sig_qt_prnt);
+		signal(SIGINT, sig_int_prnt);
+		// pipeline = readline("\033[0;34mminishell> \033[0m");
 		pipeline = readline("prompt> ");
 		if (!pipeline)
-		{
-			printf("exit\n");
-			exit(1);
-		}
+			break ;
 		else if (ft_strcmp(pipeline, "") && !all_whitespace(pipeline))
 		{
 			add_history(pipeline);
 			if (lexer(pipeline, &mini))
-                            continue ;
-                        mini.res->std_out = dup_err(STDOUT_FILENO, mini.stat);
+				continue ;
+			mini.res->std_out = dup_err(STDOUT_FILENO, mini.stat);
 			mini.res->std_in = dup_err(STDIN_FILENO, mini.stat);
-			parser(&mini);
-                        mini_init_pid(&mini);
-                        execution(&mini);
-                        close_and_wait(&mini);
-                } 
-        }
+			mini.tok_cpy = mini.tok;
+			// free_ttkn(&mini.tok_cpy);
+			parser(&mini); //init t_pipe
+			mini_init_pid(&mini); //init t_pid
+			execution(&mini); //heredoc
+			close_and_wait(&mini);
+			garbage_burner(&mini, pipeline);
+		}
+	}
+	printf("exit\n");
+	exit(1);
 }
 
 /*

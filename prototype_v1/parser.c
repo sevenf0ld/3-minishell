@@ -69,7 +69,7 @@ static void	set_multi_l(t_token **tokens, t_command *c_node)
 	}
 }
 
-void	init_multi_l(t_token **tokens, t_command *c_node)
+void	init_multi_l(t_mini *mi, t_token **tokens, t_command *c_node)
 {
 	t_token	*tmp;
 
@@ -83,7 +83,10 @@ void	init_multi_l(t_token **tokens, t_command *c_node)
 		tmp = tmp->next;
 	}
 	if (c_node->num_l > 0)
+	{
+		mi->limiting = 1;
 	    c_node->lim = malloc_err(sizeof(char *) * (c_node->num_l + 1), c_node->stat);
+	}
 	if (c_node->lim != NULL)
             c_node->lim[c_node->num_l] = NULL;
 	set_multi_l(tokens, c_node);
@@ -103,6 +106,7 @@ static char	*rm_till_end(t_token **tokens)
 {
 	t_token	*tmp;
 	char	*ret;
+	char	*trim;
 
 	tmp = *tokens;
 	ret = ft_strdup("");
@@ -111,24 +115,26 @@ static char	*rm_till_end(t_token **tokens)
 		ret = join_and_free(ret, tmp->token);
 		ret = join_and_free(ret, " ");
 		*tokens = tmp->next;
-		free(tmp);
+		// free(tmp);
 		tmp = NULL;
 		tmp = *tokens;
 	}
 	if (tmp != NULL && tmp->end == true)
 	{
 		*tokens = tmp->next;
-		free(tmp);
+		// free(tmp);
 		tmp = NULL;
 	}
-	return (ft_strtrim(ret, " "));
+	trim = ft_strtrim(ret, " ");
+	free(ret);
+	return (trim);
 }
 
 /*
  * calls init_multi_fa() which stores all the flags (OPT) and arguments (ARGS) in its respective 2D char array (end marker is NULL)
  * calls init_multi_redir() which stores all the input and output (overwrite & append) redirections in its respect int array (end marker is INT_MIN)
  */
-void	complete_cmd(t_token **tokens, t_command **cmds)
+void	complete_cmd(t_mini *mi, t_token **tokens, t_command **cmds)
 {
 	t_command	*c_node;
 
@@ -136,7 +142,7 @@ void	complete_cmd(t_token **tokens, t_command **cmds)
 	while (c_node != NULL)
 	{
 		init_multi_a(tokens, c_node);
-		init_multi_l(tokens, c_node);
+		init_multi_l(mi, tokens, c_node);
 		init_multi_redir(tokens, c_node);
 		c_node->og = rm_till_end(tokens);
 		c_node = c_node->next;
@@ -167,11 +173,14 @@ void    parser(t_mini *mi)
 	cmd_init(tokens, cmds, mi->env, mi->stat);
         update_cmd_exec(cmds);
 	double_ll_convert2(cmds);
-	complete_cmd(tokens, cmds);
+	mi->limiting = 0;
+	complete_cmd(mi, tokens, cmds);
+	mi->piping = 0;
 	if (*cmds != NULL && (*cmds)->size > 1)
 	{
 		pipe_init(&mi->pip, (*cmds)->size - 1, mi->stat);
 		double_ll_convert3(&mi->pip);
 		assign_pipe_ends(*cmds, mi->pip);
+		mi->piping = 1;
 	}
 }

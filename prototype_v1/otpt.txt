@@ -1,0 +1,2 @@
+-rwxrwxrwx 1 folim folim   5543 Feb  1 14:31 main.c
+-rwxrwxrwx 1 folim folim 177528 Feb  1 14:31 main.o

@@ -60,5 +60,6 @@ int mini_exec(t_command *c_node, t_mini *mi, char **envp)
             exit(mi->stat->s_code);
         }
     }
+    free_2d_arr(envp);
     return (0);
 }

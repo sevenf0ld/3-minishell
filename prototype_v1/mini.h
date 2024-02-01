@@ -140,6 +140,7 @@ typedef struct s_mini
 {
     t_sym       *sym;
     t_token     *tok;
+	t_token		*tok_cpy;
     t_command   *cmd;
     t_pipe      *pip;
     t_env       *env;
@@ -147,6 +148,9 @@ typedef struct s_mini
     t_status    *stat;
     t_restore   *res;
     t_pid       *pid;
+	int			piping;
+	int			limiting;
+
 }               t_mini;
 
 typedef struct s_cmd_norme
@@ -316,8 +320,8 @@ void		group_cmds(t_token **tokens);
 /*	PARSER	*/
 //parser.c
 void		init_multi_a(t_token **tokens, t_command *c_node);
-void		init_multi_l(t_token **tokens, t_command *c_node);
-void		complete_cmd(t_token **tokens, t_command **cmds);
+void		init_multi_l(t_mini *mi, t_token **tokens, t_command *c_node);
+void		complete_cmd(t_mini *mi, t_token **tokens, t_command **cmds);
 //t_pipe          *parser(t_token **tokens, t_command **cmds, t_env *envs, t_status *stat);
 void            parser(t_mini *mi);
 
@@ -439,5 +443,11 @@ int             path_err(char *cmd, int flag, t_status *stat);
 
 //free.c
 void		free_2d_arr(char **input);
+void		free_tcmd(t_mini *mi);
+void    	free_ttkn(t_token **tkn);
+void		free_tpipe(t_pipe **pipe);
+void		garbage_burner(t_mini *mi, char *pline);
+
+
 
 #endif

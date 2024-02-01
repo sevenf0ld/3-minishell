@@ -10,9 +10,9 @@
 #                                                                              #
 # **************************************************************************** #
 
-PROG_NAME = v1
+PROG_NAME = minishell
 
-CC = clang
+CC = cc
 
 CFLAGS = -Wall -Wextra -Werror -g3
 
