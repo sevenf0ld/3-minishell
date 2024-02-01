@@ -49,7 +49,7 @@ void	init_multi_a(t_token **tokens, t_command *c_node)
 	if (c_node->args != NULL)
             c_node->args[c_node->num_a] = NULL;
 	set_multi_a(tokens, c_node);
-        remove_quotes(c_node->args);
+	remove_quotes(c_node->args);
 }
 
 static void	set_multi_l(t_token **tokens, t_command *c_node)

@@ -19,7 +19,7 @@
    return 2 if ./
 */
 //n_builtins_3
-static int check_path_type(char *path_str)
+static int check_path_type(char *path_str) // no malloc
 {
     /*
 	if (!access(path_str, F_OK))
@@ -173,7 +173,9 @@ static int execute_b_nb(t_command *c_node, t_mini *mi, char *path_str)
             return (path_err(c_node->cmd, 2, mi->stat));
         }
     }
-    c_node->args[0] = path_str;
+    free(c_node->args[0]);
+    c_node->args[0] = ft_strdup(path_str);
+    free(path_str);
     return (mini_exec(c_node, mi, envp)); //freed envp
 }
 
@@ -185,7 +187,7 @@ void    fork_exec(t_command *c_node, t_mini *mi)
 
     if (!c_node->exec)
         return ;
-    c_node->cmd = c_node->args[0];
+    c_node->cmd = c_node->args[0]; //not malloced
     abs_rel_path = check_path_type(c_node->cmd);
     path_str = NULL;
 
