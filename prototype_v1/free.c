@@ -41,7 +41,10 @@ void	free_tcmd(t_mini *mi)
         next = curr->next;
 		free_2d_arr(curr->args);
 		if (mi->limiting == 1)
+		{
 			free_2d_arr(curr->lim);
+			mi->limiting = 0;
+		}
 		// printf("curr->og: %s\n", curr->og);
 		free(curr->og);
 		free(curr->std_in);

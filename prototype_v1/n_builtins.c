@@ -162,10 +162,16 @@ static int execute_b_nb(t_command *c_node, t_mini *mi, char *path_str)
         path = get_fvalue(mi->fix, "PATH");
         // printf("path: %s\n", path);
         if (!path)
+        {
+            free_2d_arr(envp);
             return (path_err(c_node->cmd, 1, mi->stat));
+        }
         path_str = get_path_str(path, c_node->cmd);
         if (!path_str || !ft_strlen(c_node->cmd) )
+        {
+            free_2d_arr(envp);
             return (path_err(c_node->cmd, 2, mi->stat));
+        }
     }
     c_node->args[0] = path_str;
     return (mini_exec(c_node, mi, envp)); //freed envp
