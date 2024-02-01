@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:20:01 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/02/01 11:25:56 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/02/01 15:38:30 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,6 @@ typedef struct s_command
 	bool				builtin;
 	int				last_out;
         bool                            exec;
-        int                             retval;
 	struct s_env		*env_var;
 	struct s_status		*stat;
 	struct s_command	*prev;
@@ -152,8 +151,7 @@ typedef struct s_mini
 
 typedef struct s_sig
 {
-    bool    sig_qt;
-    bool    sig_int;
+    bool    sig;
     int     sig_code;
 }           t_sig;
 
@@ -395,10 +393,8 @@ void            last_close(t_pipe **pipes);
 //signal.c
 //void sig_int(int signum);
 //void sig_quit(int signum);
-void            sig_qt_chld(int signum);
-void            sig_int_prnt(int signum);
-void            sig_int_chld(int signum);
-void            sig_qt_prnt(int signum);
+void            signal_parent(void);
+void            signal_child(void);
 
 /*	BUILTINS EXECUTOR	*/
 //b_echo.c

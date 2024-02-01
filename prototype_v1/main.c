@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:19:04 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/02/01 11:42:35 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/02/01 16:08:36 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,9 +66,6 @@ void    no_fork_b_exec(t_mini *mi, t_command *cur)
         b_export(cur, &fix, mi);
     if (!ft_strcmp(cur->cmd, "cd") && cur->size == 1)
         b_cd(cur, mi);
-    if (!ft_strcmp(cur->cmd, "echo") && cur->size == 1)
-        b_echo(cur, mi);
-    cur->retval = mi->stat->s_code;
 }
 
 void    restore_io(t_mini *mi)
@@ -94,10 +91,8 @@ void    execution(t_mini *mi)
         if (cur->num_l > 0)
             heredoc(cur, stat);
         redirect_command_io(cur);
-        //n_builtins(&cur, stat, &mi->cmd, pid);
         fork_exec(cur, mi);
         no_fork_b_exec(mi, cur);
-        fprintf(stderr, "retval of %s (index %i) is %i\n", cur->cmd, cur->pos, cur->retval);
         restore_io(mi);
         unlink("tmp_lim.txt");
         cur = cur->next;
@@ -109,44 +104,25 @@ void    close_and_wait(t_mini *mi)
     int         wstat;
     pid_t       child;
     t_status    *stat;
-    t_command   *last_cmd;
-    t_pid       *c;
-    int         i;
 
     last_close(&mi->pip);
     child = wait(&wstat);
     stat = mi->stat;
-    last_cmd = cmd_last(mi->cmd);
-    c = mi->pid;
-    i = 0;
-    (void) child;
-    (void) stat;
-    (void)      last_cmd;
-    (void) c;
-    (void) i;
-    child = waitpid(c->pid_c[i], &wstat, 0);
-    i += 1;
-    int tmp = 0;
     while (child > 0)
     {
         if (WIFEXITED(wstat))
-        {
-            tmp = WEXITSTATUS(wstat);
-            fprintf(stderr, "EXIT RETURNS %i\n", WEXITSTATUS(wstat));
-        }
+            stat->s_code = WEXITSTATUS(wstat);
         else if (WIFSIGNALED(wstat))
         {
             if (WTERMSIG(wstat) == 2)
-                tmp = 130;
+                stat->s_code = 130;
             else if (WTERMSIG(wstat) == 3)
-                tmp = 0;
-            fprintf(stderr, "TERMSIG RETURNS %i\n", WTERMSIG(wstat));
+                stat->s_code = 131;
         }
-        child = waitpid(c->pid_c[i], &wstat, 0);
-        i++;
+        else if (WIFSTOPPED(wstat))
+            stat->s_code = WIFSTOPPED(wstat);
+        child = wait(&wstat);
     }
-    if (!last_cmd->builtin && last_cmd->exec)
-        stat->s_code = tmp;
 }
 
 t_sig g_sig;
@@ -166,13 +142,14 @@ int	main(int argc, char **argv, char **envp)
         while (1)
 	{
                 g_sig = (t_sig){0};
-                signal(SIGQUIT, sig_qt_prnt);
-                signal(SIGINT, sig_int_prnt);
+                signal_parent();
 		pipeline = readline("prompt> ");
+                if (g_sig.sig)
+                    mini.stat->s_code = g_sig.sig_code;
 		if (!pipeline)
 		{
-			printf("exit\n");
-			exit(1);
+			ft_putendl_fd("exit", STDOUT_FILENO);
+			exit(EXIT_SUCCESS);
 		}
 		else if (ft_strcmp(pipeline, "") && !all_whitespace(pipeline))
 		{
@@ -181,66 +158,12 @@ int	main(int argc, char **argv, char **envp)
                             continue ;
                         mini.res->std_out = dup_err(STDOUT_FILENO, mini.stat);
 			mini.res->std_in = dup_err(STDIN_FILENO, mini.stat);
-                        /* 
-                        t_token *tok;
-                        tok = mini.tok; 
-                        char	*type[] = {"PIPE", "OUT_RE", "IN_RE", "CMD", "ARGS", "FILN", "LIM", "HD", "ADD", "ANON"};
-                        for (t_token *dl = tok; dl != NULL; dl = dl->next)
-                                fprintf(stderr, "[%s] is a [%s]. expand? \x1b[32m%s\x1b[m\n", dl->token, type[dl->symbol], dl->exp?"true":"false");
-		
-                        //continue ;
-                        */
                         parser(&mini);
-                        /*
-                        t_command *cmd;
-                        cmd = mini.cmd;
-                        for (t_command *cur = cmd; cur != NULL; cur = cur->next)
-                        {
-                            fprintf(stderr, "EXEC? \x1b[33m%s\x1b[m\n", cur->exec ? "true" : "false");
-                            for (int i = 0; cur->args[i]; i++)
-                                fprintf(stderr, "::: %s\n", cur->args[i]);
-                        }
-                        
-                        continue ;
-                        */
                         mini_init_pid(&mini);
                         execution(&mini);
                         close_and_wait(&mini);
-                        //if (g_sig.sig_qt || g_sig.sig_int)
-                        //    mini.stat->s_code = g_sig.sig_code;
                 }
                 else
                     mini.stat->s_code = 0;
-        }
-}
-
-/*
-int    main(int argc, char **argv, char **envp)
-{
-        t_mini  mini;
-        t_command *cmd;
-        t_token *tok;
-
-    (void) argv;
-    (void) cmd;
-        mini = (t_mini){0};
-        mini_init_stat_res(&mini);
-        mini_init_environ(&mini, envp);
-
-    if (argc != 2)
-        return (1);
-    if (lexer(argv[1], &mini))
-            return (1);
-    tok = mini.tok; 
-    char	*type[] = {"PIPE", "OUT_RE", "IN_RE", "CMD", "ARGS", "FILN", "LIM", "HD", "ADD", "ANON"};
-    for (t_token *dl = tok; dl != NULL; dl = dl->next)
-	    fprintf(stderr, "[%s] is a [%s]. expand? \x1b[32m%s\x1b[m\n", dl->token, type[dl->symbol], dl->exp?"true":"false");
-    parser(&mini);
-    cmd = mini.cmd;
-    for (t_command *cur = cmd; cur != NULL; cur = cur->next)
-    {
-        for (int i = 0; cur->args[i]; i++)
-            fprintf(stderr, "::: %s\n", cur->args[i]);
     }
 }
-*/

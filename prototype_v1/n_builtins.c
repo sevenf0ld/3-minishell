@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/30 14:47:12 by folim             #+#    #+#             */
-/*   Updated: 2024/02/01 11:43:10 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/02/01 15:38:56 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,14 +126,12 @@ static void execute_non_exe(t_command *c_node, t_mini *mi)
         ft_putstr_fd("minishell: ", 2);
         report_err(c_node->cmd, 1, mi->stat);
         mi->stat->s_code = 127;
-        c_node->retval = mi->stat->s_code;
     }
     else if (access(c_node->cmd + 2, X_OK) != 0)
     {
         ft_putstr_fd("minishell: ", 2);
         report_err(c_node->cmd, 1, mi->stat);
         mi->stat->s_code = 126;
-        c_node->retval = mi->stat->s_code;
     }
     else
         ft_putendl_fd("not required by the subject", STDERR_FILENO);
