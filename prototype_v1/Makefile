@@ -32,7 +32,7 @@ SRCS = main.c init_mini.c tokenizer.c tokenizer_utils.c init_token.c d_ll_conver
            signal.c \
 	   b_echo.c b_dir.c b_environ.c b_exit.c \
 	   init_env.c init_fixed.c fixed_utils.c \
-	   err_handling.c free.c
+	   err_handling.c free.c free2.c
 	   
 OBJS = $(SRCS:.c=.o)
 

@@ -448,6 +448,10 @@ void    	free_ttkn(t_token **tkn);
 void		free_tpipe(t_pipe **pipe);
 void		garbage_burner(t_mini *mi, char *pline);
 
-
+//free2.c
+void		free_stat(t_status *status);
+void		free_res(t_restore *res);
+void		free_fix(t_fixed **fixed);
+void		free_env(t_env **env);
 
 #endif
