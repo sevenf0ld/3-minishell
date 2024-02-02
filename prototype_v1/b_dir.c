@@ -19,17 +19,19 @@
  */
 char	*b_pwd(t_command *c_node, char mode, t_mini *mi)
 {
-        (void) c_node;
 	char	buf[PATH_MAX];
 	char	*cur_dir;
 
+	(void)c_node;
 	cur_dir = getcwd(buf, PATH_MAX);
 	if (cur_dir != NULL)
+	{
 		if (mode == 'w')
 		{
 			ft_putendl_fd(cur_dir, STDOUT_FILENO);
 			mi->stat->s_code = 0;
 		}
+	}
 	return (cur_dir);
 }
 
@@ -43,16 +45,16 @@ void	mini_err(char *b, char *issue)
 	perror(NULL);
 }
 
-int chdir_err(char *path, t_mini *mi)
+int	chdir_err(char *path, t_mini *mi)
 {
-    if (chdir(path) == -1)
-    {
-            mi->stat->s_code = 1;
-            mini_err("cd", path);
-            return (1);
-    }
-    mi->stat->s_code = 0;
-    return (0);
+	if (chdir(path) == -1)
+	{
+		mi->stat->s_code = 1;
+		mini_err("cd", path);
+		return (1);
+	}
+	mi->stat->s_code = 0;
+	return (0);
 }
 
 void	b_cd(t_command *c_node, t_mini *mi)
@@ -61,15 +63,15 @@ void	b_cd(t_command *c_node, t_mini *mi)
 
 	cur = c_node;
 	if (cur->num_a == 1)
-	    chdir_err(get_fvalue(c_node->env_var->fixed, "HOME"), mi);
+		chdir_err(get_fvalue(c_node->env_var->fixed, "HOME"), mi);
 	else
 	{
-            if (cur->num_a > 2)
-            {
-                ft_putendl_fd("minishell: cd: too many arguments", STDERR_FILENO);
-                mi->stat->s_code = 1;
-                return ;
-            }
-            chdir_err(cur->args[1], mi);
-        }
+		if (cur->num_a > 2)
+		{
+			ft_putendl_fd("minishell: cd: too many arguments", STDERR_FILENO);
+			mi->stat->s_code = 1;
+			return ;
+		}
+		chdir_err(cur->args[1], mi);
+	}
 }

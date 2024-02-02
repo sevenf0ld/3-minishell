@@ -23,7 +23,7 @@ static t_pipe	*retrieve_pipe(t_pipe *p_node, int n)
 			break ;
 		end = end->next;
 	}
-	return end;
+	return (end);
 }
 
 static void	assign_norme(t_command *c_node, t_pipe *end, t_pipe *p_node, int i)
@@ -49,7 +49,8 @@ static void	assign_norme(t_command *c_node, t_pipe *end, t_pipe *p_node, int i)
 }
 
 /*
- * calls retrieve_pipe() which returns the corresponding t_pipe node for the t_command node
+
+ * retrieve_pipe() returns the corresponding t_pipe for t_command
  * [0] | [1] | [2] | [3] | [4] | [5]
  *     0     1     2     3     4
  * if even and odd (in between/in general):
@@ -71,7 +72,7 @@ void	assign_pipe_ends(t_command *c_node, t_pipe *p_node)
 
 	cur = c_node;
 	end = NULL;
-        while (cur != NULL)
+	while (cur != NULL)
 	{
 		if (cur->pos == 0)
 			assign_norme(cur, end, p_node, 0);

@@ -65,8 +65,14 @@ static void	redirect_io_pipe(t_command *c_node)
 }
 
 /*
- * calls redirect_io_file() if std* arrays are not NULL which redirects the STDIN_FILENO and STDOUT_FILENO to the only or last file accordingly
- * calls redirect_io_pipe() if there is more than one t_command node which redirects STDIN_FILENO to pipe read_end[0] (last t_command node) and STDOUT_FILENO to pipe write_end (first t_command node) or redirects both FILENOs
+
+	* calls redirect_io_file() if std* arrays are not NULL
+		which redirects the STDIN_FILENO and STDOUT_FILENO
+		to the only or last file accordingly
+
+	* calls redirect_io_pipe() if there is more than one t_command node
+		which redirects STDIN_FILENO to pipe read_end[0] (last) and STDOUT_FILENO
+		to pipe write_end (first t_command node) or redirects both FILENOs
  *
  * called in n_builtins_2() after fork() and before execve()
  */

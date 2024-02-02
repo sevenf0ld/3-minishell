@@ -12,21 +12,20 @@
 
 #include "mini.h"
 
+int	main(void)
+{
+	char *input;
 
+	input = NULL;
+	signal(SIGINT, sighandler);
+	while (1)
+	{
+		input = readline("Enter something: ");
+		if (input)
+			break ;
+	}
 
-
-int main() {
-    char* input;
-
-    input = NULL;
-    signal(SIGINT, sighandler);
-    while (1) {
-        input = readline("Enter something: ");
-        if (input)
-            break;
-    }
-
-    printf("Result: %s\n", input);
-    free(input);
-    return 0;
+	printf("Result: %s\n", input);
+	free(input);
+	return (0);
 }

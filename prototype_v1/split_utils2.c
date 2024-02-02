@@ -56,29 +56,21 @@ size_t	delim_present(char *s)
 static void	sep_delim_dual(char *s, t_token *t_node, t_token **tokens, int i)
 {
 	if (i > 0)
-	{
 		slot_in_token(t_node, ft_substr(s, 0, i), tokens,
 			ft_substr(s, i, (int)ft_strlen(s)));
-	}
 	else
-	{
 		slot_in_token(t_node, ft_substr(s, 0, 2), tokens,
 			ft_substr(s, 2, (int)ft_strlen(s)));
-	}
 }
 
 static void	sep_delim_single(char *s, t_token *t_node, t_token **tokens, int i)
 {
 	if (i > 0)
-	{
 		slot_in_token(t_node, ft_substr(s, 0, i), tokens,
 			ft_substr(s, i, (int)ft_strlen(s)));
-	}
 	else
-	{
 		slot_in_token(t_node, ft_substr(s, 0, 1), tokens,
 			ft_substr(s, 1, (int)ft_strlen(s)));
-	}
 }
 
 void	separate_delim(char *s, t_token *t_node, t_token **tokens)
@@ -91,15 +83,9 @@ void	separate_delim(char *s, t_token *t_node, t_token **tokens)
 	while (s[i] != '\0')
 	{
 		if (is_hd(s, i, len) || is_add(s, i, len))
-		{
-			sep_delim_dual(s, t_node, tokens, i);
-			break ;
-		}
+			return (sep_delim_dual(s, t_node, tokens, i));
 		else if (is_pipe(s[i]) || is_in_re(s[i]) || is_out_re(s[i]))
-		{
-			sep_delim_single(s, t_node, tokens, i);
-			break ;
-		}
+			return (sep_delim_single(s, t_node, tokens, i));
 		i++;
 	}
 }

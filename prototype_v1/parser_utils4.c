@@ -44,7 +44,7 @@ static void	count_enclosed_norme(char *s, int *i, int *count)
 /*
    if encounter sq or wq
    store the index at which the sq or wq is
-   continue to iterate over the string until nul or the corresponding quote is encountered
+   continue to iterate over the string until nul or the corresponding quote
    increase count to get the num of chars in the (outermost) quotes
 */
 static void	count_enclosed(char *s, int *size)
@@ -124,7 +124,7 @@ void	rm(char **args, int n)
 //static int	contain_quotes(char *s)
 int	contain_quotes(char *s)
 {
-	int		i;
+	int	i;
 
 	i = 0;
 	if (!s)
@@ -140,7 +140,7 @@ int	contain_quotes(char *s)
 
 void	remove_quotes(char **args)
 {
-	int		i;
+	int	i;
 
 	if (args == NULL)
 		return ;

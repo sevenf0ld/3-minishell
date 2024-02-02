@@ -18,7 +18,7 @@ void	report_err(char *fn, int flag, t_status *stat)
 		perror(fn);
 	else
 		ft_putstr_fd(fn, 2);
-        stat->s_code = 1;
+	stat->s_code = 1;
 }
 
 void	*malloc_err(size_t size, t_status *stat)
@@ -47,19 +47,21 @@ int	open_err(char *file, int flags, mode_t mode, t_command *c_node)
 
 	fd = open(file, flags, mode);
 	if (fd == -1)
-        {
-                if (!c_node->exec)
-                    return (fd);
-                ft_putstr_fd("minishell: ", STDERR_FILENO);
+	{
+		if (!c_node->exec)
+			return (fd);
+		ft_putstr_fd("minishell: ", STDERR_FILENO);
 		report_err(file, 1, c_node->stat);
-                c_node->exec = false;
-        }
+		c_node->exec = false;
+	}
 	return (fd);
 }
 
 void	dup2_err(int old_fd, int new_fd, t_status *stat)
 {
-        static int i = 0;
+	static int	i;
+
+	i = 0;
 	if (dup2(old_fd, new_fd) == -1)
 	{
 		report_err("dup2", 1, stat);
@@ -71,22 +73,24 @@ void	dup2_err(int old_fd, int new_fd, t_status *stat)
 
 void	close_err(int fd, t_status *stat)
 {
-    static int i = 0;
+	static int	i;
+
+	i = 0;
 	if (close(fd) == -1)
-        {
+	{
 		report_err("close", 1, stat);
-                fprintf(stderr, "close error on nth attempt %i\n", i);
-        }
-        else
-            i++;
+		fprintf(stderr, "close error on nth attempt %i\n", i);
+	}
+	else
+		i++;
 }
 
-int quote_err(char *a, t_status *stat)
+int	quote_err(char *a, t_status *stat)
 {
 	report_err("minishell: unterminated quotes ", 0, stat);
 	report_err(a, 0, stat);
 	report_err((" \n"), 0, stat);
-        return (1);
+	return (1);
 }
 
 void	pipe_err(int *pipe_arr, t_status *stat)
@@ -105,38 +109,38 @@ int	dup_err(int old_fd, t_status *stat)
 	return (new_fd);
 }
 
-int redir_err(char *token, t_status *stat)
+int	redir_err(char *token, t_status *stat)
 {
-    report_err("minishell: syntax error near unexpected token `", 0, stat);
-    if (!token)
-        report_err("newline", 0, stat);
-    else
-        report_err(token, 0, stat);
-    report_err("'\n", 0, stat);
-    return (1);
+	report_err("minishell: syntax error near unexpected token `", 0, stat);
+	if (!token)
+		report_err("newline", 0, stat);
+	else
+		report_err(token, 0, stat);
+	report_err("'\n", 0, stat);
+	return (1);
 }
 
-int symbols_err(t_status *stat)
+int	symbols_err(t_status *stat)
 {
-    report_err("minishell: this is not required by the subject\n", 0, stat);
-    return (1);
+	report_err("minishell: this is not required by the subject\n", 0, stat);
+	return (1);
 }
 
-int pipe_related_err(t_status *stat)
+int	pipe_related_err(t_status *stat)
 {
-    report_err("minishell: syntax error near unexpected token `|'\n", 0, stat);
-    return (1);
+	report_err("minishell: syntax error near unexpected token `|'\n", 0, stat);
+	return (1);
 }
 
-int path_err(t_command *c_node, int flag, t_status *stat)
+int	path_err(t_command *c_node, int flag, t_status *stat)
 {
-    c_node->exec = false;
-    ft_putstr_fd("minishell: ", STDERR_FILENO);
-    ft_putstr_fd(c_node->cmd, STDERR_FILENO);
-    if (flag == 1)
-        ft_putendl_fd(": no such file or directory", STDERR_FILENO);
-    else if (flag == 2)
-        ft_putendl_fd(": command not found", STDERR_FILENO);
-    stat->s_code = 127;
-    return (1);
+	c_node->exec = false;
+	ft_putstr_fd("minishell: ", STDERR_FILENO);
+	ft_putstr_fd(c_node->cmd, STDERR_FILENO);
+	if (flag == 1)
+		ft_putendl_fd(": no such file or directory", STDERR_FILENO);
+	else if (flag == 2)
+		ft_putendl_fd(": command not found", STDERR_FILENO);
+	stat->s_code = 127;
+	return (1);
 }

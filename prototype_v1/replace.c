@@ -14,46 +14,46 @@
 
 static void	count_replacements(t_repl_norme *repl_params)
 {
-    repl_params->len_dis = ft_strlen(repl_params->displace);
-    repl_params->len_sub = ft_strlen(repl_params->sub);
-    repl_params->occur = -1;
-    repl_params->shift = repl_params->og;
-    repl_params->extracted = ft_strnstr(repl_params->shift, repl_params->displace, repl_params->len_og);
-    //repl_params->extracted = strstr(repl_params->shift, repl_params->displace);
-    while (repl_params->extracted != NULL)
-    {
-        repl_params->occur++;
-        repl_params->extracted = ft_strnstr(repl_params->shift, repl_params->displace, ft_strlen(repl_params->shift));
-        //repl_params->extracted = strstr(repl_params->shift, repl_params->displace);
-        if (repl_params->extracted != NULL)
-                repl_params->shift = repl_params->extracted + repl_params->len_dis;
-    }
+	repl_params->len_dis = ft_strlen(repl_params->displace);
+	repl_params->len_sub = ft_strlen(repl_params->sub);
+	repl_params->occur = -1;
+	repl_params->shift = repl_params->og;
+	repl_params->extracted = ft_strnstr(
+			repl_params->shift, repl_params->displace, repl_params->len_og);
+	while (repl_params->extracted != NULL)
+	{
+		repl_params->occur++;
+		repl_params->extracted = ft_strnstr
+			(repl_params->shift, repl_params->displace, ft_strlen(
+					repl_params->shift));
+		if (repl_params->extracted != NULL)
+			repl_params->shift = repl_params->extracted + repl_params->len_dis;
+	}
 }
 
 static void	replacement_str_init(t_repl_norme *repl_params)
 {
-    repl_params->diff = repl_params->len_sub - repl_params->len_dis;
-    repl_params->ret = malloc(sizeof(char) * (repl_params->len_og + (repl_params->diff * repl_params->occur) + 1));
-    repl_params->tmp = repl_params->ret;
+	repl_params->diff = repl_params->len_sub - repl_params->len_dis;
+	repl_params->ret = malloc(sizeof(char) * (repl_params->len_og
+				+ (repl_params->diff * repl_params->occur) + 1));
+	repl_params->tmp = repl_params->ret;
 }
 
 static void	replace_and_shift(t_repl_norme *repl_params)
 {
 	while (repl_params->occur-- && repl_params->occur >= 0)
-        {
-            repl_params->shift = ft_strnstr(repl_params->og, repl_params->displace, ft_strlen(repl_params->og));
-            //repl_params->shift = strstr(repl_params->og, repl_params->displace);
-            repl_params->moved = repl_params->shift - repl_params->og;
-            ft_strlcpy(repl_params->tmp, repl_params->og, repl_params->moved + 1);
-            //strncpy(repl_params->tmp, repl_params->og, repl_params->moved);
-            repl_params->tmp += repl_params->moved;
-            ft_strlcpy(repl_params->tmp, repl_params->sub, repl_params->len_sub + 1);
-            //strcpy(repl_params->tmp, repl_params->sub);
-            repl_params->tmp += repl_params->len_sub;
-            repl_params->og += repl_params->moved + repl_params->len_dis;
-        }
+	{
+		repl_params->shift = ft_strnstr(repl_params->og, repl_params->displace,
+				ft_strlen(repl_params->og));
+		repl_params->moved = repl_params->shift - repl_params->og;
+		ft_strlcpy(repl_params->tmp, repl_params->og, repl_params->moved + 1);
+		repl_params->tmp += repl_params->moved;
+		ft_strlcpy(repl_params->tmp, repl_params->sub,
+			repl_params->len_sub + 1);
+		repl_params->tmp += repl_params->len_sub;
+		repl_params->og += repl_params->moved + repl_params->len_dis;
+	}
 	ft_strlcpy(repl_params->tmp, repl_params->og, repl_params->len_og + 1);
-	//strcpy(repl_params->tmp, repl_params->og);
 }
 
 char	*repl(char *og, char *displace, char *sub, int len_og)
@@ -65,8 +65,8 @@ char	*repl(char *og, char *displace, char *sub, int len_og)
 	repl_params.displace = displace;
 	repl_params.sub = sub;
 	repl_params.len_og = len_og;
-        count_replacements(&repl_params);
-        replacement_str_init(&repl_params);
-        replace_and_shift(&repl_params);
+	count_replacements(&repl_params);
+	replacement_str_init(&repl_params);
+	replace_and_shift(&repl_params);
 	return (repl_params.ret);
 }

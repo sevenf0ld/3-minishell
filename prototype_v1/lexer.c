@@ -39,7 +39,8 @@ void	categorize_symbol(t_token **tokens)
 
 /*
  * categorizes filename (8) and heredoc's limiter (9)
- * categorize files if any output/input redirection, heredoc's limiter, arguments in pipeline
+ * categorize files if any output/input redirection, heredoc's limiter,
+	arguments in pipeline
  */
 static void	categorize_params(t_token **tokens)
 {
@@ -50,38 +51,40 @@ static void	categorize_params(t_token **tokens)
 	{
 		if (tmp->symbol == IN_RE || tmp->symbol == OUT_RE || tmp->symbol == ADD)
 			if (tmp->next != NULL)
-		                if (tmp->next->symbol != IN_RE && tmp->next->symbol != OUT_RE && tmp->next->symbol != ADD)
-			            tmp->next->symbol = FILN;
+				if (tmp->next->symbol != IN_RE && tmp->next->symbol != OUT_RE
+					&& tmp->next->symbol != ADD)
+					tmp->next->symbol = FILN;
 		if (tmp->symbol == HD && tmp->next != NULL)
 			tmp->next->symbol = LIM;
 		tmp = tmp->next;
 	}
 }
 
-void    categorize_cmd_args_norme(t_token *token)
+void	categorize_cmd_args_norme(t_token *token)
 {
-    t_token *tmp;
-    bool    cmd;
+	t_token	*tmp;
+	bool	cmd;
 
-    tmp = token;
-    cmd = false;
-    while (tmp != NULL)
-    {
-        if (tmp->symbol == PIPE)
-            break ;
-        if (tmp->symbol == CMD)
-            cmd = true;
-        tmp = tmp->prev;
-    }
-    if (!cmd)
-        token->symbol = CMD;
-    else
-        token->symbol = ARGS;
+	tmp = token;
+	cmd = false;
+	while (tmp != NULL)
+	{
+		if (tmp->symbol == PIPE)
+			break ;
+		if (tmp->symbol == CMD)
+			cmd = true;
+		tmp = tmp->prev;
+	}
+	if (!cmd)
+		token->symbol = CMD;
+	else
+		token->symbol = ARGS;
 }
 
 /*
  * categorizes command (5) and arguments (7)
- * categorizes command (executable & builtins) and arguments (flags/options included)
+
+	* categorizes command (executable & builtins) and arguments (flags/options included)
  */
 static void	categorize_cmd_w_args(t_token **tokens)
 {
@@ -90,30 +93,27 @@ static void	categorize_cmd_w_args(t_token **tokens)
 	tmp = *tokens;
 	while (tmp != NULL)
 	{
-            if (!tmp->prev && tmp->symbol == ANON)
-                tmp->symbol = CMD;
-            else if (tmp->prev != NULL && tmp->prev->symbol == PIPE)
-                tmp->symbol = CMD;
-            ///*
-            else if (tmp->prev != NULL && (tmp->prev->symbol == FILN || tmp->prev->symbol == LIM))
-            {
-                if (tmp->symbol != PIPE)
-                    tmp->symbol = CMD;
-            }
-            //*/
-            //else if (tmp->prev != NULL && (tmp->prev->symbol == FILN || tmp->prev->symbol == LIM))
-            //    categorize_cmd_args_norme(tmp);
-            else if (tmp->symbol == ANON)
-                tmp->symbol = ARGS;
-            tmp = tmp->next;
+		if (!tmp->prev && tmp->symbol == ANON)
+			tmp->symbol = CMD;
+		else if (tmp->prev != NULL && tmp->prev->symbol == PIPE)
+			tmp->symbol = CMD;
+		else if (tmp->prev != NULL && (tmp->prev->symbol == FILN
+					|| tmp->prev->symbol == LIM))
+		{
+			if (tmp->symbol != PIPE)
+				tmp->symbol = CMD;
+		}
+		else if (tmp->symbol == ANON)
+			tmp->symbol = ARGS;
+					tmp = tmp->next;
 	}
 }
 
-void    categorize(t_token **tokens)
+void	categorize(t_token **tokens)
 {
-    categorize_symbol(tokens);
-    categorize_params(tokens);
-    categorize_cmd_w_args(tokens);
+	categorize_symbol(tokens);
+	categorize_params(tokens);
+	categorize_cmd_w_args(tokens);
 }
 
 /*
@@ -127,16 +127,15 @@ void    categorize(t_token **tokens)
  * group the command groups
  */
 //int lexer(char *pipeline, t_token **tokens, t_status *stat)
-int lexer(char *pipeline, t_mini *mi)
+int	lexer(char *pipeline, t_mini *mi)
 {
-        tokenizer(ft_strtrim(pipeline, "    "), &mi->tok, mi->stat);
-        double_ll_convert(&mi->tok);
-        categorize(&mi->tok);
-        split_tokens(&mi->tok);
-        //categorize(&mi->tok);
-        if (reject(&mi->tok, mi->stat))
-            return (1);
+	tokenizer(ft_strtrim(pipeline, "    "), &mi->tok, mi->stat);
+	double_ll_convert(&mi->tok);
+	categorize(&mi->tok);
+	split_tokens(&mi->tok);
+	if (reject(&mi->tok, mi->stat))
+		return (1);
 	expansion(&mi->tok, mi);
-        group_cmds(&mi->tok);
-        return (0);
+	group_cmds(&mi->tok);
+	return (0);
 }

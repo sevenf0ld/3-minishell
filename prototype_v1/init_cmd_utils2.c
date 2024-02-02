@@ -35,7 +35,7 @@ t_command	*cmd_last(t_command *head)
 int	cmd_size(t_command *head)
 {
 	t_command	*tmp;
-	int		i;
+	int			i;
 
 	tmp = head;
 	i = 0;
@@ -47,7 +47,7 @@ int	cmd_size(t_command *head)
 	return (i);
 }
 
-void set_cmd_size(t_command *head)
+void	set_cmd_size(t_command *head)
 {
 	int			n;
 	t_command	*tmp;

@@ -22,7 +22,7 @@ t_token	*token_new(char *token, t_status *stat)
 	node->end = false;
 	node->rm = false;
 	node->exp = false;
-        node->stat = stat;
+	node->stat = stat;
 	node->prev = NULL;
 	node->next = NULL;
 	return (node);
@@ -43,10 +43,10 @@ void	token_add_back(t_token **head, t_token *node)
  */
 void	token_init(char *s, t_token **head, t_status *stat, int i)
 {
-    if (i == 0)
-        *head = token_new(s, stat);
-    else
-        token_add_back(head, token_new(s, stat));
+	if (i == 0)
+		*head = token_new(s, stat);
+	else
+		token_add_back(head, token_new(s, stat));
 }
 
 t_token	*token_last(t_token *head)

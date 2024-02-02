@@ -41,8 +41,8 @@ void	set_aft_exp(char **aft, char *ref)
 		i++;
 		while (ft_isalnum(ref[i]) && ref[i])
 			i++;
-                if (ref[i] == 63)
-                    i += 1;
+		if (ref[i] == 63)
+			i += 1;
 		if (ref[i])
 			*aft = ft_substr(ref, i, ft_strlen(ref) - 1);
 		else

@@ -48,8 +48,10 @@ int	unterminated_quotes(t_token *t_node, t_status *stat)
 			unterm_params.wq = false;
 			while (unterm_params.s[unterm_params.i] != '\0')
 			{
-				if (unterm_params.s[unterm_params.i] == 39 || unterm_params.s[unterm_params.i] == 34)
-					decide_quote(unterm_params.s[unterm_params.i], &unterm_params.sq, &unterm_params.wq);
+				if (unterm_params.s[unterm_params.i] == 39
+					|| unterm_params.s[unterm_params.i] == 34)
+					decide_quote(
+						unterm_params.s[unterm_params.i], &unterm_params.sq, &unterm_params.wq);
 				unterm_params.i++;
 			}
 			if (unterm_q_norme(unterm_params.sq, unterm_params.wq, stat))
@@ -57,5 +59,5 @@ int	unterminated_quotes(t_token *t_node, t_status *stat)
 		}
 		unterm_params.tmp = unterm_params.tmp->next;
 	}
-        return (0);
+	return (0);
 }
