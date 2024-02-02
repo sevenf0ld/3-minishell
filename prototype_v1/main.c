@@ -85,4 +85,8 @@ int	main(int argc, char **argv, char **envp)
 		else
 			minishell(pipeline, &mini, 2);
 	}
+	// free_stat(mini.stat);
+	// free_res(mini.res);
+	// free_fix(&mini.fix);
+	// free_env(&mini.env);
 }

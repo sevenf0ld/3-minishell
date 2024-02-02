@@ -22,7 +22,10 @@ static void	expand_env_var(t_token **tokens, t_mini *mi)
 		if (tmp->exp && ft_strcmp(tmp->token, "$?") != 0)
 			expand_utils(&tmp->token, mi);
 		else if (tmp->exp && !ft_strcmp(tmp->token, "$?"))
+		{
+			free(tmp->token);
 			tmp->token = ft_lltoa(tmp->stat->s_code);
+		}
 		tmp = tmp->next;
 	}
 }

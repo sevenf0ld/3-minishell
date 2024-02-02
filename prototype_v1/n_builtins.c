@@ -101,11 +101,11 @@ static int	execute_b_nb(t_command *c_node, t_mini *mi, char *path_str)
 			free_2d_arr(envp);
 			return (path_err(c_node, 2, mi->stat));
 		}
+		free(c_node->args[0]);
+		c_node->args[0] = ft_strdup(path_str);
+		free(path_str);
+		path_str = NULL;
 	}
-	free(c_node->args[0]);
-	c_node->args[0] = ft_strdup(path_str);
-	free(path_str);
-	path_str = NULL;
 	return (mini_exec(c_node, mi, envp));
 }
 

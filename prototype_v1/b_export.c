@@ -61,6 +61,11 @@ static t_fixed	*export_repl(t_fixed *ftmp, t_fixed	*to_repl, char *to_ref)
 		if (val != NULL)
 			to_repl->fvalue = val + 1;
 	}
+	else
+	{
+		free(key);
+		key = NULL;
+	}
 	return (to_repl);
 }
 

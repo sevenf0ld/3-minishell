@@ -20,6 +20,8 @@ static void	ext_dollar(char *ref, int *i, int *j, char **ext)
 	*ext = ft_substr(ref, *i + 1, *j - *i - 1);
 	if ((all_whitespace(*ext) && ft_strchr(ref, '?')) || !ft_strlen(*ext))
 	{
+		free(*ext);
+		*ext = NULL;
 		*ext = ft_strdup("?");
 		*j += 1;
 	}
