@@ -16,7 +16,7 @@ static char	*rm_till_end(t_token **tokens)
 {
 	t_token	*tmp;
 	char	*ret;
-        char    *trim;
+	char	*trim;
 
 	tmp = *tokens;
 	ret = ft_strdup("");
@@ -35,8 +35,8 @@ static char	*rm_till_end(t_token **tokens)
 		// free(tmp);
 		tmp = NULL;
 	}
-        trim = ft_strtrim(ret, " ");
-        free(ret);
+	trim = ft_strtrim(ret, " ");
+	free(ret);
 	return (trim);
 }
 
@@ -85,14 +85,14 @@ void	parser(t_mini *mi)
 	cmd_init(tokens, cmds, mi->env, mi->stat);
 	update_cmd_exec(cmds);
 	double_ll_convert2(cmds);
-        mi->limiting = 0;
+	mi->limiting = 0;
 	complete_cmd(mi, tokens, cmds);
-        mi->piping = 0;
+	mi->piping = 0;
 	if (*cmds != NULL && (*cmds)->size > 1)
 	{
 		pipe_init(&mi->pip, (*cmds)->size - 1, mi->stat);
 		double_ll_convert3(&mi->pip);
 		assign_pipe_ends(*cmds, mi->pip);
-                mi->piping = 1;
+		mi->piping = 1;
 	}
 }

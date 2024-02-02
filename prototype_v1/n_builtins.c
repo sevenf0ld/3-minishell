@@ -45,15 +45,15 @@ static char	*get_path_str(char *path, char *cmd)
 		path_str = ft_strjoin(env_path[i], "/");
 		path_str = join_and_free(path_str, cmd);
 		if (!access(path_str, F_OK))
-                {
-                        free_2d_arr(env_path);
+		{
+			free_2d_arr(env_path);
 			return (path_str);
-                }
-                free(path_str);
-                path_str = NULL;
+		}
+		free(path_str);
+		path_str = NULL;
 		i++;
 	}
-        free_2d_arr(env_path);
+	free_2d_arr(env_path);
 	return (NULL);
 }
 
@@ -91,21 +91,21 @@ static int	execute_b_nb(t_command *c_node, t_mini *mi, char *path_str)
 	{
 		path = get_fvalue(mi->fix, "PATH");
 		if (!path)
-                {
-                        free_2d_arr(envp);
+		{
+			free_2d_arr(envp);
 			return (path_err(c_node, 1, mi->stat));
-                }
+		}
 		path_str = get_path_str(path, c_node->cmd);
 		if (!path_str || !ft_strlen(c_node->cmd))
-                {
-                        free_2d_arr(envp);
+		{
+			free_2d_arr(envp);
 			return (path_err(c_node, 2, mi->stat));
-                }
+		}
 	}
-        free(c_node->args[0]);
-        c_node->args[0] = ft_strdup(path_str);
-        free(path_str);
-        path_str = NULL;
+	free(c_node->args[0]);
+	c_node->args[0] = ft_strdup(path_str);
+	free(path_str);
+	path_str = NULL;
 	return (mini_exec(c_node, mi, envp));
 }
 

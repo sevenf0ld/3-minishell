@@ -87,9 +87,9 @@ void	init_multi_l(t_mini *mi, t_token **tokens, t_command *c_node)
 		c_node->lim = malloc_err(sizeof(char *) * (c_node->num_l + 1),
 				c_node->stat);
 	if (c_node->lim != NULL)
-        {
+	{
 		c_node->lim[c_node->num_l] = NULL;
-                mi->limiting = 1;
-        }
+		mi->limiting = 1;
+	}
 	set_multi_l(tokens, c_node);
 }

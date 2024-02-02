@@ -65,6 +65,6 @@ int	mini_exec(t_command *c_node, t_mini *mi, char **envp)
 	}
 	if (child[c_node->pos] == 0)
 		mini_child(c_node, envp, mi);
-        free_2d_arr(envp);
+	free_2d_arr(envp);
 	return (0);
 }

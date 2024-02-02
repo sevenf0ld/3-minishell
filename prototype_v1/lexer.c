@@ -107,11 +107,11 @@ int	lexer(char *pipeline, t_mini *mi)
 	categorize(&mi->tok);
 	split_tokens(&mi->tok);
 	if (reject(&mi->tok, mi->stat))
-        {
-                free_ttkn(&mi->tok);
-                free(pipeline);
+	{
+		free_ttkn(&mi->tok);
+		free(pipeline);
 		return (1);
-        }
+	}
 	expansion(&mi->tok, mi);
 	group_cmds(&mi->tok);
 	return (0);

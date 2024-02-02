@@ -54,8 +54,8 @@ void	close_and_wait(t_mini *mi)
 	pid_t		child;
 	t_status	*stat;
 
-        if (mi->piping)
-	    last_close(&mi->pip, mi);
+	if (mi->piping)
+		last_close(&mi->pip, mi);
 	child = wait(&wstat);
 	stat = mi->stat;
 	while (child > 0)

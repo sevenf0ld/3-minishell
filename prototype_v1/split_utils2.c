@@ -61,7 +61,7 @@ static void	sep_delim_dual(char *s, t_token *t_node, t_token **tokens, int i)
 	else
 		slot_in_token(t_node, ft_substr(s, 0, 2), tokens,
 			ft_substr(s, 2, (int)ft_strlen(s)));
-        free(s);
+	free(s);
 }
 
 static void	sep_delim_single(char *s, t_token *t_node, t_token **tokens, int i)
@@ -72,7 +72,7 @@ static void	sep_delim_single(char *s, t_token *t_node, t_token **tokens, int i)
 	else
 		slot_in_token(t_node, ft_substr(s, 0, 1), tokens,
 			ft_substr(s, 1, (int)ft_strlen(s)));
-        free(s);
+	free(s);
 }
 
 void	separate_delim(char *s, t_token *t_node, t_token **tokens)
