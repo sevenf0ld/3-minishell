@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:20:01 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/02/02 18:45:34 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/02/02 18:51:08 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -489,5 +489,11 @@ void                                    free_tcmd(t_mini *mi);
 void                                    free_ttkn(t_token **tkn);
 void                                    free_tpipe(t_pipe **pipe);
 void                                    garbage_burner(t_mini *mi, char *pline);
+
+//free2.c
+void            free_stat(t_status *status);
+void            free_res(t_restore *res);
+void            free_fix(t_fixed **fixed);
+void            free_env(t_env **env);
 
 #endif
