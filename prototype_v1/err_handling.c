@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 17:00:50 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/01/26 18:57:58 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/02/01 10:57:21 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	report_err(char *fn, int flag, t_status *stat)
 		perror(fn);
 	else
 		ft_putstr_fd(fn, 2);
-        stat->s_code = 1;
+	stat->s_code = 1;
 }
 
 void	*malloc_err(size_t size, t_status *stat)
@@ -47,16 +47,21 @@ int	open_err(char *file, int flags, mode_t mode, t_command *c_node)
 
 	fd = open(file, flags, mode);
 	if (fd == -1)
-        {
-		report_err("open", 1, c_node->stat);
-                c_node->exec = false;
-        }
+	{
+		if (!c_node->exec)
+			return (fd);
+		ft_putstr_fd("minishell: ", STDERR_FILENO);
+		report_err(file, 1, c_node->stat);
+		c_node->exec = false;
+	}
 	return (fd);
 }
 
 void	dup2_err(int old_fd, int new_fd, t_status *stat)
 {
-        static int i = 0;
+	static int	i;
+
+	i = 0;
 	if (dup2(old_fd, new_fd) == -1)
 	{
 		report_err("dup2", 1, stat);
@@ -64,75 +69,4 @@ void	dup2_err(int old_fd, int new_fd, t_status *stat)
 	}
 	else
 		i++;
-}
-
-void	close_err(int fd, t_status *stat)
-{
-    static int i = 0;
-	if (close(fd) == -1)
-        {
-		report_err("close", 1, stat);
-                fprintf(stderr, "close error on nth attempt %i\n", i);
-        }
-        else
-            i++;
-}
-
-int quote_err(char *a, t_status *stat)
-{
-	report_err("minishell: unterminated quotes ", 0, stat);
-	report_err(a, 0, stat);
-	report_err((" \n"), 0, stat);
-        return (1);
-}
-
-void	pipe_err(int *pipe_arr, t_status *stat)
-{
-	if (pipe(pipe_arr) == -1)
-		report_err("pipe", 1, stat);
-}
-
-int	dup_err(int old_fd, t_status *stat)
-{
-	int	new_fd;
-
-	new_fd = dup(old_fd);
-	if (new_fd == -1)
-		report_err("dup", 1, stat);
-	return (new_fd);
-}
-
-int redir_err(char *token, t_status *stat)
-{
-    report_err("minishell: syntax error near unexpected token `", 0, stat);
-    if (!token)
-        report_err("newline", 0, stat);
-    else
-        report_err(token, 0, stat);
-    report_err("'\n", 0, stat);
-    return (1);
-}
-
-int symbols_err(t_status *stat)
-{
-    report_err("minishell: this is not required by the subject\n", 0, stat);
-    return (1);
-}
-
-int pipe_related_err(t_status *stat)
-{
-    report_err("minishell: syntax error near unexpected token `|'\n", 0, stat);
-    return (1);
-}
-
-int path_err(char *cmd, int flag, t_status *stat)
-{
-    ft_putstr_fd("minishell: ", STDERR_FILENO);
-    ft_putstr_fd(cmd, STDERR_FILENO);
-    if (flag == 1)
-        ft_putendl_fd(": no such file or directory", STDERR_FILENO);
-    else if (flag == 2)
-        ft_putendl_fd(": command not found", STDERR_FILENO);
-    stat->s_code = 127;
-    return (1);
 }

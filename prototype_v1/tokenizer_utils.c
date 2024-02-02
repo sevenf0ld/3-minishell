@@ -25,7 +25,7 @@ int	is_delim(char a)
 static void	tokenize_word(t_token_norme *token_params, char *s)
 {
 	token_params->sub = ft_substr(s, token_params->start,
-			(size_t) token_params->i - token_params->start);
+			(size_t)token_params->i - token_params->start);
 	if (!all_whitespace(token_params->sub))
 		token_init(token_params->sub, token_params->tokens,
 			token_params->stat, token_params->count);
@@ -38,14 +38,15 @@ static void	tokenize_word(t_token_norme *token_params, char *s)
 	token_params->start = -1;
 }
 
-int decide_chunk(t_token_norme *token_params, char *s)
+int	decide_chunk(t_token_norme *token_params, char *s)
 {
 	if (s[token_params->i] == 39 || s[token_params->i] == 34)
 		within_alongside_quotes(token_params, s, 'w');
 	if (s[token_params->i] != 32 || (s[token_params->i] == 32
 			&& (token_params->sq || token_params->wq)))
 		within_alongside_quotes(token_params, s, 'a');
-	else if (s[token_params->i] == 32 && (!token_params->wq && !token_params->sq))
+	else if (s[token_params->i] == 32
+		&& (!token_params->wq && !token_params->sq))
 	{
 		if (token_params->check != token_params->close)
 		{

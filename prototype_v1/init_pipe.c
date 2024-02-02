@@ -36,6 +36,7 @@ t_pipe	*pipe_last(t_pipe *head)
 void	pipe_add_back(t_pipe **head, t_pipe *node)
 {
 	t_pipe	*old_end;
+
 	if (!node)
 		return ;
 	old_end = pipe_last(*head);
@@ -47,7 +48,7 @@ void	pipe_add_back(t_pipe **head, t_pipe *node)
  */
 void	pipe_init(t_pipe **pipes, int loop, t_status *stat)
 {
-	int		i;
+	int	i;
 
 	i = 0;
 	while (i < loop)

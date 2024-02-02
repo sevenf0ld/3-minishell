@@ -31,16 +31,6 @@ char	*get_next_line(int fd)
 	return (bauxite);
 }
 
-static char	*join_and_free(char *to_free, char *to_concat)
-{
-	char	*end;
-
-	end = ft_strjoin(to_free, to_concat);
-	free(to_free);
-	to_free = NULL;
-	return (end);
-}
-
 char	*read_and_store(char *store, int fd, char *buffer)
 {
 	ssize_t	num_bytes;
@@ -77,7 +67,7 @@ char	*extract_newline(char *store)
 		return (NULL);
 	while (store[i] != '\0' && store[i] != '\n')
 		i++;
-	aluminium = ft_substr(store, 0, i + 1);//handled(get_next_line/update_store)functions unused
+	aluminium = ft_substr(store, 0, i + 1);
 	return (aluminium);
 }
 

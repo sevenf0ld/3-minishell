@@ -15,7 +15,7 @@
 void	free_stat(t_status *status)
 {
 	if (!status)
-		return;
+		return ;
 	free(status);
 	status = NULL;
 }
@@ -23,7 +23,7 @@ void	free_stat(t_status *status)
 void	free_res(t_restore *res)
 {
 	if (!res)
-		return;
+		return ;
 	free(res);
 	res = NULL;
 }
@@ -34,16 +34,16 @@ void	free_fix(t_fixed **fixed)
 	t_fixed	*next;
 
 	if (!fixed || !*fixed)
-		return;
-    curr = *fixed;
-    while (curr != NULL)
-    {
-        next = curr->fnext;
-        free(curr->fkey);
+		return ;
+	curr = *fixed;
+	while (curr != NULL)
+	{
+		next = curr->fnext;
+		free(curr->fkey);
 		free(curr->fvalue);
-        free(curr);
-        curr = next;
-    }
+		free(curr);
+		curr = next;
+	}
 }
 
 void	free_env(t_env **env)
@@ -52,14 +52,14 @@ void	free_env(t_env **env)
 	t_env	*next;
 
 	if (!env || !*env)
-		return;
-    curr = *env;
-    while (curr != NULL)
-    {
-        next = curr->next;
-        free(curr->key);
+		return ;
+	curr = *env;
+	while (curr != NULL)
+	{
+		next = curr->next;
+		free(curr->key);
 		free(curr->value);
-        free(curr);
-        curr = next;
-    }
+		free(curr);
+		curr = next;
+	}
 }

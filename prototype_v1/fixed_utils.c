@@ -12,43 +12,43 @@
 
 #include "mini.h"
 
-char    *get_fvalue(t_fixed *f_node, char *fkey)
+char	*get_fvalue(t_fixed *f_node, char *fkey)
 {
-    t_fixed *ftmp;
+	t_fixed	*ftmp;
 
-    ftmp = f_node;
-    while (ftmp != NULL)
-    {
-        if (!ft_strcmp(fkey, ftmp->fkey))
-            return (ftmp->fvalue);
-        ftmp = ftmp->fnext;
-    }
-    return (NULL);
+	ftmp = f_node;
+	while (ftmp != NULL)
+	{
+		if (!ft_strcmp(fkey, ftmp->fkey))
+			return (ftmp->fvalue);
+		ftmp = ftmp->fnext;
+	}
+	return (NULL);
 }
 
-void    update_fvalue(t_fixed **fix, char *fkey, char *fval)
+void	update_fvalue(t_fixed **fix, char *fkey, char *fval)
 {
-    t_fixed *ftmp;
+	t_fixed	*ftmp;
 
-    ftmp = *fix;
-    while (ftmp != NULL)
-    {
-        if (!ft_strcmp(fkey, ftmp->fkey))
-            ftmp->fvalue = fval;
-        ftmp = ftmp->fnext;
-    }
+	ftmp = *fix;
+	while (ftmp != NULL)
+	{
+		if (!ft_strcmp(fkey, ftmp->fkey))
+			ftmp->fvalue = fval;
+		ftmp = ftmp->fnext;
+	}
 }
 
-char    *get_oldpwd(t_fixed *f_node)
+char	*get_oldpwd(t_fixed *f_node)
 {
-    t_fixed *ftmp;
+	t_fixed	*ftmp;
 
-    ftmp = f_node;
-    while (ftmp != NULL)
-    {
-        if (!ft_strcmp(ftmp->fkey, "OLDPWD"))
-            return (ftmp->fvalue);
-        ftmp = ftmp->fnext;
-    }
-    return (NULL);
+	ftmp = f_node;
+	while (ftmp != NULL)
+	{
+		if (!ft_strcmp(ftmp->fkey, "OLDPWD"))
+			return (ftmp->fvalue);
+		ftmp = ftmp->fnext;
+	}
+	return (NULL);
 }

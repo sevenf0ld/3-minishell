@@ -6,7 +6,7 @@
 /*   By: maiman-m <maiman-m@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 16:48:48 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/01/22 17:03:43 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/02/02 19:02:40 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,33 +56,23 @@ size_t	delim_present(char *s)
 static void	sep_delim_dual(char *s, t_token *t_node, t_token **tokens, int i)
 {
 	if (i > 0)
-	{
 		slot_in_token(t_node, ft_substr(s, 0, i), tokens,
 			ft_substr(s, i, (int)ft_strlen(s)));
-		free(s);
-	}
 	else
-	{
 		slot_in_token(t_node, ft_substr(s, 0, 2), tokens,
 			ft_substr(s, 2, (int)ft_strlen(s)));
-		free(s);
-	}
+	free(s);
 }
 
 static void	sep_delim_single(char *s, t_token *t_node, t_token **tokens, int i)
 {
 	if (i > 0)
-	{
 		slot_in_token(t_node, ft_substr(s, 0, i), tokens,
-			ft_substr(s, i, (int)ft_strlen(s)));//
-		free(s);
-	}
+			ft_substr(s, i, (int)ft_strlen(s)));
 	else
-	{
 		slot_in_token(t_node, ft_substr(s, 0, 1), tokens,
-			ft_substr(s, 1, (int)ft_strlen(s)));//
-		free(s);
-	}
+			ft_substr(s, 1, (int)ft_strlen(s)));
+	free(s);
 }
 
 void	separate_delim(char *s, t_token *t_node, t_token **tokens)
@@ -95,15 +85,9 @@ void	separate_delim(char *s, t_token *t_node, t_token **tokens)
 	while (s[i] != '\0')
 	{
 		if (is_hd(s, i, len) || is_add(s, i, len))
-		{
-			sep_delim_dual(s, t_node, tokens, i);
-			break ;
-		}
+			return (sep_delim_dual(s, t_node, tokens, i));
 		else if (is_pipe(s[i]) || is_in_re(s[i]) || is_out_re(s[i]))
-		{
-			sep_delim_single(s, t_node, tokens, i);
-			break ;
-		}
+			return (sep_delim_single(s, t_node, tokens, i));
 		i++;
 	}
 }

@@ -19,17 +19,10 @@ static void	expand_env_var(t_token **tokens, t_mini *mi)
 	tmp = *tokens;
 	while (tmp != NULL)
 	{
-            /*
 		if (tmp->exp && ft_strcmp(tmp->token, "$?") != 0)
-		    expand_utils(&tmp->token);
+			expand_utils(&tmp->token, mi);
 		else if (tmp->exp && !ft_strcmp(tmp->token, "$?"))
-		    tmp->token = ft_lltoa(tmp->stat->s_code);
-            */
-                //if (tmp->exp)
-		if (tmp->exp && ft_strcmp(tmp->token, "$?") != 0)
-		    expand_utils(&tmp->token, mi);
-		else if (tmp->exp && !ft_strcmp(tmp->token, "$?"))
-		    tmp->token = ft_lltoa(tmp->stat->s_code);
+			tmp->token = ft_lltoa(tmp->stat->s_code);
 		tmp = tmp->next;
 	}
 }
@@ -42,7 +35,7 @@ void	expansion(t_token **tokens, t_mini *mi)
 	while (tmp != NULL)
 	{
 		if (ft_strchr(tmp->token, '$'))
-                    tmp->exp = true;
+			tmp->exp = true;
 		tmp = tmp->next;
 	}
 	expand_env_var(tokens, mi);

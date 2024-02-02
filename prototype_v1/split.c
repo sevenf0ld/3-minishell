@@ -16,24 +16,25 @@
    split the symbol(s) concatenated to other characters if q is false
    | > < >> <<
 */
-void    split_tokens(t_token **tokens)
+void	split_tokens(t_token **tokens)
 {
-    t_token *tmp;
+	t_token	*tmp;
 
-    tmp = *tokens;
-    while (tmp != NULL)
-    {
-        categorize_symbol(tokens);
-        if (tmp->symbol == CMD || tmp->symbol == ARGS || tmp->symbol == FILN || tmp->symbol == LIM)
-        {
-            if (delim_present(tmp->token))
-            {
-                separate_delim(tmp->token, tmp, tokens);
-                while (tmp->prev != NULL)
-                    tmp = tmp->prev;
-                continue ;
-            }
-        }
-        tmp = tmp->next;
-    }
+	tmp = *tokens;
+	while (tmp != NULL)
+	{
+		categorize_symbol(tokens);
+		if (tmp->symbol == CMD || tmp->symbol == ARGS || tmp->symbol == FILN
+			|| tmp->symbol == LIM)
+		{
+			if (delim_present(tmp->token))
+			{
+				separate_delim(tmp->token, tmp, tokens);
+				while (tmp->prev != NULL)
+					tmp = tmp->prev;
+				continue ;
+			}
+		}
+		tmp = tmp->next;
+	}
 }

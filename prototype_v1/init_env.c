@@ -58,7 +58,7 @@ void	env_add_back(t_env **head, t_env *node)
 
 void	env_init(t_env **envs, char **envp, t_fixed *f, t_status *stat)
 {
-	int		i;
+	int	i;
 
 	i = 0;
 	while (envp[i] != NULL)
