@@ -32,14 +32,14 @@ args=("0"
         "3 4 a"
     )
 
-exe="./v1"
+exe="./minishell"
 
 make re --silent
 
 reset
 
 for arg in "${args[@]}"; do
-	echo "exit $arg" | ./v1
+	echo "exit $arg" | $exe
 	echo -e "$green $? $none"
 
 done

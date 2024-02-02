@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 02:57:44 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/02/01 12:28:48 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/02/03 01:15:26 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,10 +61,8 @@ void	b_echo(t_command *c_node, t_mini *mi)
 	while (c_node->args[++i] != NULL)
 	{
 		if (!valid_nl_flag(c_node->args[i]))
-		{
-			j = i;
 			break ;
-		}
+		j += 1;
 	}
 	b_echo_norme(c_node, i, j);
 	mi->stat->s_code = 0;

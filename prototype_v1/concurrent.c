@@ -6,7 +6,7 @@
 /*   By: maiman-m <maiman-m@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/21 08:01:50 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/02/02 18:39:59 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/02/03 01:38:36 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,11 +53,15 @@ void	close_and_wait(t_mini *mi)
 	int			wstat;
 	pid_t		child;
 	t_status	*stat;
+        t_command       *last_cmd;
+        int             old_s_code;
 
 	if (mi->piping)
 		last_close(&mi->pip, mi);
 	child = wait(&wstat);
 	stat = mi->stat;
+        last_cmd = cmd_last(mi->cmd);
+        old_s_code = stat->s_code;
 	while (child > 0)
 	{
 		if (WIFEXITED(wstat))
@@ -73,4 +77,6 @@ void	close_and_wait(t_mini *mi)
 			stat->s_code = WIFSTOPPED(wstat);
 		child = wait(&wstat);
 	}
+        if (last_cmd->builtin && last_cmd->size == 1)
+            stat->s_code = old_s_code;
 }
