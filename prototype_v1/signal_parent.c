@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   signal.c                                           :+:      :+:    :+:   */
+/*   signal_parent.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: folim <folim@student.42kl.edu.my>          +#+  +:+       +#+        */
+/*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/10 16:11:59 by folim             #+#    #+#             */
-/*   Updated: 2024/02/01 15:36:53 by maiman-m         ###   ########.fr       */
+/*   Created: 2024/02/02 16:18:17 by maiman-m          #+#    #+#             */
+/*   Updated: 2024/02/02 16:21:10 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,22 +35,4 @@ void	signal_parent(void)
 {
 	signal(SIGQUIT, sig_qt_prnt);
 	signal(SIGINT, sig_int_prnt);
-}
-
-static void	sig_qt_chld(int signum)
-{
-	(void)signum;
-	ft_putendl_fd("Quit", STDERR_FILENO);
-}
-
-static void	sig_int_chld(int signum)
-{
-	(void)signum;
-	ft_putendl_fd(NULL, STDOUT_FILENO);
-}
-
-void	signal_child(void)
-{
-	signal(SIGQUIT, sig_qt_chld);
-	signal(SIGINT, sig_int_chld);
 }

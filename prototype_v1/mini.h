@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:20:01 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/02/02 14:39:23 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/02/02 16:52:57 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -232,16 +232,19 @@ typedef struct s_repl_norme
 /*      MINISHELL       */
 //main.c
 
-//init_mini.h
+//init_mini.c
 void					mini_init_stat_res(t_mini *mi);
 void					mini_init_environ(t_mini *mi, char **envp);
 void					mini_init_pid(t_mini *mi);
 
 //mini_utils.c
-char					*join_and_free(char *to_free, char *to_concat);
+
+//mini_utils2.c
 bool					is_builtin(char *cmd);
 int						all_whitespace(char *s);
 void					categorize(t_token **tokens);
+char					*join_and_free(char *to_free, char *to_concat);
+int						contain_quotes(char *s);
 
 /*	TOKENIZER	*/
 //tokenizer.c
@@ -330,8 +333,6 @@ void					group_cmds(t_token **tokens);
 
 /*	PARSER	*/
 //parser.c
-void					init_multi_a(t_token **tokens, t_command *c_node);
-void					init_multi_l(t_token **tokens, t_command *c_node);
 void					complete_cmd(t_token **tokens, t_command **cmds);
 void					parser(t_mini *mi);
 
@@ -368,9 +369,17 @@ void					assign_pipe_ends(t_command *c_node, t_pipe *p_node);
 void					redirect_command_io(t_command *c_node);
 
 //parser_utils4.c
-void					rm(char **args, int n);
-int						contain_quotes(char *s);
+void					count_enclosed(char *s, int *size);
+void					init_enclosed_extract(char **ext, int size);
+void					extract_enclosed(char *s, char *ext);
+
+//parser_utils5.c
+void					init_multi_a(t_token **tokens, t_command *c_node);
+void					init_multi_l(t_token **tokens, t_command *c_node);
+
+//parser_utils6.c
 void					remove_quotes(char **args);
+void					rm(char **args, int n);
 
 /*      HEREDOC     */
 //heredoc.c
@@ -393,12 +402,13 @@ int						look_for_nl(char *to_search);
 //concurrent.c
 void					close_unused_ends(t_command **cmds, int i);
 void					last_close(t_pipe **pipes, t_mini *mi);
+void					close_and_wait(t_mini *mi);
 
 /*	SIGNAL HANDLER	*/
-//signal.c
-//void sig_int(int signum);
-//void sig_quit(int signum);
+//signal_parent.c
 void					signal_parent(void);
+
+//signal_child.c
 void					signal_child(void);
 
 /*	BUILTINS EXECUTOR	*/

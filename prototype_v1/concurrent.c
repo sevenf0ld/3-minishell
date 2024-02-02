@@ -6,7 +6,7 @@
 /*   By: maiman-m <maiman-m@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/21 08:01:50 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/02/02 12:04:25 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/02/02 16:50:11 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,3 +48,30 @@ void	last_close(t_pipe **pipes, t_mini *mi)
 		tmp = tmp->next;
 	}
 }
+
+void	close_and_wait(t_mini *mi)
+{
+	int			wstat;
+	pid_t		child;
+	t_status	*stat;
+
+	last_close(&mi->pip, mi);
+	child = wait(&wstat);
+	stat = mi->stat;
+	while (child > 0)
+	{
+		if (WIFEXITED(wstat))
+			stat->s_code = WEXITSTATUS(wstat);
+		else if (WIFSIGNALED(wstat))
+		{
+			if (WTERMSIG(wstat) == 2)
+				stat->s_code = 130;
+			else if (WTERMSIG(wstat) == 3)
+				stat->s_code = 131;
+		}
+		else if (WIFSTOPPED(wstat))
+			stat->s_code = WIFSTOPPED(wstat);
+		child = wait(&wstat);
+	}
+}
+

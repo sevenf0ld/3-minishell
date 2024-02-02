@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:19:04 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/02/02 14:38:09 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/02/02 16:52:58 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,32 +57,6 @@ void	execution(t_mini *mi)
 		restore_io(mi);
 		unlink("tmp_lim.txt");
 		cur = cur->next;
-	}
-}
-
-void	close_and_wait(t_mini *mi)
-{
-	int			wstat;
-	pid_t		child;
-	t_status	*stat;
-
-	last_close(&mi->pip, mi);
-	child = wait(&wstat);
-	stat = mi->stat;
-	while (child > 0)
-	{
-		if (WIFEXITED(wstat))
-			stat->s_code = WEXITSTATUS(wstat);
-		else if (WIFSIGNALED(wstat))
-		{
-			if (WTERMSIG(wstat) == 2)
-				stat->s_code = 130;
-			else if (WTERMSIG(wstat) == 3)
-				stat->s_code = 131;
-		}
-		else if (WIFSTOPPED(wstat))
-			stat->s_code = WIFSTOPPED(wstat);
-		child = wait(&wstat);
 	}
 }
 
