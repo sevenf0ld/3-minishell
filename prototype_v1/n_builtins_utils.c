@@ -6,7 +6,7 @@
 /*   By: maiman-m <maiman-m@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 19:13:30 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/02/01 16:09:25 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/02/02 18:30:54 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,5 +65,6 @@ int	mini_exec(t_command *c_node, t_mini *mi, char **envp)
 	}
 	if (child[c_node->pos] == 0)
 		mini_child(c_node, envp, mi);
+	free_2d_arr(envp);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:20:01 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/02/02 17:44:27 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/02/02 18:51:08 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@
 #  define BUFFER_SIZE 1000
 # endif
 
-# include <stdio.h>
 # include "libft/include/libft.h"
 # include <fcntl.h>
 # include <limits.h>
@@ -24,6 +23,7 @@
 # include <readline/readline.h>
 # include <signal.h>
 # include <stdbool.h>
+# include <stdio.h>
 # include <stdlib.h>
 # include <sys/types.h>
 # include <sys/wait.h>
@@ -141,6 +141,7 @@ typedef struct s_mini
 {
 	t_sym				*sym;
 	t_token				*tok;
+	t_token				*tok_cpy;
 	t_command			*cmd;
 	t_pipe				*pip;
 	t_env				*env;
@@ -148,6 +149,8 @@ typedef struct s_mini
 	t_status			*stat;
 	t_restore			*res;
 	t_pid				*pid;
+	int					piping;
+	int					limiting;
 }						t_mini;
 
 typedef struct s_sig
@@ -340,7 +343,8 @@ void					group_cmds(t_token **tokens);
 
 /*	PARSER	*/
 //parser.c
-void					complete_cmd(t_token **tokens, t_command **cmds);
+void					complete_cmd(t_mini *mi, t_token **tokens,
+							t_command **cmds);
 void					parser(t_mini *mi);
 
 //init_cmd.c
@@ -382,7 +386,8 @@ void					extract_enclosed(char *s, char *ext);
 
 //parser_utils5.c
 void					init_multi_a(t_token **tokens, t_command *c_node);
-void					init_multi_l(t_token **tokens, t_command *c_node);
+void					init_multi_l(t_mini *mi, t_token **tokens,
+							t_command *c_node);
 
 //parser_utils6.c
 void					remove_quotes(char **args);
@@ -478,9 +483,19 @@ int						redir_err(char *token, t_status *stat);
 int						symbols_err(t_status *stat);
 int						pipe_related_err(t_status *stat);
 int						path_err(t_command *c_node, int flag, t_status *stat);
-void					export_err(char *err, arg, t_mini *mi);
+void					export_err(char *err_arg, t_mini *mi);
 
 //free.c
 void					free_2d_arr(char **input);
+void					free_tcmd(t_mini *mi);
+void					free_ttkn(t_token **tkn);
+void					free_tpipe(t_pipe **pipe);
+void					garbage_burner(t_mini *mi, char *pline);
+
+//free2.c
+void					free_stat(t_status *status);
+void					free_res(t_restore *res);
+void					free_fix(t_fixed **fixed);
+void					free_env(t_env **env);
 
 #endif

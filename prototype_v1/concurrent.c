@@ -6,7 +6,7 @@
 /*   By: maiman-m <maiman-m@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/21 08:01:50 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/02/02 17:11:48 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/02/02 18:39:59 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,8 @@ void	close_and_wait(t_mini *mi)
 	pid_t		child;
 	t_status	*stat;
 
-	last_close(&mi->pip, mi);
+	if (mi->piping)
+		last_close(&mi->pip, mi);
 	child = wait(&wstat);
 	stat = mi->stat;
 	while (child > 0)

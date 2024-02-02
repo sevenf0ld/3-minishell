@@ -6,7 +6,7 @@
 /*   By: maiman-m <maiman-m@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 16:48:48 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/01/22 17:03:43 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/02/02 19:02:40 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ static void	sep_delim_dual(char *s, t_token *t_node, t_token **tokens, int i)
 	else
 		slot_in_token(t_node, ft_substr(s, 0, 2), tokens,
 			ft_substr(s, 2, (int)ft_strlen(s)));
+	free(s);
 }
 
 static void	sep_delim_single(char *s, t_token *t_node, t_token **tokens, int i)
@@ -71,6 +72,7 @@ static void	sep_delim_single(char *s, t_token *t_node, t_token **tokens, int i)
 	else
 		slot_in_token(t_node, ft_substr(s, 0, 1), tokens,
 			ft_substr(s, 1, (int)ft_strlen(s)));
+	free(s);
 }
 
 void	separate_delim(char *s, t_token *t_node, t_token **tokens)
