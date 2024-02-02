@@ -91,16 +91,6 @@ void	init_multi_l(t_token **tokens, t_command *c_node)
 	set_multi_l(tokens, c_node);
 }
 
-static char	*join_and_free(char *to_free, char *to_concat)
-{
-	char	*end;
-
-	end = ft_strjoin(to_free, to_concat);
-	free(to_free);
-	to_free = NULL;
-	return (end);
-}
-
 static char	*rm_till_end(t_token **tokens)
 {
 	t_token	*tmp;

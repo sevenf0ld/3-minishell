@@ -12,16 +12,6 @@
 
 #include "mini.h"
 
-static char	*join_and_free(char *to_free, char *to_concat)
-{
-	char	*end;
-
-	end = ft_strjoin(to_free, to_concat);
-	free(to_free);
-	to_free = NULL;
-	return (end);
-}
-
 static void	prompt_and_wait(char *delim, t_status *stat)
 {
 	char	*input;

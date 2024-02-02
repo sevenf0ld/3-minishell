@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:25:31 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/02/01 11:07:38 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/02/02 14:39:53 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,8 @@ void	categorize_cmd_args_norme(t_token *token)
 /*
  * categorizes command (5) and arguments (7)
 
-	* categorizes command (executable & builtins) and arguments (flags/options included)
+	* categorizes command (executable & builtins)
+		and arguments (flags/options included)
  */
 static void	categorize_cmd_w_args(t_token **tokens)
 {
@@ -98,22 +99,15 @@ static void	categorize_cmd_w_args(t_token **tokens)
 		else if (tmp->prev != NULL && tmp->prev->symbol == PIPE)
 			tmp->symbol = CMD;
 		else if (tmp->prev != NULL && (tmp->prev->symbol == FILN
-					|| tmp->prev->symbol == LIM))
+				|| tmp->prev->symbol == LIM))
 		{
 			if (tmp->symbol != PIPE)
 				tmp->symbol = CMD;
 		}
 		else if (tmp->symbol == ANON)
 			tmp->symbol = ARGS;
-					tmp = tmp->next;
+		tmp = tmp->next;
 	}
-}
-
-void	categorize(t_token **tokens)
-{
-	categorize_symbol(tokens);
-	categorize_params(tokens);
-	categorize_cmd_w_args(tokens);
 }
 
 /*

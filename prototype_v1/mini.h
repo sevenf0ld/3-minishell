@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:20:01 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/02/02 12:45:24 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/02/02 14:39:23 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,7 @@
 # define OUT_RE_FLAG (O_CREAT | O_WRONLY | O_TRUNC)
 # define ADD_FLAG (O_CREAT | O_WRONLY | O_APPEND)
 
-/
-*
+/*
  * 0 PIPE
  * 1 >
  * 2 <
@@ -45,7 +44,7 @@
  * 7 HEREDOC <<
  * 8 ADDEND >>
  * 9 ANONYMOUS
- */
+*/
 typedef enum e_sym
 {
 	PIPE,
@@ -232,13 +231,17 @@ typedef struct s_repl_norme
 
 /*      MINISHELL       */
 //main.c
-bool					is_builtin(char *cmd);
-int						all_whitespace(char *s);
 
 //init_mini.h
 void					mini_init_stat_res(t_mini *mi);
 void					mini_init_environ(t_mini *mi, char **envp);
 void					mini_init_pid(t_mini *mi);
+
+//mini_utils.c
+char					*join_and_free(char *to_free, char *to_concat);
+bool					is_builtin(char *cmd);
+int						all_whitespace(char *s);
+void					categorize(t_token **tokens);
 
 /*	TOKENIZER	*/
 //tokenizer.c
@@ -266,7 +269,6 @@ t_pipe					*double_ll_convert3(t_pipe **lst);
 /*	LEXER	*/
 //lexer.c
 void					categorize_symbol(t_token **tokens);
-void					categorize(t_token **tokens);
 int						lexer(char *pipeline, t_mini *mi);
 
 //split.c
@@ -445,11 +447,15 @@ int						lim_err(char *file, int flags, mode_t mode,
 int						open_err(char *file, int flags, mode_t mode,
 							t_command *c_node);
 void					dup2_err(int old_fd, int new_fd, t_status *stat);
+
+//err_handling_utils.c
 void					close_err(int fd, t_status *stat);
 int						quote_err(char *a, t_status *stat);
 void					pipe_err(int *pipe_arr, t_status *stat);
 int						dup_err(int old_fd, t_status *stat);
 int						redir_err(char *token, t_status *stat);
+
+//err_handling_utils2.c
 int						symbols_err(t_status *stat);
 int						pipe_related_err(t_status *stat);
 int						path_err(t_command *c_node, int flag, t_status *stat);

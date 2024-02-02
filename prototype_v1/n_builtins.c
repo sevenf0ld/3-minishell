@@ -30,16 +30,6 @@ static int	check_path_type(char *path_str)
 	return (0);
 }
 
-static char	*join_and_free(char *to_free, char *to_concat)
-{
-	char	*end;
-
-	end = ft_strjoin(to_free, to_concat);
-	free(to_free);
-	to_free = NULL;
-	return (end);
-}
-
 //n_builtins
 static char	*get_path_str(char *path, char *cmd)
 {

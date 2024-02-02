@@ -58,15 +58,15 @@ static void	cmd_init_norme_two(t_cmd_norme *cmd_params)
 
 	if (cmd_params->i == 0)
 		*cmd_params->cmds = cmd_new(cmd_init_norme_three(cmd_params->first),
-									cmd_params->i,
-									cmd_params->envs,
-									cmd_params->stat);
+				cmd_params->i,
+				cmd_params->envs,
+				cmd_params->stat);
 	else
 	{
 		tmp_cmd = cmd_new(cmd_init_norme_three(cmd_params->first),
-							cmd_params->i,
-							cmd_params->envs,
-							cmd_params->stat);
+				cmd_params->i,
+				cmd_params->envs,
+				cmd_params->stat);
 		cmd_add_back(cmd_params->cmds, tmp_cmd);
 	}
 	cmd_params->i++;
@@ -74,9 +74,9 @@ static void	cmd_init_norme_two(t_cmd_norme *cmd_params)
 	if (cmd_params->i == num_pipes(cmd_params->tokens))
 	{
 		tmp_cmd = cmd_new(cmd_init_norme_three(cmd_params->first),
-							cmd_params->i,
-							cmd_params->envs,
-							cmd_params->stat);
+				cmd_params->i,
+				cmd_params->envs,
+				cmd_params->stat);
 		cmd_add_back(cmd_params->cmds, tmp_cmd);
 	}
 }
