@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:19:04 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/02/02 22:43:35 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/02/02 22:46:33 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,4 +85,8 @@ int	main(int argc, char **argv, char **envp)
 		else
 			minishell(pipeline, &mini, 2);
 	}
+	// free_stat(mini.stat);
+	// free_res(mini.res);
+	// free_fix(&mini.fix);
+	// free_env(&mini.env);
 }
