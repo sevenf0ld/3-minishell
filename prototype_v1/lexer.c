@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:25:31 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/02/02 14:39:53 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/02/02 17:10:09 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void	categorize_symbol(t_token **tokens)
  * categorize files if any output/input redirection, heredoc's limiter,
 	arguments in pipeline
  */
-static void	categorize_params(t_token **tokens)
+void	categorize_params(t_token **tokens)
 {
 	t_token	*tmp;
 
@@ -60,34 +60,13 @@ static void	categorize_params(t_token **tokens)
 	}
 }
 
-void	categorize_cmd_args_norme(t_token *token)
-{
-	t_token	*tmp;
-	bool	cmd;
-
-	tmp = token;
-	cmd = false;
-	while (tmp != NULL)
-	{
-		if (tmp->symbol == PIPE)
-			break ;
-		if (tmp->symbol == CMD)
-			cmd = true;
-		tmp = tmp->prev;
-	}
-	if (!cmd)
-		token->symbol = CMD;
-	else
-		token->symbol = ARGS;
-}
-
 /*
  * categorizes command (5) and arguments (7)
 
 	* categorizes command (executable & builtins)
 		and arguments (flags/options included)
  */
-static void	categorize_cmd_w_args(t_token **tokens)
+void	categorize_cmd_w_args(t_token **tokens)
 {
 	t_token	*tmp;
 

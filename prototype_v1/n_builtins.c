@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/30 14:47:12 by folim             #+#    #+#             */
-/*   Updated: 2024/02/01 15:38:56 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/02/02 17:11:30 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,11 +53,6 @@ static char	*get_path_str(char *path, char *cmd)
 
 static void	execute_non_exe(t_command *c_node, t_mini *mi)
 {
-	int		tmp_inre;
-	int		tmp_outre;
-	int		tmp_add;
-	char	*buf;
-
 	if (access(c_node->cmd + 2, F_OK) != 0)
 	{
 		ft_putstr_fd("minishell: ", 2);

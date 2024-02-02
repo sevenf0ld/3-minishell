@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:20:01 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/02/02 16:52:57 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/02/02 17:44:27 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #  define BUFFER_SIZE 1000
 # endif
 
+# include <stdio.h>
 # include "libft/include/libft.h"
 # include <fcntl.h>
 # include <limits.h>
@@ -23,7 +24,6 @@
 # include <readline/readline.h>
 # include <signal.h>
 # include <stdbool.h>
-# include <stdio.h>
 # include <stdlib.h>
 # include <sys/types.h>
 # include <sys/wait.h>
@@ -231,6 +231,8 @@ typedef struct s_repl_norme
 
 /*      MINISHELL       */
 //main.c
+void					execution(t_mini *mi);
+void					minishell(char *pipeline, t_mini *mi, int flag);
 
 //init_mini.c
 void					mini_init_stat_res(t_mini *mi);
@@ -238,6 +240,9 @@ void					mini_init_environ(t_mini *mi, char **envp);
 void					mini_init_pid(t_mini *mi);
 
 //mini_utils.c
+void					save_io(t_mini *mi);
+void					no_fork_b_exec(t_mini *mi, t_command *cur);
+void					restore_io(t_mini *mi);
 
 //mini_utils2.c
 bool					is_builtin(char *cmd);
@@ -272,6 +277,8 @@ t_pipe					*double_ll_convert3(t_pipe **lst);
 /*	LEXER	*/
 //lexer.c
 void					categorize_symbol(t_token **tokens);
+void					categorize_params(t_token **tokens);
+void					categorize_cmd_w_args(t_token **tokens);
 int						lexer(char *pipeline, t_mini *mi);
 
 //split.c
@@ -419,10 +426,12 @@ void					b_echo(t_command *c_node, t_mini *mi);
 char					*b_pwd(t_command *c_node, char mode, t_mini *mi);
 void					b_cd(t_command *c_node, t_mini *mi);
 
-//b_environ.c
+//b_unset_env.c
 void					b_env(t_command *c_node, t_fixed **f_node, t_mini *mi);
 void					b_unset(t_command *c_node, t_fixed **f_node,
 							t_mini *mi);
+
+//b_export.c
 void					b_export(t_command *c_node, t_fixed **f_node,
 							t_mini *mi);
 
@@ -469,6 +478,7 @@ int						redir_err(char *token, t_status *stat);
 int						symbols_err(t_status *stat);
 int						pipe_related_err(t_status *stat);
 int						path_err(t_command *c_node, int flag, t_status *stat);
+void					export_err(char *err, arg, t_mini *mi);
 
 //free.c
 void					free_2d_arr(char **input);

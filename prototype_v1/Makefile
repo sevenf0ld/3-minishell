@@ -6,19 +6,21 @@
 #    By: folim <folim@student.42kl.edu.my>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/15 12:21:40 by maiman-m          #+#    #+#              #
-#    Updated: 2024/02/02 16:42:39 by maiman-m         ###   ########.fr        #
+#    Updated: 2024/02/02 17:33:55 by maiman-m         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-PROG_NAME = v1
+PROG_NAME = minishell
 
-CC = clang
+CC = cc
 
 CFLAGS = -Wall -Wextra -Werror -g3
 
-CPPFLAGS = -I/libft/include -I/mini.h
+# CPPFLAGS = -I/libft/include -I/mini.h
+CPPFLAGS = -I/libft/include -I/mini.h -I/usr/local/opt/readline/include
 
-LDFLAGS = -Llibft 
+# LDFLAGS = -Llibft 
+LDFLAGS = -Llibft -L/usr/local/opt/readline/lib
 
 LDLIBS = -lft -lreadline
 
@@ -30,7 +32,7 @@ SRCS = main.c init_mini.c mini_utils.c mini_utils2.c tokenizer.c tokenizer_utils
            heredoc.c \
            n_builtins.c n_builtins_utils.c gnl.c concurrent.c \
            signal_parent.c signal_child.c \
-	   b_echo.c b_dir.c b_environ.c b_exit.c \
+	   b_echo.c b_dir.c b_unset_env.c b_export.c b_exit.c \
 	   init_env.c init_fixed.c fixed_utils.c \
 	   err_handling.c err_handling_utils.c err_handling_utils2.c free.c
 	   

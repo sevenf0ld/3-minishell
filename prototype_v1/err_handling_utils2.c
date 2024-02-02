@@ -6,7 +6,7 @@
 /*   By: maiman-m <maiman-m@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 14:28:15 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/02/02 14:28:21 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/02/02 17:38:38 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,4 +35,13 @@ int	path_err(t_command *c_node, int flag, t_status *stat)
 		ft_putendl_fd(": command not found", STDERR_FILENO);
 	stat->s_code = 127;
 	return (1);
+}
+
+void	export_err(char *err_arg, t_mini *mi)
+{
+	mi->stat->s_code = 1;
+	ft_putstr_fd("minishell: export: `", STDERR_FILENO);
+	ft_putstr_fd(err_arg, STDERR_FILENO);
+	ft_putendl_fd("': not a valid identifier", STDERR_FILENO);
+	return ;
 }

@@ -6,39 +6,11 @@
 /*   By: folim <folim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:19:04 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/02/02 16:52:58 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/02/02 17:44:44 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mini.h"
-
-void	no_fork_b_exec(t_mini *mi, t_command *cur)
-{
-	t_fixed	*fix;
-
-	fix = mi->fix;
-	if (!cur->cmd || !cur->builtin)
-		return ;
-	if (!ft_strcmp(cur->cmd, "unset") && cur->size == 1)
-		b_unset(cur, &fix, mi);
-	if (!ft_strcmp(cur->cmd, "exit") && cur->size == 1)
-		b_exit(cur, mi);
-	if (!ft_strcmp(cur->cmd, "export") && cur->size == 1)
-		b_export(cur, &fix, mi);
-	if (!ft_strcmp(cur->cmd, "cd") && cur->size == 1)
-		b_cd(cur, mi);
-}
-
-void	restore_io(t_mini *mi)
-{
-	t_restore	*res;
-	t_status	*stat;
-
-	res = mi->res;
-	stat = mi->stat;
-	dup2_err(res->std_out, STDOUT_FILENO, stat);
-	dup2_err(res->std_in, STDIN_FILENO, stat);
-}
 
 void	execution(t_mini *mi)
 {
@@ -58,6 +30,28 @@ void	execution(t_mini *mi)
 		unlink("tmp_lim.txt");
 		cur = cur->next;
 	}
+}
+
+void	minishell(char *pipeline, t_mini *mini, int flag)
+{
+	if (flag == 0)
+	{
+		ft_putendl_fd("exit", STDOUT_FILENO);
+		exit(EXIT_SUCCESS);
+	}
+	else if (flag == 1)
+	{
+		add_history(pipeline);
+		if (lexer(pipeline, mini))
+			continue ;
+		save_io(mini);
+		parser(mini);
+		mini_init_pid(mini);
+		execution(mini);
+		close_and_wait(mini);
+	}
+	else if (flag == 2)
+		mini->stat->s_code = 0;
 }
 
 t_sig	g_sig;
@@ -82,23 +76,10 @@ int	main(int argc, char **argv, char **envp)
 		if (g_sig.sig)
 			mini.stat->s_code = g_sig.sig_code;
 		if (!pipeline)
-		{
-			ft_putendl_fd("exit", STDOUT_FILENO);
-			exit(EXIT_SUCCESS);
-		}
+			minishell(pipeline, &mini, 0);
 		else if (ft_strcmp(pipeline, "") && !all_whitespace(pipeline))
-		{
-			add_history(pipeline);
-			if (lexer(pipeline, &mini))
-				continue ;
-			mini.res->std_out = dup_err(STDOUT_FILENO, mini.stat);
-			mini.res->std_in = dup_err(STDIN_FILENO, mini.stat);
-			parser(&mini);
-			mini_init_pid(&mini);
-			execution(&mini);
-			close_and_wait(&mini);
-		}
+			minishell(pipeline, &mini, 1);
 		else
-			mini.stat->s_code = 0;
+			minishell(pipeline, &mini, 2);
 	}
 }
