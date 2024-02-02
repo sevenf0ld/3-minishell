@@ -6,7 +6,7 @@
 /*   By: maiman-m <maiman-m@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 10:35:46 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/01/27 08:33:42 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/02/02 18:20:42 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,9 @@ static void	prompt_and_wait(char *delim, t_status *stat)
 			break ;
 		input = join_and_free(input, "\n");
 		write(tmp_add, input, ft_strlen(input));
+                free(input);
 	}
+        free(input);
 }
 
 void	heredoc(t_command *c_node, t_status *stat)

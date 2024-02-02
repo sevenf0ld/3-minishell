@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:19:04 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/02/02 17:44:44 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/02/02 18:45:17 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,12 +43,14 @@ void	minishell(char *pipeline, t_mini *mini, int flag)
 	{
 		add_history(pipeline);
 		if (lexer(pipeline, mini))
-			continue ;
+                    return ;
 		save_io(mini);
+                // free_ttkn(mini->tok_cpy);
 		parser(mini);
 		mini_init_pid(mini);
 		execution(mini);
 		close_and_wait(mini);
+                garbage_burner(mini, pipeline);
 	}
 	else if (flag == 2)
 		mini->stat->s_code = 0;

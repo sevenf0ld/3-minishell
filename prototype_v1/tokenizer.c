@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:26:59 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/01/22 18:01:07 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/02/02 18:35:07 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,4 +86,5 @@ void	tokenizer(char *s, t_token **tokens, t_status *stat)
 		tokens,
 		stat,
 		token_params.count);
+        free(s);
 }

@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 16:04:34 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/02/02 16:42:16 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/02/02 18:37:35 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ static void	set_multi_l(t_token **tokens, t_command *c_node)
 	}
 }
 
-void	init_multi_l(t_token **tokens, t_command *c_node)
+void	init_multi_l(t_mini *mi, t_token **tokens, t_command *c_node)
 {
 	t_token	*tmp;
 
@@ -84,8 +84,11 @@ void	init_multi_l(t_token **tokens, t_command *c_node)
 		tmp = tmp->next;
 	}
 	if (c_node->num_l > 0)
+        {
+                mi->limiting = 1;
 		c_node->lim = malloc_err(sizeof(char *) * (c_node->num_l + 1),
 				c_node->stat);
+        }
 	if (c_node->lim != NULL)
 		c_node->lim[c_node->num_l] = NULL;
 	set_multi_l(tokens, c_node);
