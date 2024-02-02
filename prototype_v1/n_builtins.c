@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/30 14:47:12 by folim             #+#    #+#             */
-/*   Updated: 2024/02/02 18:29:17 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/02/02 18:55:13 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,10 +91,16 @@ static int	execute_b_nb(t_command *c_node, t_mini *mi, char *path_str)
 	{
 		path = get_fvalue(mi->fix, "PATH");
 		if (!path)
+                {
+                        free_2d_arr(envp);
 			return (path_err(c_node, 1, mi->stat));
+                }
 		path_str = get_path_str(path, c_node->cmd);
 		if (!path_str || !ft_strlen(c_node->cmd))
+                {
+                        free_2d_arr(envp);
 			return (path_err(c_node, 2, mi->stat));
+                }
 	}
 	c_node->args[0] = path_str;
 	return (mini_exec(c_node, mi, envp));

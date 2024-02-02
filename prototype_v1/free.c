@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/06 19:35:29 by folim             #+#    #+#             */
-/*   Updated: 2024/02/02 18:16:21 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/02/02 18:54:11 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,10 @@ void    free_tcmd(t_mini *mi)
         next = curr->next;
                 free_2d_arr(curr->args);
                 if (mi->limiting == 1)
+                {
                         free_2d_arr(curr->lim);
+                        mi->limiting = 0;
+                }
                 // printf("curr->og: %s\n", curr->og);
                 free(curr->og);
                 free(curr->std_in);
