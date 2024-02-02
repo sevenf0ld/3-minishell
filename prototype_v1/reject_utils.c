@@ -19,13 +19,11 @@ int	multi_redir(t_token *t_node, t_status *stat)
 	tmp = t_node;
 	while (tmp != NULL)
 	{
-		if (tmp->symbol == IN_RE || tmp->symbol == OUT_RE
-			|| tmp->symbol == ADD || tmp->symbol == HD)
+		if (tmp->symbol == IN_RE || tmp->symbol == OUT_RE || tmp->symbol == ADD
+			|| tmp->symbol == HD)
 			if (tmp->next != NULL)
-				if (tmp->next->symbol == IN_RE
-					|| tmp->next->symbol == OUT_RE
-					|| tmp->next->symbol == ADD
-					|| tmp->next->symbol == HD)
+				if (tmp->next->symbol == IN_RE || tmp->next->symbol == OUT_RE
+					|| tmp->next->symbol == ADD || tmp->next->symbol == HD)
 					return (redir_err(tmp->next->token, stat));
 		tmp = tmp->next;
 	}
@@ -39,8 +37,8 @@ int	redir_as_end(t_token *t_node, t_status *stat)
 	tmp = t_node;
 	while (tmp != NULL)
 	{
-		if (tmp->symbol == IN_RE || tmp->symbol == OUT_RE
-			|| tmp->symbol == ADD || tmp->symbol == HD)
+		if (tmp->symbol == IN_RE || tmp->symbol == OUT_RE || tmp->symbol == ADD
+			|| tmp->symbol == HD)
 			if (tmp->next == NULL || (tmp->next != NULL
 					&& tmp->next->symbol == PIPE))
 				return (redir_err(NULL, stat));
@@ -49,13 +47,14 @@ int	redir_as_end(t_token *t_node, t_status *stat)
 	return (0);
 }
 
-static int	mult_adj_sym_norme_one(t_token *tmp, int *i, char *s, t_status *stat)
+static int	mult_adj_sym_norme_one(t_token *tmp, int *i, char *s,
+		t_status *stat)
 {
 	if (tmp->symbol == ARGS)
 	{
 		s = tmp->token;
-                if (contain_quotes(s))
-                    return (0);
+		if (contain_quotes(s))
+			return (0);
 		*i = 0;
 		while (s[*i] != '\0')
 		{
@@ -74,7 +73,7 @@ static int	mult_adj_sym_norme_one(t_token *tmp, int *i, char *s, t_status *stat)
 
 int	multi_adjacent_symbols(t_token *t_node, t_status *stat)
 {
-	int	i;
+	int		i;
 	char	*s;
 	t_token	*tmp;
 

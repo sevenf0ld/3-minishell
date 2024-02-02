@@ -1,32 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   h_signal.c                                         :+:      :+:    :+:   */
+/*   signal_child.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: folim <folim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/09 21:07:02 by folim             #+#    #+#             */
-/*   Updated: 2023/11/09 21:07:03 by folim            ###   ########.fr       */
+/*   Created: 2023/11/10 16:11:59 by folim             #+#    #+#             */
+/*   Updated: 2024/02/02 16:21:25 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mini.h"
 
+static void	sig_qt_chld(int signum)
+{
+	(void)signum;
+	ft_putendl_fd("Quit", STDERR_FILENO);
+}
 
+static void	sig_int_chld(int signum)
+{
+	(void)signum;
+	ft_putendl_fd(NULL, STDOUT_FILENO);
+}
 
-
-int main() {
-    char* input;
-
-    input = NULL;
-    signal(SIGINT, sighandler);
-    while (1) {
-        input = readline("Enter something: ");
-        if (input)
-            break;
-    }
-
-    printf("Result: %s\n", input);
-    free(input);
-    return 0;
+void	signal_child(void)
+{
+	signal(SIGQUIT, sig_qt_chld);
+	signal(SIGINT, sig_int_chld);
 }

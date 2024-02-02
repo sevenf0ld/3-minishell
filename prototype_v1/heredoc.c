@@ -12,50 +12,40 @@
 
 #include "mini.h"
 
-static char *join_and_free(char *to_free, char *to_concat)
+static void	prompt_and_wait(char *delim, t_status *stat)
 {
-    char *end;
+	char	*input;
+	int		tmp_outre;
+	int		tmp_add;
 
-    end = ft_strjoin(to_free, to_concat);
-    free(to_free);
-    to_free = NULL;
-    return (end);
+	input = NULL;
+	tmp_outre = lim_err("tmp_lim.txt", O_CREAT | O_WRONLY | O_TRUNC, 0777,
+			stat);
+	tmp_add = lim_err("tmp_lim.txt", O_CREAT | O_WRONLY | O_APPEND, 0666, stat);
+	write(tmp_outre, "", 0);
+	while (1)
+	{
+		input = readline("mini_heredoc > ");
+		if (!ft_strcmp(input, delim))
+			break ;
+		input = join_and_free(input, "\n");
+		write(tmp_add, input, ft_strlen(input));
+	}
 }
 
-static void    prompt_and_wait(char *delim, t_status *stat)
+void	heredoc(t_command *c_node, t_status *stat)
 {
-    char    *input;
-    int     tmp_outre;
-    int     tmp_add;
+	int	i;
+	int	tmp_inre;
 
-    input = NULL;
-    tmp_outre = lim_err("tmp_lim.txt", O_CREAT | O_WRONLY | O_TRUNC, 0777, stat);
-    tmp_add = lim_err("tmp_lim.txt", O_CREAT | O_WRONLY | O_APPEND, 0666, stat);
-    write(tmp_outre, "", 0);
-    while (1)
-    {
-        input = readline("mini_heredoc > ");
-        if (!ft_strcmp(input, delim))
-            break ;
-        input = join_and_free(input, "\n");
-        write(tmp_add, input, ft_strlen(input));
-    }
-}
-
-void    heredoc(t_command *c_node, t_status *stat)
-{
-    int i;
-    int     tmp_inre;
-
-    i = 0;
-    //to by pass norminette assigning things in the beginning or smthn
-    if (i > 0)
-        tmp_inre = lim_err("tmp_lim.txt", O_RDONLY, 0444, stat);
-    while (i < c_node->num_l)
-    {
-        prompt_and_wait(c_node->lim[i], stat);
-        i++;
-    }
-    tmp_inre = lim_err("tmp_lim.txt", O_RDONLY, 0444, stat);
-    dup2_err(tmp_inre, STDIN_FILENO, stat);
+	i = 0;
+	if (i > 0)
+		tmp_inre = lim_err("tmp_lim.txt", O_RDONLY, 0444, stat);
+	while (i < c_node->num_l)
+	{
+		prompt_and_wait(c_node->lim[i], stat);
+		i++;
+	}
+	tmp_inre = lim_err("tmp_lim.txt", O_RDONLY, 0444, stat);
+	dup2_err(tmp_inre, STDIN_FILENO, stat);
 }

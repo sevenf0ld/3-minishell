@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/17 14:26:35 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/01/31 14:11:04 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/02/02 12:45:26 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,25 +14,28 @@
 
 void	set_multi_fildes_norme(t_fildes_norme *fildes_params, int i)
 {
-        rm(&fildes_params->tmp->token, 0);
+	rm(&fildes_params->tmp->token, 0);
 	if (i == 0)
 	{
 		if (fildes_params->tmp->prev->symbol == IN_RE)
 			fildes_params->c_node->std_in[fildes_params->i++] = open_err(
-					fildes_params->tmp->token, O_RDONLY, 0444, fildes_params->c_node);
+					fildes_params->tmp->token, IN_RE_FLAG, 0444,
+					fildes_params->c_node);
 		if (fildes_params->tmp->prev->symbol == OUT_RE)
 		{
 			fildes_params->c_node->std_out_o[fildes_params->j++] = open_err(
-					fildes_params->tmp->token, O_CREAT | O_WRONLY
-					| O_TRUNC, 0777, fildes_params->c_node);
-			fildes_params->c_node->last_out = fildes_params->c_node->std_out_o[fildes_params->j - 1];
+					fildes_params->tmp->token, OUT_RE_FLAG, 0777,
+					fildes_params->c_node);
+			fildes_params->c_node->last_out = fildes_params->c_node->std_out_o[
+				fildes_params->j - 1];
 		}
 		if (fildes_params->tmp->prev->symbol == ADD)
 		{
 			fildes_params->c_node->std_out_a[fildes_params->k++] = open_err(
-					fildes_params->tmp->token, O_CREAT | O_WRONLY
-					| O_APPEND, 0666, fildes_params->c_node);
-			fildes_params->c_node->last_out = fildes_params->c_node->std_out_a[fildes_params->k - 1];
+					fildes_params->tmp->token, ADD_FLAG, 0666,
+					fildes_params->c_node);
+			fildes_params->c_node->last_out = fildes_params->c_node->std_out_a[
+				fildes_params->k - 1];
 		}
 	}
 }
@@ -47,7 +50,8 @@ void	set_multi_fildes(t_token **tokens, t_command *c_node)
 	fildes_params.tokens = tokens;
 	while (fildes_params.tmp != NULL)
 	{
-		if (fildes_params.tmp->symbol == FILN && fildes_params.tmp->prev != NULL)
+		if (fildes_params.tmp->symbol == FILN
+			&& fildes_params.tmp->prev != NULL)
 			set_multi_fildes_norme(&fildes_params, 0);
 		if (fildes_params.tmp->end == true)
 			break ;
@@ -97,4 +101,3 @@ void	init_multi_redir(t_token **tokens, t_command *c_node)
 				sizeof(int) * (c_node->num_so_a + 1), c_node->stat);
 	set_multi_fildes(tokens, c_node);
 }
-

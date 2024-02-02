@@ -6,7 +6,7 @@
 /*   By: maiman-m <maiman-m@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 16:27:20 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/01/22 16:39:40 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/02/02 16:47:38 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,13 @@ static int	unterm_q_norme(bool sq, bool wq, t_status *stat)
 	return (0);
 }
 
+static void	reset_unterm_params(t_unterm_norme *unterm_params)
+{
+	unterm_params->i = 0;
+	unterm_params->sq = false;
+	unterm_params->wq = false;
+}
+
 int	unterminated_quotes(t_token *t_node, t_status *stat)
 {
 	t_unterm_norme	unterm_params;
@@ -43,13 +50,15 @@ int	unterminated_quotes(t_token *t_node, t_status *stat)
 		if (unterm_params.tmp->symbol == ARGS)
 		{
 			unterm_params.s = unterm_params.tmp->token;
-			unterm_params.i = 0;
-			unterm_params.sq = false;
-			unterm_params.wq = false;
+			reset_unterm_params(&unterm_params);
 			while (unterm_params.s[unterm_params.i] != '\0')
 			{
-				if (unterm_params.s[unterm_params.i] == 39 || unterm_params.s[unterm_params.i] == 34)
-					decide_quote(unterm_params.s[unterm_params.i], &unterm_params.sq, &unterm_params.wq);
+				if (unterm_params.s[unterm_params.i] == 39
+					|| unterm_params.s[unterm_params.i] == 34)
+					decide_quote(
+						unterm_params.s[unterm_params.i],
+						&unterm_params.sq,
+						&unterm_params.wq);
 				unterm_params.i++;
 			}
 			if (unterm_q_norme(unterm_params.sq, unterm_params.wq, stat))
@@ -57,5 +66,5 @@ int	unterminated_quotes(t_token *t_node, t_status *stat)
 		}
 		unterm_params.tmp = unterm_params.tmp->next;
 	}
-        return (0);
+	return (0);
 }

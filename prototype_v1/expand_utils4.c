@@ -6,13 +6,13 @@
 /*   By: maiman-m <maiman-m@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 14:52:55 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/01/26 16:14:33 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/02/02 17:11:12 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mini.h"
 
-static void	join_and_free(char **t, char **u)
+static void	reform_word_norme(char **t, char **u)
 {
 	char	*tmp;
 
@@ -36,9 +36,9 @@ void	reform_word(char **s, char **t, char **u, char **v)
 	char	*tmp;
 
 	tmp = ft_strdup("");
-	join_and_free(&tmp, t);
-	join_and_free(&tmp, u);
-	join_and_free(&tmp, v);
+	reform_word_norme(&tmp, t);
+	reform_word_norme(&tmp, u);
+	reform_word_norme(&tmp, v);
 	check_free_and_null(s);
 	*s = ft_strdup(tmp);
 	check_free_and_null(&tmp);

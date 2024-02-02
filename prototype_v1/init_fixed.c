@@ -57,7 +57,7 @@ void	f_add_back(t_fixed **head, t_fixed *node)
 
 void	f_init(t_fixed **envs, char **envp, t_status *stat)
 {
-	int		i;
+	int	i;
 
 	i = 0;
 	while (envp[i] != NULL)
