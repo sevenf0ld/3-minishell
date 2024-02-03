@@ -50,7 +50,9 @@ static void	b_unset_norme(t_fixed *f_node, char *to_rm)
 			to_free = ftmp->fnext;
 			ftmp->fnext = ftmp->fnext->fnext;
 			free(to_free->fkey);
+			free(to_free->fvalue); //problem 1 & 2 solved
 			to_free->fkey = NULL;
+			to_free->fvalue = NULL;
 			free(to_free);
 			to_free = NULL;
 			if (!ftmp->fnext)

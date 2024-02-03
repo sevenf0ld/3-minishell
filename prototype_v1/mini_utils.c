@@ -31,11 +31,20 @@ void	no_fork_b_exec(t_mini *mi, t_command *cur)
 	if (!cur->cmd || !cur->builtin)
 		return ;
 	if (!ft_strcmp(cur->cmd, "unset") && cur->size == 1)
+	{
 		b_unset(cur, &fix, mi);
+		// printf("unsetting:\n");
+		// print_tfix(&fix);
+
+	}
 	if (!ft_strcmp(cur->cmd, "exit") && cur->size == 1)
 		b_exit(cur, mi);
 	if (!ft_strcmp(cur->cmd, "export") && cur->size == 1)
+	{
 		b_export(cur, &fix, mi);
+		// printf("exporting:\n");
+		// print_tfix(&fix);
+	}
 	if (!ft_strcmp(cur->cmd, "cd") && cur->size == 1)
 		b_cd(cur, mi);
 }

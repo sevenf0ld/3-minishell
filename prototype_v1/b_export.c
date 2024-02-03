@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 17:29:27 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/02/02 17:38:42 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/02/03 15:33:59 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,9 +57,11 @@ static t_fixed	*export_repl(t_fixed *ftmp, t_fixed	*to_repl, char *to_ref)
 	}
 	if (to_repl != NULL)
 	{
+                free(to_repl->fkey);
+                free(to_repl->fvalue);
 		to_repl->fkey = key;
-		if (val != NULL)
-			to_repl->fvalue = val + 1;
+		if (val != NULL && *val)
+			to_repl->fvalue = ft_strdup(val + 1);
 	}
 	else
 	{
@@ -79,7 +81,7 @@ static void	export_argless(t_mini *mi, t_fixed **f_node)
 		printf("declare -x ");
 		if (!ftmp->fvalue)
 			printf("%s\n", ftmp->fkey);
-		else
+		else if (*ftmp->fvalue)
 			printf("%s=\"%s\"\n", ftmp->fkey, ftmp->fvalue);
 		ftmp = ftmp->fnext;
 	}
@@ -104,7 +106,7 @@ void	b_export(t_command *c_node, t_fixed **f_node, t_mini *mi)
 			return (export_err(c_node->args[i], mi));
 		to_repl = export_repl(ftmp, to_repl, c_node->args[i]);
 		if (!to_repl)
-			f_add_back(f_node, f_new(c_node->args[i], c_node->stat));
+			f_add_back(f_node, f_new(ft_strdup(c_node->args[i]), c_node->stat, 1));
 	}
 	mi->stat->s_code = 0;
 }
