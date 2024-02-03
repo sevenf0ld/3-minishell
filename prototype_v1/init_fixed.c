@@ -20,7 +20,7 @@ static void	set_fixed_kv(t_fixed *node, char *var)
 	while (var[i] != '\0' && var[i] != '=')
 		i++;
 	node->fkey = ft_substr(var, 0, i);
-	node->fvalue = ft_strchr(var, '=');
+	node->fvalue = ft_strdup(ft_strchr(var, '='));
 	if (node->fvalue != NULL)
 		node->fvalue += 1;
 }
