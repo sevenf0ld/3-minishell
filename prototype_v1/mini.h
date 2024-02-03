@@ -494,6 +494,7 @@ void					free_tcmd(t_mini *mi);
 void					free_ttkn(t_token **tkn);
 void					free_tpipe(t_pipe **pipe);
 void					garbage_burner(t_mini *mi, char *pline);
+void					print_tfix(t_fixed **tfix);
 
 //free2.c
 void					free_stat(t_status *status);

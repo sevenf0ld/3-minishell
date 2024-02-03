@@ -39,6 +39,7 @@ void	free_fix(t_fixed **fixed)
 	while (curr != NULL)
 	{
 		next = curr->fnext;
+		// printf("free fkey-> %s\n", curr->fkey);
 		free(curr->fkey);
 		free(curr->fvalue);
 		free(curr);

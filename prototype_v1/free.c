@@ -12,6 +12,21 @@
 
 #include "mini.h"
 
+void	print_tfix(t_fixed **tfix)
+{
+	t_fixed	*curr;
+
+	if(!tfix || !*tfix)
+		return ;
+	curr = *tfix;
+	while(curr != NULL)
+	{
+		printf("fkey: %s\n", curr->fkey);
+		printf("fvalue: %s\n", curr->fvalue);
+		curr = curr->fnext;
+	}
+}
+
 void	free_2d_arr(char **input)
 {
 	int	i;
