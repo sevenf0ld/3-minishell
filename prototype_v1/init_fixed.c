@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/24 01:59:27 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/02/03 15:22:57 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/02/04 03:02:41 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,19 @@ static void	set_fixed_kv(t_fixed *node, char *var, int flag)
 		i++;
 	node->fkey = ft_substr(var, 0, i);
         val = ft_strchr(var, '=');
-        if (flag == 1 && val != NULL && *val && ft_strlen(val) != 0)
+        if (val != NULL && *val && ft_strlen(val) != 0)
 	    node->fvalue = ft_strdup(val + 1);
-        else if (flag == 0)
-	    node->fvalue = val;
+        else
+	    node->fvalue = NULL;
+        //if (flag == 1)
+        //{
+        //    if (val != NULL && *val && ft_strlen(val) != 0)
+	//        node->fvalue = ft_strdup(val + 1);
+        //    else
+	//        node->fvalue = NULL;
+        //}
+        //else if (flag == 0)
+	//    node->fvalue = val + 1;
 	//if (node->fvalue != NULL)
 	//	node->fvalue += 1;
         if (flag == 1)
@@ -38,8 +47,11 @@ t_fixed	*f_new(char *var, t_status *stat, int flag)
 	t_fixed	*node;
 
 	node = malloc_err(sizeof(t_fixed), stat);
-	set_fixed_kv(node, var, flag);
-	node->fnext = NULL;
+        if (node != NULL)
+        {
+	    set_fixed_kv(node, var, flag);
+	    node->fnext = NULL;
+        }
 	return (node);
 }
 

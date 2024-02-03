@@ -6,7 +6,7 @@
 /*   By: maiman-m <maiman-m@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 16:27:20 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/02/02 16:47:38 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/02/04 02:50:15 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,15 @@ static void	reset_unterm_params(t_unterm_norme *unterm_params)
 	unterm_params->wq = false;
 }
 
+static int  not_symbol(t_sym symbol)
+{
+    if (symbol == CMD || symbol == ARGS)
+        return (1);
+    if (symbol == FILN || symbol == LIM)
+        return (1);
+    return (0);
+}
+
 int	unterminated_quotes(t_token *t_node, t_status *stat)
 {
 	t_unterm_norme	unterm_params;
@@ -47,7 +56,8 @@ int	unterminated_quotes(t_token *t_node, t_status *stat)
 	unterm_params = (t_unterm_norme){0, false, false, NULL, t_node};
 	while (unterm_params.tmp != NULL)
 	{
-		if (unterm_params.tmp->symbol == ARGS)
+		//if (unterm_params.tmp->symbol == ARGS)
+		if (not_symbol(unterm_params.tmp->symbol))
 		{
 			unterm_params.s = unterm_params.tmp->token;
 			reset_unterm_params(&unterm_params);

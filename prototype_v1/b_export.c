@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 17:29:27 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/02/03 15:33:59 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/02/04 02:43:44 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,10 +58,12 @@ static t_fixed	*export_repl(t_fixed *ftmp, t_fixed	*to_repl, char *to_ref)
 	if (to_repl != NULL)
 	{
                 free(to_repl->fkey);
-                free(to_repl->fvalue);
 		to_repl->fkey = key;
 		if (val != NULL && *val)
+                {
+                        free(to_repl->fvalue);
 			to_repl->fvalue = ft_strdup(val + 1);
+                }
 	}
 	else
 	{
@@ -81,8 +83,13 @@ static void	export_argless(t_mini *mi, t_fixed **f_node)
 		printf("declare -x ");
 		if (!ftmp->fvalue)
 			printf("%s\n", ftmp->fkey);
-		else if (*ftmp->fvalue)
+		else
+                {
+                    if (*ftmp->fvalue)
 			printf("%s=\"%s\"\n", ftmp->fkey, ftmp->fvalue);
+                    else
+                        printf("%s=\"\"\n", ftmp->fkey);
+                }
 		ftmp = ftmp->fnext;
 	}
 	mi->stat->s_code = 0;

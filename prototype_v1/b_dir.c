@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 22:06:08 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/01/28 15:23:52 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/02/04 03:21:33 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,12 @@ char	*b_pwd(t_command *c_node, char mode, t_mini *mi)
 			mi->stat->s_code = 0;
 		}
 	}
+        else
+	    mi->stat->s_code = 1;
 	return (cur_dir);
 }
 
-void	mini_err(char *b, char *issue)
+static void mini_err(char *b, char *issue)
 {
 	ft_putstr_fd("minishell: ", STDERR_FILENO);
 	ft_putstr_fd(b, STDERR_FILENO);
@@ -45,7 +47,7 @@ void	mini_err(char *b, char *issue)
 	perror(NULL);
 }
 
-int	chdir_err(char *path, t_mini *mi)
+static int  chdir_err(char *path, t_mini *mi)
 {
 	if (chdir(path) == -1)
 	{
@@ -60,10 +62,17 @@ int	chdir_err(char *path, t_mini *mi)
 void	b_cd(t_command *c_node, t_mini *mi)
 {
 	t_command	*cur;
+        char            *home;
 
 	cur = c_node;
-	if (cur->num_a == 1)
-		chdir_err(get_fvalue(c_node->env_var->fixed, "HOME"), mi);
+        home = get_fvalue(c_node->env_var->fixed, "HOME");
+	if (cur->num_a == 1 && home != NULL)
+		chdir_err(home, mi);
+        else if (cur->num_a == 1 && !home)
+        {
+                ft_putendl_fd("minishell: cd: HOME not set", STDERR_FILENO);
+		mi->stat->s_code = 1;
+        }
 	else
 	{
 		if (cur->num_a > 2)
