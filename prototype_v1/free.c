@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/06 19:35:29 by folim             #+#    #+#             */
-/*   Updated: 2024/02/02 18:54:11 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/02/03 00:57:45 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ void	free_2d_arr(char **input)
 	int	i;
 
 	i = -1;
+        if (!input)
+            return ;
 	while (input[++i])
 		free(input[i]);
 	free(input);

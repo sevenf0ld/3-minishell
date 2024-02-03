@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:25:31 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/02/02 18:21:50 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/02/03 10:38:42 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,6 +113,7 @@ int	lexer(char *pipeline, t_mini *mi)
 		return (1);
 	}
 	expansion(&mi->tok, mi);
+        delete_all_element(&mi->tok, "");
 	group_cmds(&mi->tok);
 	return (0);
 }

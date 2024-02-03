@@ -6,7 +6,7 @@
 /*   By: maiman-m <maiman-m@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 14:47:11 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/01/27 14:14:49 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/02/03 00:50:11 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	set_aft_exp(char **aft, char *ref)
 	if (ref[i] == 36)
 	{
 		i++;
-		while (ft_isalnum(ref[i]) && ref[i])
+		while ((ft_isalnum(ref[i]) && ref[i]) || (ref[i] && ref[i] == '_'))
 			i++;
 		if (ref[i] == 63)
 			i += 1;

@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:20:01 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/02/02 18:51:08 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/02/03 10:33:10 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -340,6 +340,9 @@ char					*repl(char *og, char *displace, char *sub, int len_og);
 
 //lexer_utils.c
 void					group_cmds(t_token **tokens);
+
+//delete.c
+void                                    delete_all_element(t_token **lst, char *value);
 
 /*	PARSER	*/
 //parser.c

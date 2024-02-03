@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 02:57:44 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/02/01 12:28:48 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/02/03 10:19:38 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,12 +26,12 @@ static int	valid_nl_flag(char *s)
 		while (s[++i] != '\0' && s[i] == 'n')
 			;
 	}
-	if (i == len)
+	if (i == len && len != 0)
 		return (1);
 	return (0);
 }
 
-static void	b_echo_norme(t_command *c_node, int i, int j)
+static void	b_echo_norme(t_command *c_node, int i)
 {
 	while (c_node->args[i] != NULL)
 	{
@@ -41,18 +41,36 @@ static void	b_echo_norme(t_command *c_node, int i, int j)
 			printf("%s", c_node->args[i]);
 		i++;
 	}
-	if (j == 1)
-		printf("\n");
+}
+
+static int  echo_nl(t_command *c_node)
+{
+    int i = 1;
+
+    while (c_node->args[i] != NULL)
+    {
+        if (valid_nl_flag(c_node->args[i]))
+        {
+            fprintf(stderr, "no newline\n");
+            return (1);
+        }
+        i++;
+    }
+    return (0);
 }
 
 void	b_echo(t_command *c_node, t_mini *mi)
 {
 	int	i;
-	int	j;
 
 	i = 0;
-	j = 1;
 	if (c_node->num_a == 1)
+	{
+		mi->stat->s_code = 0;
+		printf("\n");
+		return ;
+	}
+	if (c_node->num_a == 2 && !ft_strlen(c_node->args[1]))
 	{
 		mi->stat->s_code = 0;
 		printf("\n");
@@ -61,11 +79,10 @@ void	b_echo(t_command *c_node, t_mini *mi)
 	while (c_node->args[++i] != NULL)
 	{
 		if (!valid_nl_flag(c_node->args[i]))
-		{
-			j = i;
 			break ;
-		}
 	}
-	b_echo_norme(c_node, i, j);
+	b_echo_norme(c_node, i);
+        if (!echo_nl(c_node))
+            printf("\n");
 	mi->stat->s_code = 0;
 }

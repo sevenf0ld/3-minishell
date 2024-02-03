@@ -6,7 +6,7 @@
 /*   By: maiman-m <maiman-m@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 14:48:44 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/01/31 11:32:41 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/02/03 00:50:29 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 static void	ext_dollar(char *ref, int *i, int *j, char **ext)
 {
 	*j = *i + 1;
-	while (ft_isalnum(ref[*j]) && ref[*j])
+	while ((ft_isalnum(ref[*j]) && ref[*j]) || (ref[*j] && ref[*j] == '-'))
 		(*j)++;
 	*ext = ft_substr(ref, *i + 1, *j - *i - 1);
 	if ((all_whitespace(*ext) && ft_strchr(ref, '?')) || !ft_strlen(*ext))

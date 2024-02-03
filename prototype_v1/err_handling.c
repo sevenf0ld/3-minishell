@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 17:00:50 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/02/01 10:57:21 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/02/03 01:02:07 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	report_err(char *fn, int flag, t_status *stat)
 		perror(fn);
 	else
 		ft_putstr_fd(fn, 2);
-	stat->s_code = 1;
+	stat->s_code = 2;
 }
 
 void	*malloc_err(size_t size, t_status *stat)
