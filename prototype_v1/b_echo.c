@@ -45,15 +45,16 @@ static void	b_echo_norme(t_command *c_node, int i)
 
 static int  echo_nl(t_command *c_node)
 {
-    int i = 1;
+    int i;
+    int invalid;
 
+    i = 1;
+    invalid = 0;
     while (c_node->args[i] != NULL)
     {
-        if (valid_nl_flag(c_node->args[i]))
-        {
-            fprintf(stderr, "no newline\n");
+        if (valid_nl_flag(c_node->args[i]) && !invalid)
             return (1);
-        }
+        invalid += 1;
         i++;
     }
     return (0);
