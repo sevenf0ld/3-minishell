@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:20:01 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/02/03 10:33:10 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/02/03 15:03:34 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -455,7 +455,7 @@ void					env_init(t_env **envs, char **envp, t_fixed *f,
 							t_status *stat);
 
 //init_fixed.c
-t_fixed					*f_new(char *var, t_status *stat);
+t_fixed					*f_new(char *var, t_status *stat, int flag);
 t_fixed					*f_last(t_fixed *head);
 void					f_add_back(t_fixed **head, t_fixed *node);
 void					f_init(t_fixed **envs, char **envp, t_status *stat);

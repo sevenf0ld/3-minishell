@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:19:04 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/02/03 08:47:41 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/02/03 15:02:07 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,6 @@ int	main(int argc, char **argv, char **envp)
 	}
 	// free_stat(mini.stat);
 	// free_res(mini.res);
-	// free_fix(&mini.fix);
+	free_fix(&mini.fix);
 	// free_env(&mini.env);
 }
