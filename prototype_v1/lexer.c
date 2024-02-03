@@ -113,7 +113,7 @@ int	lexer(char *pipeline, t_mini *mi)
 		return (1);
 	}
 	expansion(&mi->tok, mi);
-        delete_all_element(&mi->tok, "");
+	delete_all_element(&mi->tok, "");
 	group_cmds(&mi->tok);
 	return (0);
 }

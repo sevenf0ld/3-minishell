@@ -26,6 +26,7 @@ void delete_all_element(t_token **lst, char *value)
         to_remove = (*lst);
         //count = printf("Element '%d' is deleted.\n", (*lst)->x);
         *lst = (*lst)->next;
+        free(to_remove->token);
         free(to_remove);
     }
     t_token *curr;
@@ -41,9 +42,11 @@ void delete_all_element(t_token **lst, char *value)
             curr->next = curr->next->next;
             if (curr->next == NULL)
             {
+                free(to_remove1->token);
                 free(to_remove1);
                 return;
             }
+            free(to_remove1->token);
             free(to_remove1);
         }
         curr = curr->next;
