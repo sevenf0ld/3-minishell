@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 17:00:50 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/02/03 01:02:07 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/02/03 11:24:53 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ int	open_err(char *file, int flags, mode_t mode, t_command *c_node)
 		ft_putstr_fd("minishell: ", STDERR_FILENO);
 		report_err(file, 1, c_node->stat);
 		c_node->exec = false;
+                c_node->stat->s_code = 1;
 	}
 	return (fd);
 }
