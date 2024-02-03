@@ -6,7 +6,7 @@
 /*   By: maiman-m <maiman-m@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 14:27:55 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/02/02 14:28:07 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/02/04 02:44:24 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int	quote_err(char *a, t_status *stat)
 	report_err("minishell: unterminated quotes ", -1, stat);
 	report_err(a, -1, stat);
 	report_err((" \n"), -1, stat);
-	return (0);
+	return (1);
 }
 
 void	pipe_err(int *pipe_arr, t_status *stat)
@@ -58,5 +58,5 @@ int	redir_err(char *token, t_status *stat)
 	else
 		report_err(token, -1, stat);
 	report_err("'\n", -1, stat);
-	return (0);
+	return (1);
 }

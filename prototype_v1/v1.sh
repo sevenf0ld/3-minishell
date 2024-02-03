@@ -244,7 +244,7 @@ arr=(
     )
 
 # create a variable with the name of the executable
-exe="./v1"
+exe="./minishell"
 
 # set -e
 
