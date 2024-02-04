@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/06 19:35:29 by folim             #+#    #+#             */
-/*   Updated: 2024/02/03 00:57:45 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/02/04 20:25:29 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,11 +103,11 @@ void	free_tpipe(t_pipe **pipe)
 	return ;
 }
 
-void	garbage_burner(t_mini *mi, char *pline)
+void	garbage_burner(t_mini *mi)
 {
 	free(mi->pid->pid_c);
 	free(mi->pid);
-	free(pline);
+	free(mi->pipeline);
 	free_ttkn(&mi->tok_cpy);
 	free_tcmd(mi);
 	if (mi->piping == 1)

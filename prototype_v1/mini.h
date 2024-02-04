@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:20:01 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/02/03 15:03:34 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/02/04 20:25:08 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,6 +151,7 @@ typedef struct s_mini
 	t_pid				*pid;
 	int					piping;
 	int					limiting;
+        char                            *pipeline;
 }						t_mini;
 
 typedef struct s_sig
@@ -235,12 +236,13 @@ typedef struct s_repl_norme
 /*      MINISHELL       */
 //main.c
 void					execution(t_mini *mi);
-void					minishell(char *pipeline, t_mini *mi, int flag);
+void					minishell(t_mini *mi, int flag);
 
 //init_mini.c
 void					mini_init_stat_res(t_mini *mi);
 void					mini_init_environ(t_mini *mi, char **envp);
 void					mini_init_pid(t_mini *mi);
+void                                    mini_init_pipeline(t_mini *mi, char *s);
 
 //mini_utils.c
 void					save_io(t_mini *mi);
@@ -493,7 +495,7 @@ void					free_2d_arr(char **input);
 void					free_tcmd(t_mini *mi);
 void					free_ttkn(t_token **tkn);
 void					free_tpipe(t_pipe **pipe);
-void					garbage_burner(t_mini *mi, char *pline);
+void					garbage_burner(t_mini *mi);
 void					print_tfix(t_fixed **tfix);
 
 //free2.c

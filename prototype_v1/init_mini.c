@@ -6,7 +6,7 @@
 /*   By: maiman-m <maiman-m@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 11:36:30 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/01/26 12:40:58 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/02/04 20:23:37 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,4 +31,9 @@ void	mini_init_pid(t_mini *mi)
 {
 	mi->pid = malloc_err(sizeof(t_pid), mi->stat);
 	mi->pid->pid_c = malloc_err(sizeof(pid_t) * (mi->cmd->size), mi->stat);
+}
+
+void    mini_init_pipeline(t_mini *mi, char *s)
+{
+    mi->pipeline = s;
 }
