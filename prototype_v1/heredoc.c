@@ -26,8 +26,8 @@ static void	prompt_and_wait(char *delim, t_status *stat)
 	while (1)
 	{
 		input = readline("mini_heredoc > ");
-                if (!input)
-                    return ;
+		if (!input)
+			return ;
 		if (!ft_strcmp(input, delim))
 			break ;
 		input = join_and_free(input, "\n");

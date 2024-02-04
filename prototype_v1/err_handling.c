@@ -53,7 +53,7 @@ int	open_err(char *file, int flags, mode_t mode, t_command *c_node)
 		ft_putstr_fd("minishell: ", STDERR_FILENO);
 		report_err(file, 1, c_node->stat);
 		c_node->exec = false;
-                c_node->stat->s_code = 1;
+		c_node->stat->s_code = 1;
 	}
 	return (fd);
 }

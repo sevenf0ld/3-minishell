@@ -60,28 +60,30 @@ void	categorize_params(t_token **tokens)
 	}
 }
 
-static void c_w_a_norme(t_token *t_node)
+static void	c_w_a_norme(t_token *t_node)
 {
-    bool    cmd;
-    t_token *tmp;
+	bool	cmd;
+	t_token	*tmp;
 
-    cmd = false;
-    tmp = t_node;
-    while (tmp != NULL)
-    {
-        if (tmp->symbol == CMD)
-        {
-            cmd = true;
-            break ;
-        }
-        if (tmp->symbol == PIPE)
-            break ;
-        tmp = tmp->prev;
-    }
-    if (!cmd && t_node->symbol != PIPE && t_node->symbol != IN_RE && t_node->symbol != OUT_RE && t_node->symbol != ADD && t_node->symbol != HD)
-        t_node->symbol = CMD;
-    else if (cmd)
-        t_node->symbol = ARGS;
+	cmd = false;
+	tmp = t_node;
+	while (tmp != NULL)
+	{
+		if (tmp->symbol == CMD)
+		{
+			cmd = true;
+			break ;
+		}
+		if (tmp->symbol == PIPE)
+			break ;
+		tmp = tmp->prev;
+	}
+	if (!cmd && t_node->symbol != PIPE && t_node->symbol != IN_RE
+		&& t_node->symbol != OUT_RE && t_node->symbol != ADD
+		&& t_node->symbol != HD)
+		t_node->symbol = CMD;
+	else if (cmd)
+		t_node->symbol = ARGS;
 }
 
 /*
@@ -101,17 +103,10 @@ void	categorize_cmd_w_args(t_token **tokens)
 			tmp->symbol = CMD;
 		else if (tmp->prev != NULL && tmp->prev->symbol == PIPE)
 			tmp->symbol = CMD;
-                ///*
 		else if (tmp->prev != NULL && (tmp->prev->symbol == FILN
 				|| tmp->prev->symbol == LIM))
-		{
-			//if (tmp->symbol != PIPE)
-			//	tmp->symbol = CMD;
-                        c_w_a_norme(tmp);       
-		}
-                //*/
-		(void) c_w_a_norme;
-                if (tmp->symbol == ANON)
+			c_w_a_norme(tmp);
+		if (tmp->symbol == ANON)
 			tmp->symbol = ARGS;
 		tmp = tmp->next;
 	}

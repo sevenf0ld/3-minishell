@@ -39,7 +39,7 @@ static int	valid_identifier(char *s)
 	return (1);
 }
 
-static t_fixed	*export_repl(t_fixed *ftmp, t_fixed	*to_repl, char *to_ref)
+static t_fixed	*export_repl(t_fixed *ftmp, t_fixed *to_repl, char *to_ref)
 {
 	char	*val;
 	char	*key;
@@ -57,19 +57,16 @@ static t_fixed	*export_repl(t_fixed *ftmp, t_fixed	*to_repl, char *to_ref)
 	}
 	if (to_repl != NULL)
 	{
-                free(to_repl->fkey);
+		check_free_and_null(&to_repl->fkey);
 		to_repl->fkey = key;
 		if (val != NULL && *val)
-                {
-                        free(to_repl->fvalue);
+		{
+			check_free_and_null(&to_repl->fvalue);
 			to_repl->fvalue = ft_strdup(val + 1);
-                }
+		}
 	}
 	else
-	{
-		free(key);
-		key = NULL;
-	}
+		check_free_and_null(&key);
 	return (to_repl);
 }
 
@@ -84,12 +81,12 @@ static void	export_argless(t_mini *mi, t_fixed **f_node)
 		if (!ftmp->fvalue)
 			printf("%s\n", ftmp->fkey);
 		else
-                {
-                    if (*ftmp->fvalue)
-			printf("%s=\"%s\"\n", ftmp->fkey, ftmp->fvalue);
-                    else
-                        printf("%s=\"\"\n", ftmp->fkey);
-                }
+		{
+			if (*ftmp->fvalue)
+				printf("%s=\"%s\"\n", ftmp->fkey, ftmp->fvalue);
+			else
+				printf("%s=\"\"\n", ftmp->fkey);
+		}
 		ftmp = ftmp->fnext;
 	}
 	mi->stat->s_code = 0;
@@ -113,7 +110,8 @@ void	b_export(t_command *c_node, t_fixed **f_node, t_mini *mi)
 			return (export_err(c_node->args[i], mi));
 		to_repl = export_repl(ftmp, to_repl, c_node->args[i]);
 		if (!to_repl)
-			f_add_back(f_node, f_new(ft_strdup(c_node->args[i]), c_node->stat, 1));
+			f_add_back(f_node, f_new(
+					ft_strdup(c_node->args[i]), c_node->stat, 1));
 	}
 	mi->stat->s_code = 0;
 }

@@ -44,16 +44,8 @@ void	minishell(t_mini *mini, int flag)
 		add_history(mini->pipeline);
 		if (lexer(mini->pipeline, mini))
 			return ;
-
-                //t_token *tok;
-                //tok = mini->tok; 
-                //char	*type[] = {"PIPE", "OUT_RE", "IN_RE", "CMD", "ARGS", "FILN", "LIM", "HD", "ADD", "ANON"};
-                //for (t_token *dl = tok; dl != NULL; dl = dl->next)
-                //        fprintf(stderr, "[%s] is a [%s]. expand? \x1b[32m%s\x1b[m\n", dl->token, type[dl->symbol], dl->exp?"true":"false");
-                //return ;
-
 		save_io(mini);
-                mini->tok_cpy = mini->tok;
+		mini->tok_cpy = mini->tok;
 		// free_ttkn(mini->tok_cpy);
 		parser(mini);
 		mini_init_pid(mini);
@@ -61,8 +53,6 @@ void	minishell(t_mini *mini, int flag)
 		close_and_wait(mini);
 		garbage_burner(mini);
 	}
-	else if (flag == 2)
-		mini->stat->s_code = 0;
 }
 
 t_sig	g_sig;
@@ -84,17 +74,13 @@ int	main(int argc, char **argv, char **envp)
 		g_sig = (t_sig){0};
 		signal_parent();
 		pipeline = readline("prompt> ");
-                mini_init_pipeline(&mini, pipeline);
+		mini_init_pipeline(&mini, pipeline);
 		if (g_sig.sig)
 			mini.stat->s_code = g_sig.sig_code;
 		if (!pipeline)
 			minishell(&mini, 0);
 		else if (ft_strcmp(mini.pipeline, "") && !all_whitespace(pipeline))
 			minishell(&mini, 1);
-                /*
-		else
-			minishell(pipeline, &mini, 2);
-                */
 	}
 	// free_stat(mini.stat);
 	// free_res(mini.res);

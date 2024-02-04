@@ -43,21 +43,21 @@ static void	b_echo_norme(t_command *c_node, int i)
 	}
 }
 
-static int  echo_nl(t_command *c_node)
+static int	echo_nl(t_command *c_node)
 {
-    int i;
-    int invalid;
+	int	i;
+	int	invalid;
 
-    i = 1;
-    invalid = 0;
-    while (c_node->args[i] != NULL)
-    {
-        if (valid_nl_flag(c_node->args[i]) && !invalid)
-            return (1);
-        invalid += 1;
-        i++;
-    }
-    return (0);
+	i = 1;
+	invalid = 0;
+	while (c_node->args[i] != NULL)
+	{
+		if (valid_nl_flag(c_node->args[i]) && !invalid)
+			return (1);
+		invalid += 1;
+		i++;
+	}
+	return (0);
 }
 
 void	b_echo(t_command *c_node, t_mini *mi)
@@ -77,7 +77,7 @@ void	b_echo(t_command *c_node, t_mini *mi)
 			break ;
 	}
 	b_echo_norme(c_node, i);
-        if (!echo_nl(c_node))
-            printf("\n");
+	if (!echo_nl(c_node))
+		printf("\n");
 	mi->stat->s_code = 0;
 }

@@ -16,10 +16,10 @@ void	print_tfix(t_fixed **tfix)
 {
 	t_fixed	*curr;
 
-	if(!tfix || !*tfix)
+	if (!tfix || !*tfix)
 		return ;
 	curr = *tfix;
-	while(curr != NULL)
+	while (curr != NULL)
 	{
 		printf("fkey: %s\n", curr->fkey);
 		printf("fvalue: %s\n", curr->fvalue);
@@ -32,8 +32,8 @@ void	free_2d_arr(char **input)
 	int	i;
 
 	i = -1;
-        if (!input)
-            return ;
+	if (!input)
+		return ;
 	while (input[++i])
 		free(input[i]);
 	free(input);

@@ -101,10 +101,9 @@ static int	execute_b_nb(t_command *c_node, t_mini *mi, char *path_str)
 			free_2d_arr(envp);
 			return (path_err(c_node, 2, mi->stat));
 		}
-		free(c_node->args[0]);
+		check_free_and_null(c_node->args[0]);
 		c_node->args[0] = ft_strdup(path_str);
-		free(path_str);
-		path_str = NULL;
+		check_free_and_null(&path_str);
 	}
 	return (mini_exec(c_node, mi, envp));
 }
@@ -115,23 +114,17 @@ void	fork_exec(t_command *c_node, t_mini *mi)
 	int		abs_rel_path;
 	char	*path_str;
 
-        if (!c_node->cmd && c_node->exec)
-            mi->stat->s_code = 0;
-        update_cmd_exec(c_node);
+	if (!c_node->cmd && c_node->exec)
+		mi->stat->s_code = 0;
+	update_cmd_exec(c_node);
 	if (!c_node->exec)
-        {
-                /*
-                if (!c_node->cmd)
-                        mi->stat->s_code = 0;
-                */
 		return ;
-        }
 	c_node->cmd = c_node->args[0];
-        if (!ft_strlen(c_node->cmd))
-        {
-            mi->stat->s_code = 0;
-            return ;
-        }
+	if (!ft_strlen(c_node->cmd))
+	{
+		mi->stat->s_code = 0;
+		return ;
+	}
 	abs_rel_path = check_path_type(c_node->cmd);
 	path_str = NULL;
 	if (abs_rel_path == -1)

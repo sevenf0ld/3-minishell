@@ -151,7 +151,7 @@ typedef struct s_mini
 	t_pid				*pid;
 	int					piping;
 	int					limiting;
-        char                            *pipeline;
+	char				*pipeline;
 }						t_mini;
 
 typedef struct s_sig
@@ -242,7 +242,7 @@ void					minishell(t_mini *mi, int flag);
 void					mini_init_stat_res(t_mini *mi);
 void					mini_init_environ(t_mini *mi, char **envp);
 void					mini_init_pid(t_mini *mi);
-void                                    mini_init_pipeline(t_mini *mi, char *s);
+void					mini_init_pipeline(t_mini *mi, char *s);
 
 //mini_utils.c
 void					save_io(t_mini *mi);
@@ -344,14 +344,14 @@ char					*repl(char *og, char *displace, char *sub, int len_og);
 void					group_cmds(t_token **tokens);
 
 //delete.c
-void                                    delete_all_element(t_token **lst, char *value);
+void					delete_all_element(t_token **lst, char *value);
 
 /*	PARSER	*/
 //parser.c
 void					complete_cmd(t_mini *mi, t_token **tokens,
 							t_command **cmds);
 //void                                    update_cmd_exec(t_command **cmds);
-void                                    update_cmd_exec(t_command *c_node);
+void					update_cmd_exec(t_command *c_node);
 void					parser(t_mini *mi);
 
 //init_cmd.c

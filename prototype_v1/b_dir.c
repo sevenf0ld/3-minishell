@@ -32,12 +32,12 @@ char	*b_pwd(t_command *c_node, char mode, t_mini *mi)
 			mi->stat->s_code = 0;
 		}
 	}
-        else
-	    mi->stat->s_code = 1;
+	else
+		mi->stat->s_code = 1;
 	return (cur_dir);
 }
 
-static void mini_err(char *b, char *issue)
+static void	mini_err(char *b, char *issue)
 {
 	ft_putstr_fd("minishell: ", STDERR_FILENO);
 	ft_putstr_fd(b, STDERR_FILENO);
@@ -47,7 +47,7 @@ static void mini_err(char *b, char *issue)
 	perror(NULL);
 }
 
-static int  chdir_err(char *path, t_mini *mi)
+static int	chdir_err(char *path, t_mini *mi)
 {
 	if (chdir(path) == -1)
 	{
@@ -62,17 +62,17 @@ static int  chdir_err(char *path, t_mini *mi)
 void	b_cd(t_command *c_node, t_mini *mi)
 {
 	t_command	*cur;
-        char            *home;
+	char		*home;
 
 	cur = c_node;
-        home = get_fvalue(c_node->env_var->fixed, "HOME");
+	home = get_fvalue(c_node->env_var->fixed, "HOME");
 	if (cur->num_a == 1 && home != NULL)
 		chdir_err(home, mi);
-        else if (cur->num_a == 1 && !home)
-        {
-                ft_putendl_fd("minishell: cd: HOME not set", STDERR_FILENO);
+	else if (cur->num_a == 1 && !home)
+	{
+		ft_putendl_fd("minishell: cd: HOME not set", STDERR_FILENO);
 		mi->stat->s_code = 1;
-        }
+	}
 	else
 	{
 		if (cur->num_a > 2)
