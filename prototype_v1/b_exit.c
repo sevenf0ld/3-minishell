@@ -6,7 +6,7 @@
 /*   By: maiman-m <maiman-m@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 11:33:37 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/02/04 15:19:05 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/02/04 20:04:59 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,7 @@ void	b_exit(t_command *c_node, t_mini *mi)
 	long long	code;
         int             err;
         char            *str_code;
+        char            *arg;
 
 	if (c_node->num_a == 1)
 	{
@@ -100,10 +101,13 @@ void	b_exit(t_command *c_node, t_mini *mi)
 	code = ft_atoll(c_node->args[1]);
 	rm_plus_sign(&c_node->args[1]);
         str_code = ft_lltoa(code);
-	if (ft_strcmp(str_code, c_node->args[1]) != 0)
+        arg = ft_strtrim(c_node->args[1], "     ");
+	if (ft_strcmp(str_code, arg) != 0)
 		err = exit_err(mi, 2, c_node);
 	else
 		err = exit_err(mi, 1, c_node);
+        free(arg);
+        arg = NULL;
         free(str_code);
         str_code = NULL;
         if (err)
