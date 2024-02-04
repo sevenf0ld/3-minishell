@@ -39,7 +39,7 @@ make re --silent
 reset
 
 for arg in "${args[@]}"; do
-	echo "exit $arg" | $exe
+	echo "exit $arg" | valgrind --leak-check=full --tool=memcheck -s --track-origins=yes $exe
 	echo -e "$green $? $none"
 
 done

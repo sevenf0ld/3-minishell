@@ -6,7 +6,7 @@
 /*   By: maiman-m <maiman-m@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 11:33:37 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/02/03 02:02:26 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/02/04 15:19:05 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,11 +36,17 @@ static void	rm_plus_sign(char **s)
         tmp = NULL;
 }
 
+static void conditional_exit_display(int size)
+{
+    if (size == 1)
+        ft_putendl_fd("exit", STDOUT_FILENO);
+}
+
 static int  exit_err(t_mini *mi, int flag, t_command *c_node)
 {
 	if (flag == 2)
 	{
-		ft_putendl_fd("exit", STDOUT_FILENO);
+                conditional_exit_display(c_node->size);
 		ft_putstr_fd("minishell: exit: ", STDERR_FILENO);
 		ft_putstr_fd(c_node->args[1], STDERR_FILENO);
 		ft_putendl_fd(": numeric argument required", STDERR_FILENO);
@@ -52,7 +58,7 @@ static int  exit_err(t_mini *mi, int flag, t_command *c_node)
 	{
 		if (c_node->num_a > 2)
 		{
-			ft_putendl_fd("exit", STDOUT_FILENO);
+                        conditional_exit_display(c_node->size);
 			ft_putendl_fd("minishell: exit: too many arguments", STDERR_FILENO);
 			mi->stat->s_code = 1;
 			return (1);
@@ -87,7 +93,7 @@ void	b_exit(t_command *c_node, t_mini *mi)
 	if (c_node->num_a == 1)
 	{
 		mi->stat->s_code = 0;
-		ft_putendl_fd("exit", STDOUT_FILENO);
+                conditional_exit_display(c_node->size);
 		exit(mi->stat->s_code);
 		return ;
 	}
@@ -103,6 +109,6 @@ void	b_exit(t_command *c_node, t_mini *mi)
         if (err)
             return ;
 	exit_calc(code, mi);
-	ft_putendl_fd("exit", STDOUT_FILENO);
+        conditional_exit_display(c_node->size);
 	exit(mi->stat->s_code);
 }
