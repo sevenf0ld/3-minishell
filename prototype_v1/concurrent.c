@@ -6,7 +6,7 @@
 /*   By: maiman-m <maiman-m@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/21 08:01:50 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/02/04 15:34:38 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/02/04 20:14:36 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,9 @@ void	close_and_wait(t_mini *mi)
 			stat->s_code = WIFSTOPPED(wstat);
 		child = wait(&wstat);
 	}
-        if (!ft_strcmp(last_cmd->cmd, "exit") && last_cmd->size == 1)
-            stat->s_code = old_s_code;
+        if (last_cmd->num_a > 0)
+        {
+            if (!ft_strcmp(last_cmd->args[0], "exit") && last_cmd->size == 1)
+                stat->s_code = old_s_code;
+        }
 }
