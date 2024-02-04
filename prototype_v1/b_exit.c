@@ -6,7 +6,7 @@
 /*   By: maiman-m <maiman-m@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 11:33:37 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/02/04 20:04:59 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/02/04 20:28:25 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ static int  exit_err(t_mini *mi, int flag, t_command *c_node)
 		ft_putstr_fd(c_node->args[1], STDERR_FILENO);
 		ft_putendl_fd(": numeric argument required", STDERR_FILENO);
 		mi->stat->s_code = 2;
+                garbage_burner(mi);
 		exit(mi->stat->s_code);
                 return (1);
 	}
@@ -95,6 +96,7 @@ void	b_exit(t_command *c_node, t_mini *mi)
 	{
 		mi->stat->s_code = 0;
                 conditional_exit_display(c_node->size);
+                garbage_burner(mi);
 		exit(mi->stat->s_code);
 		return ;
 	}
@@ -114,5 +116,6 @@ void	b_exit(t_command *c_node, t_mini *mi)
             return ;
 	exit_calc(code, mi);
         conditional_exit_display(c_node->size);
+        garbage_burner(mi);
 	exit(mi->stat->s_code);
 }
