@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:25:31 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/02/03 10:38:42 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/02/04 23:44:57 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,30 @@ void	categorize_params(t_token **tokens)
 	}
 }
 
+static void c_w_a_norme(t_token *t_node)
+{
+    bool    cmd;
+    t_token *tmp;
+
+    cmd = false;
+    tmp = t_node;
+    while (tmp != NULL)
+    {
+        if (tmp->symbol == CMD)
+        {
+            cmd = true;
+            break ;
+        }
+        if (tmp->symbol == PIPE)
+            break ;
+        tmp = tmp->prev;
+    }
+    if (!cmd && t_node->symbol != PIPE && t_node->symbol != IN_RE && t_node->symbol != OUT_RE && t_node->symbol != ADD && t_node->symbol != HD)
+        t_node->symbol = CMD;
+    else if (cmd)
+        t_node->symbol = ARGS;
+}
+
 /*
  * categorizes command (5) and arguments (7)
 
@@ -77,13 +101,17 @@ void	categorize_cmd_w_args(t_token **tokens)
 			tmp->symbol = CMD;
 		else if (tmp->prev != NULL && tmp->prev->symbol == PIPE)
 			tmp->symbol = CMD;
+                ///*
 		else if (tmp->prev != NULL && (tmp->prev->symbol == FILN
 				|| tmp->prev->symbol == LIM))
 		{
-			if (tmp->symbol != PIPE)
-				tmp->symbol = CMD;
+			//if (tmp->symbol != PIPE)
+			//	tmp->symbol = CMD;
+                        c_w_a_norme(tmp);       
 		}
-		else if (tmp->symbol == ANON)
+                //*/
+		(void) c_w_a_norme;
+                if (tmp->symbol == ANON)
 			tmp->symbol = ARGS;
 		tmp = tmp->next;
 	}

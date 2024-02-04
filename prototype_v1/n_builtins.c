@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/30 14:47:12 by folim             #+#    #+#             */
-/*   Updated: 2024/02/03 00:52:03 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/02/05 00:02:34 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,8 +115,17 @@ void	fork_exec(t_command *c_node, t_mini *mi)
 	int		abs_rel_path;
 	char	*path_str;
 
+        if (!c_node->cmd && c_node->exec)
+            mi->stat->s_code = 0;
+        update_cmd_exec(c_node);
 	if (!c_node->exec)
+        {
+                /*
+                if (!c_node->cmd)
+                        mi->stat->s_code = 0;
+                */
 		return ;
+        }
 	c_node->cmd = c_node->args[0];
         if (!ft_strlen(c_node->cmd))
         {

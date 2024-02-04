@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:19:04 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/02/04 20:26:42 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/02/04 23:45:38 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,14 @@ void	minishell(t_mini *mini, int flag)
 		add_history(mini->pipeline);
 		if (lexer(mini->pipeline, mini))
 			return ;
+
+                //t_token *tok;
+                //tok = mini->tok; 
+                //char	*type[] = {"PIPE", "OUT_RE", "IN_RE", "CMD", "ARGS", "FILN", "LIM", "HD", "ADD", "ANON"};
+                //for (t_token *dl = tok; dl != NULL; dl = dl->next)
+                //        fprintf(stderr, "[%s] is a [%s]. expand? \x1b[32m%s\x1b[m\n", dl->token, type[dl->symbol], dl->exp?"true":"false");
+                //return ;
+
 		save_io(mini);
                 mini->tok_cpy = mini->tok;
 		// free_ttkn(mini->tok_cpy);
