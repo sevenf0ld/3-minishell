@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:20:01 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/02/04 20:25:08 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/02/05 00:01:08 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -350,6 +350,8 @@ void                                    delete_all_element(t_token **lst, char *
 //parser.c
 void					complete_cmd(t_mini *mi, t_token **tokens,
 							t_command **cmds);
+//void                                    update_cmd_exec(t_command **cmds);
+void                                    update_cmd_exec(t_command *c_node);
 void					parser(t_mini *mi);
 
 //init_cmd.c

@@ -6,7 +6,7 @@
 /*   By: maiman-m <maiman-m@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/21 08:01:50 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/02/04 20:14:36 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/02/04 21:15:31 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,11 @@ void	close_and_wait(t_mini *mi)
 	}
         if (last_cmd->num_a > 0)
         {
-            if (!ft_strcmp(last_cmd->args[0], "exit") && last_cmd->size == 1)
+            if (!ft_strcmp(last_cmd->args[0], "exit"))
+                stat->s_code = old_s_code;
+            else if (!ft_strcmp(last_cmd->args[0], "cd"))
+                stat->s_code = old_s_code;
+            else if (!ft_strcmp(last_cmd->args[0], "export"))
                 stat->s_code = old_s_code;
         }
 }
