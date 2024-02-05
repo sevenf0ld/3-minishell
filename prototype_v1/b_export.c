@@ -6,21 +6,11 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 17:29:27 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/02/04 02:43:44 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/02/05 08:39:34 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mini.h"
-
-static char	*get_key(char *exported)
-{
-	int	i;
-
-	i = 0;
-	while (exported[i] != '\0' && exported[i] != '=')
-		i++;
-	return (ft_substr(exported, 0, i));
-}
 
 static int	valid_identifier(char *s)
 {
@@ -39,13 +29,8 @@ static int	valid_identifier(char *s)
 	return (1);
 }
 
-static t_fixed	*export_repl(t_fixed *ftmp, t_fixed *to_repl, char *to_ref)
+static t_fixed	*get_repl(t_fixed *ftmp, t_fixed *to_repl, char *key)
 {
-	char	*val;
-	char	*key;
-
-	val = ft_strchr(to_ref, '=');
-	key = get_key(to_ref);
 	while (ftmp != NULL)
 	{
 		if (!ft_strcmp(ftmp->fkey, key))
@@ -55,6 +40,17 @@ static t_fixed	*export_repl(t_fixed *ftmp, t_fixed *to_repl, char *to_ref)
 		}
 		ftmp = ftmp->fnext;
 	}
+	return (to_repl);
+}
+
+static t_fixed	*export_repl(t_fixed *ftmp, t_fixed *to_repl, char *to_ref)
+{
+	char	*val;
+	char	*key;
+
+	val = ft_strchr(to_ref, '=');
+	key = get_key(to_ref);
+	to_repl = get_repl(ftmp, to_repl, key);
 	if (to_repl != NULL)
 	{
 		check_free_and_null(&to_repl->fkey);
@@ -110,8 +106,8 @@ void	b_export(t_command *c_node, t_fixed **f_node, t_mini *mi)
 			return (export_err(c_node->args[i], mi));
 		to_repl = export_repl(ftmp, to_repl, c_node->args[i]);
 		if (!to_repl)
-			f_add_back(f_node, f_new(
-					ft_strdup(c_node->args[i]), c_node->stat, 1));
+			f_add_back(f_node, f_new(ft_strdup(
+						c_node->args[i]), c_node->stat, 1));
 	}
 	mi->stat->s_code = 0;
 }

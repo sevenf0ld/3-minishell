@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 16:43:42 by folim             #+#    #+#             */
-/*   Updated: 2024/02/01 16:43:44 by folim            ###   ########.fr       */
+/*   Updated: 2024/02/05 09:02:04 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,4 +60,12 @@ void	free_env(t_env **env)
 		free_null((void *)&curr);
 		curr = next;
 	}
+}
+
+void	free_mini(t_mini *mi)
+{
+	free_stat(mi->stat);
+	free_res(mi->res);
+	free_fix(&mi->fix);
+	free_env(&mi->env);
 }

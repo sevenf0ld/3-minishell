@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 16:40:00 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/02/02 16:42:44 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/02/05 10:07:46 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	remove_quotes(char **args)
 {
 	int	i;
 
-	if (args == NULL)
+	if (!args)
 		return ;
 	i = 0;
 	while (args[i] != NULL)
@@ -27,7 +27,6 @@ void	remove_quotes(char **args)
 	}
 }
 
-//static void	rm(char **args, int n)
 void	rm(char **args, int n)
 {
 	int		size;
@@ -35,9 +34,9 @@ void	rm(char **args, int n)
 
 	size = 0;
 	count_enclosed(args[n], &size);
-	init_enclosed_extract(&ext, size);
+	enclosed_extract_init(&ext, size);
 	extract_enclosed(args[n], ext);
 	if (args[n] != NULL)
-		free(args[n]);
+		check_free_and_null(&args[n]);
 	args[n] = ext;
 }

@@ -6,7 +6,7 @@
 /*   By: maiman-m <maiman-m@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 11:33:37 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/02/05 07:35:27 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/02/05 09:02:41 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,15 +34,12 @@ static void	rm_plus_sign(char **s)
 		i++;
 	if (i == 1)
 	{
-		free(*s);
-		*s = NULL;
+		check_free_and_null(s);
 		*s = ft_strdup(tmp + 1);
-		free(tmp);
-		tmp = NULL;
+		check_free_and_null(&tmp);
 		return ;
 	}
-	free(tmp);
-	tmp = NULL;
+	check_free_and_null(&tmp);
 }
 
 static void	exit_calc(long long code, t_mini *mi)
@@ -86,5 +83,6 @@ void	b_exit(t_command *c_node, t_mini *mi)
 	exit_calc(code, mi);
 	conditional_exit_display(c_node->size);
 	garbage_burner(mi);
+	free_mini(mi);
 	exit(mi->stat->s_code);
 }

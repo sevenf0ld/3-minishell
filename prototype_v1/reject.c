@@ -6,7 +6,7 @@
 /*   By: maiman-m <maiman-m@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/14 15:37:27 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/01/22 16:24:21 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/02/05 09:24:57 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ int	multi_pipe(t_token *t_node, t_status *stat)
         ╰ double quote
    ╰ nothing after redirection symbol / redirection as the last node
    ╰ multiple adjacent symbols
-        ╰ in one node (ARGS only)
+        ╰ in one node
         ╰ across multiple nodes (redirections and pipe)
 */
 int	reject(t_token **tokens, t_status *stat)

@@ -30,10 +30,7 @@ static void	tokenize_word(t_token_norme *token_params, char *s)
 		token_init(token_params->sub, token_params->tokens,
 			token_params->stat, token_params->count);
 	else
-	{
-		free(token_params->sub);
-		token_params->sub = NULL;
-	}
+		check_free_and_null(&token_params->sub);
 	token_params->count += 1;
 	token_params->start = -1;
 }

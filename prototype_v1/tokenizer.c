@@ -83,5 +83,5 @@ void	tokenizer(char *s, t_token **tokens, t_status *stat)
 	}
 	token_init(ft_substr(s, token_params.start, (size_t)(token_params.i)
 			- (token_params.start)), tokens, stat, token_params.count);
-	free(s);
+	check_free_and_null(&s);
 }

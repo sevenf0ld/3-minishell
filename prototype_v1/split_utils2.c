@@ -6,7 +6,7 @@
 /*   By: maiman-m <maiman-m@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 16:48:48 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/02/02 19:02:40 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/02/05 09:47:28 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	slot_in_token(t_token *t_node, char *s, t_token **tokens, char *r)
 	new = NULL;
 	new = token_new(s, t_node->stat);
 	new->next = t_node;
-	if (t_node->prev == NULL)
+	if (!t_node->prev)
 	{
 		t_node->prev = new;
 		*tokens = new;
@@ -34,25 +34,6 @@ void	slot_in_token(t_token *t_node, char *s, t_token **tokens, char *r)
 	categorize(tokens);
 }
 
-size_t	delim_present(char *s)
-{
-	size_t	i;
-	size_t	len;
-
-	i = 0;
-	len = ft_strlen(s);
-	if (s[0] == 39 || s[0] == 34)
-		if (s[len - 1] == 39 || s[len - 1] == 34)
-			return (0);
-	while (s[i] != '\0')
-	{
-		if (is_delim(s[i]))
-			return (1);
-		i++;
-	}
-	return (0);
-}
-
 static void	sep_delim_dual(char *s, t_token *t_node, t_token **tokens, int i)
 {
 	if (i > 0)
@@ -61,7 +42,7 @@ static void	sep_delim_dual(char *s, t_token *t_node, t_token **tokens, int i)
 	else
 		slot_in_token(t_node, ft_substr(s, 0, 2), tokens,
 			ft_substr(s, 2, (int)ft_strlen(s)));
-	free(s);
+	check_free_and_null(&s);
 }
 
 static void	sep_delim_single(char *s, t_token *t_node, t_token **tokens, int i)
@@ -72,7 +53,7 @@ static void	sep_delim_single(char *s, t_token *t_node, t_token **tokens, int i)
 	else
 		slot_in_token(t_node, ft_substr(s, 0, 1), tokens,
 			ft_substr(s, 1, (int)ft_strlen(s)));
-	free(s);
+	check_free_and_null(&s);
 }
 
 void	separate_delim(char *s, t_token *t_node, t_token **tokens)

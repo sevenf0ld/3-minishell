@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 20:09:11 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/01/22 16:01:00 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/02/05 09:59:43 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,6 @@ static void	assign_norme(t_command *c_node, t_pipe *end, t_pipe *p_node, int i)
 }
 
 /*
-
  * retrieve_pipe() returns the corresponding t_pipe for t_command
  * [0] | [1] | [2] | [3] | [4] | [5]
  *     0     1     2     3     4

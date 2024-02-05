@@ -6,24 +6,24 @@
 /*   By: maiman-m <maiman-m@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 14:40:45 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/02/04 17:44:50 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/02/05 09:50:09 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mini.h"
 
-static void	ini_exp(char **s, char **t, char **u)
+static void	exp_init(char **bfr, char **sub, char **aft)
 {
-	*s = NULL;
-	*t = NULL;
-	*u = NULL;
+	*bfr = NULL;
+	*sub = NULL;
+	*aft = NULL;
 }
 
-static void	reset_exp(char **s, char **t, char **u)
+static void	reset_exp(char **bfr, char **sub, char **aft)
 {
-	check_free_and_null(s);
-	check_free_and_null(t);
-	check_free_and_null(u);
+	check_free_and_null(bfr);
+	check_free_and_null(sub);
+	check_free_and_null(aft);
 }
 
 static void	free_and_dup(char **tokens, char *tmp)
@@ -39,8 +39,7 @@ static void	double_check_sub(char **bfr, char **sub, char **aft)
 	{
 		if (ft_strcmp(*bfr, "\"") && ft_strcmp(*aft, "\""))
 		{
-			free(*sub);
-			*sub = NULL;
+			check_free_and_null(sub);
 			*sub = ft_strdup("");
 		}
 	}
@@ -56,7 +55,7 @@ void	expand_utils(char **tokens, t_mini *mi)
 	if (!*tokens)
 		return ;
 	tmp = ft_strdup(*tokens);
-	ini_exp(&bfr_exp, &sub, &aft_exp);
+	exp_init(&bfr_exp, &sub, &aft_exp);
 	while (contain_expandable(tmp))
 	{
 		set_bfr_exp(&bfr_exp, tmp);

@@ -24,7 +24,7 @@ void	free_null(void **content)
 static void	delete_head(t_token **lst, char *value)
 {
 	t_token	*to_remove;
-	
+
 	while (!ft_strcmp((*lst)->token, value))
 	{
 		to_remove = (*lst);
@@ -32,7 +32,6 @@ static void	delete_head(t_token **lst, char *value)
 		check_free_and_null(&to_remove->token);
 		free_null((void *)&to_remove);
 	}
-
 }
 
 static void	delete_free(t_token *to_remove1)
@@ -40,7 +39,6 @@ static void	delete_free(t_token *to_remove1)
 	check_free_and_null(&to_remove1->token);
 	free_null((void *)&to_remove1);
 	return ;
-
 }
 
 void	delete_all_element(t_token **lst, char *value)

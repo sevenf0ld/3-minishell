@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/10 00:09:50 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/01/19 16:06:21 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/02/05 09:18:26 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,9 +38,6 @@ void	token_add_back(t_token **head, t_token *node)
 	old_end->next = node;
 }
 
-/*
- * convert the substr from preserve into individual tokens
- */
 void	token_init(char *s, t_token **head, t_status *stat, int i)
 {
 	if (i == 0)

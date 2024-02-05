@@ -6,26 +6,18 @@
 /*   By: maiman-m <maiman-m@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 14:39:03 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/01/22 15:01:28 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/02/05 09:56:31 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mini.h"
 
-static char	*cmd_init_norme_three(t_token *first)
+static void	cmd_init_norme_one(t_cmd_norme *cmd_params, t_token **token)
 {
-	char	*cmd;
-	t_token	*tmp;
-
-	tmp = first;
-	cmd = NULL;
-	while (tmp != NULL && tmp->symbol != PIPE)
-	{
-		if (tmp->symbol == CMD)
-			cmd = tmp->token;
-		tmp = tmp->next;
-	}
-	return (cmd);
+	cmd_params->i = 0;
+	cmd_params->tmp = *token;
+	cmd_params->first = *token;
+	cmd_params->tokens = token;
 }
 
 static int	num_pipes(t_token **tokens)
@@ -44,12 +36,20 @@ static int	num_pipes(t_token **tokens)
 	return (i);
 }
 
-static void	cmd_init_norme_one(t_cmd_norme *cmd_params, t_token **token)
+static char	*cmd_init_norme_three(t_token *first)
 {
-	cmd_params->i = 0;
-	cmd_params->tmp = *token;
-	cmd_params->first = *token;
-	cmd_params->tokens = token;
+	char	*cmd;
+	t_token	*tmp;
+
+	tmp = first;
+	cmd = NULL;
+	while (tmp != NULL && tmp->symbol != PIPE)
+	{
+		if (tmp->symbol == CMD)
+			cmd = tmp->token;
+		tmp = tmp->next;
+	}
+	return (cmd);
 }
 
 static void	cmd_init_norme_two(t_cmd_norme *cmd_params)

@@ -6,15 +6,12 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 16:14:15 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/02/02 17:10:12 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/02/05 09:17:29 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mini.h"
 
-/*
- * use an array of cmds to make it shorter
- */
 bool	is_builtin(char *cmd)
 {
 	if (!cmd)
@@ -63,12 +60,10 @@ char	*join_and_free(char *to_free, char *to_concat)
 	char	*end;
 
 	end = ft_strjoin(to_free, to_concat);
-	free(to_free);
-	to_free = NULL;
+	check_free_and_null(&to_free);
 	return (end);
 }
 
-//static int	contain_quotes(char *s)
 int	contain_quotes(char *s)
 {
 	int	i;

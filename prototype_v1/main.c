@@ -82,8 +82,5 @@ int	main(int argc, char **argv, char **envp)
 		else if (ft_strcmp(mini.pipeline, "") && !all_whitespace(pipeline))
 			minishell(&mini, 1);
 	}
-	// free_stat(mini.stat);
-	// free_res(mini.res);
-	free_fix(&mini.fix);
-	// free_env(&mini.env);
+	free_mini(&mini);
 }

@@ -6,7 +6,7 @@
 /*   By: maiman-m <maiman-m@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/21 22:26:39 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/02/02 16:41:52 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/02/05 10:07:02 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ void	count_enclosed(char *s, int *size)
 	*size = count;
 }
 
-void	init_enclosed_extract(char **ext, int size)
+void	enclosed_extract_init(char **ext, int size)
 {
 	int	i;
 

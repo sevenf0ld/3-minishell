@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:25:31 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/02/04 23:44:57 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/02/05 09:21:53 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,6 @@ void	categorize_symbol(t_token **tokens)
 /*
  * categorizes filename (8) and heredoc's limiter (9)
  * categorize files if any output/input redirection, heredoc's limiter,
-	arguments in pipeline
  */
 void	categorize_params(t_token **tokens)
 {
@@ -88,9 +87,8 @@ static void	c_w_a_norme(t_token *t_node)
 
 /*
  * categorizes command (5) and arguments (7)
-
-	* categorizes command (executable & builtins)
-		and arguments (flags/options included)
+ * categorizes command (executable & builtins)
+    and arguments (flags/options included)
  */
 void	categorize_cmd_w_args(t_token **tokens)
 {
@@ -117,9 +115,9 @@ void	categorize_cmd_w_args(t_token **tokens)
  * categorizes the tokens
  * group the tokens and set an identifier/separator
  * further break down the tokens for those involving quotes
+    or symbols joined to non-symbols
  * error_handling
- * ╳ expand environment variables (relying on getenv instead of t_fixed)
- * ╳ remove quotes
+ * expand environment variables
  * group the command groups
  */
 //int lexer(char *pipeline, t_token **tokens, t_status *stat)
@@ -132,7 +130,7 @@ int	lexer(char *pipeline, t_mini *mi)
 	if (reject(&mi->tok, mi->stat))
 	{
 		free_ttkn(&mi->tok);
-		free(pipeline);
+		check_free_and_null(&pipeline);
 		return (1);
 	}
 	expansion(&mi->tok, mi);

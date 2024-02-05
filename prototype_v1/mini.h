@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:20:01 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/02/05 07:35:08 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/02/05 10:17:54 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -287,6 +287,7 @@ void					categorize_cmd_w_args(t_token **tokens);
 int						lexer(char *pipeline, t_mini *mi);
 
 //split.c
+size_t					delim_present(char *s);
 void					split_tokens(t_token **tokens);
 
 //split_utils.c
@@ -299,7 +300,6 @@ bool					is_hd(char *s, size_t i, size_t len);
 //split_utils2.c
 void					slot_in_token(t_token *t_node, char *s,
 							t_token **tokens, char *r);
-size_t					delim_present(char *s);
 void					separate_delim(char *s, t_token *t_node,
 							t_token **tokens);
 
@@ -331,7 +331,7 @@ void					sub_exp(char **sub, char *ref, t_mini *mi);
 
 //expand_utils4.c
 void					check_free_and_null(char **ref);
-void					reform_word(char **s, char **t, char **u, char **v);
+void					reform_word(char **tmp, char **bfr, char **sub, char **aft);
 void					till_dollar(char *s, int *i, int *in_quote);
 
 //expand_utils5.c
@@ -344,23 +344,18 @@ char					*repl(char *og, char *displace, char *sub, int len_og);
 void					group_cmds(t_token **tokens);
 
 //delete.c
-void                                    free_null(void **content);
+void					free_null(void **content);
 void					delete_all_element(t_token **lst, char *value);
 
 /*	PARSER	*/
 //parser.c
 void					complete_cmd(t_mini *mi, t_token **tokens,
 							t_command **cmds);
-//void                                    update_cmd_exec(t_command **cmds);
 void					update_cmd_exec(t_command *c_node);
 void					parser(t_mini *mi);
 
 //init_cmd.c
 t_command				*cmd_new(char *cmd, int n, t_env *envs, t_status *stat);
-void					cmd_add_back(t_command **head, t_command *node);
-t_command				*cmd_last(t_command *head);
-int						cmd_size(t_command *head);
-void					set_cmd_size(t_command *head);
 
 //init_cmd_utils.c
 void					cmd_init(t_token **tokens, t_command **cmds,
@@ -389,7 +384,7 @@ void					redirect_command_io(t_command *c_node);
 
 //parser_utils4.c
 void					count_enclosed(char *s, int *size);
-void					init_enclosed_extract(char **ext, int size);
+void					enclosed_extract_init(char **ext, int size);
 void					extract_enclosed(char *s, char *ext);
 
 //parser_utils5.c
@@ -407,17 +402,16 @@ void					heredoc(t_command *c_node, t_status *stat);
 
 /*	NON-BUILTINS EXECUTOR	*/
 //n_builtins.c
+char					*get_path_str(char *path, char *cmd);
 void					fork_exec(t_command *c_node, t_mini *mi);
 
 //n_builtins_utils.c
 int						mini_exec(t_command *c_node, t_mini *mi, char **envp);
 
-//gnl.c
-char					*get_next_line(int fd);
-char					*read_and_store(char *store, int fd, char *buffer);
-char					*extract_newline(char *store);
-char					*update_store(char *store);
-int						look_for_nl(char *to_search);
+//n_builtins_utils2.c
+void					execute_non_exe(t_command *c_node, t_mini *mi);
+int						execute_b_nb(t_command *c_node, t_mini *mi,
+							char *path_str);
 
 //concurrent.c
 void					close_unused_ends(t_command **cmds, int i);
@@ -452,8 +446,8 @@ void					b_export(t_command *c_node, t_fixed **f_node,
 void					b_exit(t_command *c_node, t_mini *mi);
 
 //b_exit_utils.c
-void                                    conditional_exit_display(int size);
-int                                     exit_err(t_mini *mi, int flag, t_command *c_node);
+void					conditional_exit_display(int size);
+int						exit_err(t_mini *mi, int flag, t_command *c_node);
 
 /*	ENVIRONMENT VARIABLES HANDLER	*/
 //init_env.c
@@ -470,6 +464,7 @@ void					f_add_back(t_fixed **head, t_fixed *node);
 void					f_init(t_fixed **envs, char **envp, t_status *stat);
 
 //fixed_utils.c
+char					*get_key(char *exported);
 char					*get_fvalue(t_fixed *f_node, char *fkey);
 void					update_fvalue(t_fixed **fix, char *fkey, char *fval);
 char					*get_oldpwd(t_fixed *f_node);
@@ -494,7 +489,8 @@ int						redir_err(char *token, t_status *stat);
 //err_handling_utils2.c
 int						symbols_err(t_status *stat);
 int						pipe_related_err(t_status *stat);
-int						path_err(t_command *c_node, int flag, t_status *stat);
+int						path_err(t_command *c_node, int flag,
+							t_status *stat, char **envp);
 void					export_err(char *err_arg, t_mini *mi);
 
 //free.c
@@ -510,5 +506,6 @@ void					free_stat(t_status *status);
 void					free_res(t_restore *res);
 void					free_fix(t_fixed **fixed);
 void					free_env(t_env **env);
+void					free_mini(t_mini *mi);
 
 #endif
