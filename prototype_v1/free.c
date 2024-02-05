@@ -12,21 +12,6 @@
 
 #include "mini.h"
 
-void	print_tfix(t_fixed **tfix)
-{
-	t_fixed	*curr;
-
-	if (!tfix || !*tfix)
-		return ;
-	curr = *tfix;
-	while (curr != NULL)
-	{
-		printf("fkey: %s\n", curr->fkey);
-		printf("fvalue: %s\n", curr->fvalue);
-		curr = curr->fnext;
-	}
-}
-
 void	free_2d_arr(char **input)
 {
 	int	i;
@@ -35,9 +20,8 @@ void	free_2d_arr(char **input)
 	if (!input)
 		return ;
 	while (input[++i])
-		free(input[i]);
-	free(input);
-	input = NULL;
+		check_free_and_null(&input[i]);
+	check_free_and_null(input);
 	return ;
 }
 
@@ -58,11 +42,11 @@ void	free_tcmd(t_mini *mi)
 			free_2d_arr(curr->lim);
 			mi->limiting = 0;
 		}
-		free(curr->og);
-		free(curr->std_in);
-		free(curr->std_out_o);
-		free(curr->std_out_a);
-		free(curr);
+		check_free_and_null(&curr->og);
+		free_null((void *)&curr->std_in);
+		free_null((void *)&curr->std_out_o);
+		free_null((void *)&curr->std_out_a);
+		free_null((void *)&curr);
 		curr = next;
 	}
 	return ;
@@ -79,8 +63,8 @@ void	free_ttkn(t_token **tkn)
 	while (curr != NULL)
 	{
 		next = curr->next;
-		free(curr->token);
-		free(curr);
+		check_free_and_null(&curr->token);
+		free_null((void *)&curr);
 		curr = next;
 	}
 	return ;
@@ -97,7 +81,7 @@ void	free_tpipe(t_pipe **pipe)
 	while (curr != NULL)
 	{
 		next = curr->next;
-		free(curr);
+		free_null((void *)&curr);
 		curr = next;
 	}
 	return ;
@@ -105,9 +89,9 @@ void	free_tpipe(t_pipe **pipe)
 
 void	garbage_burner(t_mini *mi)
 {
-	free(mi->pid->pid_c);
-	free(mi->pid);
-	free(mi->pipeline);
+	free_null((void *)&mi->pid->pid_c);
+	free_null((void *)&mi->pid);
+	check_free_and_null(&mi->pipeline);
 	free_ttkn(&mi->tok_cpy);
 	free_tcmd(mi);
 	if (mi->piping == 1)

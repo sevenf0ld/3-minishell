@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:20:01 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/02/05 00:01:08 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/02/05 07:35:08 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -330,7 +330,7 @@ void					set_aft_exp(char **aft, char *ref);
 void					sub_exp(char **sub, char *ref, t_mini *mi);
 
 //expand_utils4.c
-void					check_free_and_null(char **s);
+void					check_free_and_null(char **ref);
 void					reform_word(char **s, char **t, char **u, char **v);
 void					till_dollar(char *s, int *i, int *in_quote);
 
@@ -344,6 +344,7 @@ char					*repl(char *og, char *displace, char *sub, int len_og);
 void					group_cmds(t_token **tokens);
 
 //delete.c
+void                                    free_null(void **content);
 void					delete_all_element(t_token **lst, char *value);
 
 /*	PARSER	*/
@@ -449,6 +450,10 @@ void					b_export(t_command *c_node, t_fixed **f_node,
 
 //b_exit.c
 void					b_exit(t_command *c_node, t_mini *mi);
+
+//b_exit_utils.c
+void                                    conditional_exit_display(int size);
+int                                     exit_err(t_mini *mi, int flag, t_command *c_node);
 
 /*	ENVIRONMENT VARIABLES HANDLER	*/
 //init_env.c

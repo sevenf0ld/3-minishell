@@ -16,16 +16,14 @@ void	free_stat(t_status *status)
 {
 	if (!status)
 		return ;
-	free(status);
-	status = NULL;
+	free_null((void *)&status);
 }
 
 void	free_res(t_restore *res)
 {
 	if (!res)
 		return ;
-	free(res);
-	res = NULL;
+	free_null((void *)&res);
 }
 
 void	free_fix(t_fixed **fixed)
@@ -39,10 +37,9 @@ void	free_fix(t_fixed **fixed)
 	while (curr != NULL)
 	{
 		next = curr->fnext;
-		// printf("free fkey-> %s\n", curr->fkey);
-		free(curr->fkey);
-		free(curr->fvalue);
-		free(curr);
+		check_free_and_null(&curr->fkey);
+		check_free_and_null(&curr->fvalue);
+		free_null((void *)&curr);
 		curr = next;
 	}
 }
@@ -58,9 +55,9 @@ void	free_env(t_env **env)
 	while (curr != NULL)
 	{
 		next = curr->next;
-		free(curr->key);
-		free(curr->value);
-		free(curr);
+		check_free_and_null(&curr->key);
+		check_free_and_null(&curr->value);
+		free_null((void *)&curr);
 		curr = next;
 	}
 }
