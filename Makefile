@@ -6,11 +6,11 @@
 #    By: folim <folim@student.42kl.edu.my>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/15 12:21:40 by maiman-m          #+#    #+#              #
-#    Updated: 2024/02/05 12:56:22 by maiman-m         ###   ########.fr        #
+#    Updated: 2024/02/05 13:22:42 by folim            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-PROG_NAME = minishell
+NAME = minishell
 
 CC = cc
 
@@ -34,11 +34,11 @@ SRCS = main.c init_mini.c mini_utils.c mini_utils2.c tokenizer.c tokenizer_utils
 	   
 OBJS = $(SRCS:.c=.o)
 
-all: $(PROG_NAME)
+all: $(NAME)
 
-$(PROG_NAME): $(OBJS)
+$(NAME): $(OBJS)
 	cd libft && $(MAKE)
-	$(CC) $^ $(CPPFLAGS) $(LDFLAGS) $(LDLIBS) -o $(PROG_NAME)
+	$(CC) $^ $(CPPFLAGS) $(LDFLAGS) $(LDLIBS) -o $(NAME)
 
 clean:
 	cd libft && $(MAKE) clean
@@ -47,7 +47,7 @@ clean:
 
 fclean: clean
 	cd libft && $(MAKE) fclean
-	rm -rf $(PROG_NAME)
+	rm -rf $(NAME)
 
 re: fclean all
 

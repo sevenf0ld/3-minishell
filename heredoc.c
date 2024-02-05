@@ -6,7 +6,7 @@
 /*   By: maiman-m <maiman-m@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 10:35:46 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/02/04 02:44:55 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/02/05 13:23:17 by folim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static void	prompt_and_wait(char *delim, t_status *stat)
 	write(tmp_outre, "", 0);
 	while (1)
 	{
-		input = readline("mini_heredoc > ");
+		input = readline("> ");
 		if (!input)
 			return ;
 		if (!ft_strcmp(input, delim))

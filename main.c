@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:19:04 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/02/04 23:45:38 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/02/05 13:23:04 by folim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ int	main(int argc, char **argv, char **envp)
 	{
 		g_sig = (t_sig){0};
 		signal_parent();
-		pipeline = readline("prompt> ");
+		pipeline = readline("minishell> ");
 		mini_init_pipeline(&mini, pipeline);
 		if (g_sig.sig)
 			mini.stat->s_code = g_sig.sig_code;
