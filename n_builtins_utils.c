@@ -6,17 +6,20 @@
 /*   By: maiman-m <maiman-m@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 19:13:30 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/02/03 11:27:40 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/02/05 14:05:26 by folim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mini.h"
 
 //n_builtins_2
-static void	mini_exec_nb(t_command *c_node, t_mini *mi)
+static void	mini_exec_nb(t_command *c_node, t_mini *mi, char **envp)
 {
 	if (!ft_strcmp(c_node->cmd, "echo"))
+	{
 		b_echo(c_node, mi);
+		free_2d_arr(envp);
+	}
 	else if (!ft_strcmp(c_node->cmd, "pwd"))
 		b_pwd(c_node, 'w', mi);
 	else if (!ft_strcmp(c_node->cmd, "cd") && c_node->size > 1)
@@ -44,7 +47,7 @@ static void	mini_child(t_command *c_node, char **envp, t_mini *mi)
 	}
 	else
 	{
-		mini_exec_nb(c_node, mi);
+		mini_exec_nb(c_node, mi, envp);
 		exit(mi->stat->s_code);
 	}
 	exit(exit_code);

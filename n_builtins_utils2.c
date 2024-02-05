@@ -6,7 +6,7 @@
 /*   By: maiman-m <maiman-m@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 12:32:05 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/02/05 12:34:19 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/02/05 14:04:46 by folim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,10 +46,10 @@ int	execute_b_nb(t_command *c_node, t_mini *mi, char *path_str)
 	{
 		path = get_fvalue(mi->fix, "PATH");
 		if (!path)
-			return (path_err(c_node, 1, mi->stat, NULL));
+			return (path_err(c_node, 1, mi->stat, envp));
 		path_str = get_path_str(path, c_node->cmd);
 		if (!path_str || !ft_strlen(c_node->cmd))
-			return (path_err(c_node, 2, mi->stat, NULL));
+			return (path_err(c_node, 2, mi->stat, envp));
 		check_free_and_null(&c_node->args[0]);
 		c_node->args[0] = ft_strdup(path_str);
 		check_free_and_null(&path_str);
