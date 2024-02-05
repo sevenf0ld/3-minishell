@@ -6,7 +6,7 @@
 #    By: folim <folim@student.42kl.edu.my>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/15 12:21:40 by maiman-m          #+#    #+#              #
-#    Updated: 2024/02/05 12:37:43 by maiman-m         ###   ########.fr        #
+#    Updated: 2024/02/05 12:56:22 by maiman-m         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,15 +16,11 @@ CC = cc
 
 CFLAGS = -Wall -Wextra -Werror -g3
 
-# CPPFLAGS = -I/libft/include -I/mini.h
-CPPFLAGS = -I/libft/include -I/mini.h -I/usr/local/opt/readline/include
+CPPFLAGS = -I/libft/include -I/mini.h
 
-# LDFLAGS = -Llibft 
-LDFLAGS = -Llibft -L/usr/local/opt/readline/lib
+LDFLAGS = -Llibft 
 
 LDLIBS = -lft -lreadline
-
-# SRCS = $(addprefix src/, $(SOURCE))
 
 SRCS = main.c init_mini.c mini_utils.c mini_utils2.c tokenizer.c tokenizer_utils.c init_token.c d_ll_convert.c \
 	   lexer.c split.c split_utils.c split_utils2.c reject.c reject_utils.c reject_utils2.c expand.c expand_utils.c expand_utils2.c expand_utils3.c expand_utils4.c expand_utils5.c replace.c lexer_utils.c delete.c \
