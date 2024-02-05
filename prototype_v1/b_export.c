@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 17:29:27 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/02/05 08:39:34 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/02/04 02:43:44 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,16 +53,19 @@ static t_fixed	*export_repl(t_fixed *ftmp, t_fixed *to_repl, char *to_ref)
 	to_repl = get_repl(ftmp, to_repl, key);
 	if (to_repl != NULL)
 	{
-		check_free_and_null(&to_repl->fkey);
+		free(to_repl->fkey);
 		to_repl->fkey = key;
 		if (val != NULL && *val)
 		{
-			check_free_and_null(&to_repl->fvalue);
+			free(to_repl->fvalue);
 			to_repl->fvalue = ft_strdup(val + 1);
 		}
 	}
 	else
-		check_free_and_null(&key);
+	{
+		free(key);
+		key = NULL;
+	}
 	return (to_repl);
 }
 

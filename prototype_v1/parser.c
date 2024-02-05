@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 12:07:39 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/02/05 09:58:48 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/02/05 00:00:50 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,18 +34,16 @@ static char	*rm_till_end(t_token **tokens)
 		tmp = NULL;
 	}
 	trim = ft_strtrim(ret, " ");
-	check_free_and_null(&ret);
+	free(ret);
 	return (trim);
 }
 
 /*
 
-* init_multi_a() stores all the OPT and ARGS
-    in its respective 2D char array (end marker is NULL)
-* init_multi_l() stores all the LIM
-    in its respective 2D char array (end marker is NULL)
+* init_multi_fa() stores all the OPT and ARGS
+	in its respective 2D char array (end marker is NULL)
 * init_multi_redir() stores all input, overwrite & append redirections
-    in its respectiive int array (end marker is INT_MIN)
+	in its respectiive int array (end marker is INT_MIN)
  */
 void	complete_cmd(t_mini *mi, t_token **tokens, t_command **cmds)
 {
@@ -62,6 +60,7 @@ void	complete_cmd(t_mini *mi, t_token **tokens, t_command **cmds)
 	}
 }
 
+//void	update_cmd_exec(t_command **cmds)
 void	update_cmd_exec(t_command *c_node)
 {
 	if (!c_node->cmd)

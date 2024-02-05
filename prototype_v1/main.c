@@ -46,7 +46,6 @@ void	minishell(t_mini *mini, int flag)
 			return ;
 		save_io(mini);
 		mini->tok_cpy = mini->tok;
-		// free_ttkn(mini->tok_cpy);
 		parser(mini);
 		mini_init_pid(mini);
 		execution(mini);

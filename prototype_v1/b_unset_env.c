@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/24 03:45:36 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/02/05 07:33:32 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/02/05 11:37:37 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,8 @@ static void	b_unset_norme(t_fixed *f_node, char *to_rm)
 			ftmp->fnext = ftmp->fnext->fnext;
 			check_free_and_null(&to_free->fkey);
 			check_free_and_null(&to_free->fvalue);
-			free_null((void *)&to_free);
+			free(to_free);
+			to_free = NULL;
 			if (!ftmp->fnext)
 				break ;
 		}

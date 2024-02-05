@@ -6,20 +6,11 @@
 /*   By: maiman-m <maiman-m@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 11:33:37 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/02/05 09:02:41 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/02/05 12:20:42 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mini.h"
-
-static void	exit_argless(t_command *c_node, t_mini *mi)
-{
-	mi->stat->s_code = 0;
-	conditional_exit_display(c_node->size);
-	garbage_burner(mi);
-	exit(mi->stat->s_code);
-	return ;
-}
 
 static void	rm_plus_sign(char **s)
 {
@@ -34,12 +25,15 @@ static void	rm_plus_sign(char **s)
 		i++;
 	if (i == 1)
 	{
-		check_free_and_null(s);
+		free(*s);
+		*s = NULL;
 		*s = ft_strdup(tmp + 1);
-		check_free_and_null(&tmp);
+		free(tmp);
+		tmp = NULL;
 		return ;
 	}
-	check_free_and_null(&tmp);
+	free(tmp);
+	tmp = NULL;
 }
 
 static void	exit_calc(long long code, t_mini *mi)
@@ -57,6 +51,15 @@ static void	exit_calc(long long code, t_mini *mi)
 		if (code <= -255)
 			mi->stat->s_code %= (256 + 0U);
 	}
+}
+
+static void	exit_argless(t_command *c_node, t_mini *mi)
+{
+	mi->stat->s_code = 0;
+	conditional_exit_display(c_node->size);
+	garbage_burner(mi);
+	exit(mi->stat->s_code);
+	return ;
 }
 
 void	b_exit(t_command *c_node, t_mini *mi)

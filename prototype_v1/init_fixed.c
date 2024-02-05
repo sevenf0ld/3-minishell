@@ -28,7 +28,7 @@ static void	set_fixed_kv(t_fixed *node, char *var, int flag)
 	else
 		node->fvalue = NULL;
 	if (flag == 1)
-		check_free_and_null(&var);
+		free(var);
 }
 
 t_fixed	*f_new(char *var, t_status *stat, int flag)

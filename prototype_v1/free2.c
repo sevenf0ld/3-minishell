@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 16:43:42 by folim             #+#    #+#             */
-/*   Updated: 2024/02/05 09:02:04 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/02/05 12:17:06 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,14 +16,16 @@ void	free_stat(t_status *status)
 {
 	if (!status)
 		return ;
-	free_null((void *)&status);
+	free(status);
+	status = NULL;
 }
 
 void	free_res(t_restore *res)
 {
 	if (!res)
 		return ;
-	free_null((void *)&res);
+	free(res);
+	res = NULL;
 }
 
 void	free_fix(t_fixed **fixed)
@@ -37,9 +39,9 @@ void	free_fix(t_fixed **fixed)
 	while (curr != NULL)
 	{
 		next = curr->fnext;
-		check_free_and_null(&curr->fkey);
-		check_free_and_null(&curr->fvalue);
-		free_null((void *)&curr);
+		free(curr->fkey);
+		free(curr->fvalue);
+		free(curr);
 		curr = next;
 	}
 }
@@ -55,9 +57,9 @@ void	free_env(t_env **env)
 	while (curr != NULL)
 	{
 		next = curr->next;
-		check_free_and_null(&curr->key);
-		check_free_and_null(&curr->value);
-		free_null((void *)&curr);
+		free(curr->key);
+		free(curr->value);
+		free(curr);
 		curr = next;
 	}
 }

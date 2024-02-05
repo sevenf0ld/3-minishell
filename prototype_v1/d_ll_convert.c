@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 16:10:50 by folim             #+#    #+#             */
-/*   Updated: 2024/02/05 09:18:40 by maiman-m         ###   ########.fr       */
+/*   Updated: 2023/11/15 15:53:00 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,3 +71,12 @@ t_pipe	*double_ll_convert3(t_pipe **lst)
 	tail = prev;
 	return (tail);
 }
+// typedef struct s_token
+// {
+// 	int				x;
+// 	char			*str;
+// 	struct s_token	*prev;
+// 	struct s_token	*next;
+// }t_token;
+// double_ll_convert takes in the root of the linked list and returns
+// the tail of the linked list.

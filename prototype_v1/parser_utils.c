@@ -6,13 +6,13 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/17 14:26:35 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/02/05 09:59:23 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/02/02 12:45:26 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mini.h"
 
-static void	set_multi_fildes_norme(t_fildes_norme *fildes_params, int i)
+void	set_multi_fildes_norme(t_fildes_norme *fildes_params, int i)
 {
 	rm(&fildes_params->tmp->token, 0);
 	if (i == 0)
@@ -40,7 +40,7 @@ static void	set_multi_fildes_norme(t_fildes_norme *fildes_params, int i)
 	}
 }
 
-static void	set_multi_fildes(t_token **tokens, t_command *c_node)
+void	set_multi_fildes(t_token **tokens, t_command *c_node)
 {
 	t_fildes_norme	fildes_params;
 
@@ -65,7 +65,7 @@ static void	set_multi_fildes(t_token **tokens, t_command *c_node)
 		fildes_params.c_node->std_out_a[fildes_params.k] = INT_MIN;
 }
 
-static void	init_multi_redir_norme(t_token *t_node, t_command *c_node)
+void	init_multi_redir_norme(t_token *t_node, t_command *c_node)
 {
 	if (t_node->symbol == FILN && t_node->prev != NULL)
 	{

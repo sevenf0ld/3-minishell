@@ -6,7 +6,7 @@
 /*   By: maiman-m <maiman-m@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 16:22:18 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/02/05 09:47:12 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/01/31 11:22:46 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int	redir_as_end(t_token *t_node, t_status *stat)
 	{
 		if (tmp->symbol == IN_RE || tmp->symbol == OUT_RE || tmp->symbol == ADD
 			|| tmp->symbol == HD)
-			if (!tmp->next || (tmp->next != NULL
+			if (tmp->next == NULL || (tmp->next != NULL
 					&& tmp->next->symbol == PIPE))
 				return (redir_err(NULL, stat));
 		tmp = tmp->next;

@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/30 14:47:12 by folim             #+#    #+#             */
-/*   Updated: 2024/02/05 09:13:41 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/02/05 12:40:22 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,8 @@ char	*get_path_str(char *path, char *cmd)
 			free_2d_arr(env_path);
 			return (path_str);
 		}
-		check_free_and_null(&path_str);
+		free(path_str);
+		path_str = NULL;
 		i++;
 	}
 	free_2d_arr(env_path);
