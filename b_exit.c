@@ -6,7 +6,7 @@
 /*   By: maiman-m <maiman-m@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 11:33:37 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/02/05 14:22:02 by folim            ###   ########.fr       */
+/*   Updated: 2024/02/05 15:30:48 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,5 @@ void	b_exit(t_command *c_node, t_mini *mi)
 		return ;
 	exit_calc(code, mi);
 	conditional_exit_display(c_node->size);
-	//garbage_burner(mi);
-	//free_mini(mi);
 	exit(mi->stat->s_code);
 }
