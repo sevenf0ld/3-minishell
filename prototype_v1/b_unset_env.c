@@ -6,7 +6,7 @@
 /*   By: maiman-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/24 03:45:36 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/02/04 03:24:43 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/02/05 11:37:37 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,10 +49,8 @@ static void	b_unset_norme(t_fixed *f_node, char *to_rm)
 		{
 			to_free = ftmp->fnext;
 			ftmp->fnext = ftmp->fnext->fnext;
-			free(to_free->fkey);
-			free(to_free->fvalue); //problem 1 & 2 solved
-			to_free->fkey = NULL;
-			to_free->fvalue = NULL;
+			check_free_and_null(&to_free->fkey);
+			check_free_and_null(&to_free->fvalue);
 			free(to_free);
 			to_free = NULL;
 			if (!ftmp->fnext)
@@ -69,11 +67,11 @@ void	b_unset(t_command *c_node, t_fixed **f_node, t_mini *mi)
 	i = 0;
 	(void)f_node;
 	if (c_node->num_a == 1)
-        {
-                mi->stat->s_code = 0;
+	{
+		mi->stat->s_code = 0;
 		return ;
-        }
+	}
 	while (++i < c_node->num_a)
 		b_unset_norme(mi->fix, c_node->args[i]);
-        mi->stat->s_code = 0;
+	mi->stat->s_code = 0;
 }

@@ -6,7 +6,7 @@
 /*   By: maiman-m <maiman-m@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 11:33:37 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/02/04 20:28:25 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/02/05 12:20:42 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,55 +17,23 @@ static void	rm_plus_sign(char **s)
 	char	*tmp;
 	int		i;
 
-        if (*s[0] != 43 || *s[0] == 45)
-            return ;
+	if (*s[0] != 43 || *s[0] == 45)
+		return ;
 	tmp = ft_strdup(*s);
 	i = 0;
 	while (tmp[i] != '\0' && tmp[i] == 43)
 		i++;
 	if (i == 1)
-        {
-                free(*s);
-                *s = NULL;
+	{
+		free(*s);
+		*s = NULL;
 		*s = ft_strdup(tmp + 1);
-                free(tmp);
-                tmp = NULL;
-                return ;
-        }
-        free(tmp);
-        tmp = NULL;
-}
-
-static void conditional_exit_display(int size)
-{
-    if (size == 1)
-        ft_putendl_fd("exit", STDOUT_FILENO);
-}
-
-static int  exit_err(t_mini *mi, int flag, t_command *c_node)
-{
-	if (flag == 2)
-	{
-                conditional_exit_display(c_node->size);
-		ft_putstr_fd("minishell: exit: ", STDERR_FILENO);
-		ft_putstr_fd(c_node->args[1], STDERR_FILENO);
-		ft_putendl_fd(": numeric argument required", STDERR_FILENO);
-		mi->stat->s_code = 2;
-                garbage_burner(mi);
-		exit(mi->stat->s_code);
-                return (1);
+		free(tmp);
+		tmp = NULL;
+		return ;
 	}
-	else if (flag == 1)
-	{
-		if (c_node->num_a > 2)
-		{
-                        conditional_exit_display(c_node->size);
-			ft_putendl_fd("minishell: exit: too many arguments", STDERR_FILENO);
-			mi->stat->s_code = 1;
-			return (1);
-		}
-	}
-        return (0);
+	free(tmp);
+	tmp = NULL;
 }
 
 static void	exit_calc(long long code, t_mini *mi)
@@ -85,37 +53,39 @@ static void	exit_calc(long long code, t_mini *mi)
 	}
 }
 
+static void	exit_argless(t_command *c_node, t_mini *mi)
+{
+	mi->stat->s_code = 0;
+	conditional_exit_display(c_node->size);
+	garbage_burner(mi);
+	exit(mi->stat->s_code);
+	return ;
+}
+
 void	b_exit(t_command *c_node, t_mini *mi)
 {
 	long long	code;
-        int             err;
-        char            *str_code;
-        char            *arg;
+	int			err;
+	char		*str_code;
+	char		*arg;
 
 	if (c_node->num_a == 1)
-	{
-		mi->stat->s_code = 0;
-                conditional_exit_display(c_node->size);
-                garbage_burner(mi);
-		exit(mi->stat->s_code);
-		return ;
-	}
+		return (exit_argless(c_node, mi));
 	code = ft_atoll(c_node->args[1]);
 	rm_plus_sign(&c_node->args[1]);
-        str_code = ft_lltoa(code);
-        arg = ft_strtrim(c_node->args[1], "     ");
+	str_code = ft_lltoa(code);
+	arg = ft_strtrim(c_node->args[1], "     ");
 	if (ft_strcmp(str_code, arg) != 0)
 		err = exit_err(mi, 2, c_node);
 	else
 		err = exit_err(mi, 1, c_node);
-        free(arg);
-        arg = NULL;
-        free(str_code);
-        str_code = NULL;
-        if (err)
-            return ;
+	check_free_and_null(&arg);
+	check_free_and_null(&str_code);
+	if (err)
+		return ;
 	exit_calc(code, mi);
-        conditional_exit_display(c_node->size);
-        garbage_burner(mi);
+	conditional_exit_display(c_node->size);
+	garbage_burner(mi);
+	free_mini(mi);
 	exit(mi->stat->s_code);
 }

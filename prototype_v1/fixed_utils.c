@@ -12,6 +12,16 @@
 
 #include "mini.h"
 
+char	*get_key(char *exported)
+{
+	int	i;
+
+	i = 0;
+	while (exported[i] != '\0' && exported[i] != '=')
+		i++;
+	return (ft_substr(exported, 0, i));
+}
+
 char	*get_fvalue(t_fixed *f_node, char *fkey)
 {
 	t_fixed	*ftmp;

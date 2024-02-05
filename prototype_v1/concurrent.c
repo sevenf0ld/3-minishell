@@ -48,20 +48,31 @@ void	last_close(t_pipe **pipes, t_mini *mi)
 	}
 }
 
+static void	c_w_norme(int old, t_status *stat, t_command *last_cmd)
+{
+	if (last_cmd->num_a > 0)
+	{
+		if (!ft_strcmp(last_cmd->args[0], "exit"))
+			stat->s_code = old;
+		else if (!ft_strcmp(last_cmd->args[0], "cd"))
+			stat->s_code = old;
+		else if (!ft_strcmp(last_cmd->args[0], "export"))
+			stat->s_code = old;
+	}
+}
+
 void	close_and_wait(t_mini *mi)
 {
 	int			wstat;
 	pid_t		child;
 	t_status	*stat;
-        t_command       *last_cmd;
-        int             old_s_code;
+	int			old_s_code;
 
 	if (mi->piping)
 		last_close(&mi->pip, mi);
 	child = wait(&wstat);
 	stat = mi->stat;
-        last_cmd = cmd_last(mi->cmd);
-        old_s_code = stat->s_code;
+	old_s_code = stat->s_code;
 	while (child > 0)
 	{
 		if (WIFEXITED(wstat))
@@ -73,17 +84,7 @@ void	close_and_wait(t_mini *mi)
 			else if (WTERMSIG(wstat) == 3)
 				stat->s_code = 131;
 		}
-		else if (WIFSTOPPED(wstat))
-			stat->s_code = WIFSTOPPED(wstat);
 		child = wait(&wstat);
 	}
-        if (last_cmd->num_a > 0)
-        {
-            if (!ft_strcmp(last_cmd->args[0], "exit"))
-                stat->s_code = old_s_code;
-            else if (!ft_strcmp(last_cmd->args[0], "cd"))
-                stat->s_code = old_s_code;
-            else if (!ft_strcmp(last_cmd->args[0], "export"))
-                stat->s_code = old_s_code;
-        }
+	c_w_norme(old_s_code, stat, cmd_last(mi->cmd));
 }

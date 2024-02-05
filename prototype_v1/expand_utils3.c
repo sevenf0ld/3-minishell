@@ -15,23 +15,13 @@
 static void	ext_dollar(char *ref, int *i, int *j, char **ext)
 {
 	*j = *i + 1;
-        /*
-	while ((ft_isalnum(ref[*j]) && ref[*j]) || (ref[*j] && ref[*j] == '_'))
-		(*j)++;
-        */
-        if (ref[*j] && ft_isdigit(ref[*j]))
-        {
-            /*
-            while (ref[*j] && ft_isdigit(ref[*j]))
-                (*j)++;
-            */
-            *j += 1;
-        }
-        else
-        {
-	    while ((ft_isalnum(ref[*j]) && ref[*j]) || (ref[*j] && ref[*j] == '_'))
-		(*j)++;
-        }
+	if (ref[*j] && ft_isdigit(ref[*j]))
+		*j += 1;
+	else
+	{
+		while ((ft_isalnum(ref[*j]) && ref[*j]) || (ref[*j] && ref[*j] == '_'))
+			(*j)++;
+	}
 	*ext = ft_substr(ref, *i + 1, *j - *i - 1);
 	if ((all_whitespace(*ext) && ft_strchr(ref, '?')) || !ft_strlen(*ext))
 	{

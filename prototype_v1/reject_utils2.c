@@ -40,13 +40,13 @@ static void	reset_unterm_params(t_unterm_norme *unterm_params)
 	unterm_params->wq = false;
 }
 
-static int  not_symbol(t_sym symbol)
+static int	not_symbol(t_sym symbol)
 {
-    if (symbol == CMD || symbol == ARGS)
-        return (1);
-    if (symbol == FILN || symbol == LIM)
-        return (1);
-    return (0);
+	if (symbol == CMD || symbol == ARGS)
+		return (1);
+	if (symbol == FILN || symbol == LIM)
+		return (1);
+	return (0);
 }
 
 int	unterminated_quotes(t_token *t_node, t_status *stat)
@@ -56,7 +56,6 @@ int	unterminated_quotes(t_token *t_node, t_status *stat)
 	unterm_params = (t_unterm_norme){0, false, false, NULL, t_node};
 	while (unterm_params.tmp != NULL)
 	{
-		//if (unterm_params.tmp->symbol == ARGS)
 		if (not_symbol(unterm_params.tmp->symbol))
 		{
 			unterm_params.s = unterm_params.tmp->token;

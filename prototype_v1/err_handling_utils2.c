@@ -6,7 +6,7 @@
 /*   By: maiman-m <maiman-m@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 14:28:15 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/02/02 17:38:38 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/02/05 12:26:26 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	pipe_related_err(t_status *stat)
 	return (1);
 }
 
-int	path_err(t_command *c_node, int flag, t_status *stat)
+int	path_err(t_command *c_node, int flag, t_status *stat, char **envp)
 {
 	c_node->exec = false;
 	ft_putstr_fd("minishell: ", STDERR_FILENO);
@@ -34,6 +34,7 @@ int	path_err(t_command *c_node, int flag, t_status *stat)
 	else if (flag == 2)
 		ft_putendl_fd(": command not found", STDERR_FILENO);
 	stat->s_code = 127;
+	free_2d_arr(envp);
 	return (1);
 }
 

@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:20:01 by maiman-m          #+#    #+#             */
-/*   Updated: 2024/02/05 00:01:08 by maiman-m         ###   ########.fr       */
+/*   Updated: 2024/02/05 12:36:42 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,7 +151,7 @@ typedef struct s_mini
 	t_pid				*pid;
 	int					piping;
 	int					limiting;
-        char                            *pipeline;
+	char				*pipeline;
 }						t_mini;
 
 typedef struct s_sig
@@ -242,7 +242,7 @@ void					minishell(t_mini *mi, int flag);
 void					mini_init_stat_res(t_mini *mi);
 void					mini_init_environ(t_mini *mi, char **envp);
 void					mini_init_pid(t_mini *mi);
-void                                    mini_init_pipeline(t_mini *mi, char *s);
+void					mini_init_pipeline(t_mini *mi, char *s);
 
 //mini_utils.c
 void					save_io(t_mini *mi);
@@ -344,14 +344,14 @@ char					*repl(char *og, char *displace, char *sub, int len_og);
 void					group_cmds(t_token **tokens);
 
 //delete.c
-void                                    delete_all_element(t_token **lst, char *value);
+void					delete_all_element(t_token **lst, char *value);
 
 /*	PARSER	*/
 //parser.c
 void					complete_cmd(t_mini *mi, t_token **tokens,
 							t_command **cmds);
 //void                                    update_cmd_exec(t_command **cmds);
-void                                    update_cmd_exec(t_command *c_node);
+void					update_cmd_exec(t_command *c_node);
 void					parser(t_mini *mi);
 
 //init_cmd.c
@@ -406,10 +406,16 @@ void					heredoc(t_command *c_node, t_status *stat);
 
 /*	NON-BUILTINS EXECUTOR	*/
 //n_builtins.c
+char					*get_path_str(char *path, char *cmd);
 void					fork_exec(t_command *c_node, t_mini *mi);
 
 //n_builtins_utils.c
 int						mini_exec(t_command *c_node, t_mini *mi, char **envp);
+
+//n_builtins_utils2.c
+void					execute_non_exe(t_command *c_node, t_mini *mi);
+int						execute_b_nb(t_command *c_node, t_mini *mi,
+							char *path_str);
 
 //gnl.c
 char					*get_next_line(int fd);
@@ -450,6 +456,10 @@ void					b_export(t_command *c_node, t_fixed **f_node,
 //b_exit.c
 void					b_exit(t_command *c_node, t_mini *mi);
 
+//b_exit_utils.c
+void					conditional_exit_display(int size);
+int						exit_err(t_mini *mi, int flag, t_command *c_node);
+
 /*	ENVIRONMENT VARIABLES HANDLER	*/
 //init_env.c
 t_env					*env_new(char *var, t_fixed *f, t_status *stat);
@@ -465,6 +475,7 @@ void					f_add_back(t_fixed **head, t_fixed *node);
 void					f_init(t_fixed **envs, char **envp, t_status *stat);
 
 //fixed_utils.c
+char					*get_key(char *exported);
 char					*get_fvalue(t_fixed *f_node, char *fkey);
 void					update_fvalue(t_fixed **fix, char *fkey, char *fval);
 char					*get_oldpwd(t_fixed *f_node);
@@ -489,7 +500,8 @@ int						redir_err(char *token, t_status *stat);
 //err_handling_utils2.c
 int						symbols_err(t_status *stat);
 int						pipe_related_err(t_status *stat);
-int						path_err(t_command *c_node, int flag, t_status *stat);
+int						path_err(t_command *c_node, int flag, t_status *stat,
+							char **envp);
 void					export_err(char *err_arg, t_mini *mi);
 
 //free.c
@@ -498,12 +510,12 @@ void					free_tcmd(t_mini *mi);
 void					free_ttkn(t_token **tkn);
 void					free_tpipe(t_pipe **pipe);
 void					garbage_burner(t_mini *mi);
-void					print_tfix(t_fixed **tfix);
 
 //free2.c
 void					free_stat(t_status *status);
 void					free_res(t_restore *res);
 void					free_fix(t_fixed **fixed);
 void					free_env(t_env **env);
+void					free_mini(t_mini *mi);
 
 #endif

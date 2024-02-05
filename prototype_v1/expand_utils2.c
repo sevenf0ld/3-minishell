@@ -38,24 +38,14 @@ void	set_aft_exp(char **aft, char *ref)
 	till_dollar(ref, &i, q);
 	if (ref[i] == 36)
 	{
-		i += 1;;
-                /*
-		while ((ft_isalnum(ref[i]) && ref[i]) || (ref[i] && ref[i] == '_'))
-			i++;
-                */
-                if (ref[i] && ft_isdigit(ref[i]))
-                {
-                    /*
-                    while (ref[i] && ft_isdigit(ref[i]))
-                        i++;
-                    */
-                    i += 1;
-                }
-                else
-                {
-		    while ((ft_isalnum(ref[i]) && ref[i]) || (ref[i] && ref[i] == '_'))
-			i++;
-                }
+		i += 1;
+		if (ref[i] && ft_isdigit(ref[i]))
+			i += 1;
+		else
+		{
+			while ((ft_isalnum(ref[i]) && ref[i]) || (ref[i] && ref[i] == '_'))
+				i++;
+		}
 		if (ref[i] == 63)
 			i += 1;
 		if (ref[i])

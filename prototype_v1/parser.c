@@ -25,14 +25,12 @@ static char	*rm_till_end(t_token **tokens)
 		ret = join_and_free(ret, tmp->token);
 		ret = join_and_free(ret, " ");
 		*tokens = tmp->next;
-		// free(tmp);
 		tmp = NULL;
 		tmp = *tokens;
 	}
 	if (tmp != NULL && tmp->end == true)
 	{
 		*tokens = tmp->next;
-		// free(tmp);
 		tmp = NULL;
 	}
 	trim = ft_strtrim(ret, " ");
@@ -65,19 +63,8 @@ void	complete_cmd(t_mini *mi, t_token **tokens, t_command **cmds)
 //void	update_cmd_exec(t_command **cmds)
 void	update_cmd_exec(t_command *c_node)
 {
-        /*
-	t_command	*c_node;
-
-	c_node = *cmds;
-	while (c_node != NULL)
-	{
-		if (!c_node->cmd)
-			c_node->exec = false;
-		c_node = c_node->next;
-	}
-        */
-        if (!c_node->cmd)
-            c_node->exec = false;
+	if (!c_node->cmd)
+		c_node->exec = false;
 }
 
 void	parser(t_mini *mi)
@@ -91,7 +78,6 @@ void	parser(t_mini *mi)
 	double_ll_convert2(cmds);
 	mi->limiting = 0;
 	complete_cmd(mi, tokens, cmds);
-	//update_cmd_exec(cmds);
 	mi->piping = 0;
 	if (*cmds != NULL && (*cmds)->size > 1)
 	{

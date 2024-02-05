@@ -6,7 +6,7 @@
 /*   By: folim <folim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 16:43:42 by folim             #+#    #+#             */
-/*   Updated: 2024/02/01 16:43:44 by folim            ###   ########.fr       */
+/*   Updated: 2024/02/05 12:17:06 by maiman-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ void	free_fix(t_fixed **fixed)
 	while (curr != NULL)
 	{
 		next = curr->fnext;
-		// printf("free fkey-> %s\n", curr->fkey);
 		free(curr->fkey);
 		free(curr->fvalue);
 		free(curr);
@@ -63,4 +62,12 @@ void	free_env(t_env **env)
 		free(curr);
 		curr = next;
 	}
+}
+
+void	free_mini(t_mini *mi)
+{
+	free_stat(mi->stat);
+	free_res(mi->res);
+	free_fix(&mi->fix);
+	free_env(&mi->env);
 }

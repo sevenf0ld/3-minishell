@@ -14,32 +14,21 @@
 
 static void	set_fixed_kv(t_fixed *node, char *var, int flag)
 {
-	int	i;
-        char    *val;
+	int		i;
+	char	*val;
 
 	i = 0;
-        val = NULL;
+	val = NULL;
 	while (var[i] != '\0' && var[i] != '=')
 		i++;
 	node->fkey = ft_substr(var, 0, i);
-        val = ft_strchr(var, '=');
-        if (val != NULL && *val && ft_strlen(val) != 0)
-	    node->fvalue = ft_strdup(val + 1);
-        else
-	    node->fvalue = NULL;
-        //if (flag == 1)
-        //{
-        //    if (val != NULL && *val && ft_strlen(val) != 0)
-	//        node->fvalue = ft_strdup(val + 1);
-        //    else
-	//        node->fvalue = NULL;
-        //}
-        //else if (flag == 0)
-	//    node->fvalue = val + 1;
-	//if (node->fvalue != NULL)
-	//	node->fvalue += 1;
-        if (flag == 1)
-            free(var);
+	val = ft_strchr(var, '=');
+	if (val != NULL && *val && ft_strlen(val) != 0)
+		node->fvalue = ft_strdup(val + 1);
+	else
+		node->fvalue = NULL;
+	if (flag == 1)
+		free(var);
 }
 
 t_fixed	*f_new(char *var, t_status *stat, int flag)
@@ -47,11 +36,11 @@ t_fixed	*f_new(char *var, t_status *stat, int flag)
 	t_fixed	*node;
 
 	node = malloc_err(sizeof(t_fixed), stat);
-        if (node != NULL)
-        {
-	    set_fixed_kv(node, var, flag);
-	    node->fnext = NULL;
-        }
+	if (node != NULL)
+	{
+		set_fixed_kv(node, var, flag);
+		node->fnext = NULL;
+	}
 	return (node);
 }
 

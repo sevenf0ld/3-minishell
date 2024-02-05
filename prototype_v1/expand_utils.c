@@ -33,17 +33,17 @@ static void	free_and_dup(char **tokens, char *tmp)
 	check_free_and_null(&tmp);
 }
 
-static void double_check_sub(char **bfr, char **sub, char **aft)
+static void	double_check_sub(char **bfr, char **sub, char **aft)
 {
-    if (all_whitespace(*sub))
-    {
-        if (ft_strcmp(*bfr, "\"") && ft_strcmp(*aft, "\""))
-        {
-            free(*sub);
-            *sub = NULL;
-            *sub = ft_strdup("");
-        }
-    }
+	if (all_whitespace(*sub))
+	{
+		if (ft_strcmp(*bfr, "\"") && ft_strcmp(*aft, "\""))
+		{
+			free(*sub);
+			*sub = NULL;
+			*sub = ft_strdup("");
+		}
+	}
 }
 
 void	expand_utils(char **tokens, t_mini *mi)
@@ -62,8 +62,8 @@ void	expand_utils(char **tokens, t_mini *mi)
 		set_bfr_exp(&bfr_exp, tmp);
 		sub_exp(&sub, tmp, mi);
 		set_aft_exp(&aft_exp, tmp);
-                double_check_sub(&bfr_exp, &sub, &aft_exp);
-                reform_word(&tmp, &bfr_exp, &sub, &aft_exp);
+		double_check_sub(&bfr_exp, &sub, &aft_exp);
+		reform_word(&tmp, &bfr_exp, &sub, &aft_exp);
 		reset_exp(&bfr_exp, &sub, &aft_exp);
 	}
 	if (ft_strcmp(*tokens, tmp) != 0)
